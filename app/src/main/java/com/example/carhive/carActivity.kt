@@ -56,26 +56,20 @@ class CarActivity : AppCompatActivity() {
     }
 
     private fun loadCars() {
-        val carRef = FirebaseDatabase.getInstance().getReference("Car")
-        carRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                carList.clear()
-                for (carSnapshot in snapshot.children) {
-                    val car = carSnapshot.getValue(Car::class.java)
-                    car?.let { carList.add(it) }
-                }
-                carAdapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CarActivity, "Failed to load cars", Toast.LENGTH_SHORT).show()
-            }
-        })
+        crud.read(Car::class.java, { cars ->
+            val previousSize = carList.size
+            carList.clear()
+            carList.addAll(cars)
+            carAdapter.notifyItemRangeRemoved(0, previousSize)
+            carAdapter.notifyItemRangeInserted(0, cars.size)
+        }, this)
     }
+
+
 
     private fun onUpdateClick(car: Car) {
         etCarName.setText(car.name)
-        btnCreate.text = "Actualizar Carro"
+        btnCreate.text = getString(R.string.actualizar_carro)
 
         // Set up the button to update the car
         btnCreate.setOnClickListener {
@@ -85,7 +79,7 @@ class CarActivity : AppCompatActivity() {
             etCarName.text.clear()
 
             // Reset the button text back to "Crear Carro"
-            btnCreate.text = "Crear Carro"
+            btnCreate.text = getString(R.string.crear_carro)
 
             // Reset the button's click listener to the original create logic
             btnCreate.setOnClickListener {

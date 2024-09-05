@@ -23,14 +23,17 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase) {
     }
 
     // Método genérico para leer entidades
-    fun <T : Any> read(clazz: Class<T>, context: Context) {
+    // Método genérico para leer entidades con un callback
+    fun <T : Any> read(clazz: Class<T>, onDataLoaded: (List<T>) -> Unit, context: Context) {
         databaseRef = firebaseDatabase.getReference(clazz.simpleName)
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                val entityList = mutableListOf<T>()
                 snapshot.children.forEach { snap ->
                     val entity = snap.getValue(clazz)
-                    Toast.makeText(context, "Entidad leída: $entity", Toast.LENGTH_SHORT).show()
+                    entity?.let { entityList.add(it) }
                 }
+                onDataLoaded(entityList) // Retorna los datos a través del callback
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -38,7 +41,6 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase) {
             }
         })
     }
-
     // Método genérico para actualizar una entidad
     fun <T : Any> update(clazz: Class<T>, id: String, updates: Map<String, Any>, context: Context) {
         databaseRef = firebaseDatabase.getReference(clazz.simpleName)
