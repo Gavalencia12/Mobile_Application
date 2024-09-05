@@ -15,7 +15,7 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase) {
         val databaseRef = firebaseDatabase.getReference(clazz.simpleName)
         databaseRef.child(entityId).setValue(entity).addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(context, "${clazz.simpleName} creado con éxito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "${clazz.simpleName} creado con éxito :)", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Error al crear ${clazz.simpleName}", Toast.LENGTH_SHORT).show()
             }
