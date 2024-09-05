@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Campo de Entrada para el Nombre del Carro -->
+    <EditText
+        android:id="@+id/etCarName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del Carro"
+        android:inputType="text"
+        android:padding="45dp" />
+
+    <!-- Botón para Crear el Carro -->
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear Carro" />
+
+    <!-- RecyclerView para mostrar la lista de carros -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

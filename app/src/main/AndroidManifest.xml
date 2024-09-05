@@ -12,17 +12,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarHive"
         tools:targetApi="31">
+
+        <!-- Actividad CarActivity con el tema por defecto de la aplicación -->
         <activity
-            android:name=".MainActivity"
+            android:name=".CarActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.CarHive">
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+
+        <!-- Actividad CRUD utilizando un tema basado en AppCompat -->
+        <activity
+            android:name=".CRUD"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light"> <!-- Tema basado en AppCompat -->
+        </activity>
+
+        <!-- Actividad Principal (MainActivity) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CarHive" />
+
+    </application>
 </manifest>
