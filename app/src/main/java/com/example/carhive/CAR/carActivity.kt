@@ -55,7 +55,7 @@ fun CarScreen(viewModel: CarViewModel = viewModel()) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = if (viewModel.carIdToUpdate == null) "Create Car" else "Update Car :)")
+            Text(text = if (viewModel.carIdToUpdate == null) "Create Car" else "Update Car )")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
