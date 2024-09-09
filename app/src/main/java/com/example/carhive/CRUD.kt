@@ -1,59 +1,107 @@
 package com.example.carhive
 
-import android.widget.Toast
 import android.content.Context
+import android.widget.Toast
+import com.example.carhive.models.Car
 import com.google.firebase.database.*
 
-class CRUD(private val firebaseDatabase: FirebaseDatabase) {
-    private lateinit var databaseRef: DatabaseReference
 
-    // Método genérico para crear una entidad
-    fun <T : Any> create(clazz: Class<T>, entity: T, context: Context) {
-        // Se asume que entity tiene un campo "id" accesible. Para asegurar esto,
-        // se requiere una interfaz o clase base con la propiedad "id".
-        val entityId = entity::class.java.getMethod("getId").invoke(entity) as String
-        val databaseRef = firebaseDatabase.getReference(clazz.simpleName)
-        databaseRef.child(entityId).setValue(entity).addOnCompleteListener {
-            if (it.isSuccessful) {
-                Toast.makeText(context, "${clazz.simpleName} creado con éxito :)", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Error al crear ${clazz.simpleName}", Toast.LENGTH_SHORT).show()
-            }
-        }
+class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentToast: Toast?) {
+
+    // Generate a random ID for a given type
+    fun generateId(collectionName: String): String? {
+        return firebaseDatabase.getReference(collectionName).push().key
     }
 
-    // Método genérico para leer entidades
-    // Método genérico para leer entidades con un callback
-    fun <T : Any> read(clazz: Class<T>, onDataLoaded: (List<T>) -> Unit, context: Context) {
-        databaseRef = firebaseDatabase.getReference(clazz.simpleName)
-        databaseRef.addValueEventListener(object : ValueEventListener {
+    fun create(entityClass: Class<Car>, entity: Car, context: Context) {
+        val entityName = entityClass.simpleName
+        val reference = firebaseDatabase.getReference(entityName)
+
+        reference.child(entity.id).setValue(entity)
+            .addOnSuccessListener {
+                showToast(context, "$entityName created successfully")
+            }
+            .addOnFailureListener {
+                showToast(context, "Failed to create $entityName")
+            }
+    }
+
+
+    // Generic read function to retrieve all entities of a certain type
+    fun <T> read(entityClass: Class<T>, callback: (List<T>) -> Unit, context: Context) {
+        val entityName = entityClass.simpleName
+        val reference = firebaseDatabase.getReference(entityName)
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val entityList = mutableListOf<T>()
-                snapshot.children.forEach { snap ->
-                    val entity = snap.getValue(clazz)
-                    entity?.let { entityList.add(it) }
+                val entities = mutableListOf<T>()
+                for (entitySnapshot in snapshot.children) {
+                    val entity = entitySnapshot.getValue(entityClass)
+                    entity?.let { entities.add(it) }
                 }
-                onDataLoaded(entityList) // Retorna los datos a través del callback
+                callback(entities)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Error al leer datos: ${error.message}", Toast.LENGTH_SHORT).show()
+                showToast(context, "Failed to load $entityName")
             }
         })
     }
-    // Método genérico para actualizar una entidad
-    fun <T : Any> update(clazz: Class<T>, id: String, updates: Map<String, Any>, context: Context) {
-        databaseRef = firebaseDatabase.getReference(clazz.simpleName)
-        databaseRef.child(id).updateChildren(updates).addOnCompleteListener {
-            Toast.makeText(context, "${clazz.simpleName} actualizado con éxito", Toast.LENGTH_SHORT).show()
-        }
+
+    // Generic update function to update an entity only if it exists
+    fun <T> updateEntityIfExists(
+        entityClass: Class<T>,
+        entityId: String,
+        updates: Map<String, Any>,
+        context: Context,
+        onSuccess: () -> Unit,
+        onError: () -> Unit
+    ) {
+        val entityName = entityClass.simpleName
+        val reference = firebaseDatabase.getReference(entityName)
+
+        reference.child(entityId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    reference.child(entityId).updateChildren(updates)
+                        .addOnSuccessListener {
+                            showToast(context, "$entityName updated successfully")
+                            onSuccess()
+                        }
+                        .addOnFailureListener {
+                            showToast(context, "Failed to update $entityName")
+                        }
+                } else {
+                    // No action here, error handling should be done in `onError`
+                    onError()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                showToast(context, "Failed to update $entityName")
+            }
+        })
     }
 
-    // Método genérico para eliminar una entidad
-    fun <T : Any> delete(clazz: Class<T>, id: String, context: Context) {
-        databaseRef = firebaseDatabase.getReference(clazz.simpleName)
-        databaseRef.child(id).removeValue().addOnCompleteListener {
-            Toast.makeText(context, "${clazz.simpleName} eliminado con éxito", Toast.LENGTH_SHORT).show()
-        }
+
+    // Generic delete function
+    fun <T> delete(entityClass: Class<T>, entityId: String, context: Context) {
+        val entityName = entityClass.simpleName
+        val reference = firebaseDatabase.getReference(entityName)
+
+        reference.child(entityId).removeValue()
+            .addOnSuccessListener {
+                showToast(context, "$entityName deleted successfully")
+            }
+            .addOnFailureListener {
+                showToast(context, "Failed to delete $entityName")
+            }
+    }
+
+    // Helper method to display Toast messages
+    private fun showToast(context: Context, message: String) {
+        currentToast?.cancel()
+        currentToast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        currentToast?.show()
     }
 }

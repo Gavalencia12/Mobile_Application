@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CarHive</string>
+    <string name="update_car">Actualizar Carro</string>
+    <string name="create_car">Crear Carro</string>
 </resources>

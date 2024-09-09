@@ -15,7 +15,7 @@
 
         <!-- Actividad CarActivity con el tema por defecto de la aplicación -->
         <activity
-            android:name=".CarActivity"
+            android:name="CarActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
