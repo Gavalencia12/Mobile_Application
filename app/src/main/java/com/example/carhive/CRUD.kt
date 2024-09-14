@@ -5,7 +5,6 @@ import android.widget.Toast
 import com.example.carhive.models.Car
 import com.google.firebase.database.*
 
-
 class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentToast: Toast?) {
 
     // Generate a random ID for a given type
@@ -26,7 +25,6 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
             }
     }
 
-
     // Generic read function to retrieve all entities of a certain type
     fun <T> read(entityClass: Class<T>, callback: (List<T>) -> Unit, context: Context) {
         val entityName = entityClass.simpleName
@@ -40,6 +38,27 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
                     entity?.let { entities.add(it) }
                 }
                 callback(entities)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                showToast(context, "Failed to load $entityName")
+            }
+        })
+    }
+
+    // Generic read all function to retrieve all instances of Car
+    fun readAll(entityClass: Class<Car>, context: Context, callback: (List<Car>) -> Unit) {
+        val entityName = entityClass.simpleName
+        val reference = firebaseDatabase.getReference(entityName)
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val cars = mutableListOf<Car>()
+                for (carSnapshot in snapshot.children) {
+                    val car = carSnapshot.getValue(entityClass)
+                    car?.let { cars.add(it) }
+                }
+                callback(cars)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -72,7 +91,6 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
                             showToast(context, "Failed to update $entityName")
                         }
                 } else {
-                    // No action here, error handling should be done in `onError`
                     onError()
                 }
             }
@@ -82,7 +100,6 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
             }
         })
     }
-
 
     // Generic delete function
     fun <T> delete(entityClass: Class<T>, entityId: String, context: Context) {

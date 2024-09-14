@@ -1,15 +1,17 @@
 package com.example.carhive
 
 import android.app.Application
+import android.net.Uri
 import android.widget.Toast
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.models.Car
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.*
 
 class CarViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,55 +21,66 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
     private val crud = CRUD(FirebaseDatabase.getInstance(), null)
     var carIdToUpdate: String? = null
 
+    private val _imageUris = MutableStateFlow<List<Uri>>(emptyList())
+    val imageUris: StateFlow<List<Uri>> = _imageUris
+
     init {
-        loadCars()
+        loadCars()  // Se llama al iniciar el ViewModel
+    }
+
+    fun addImageUri(uri: Uri) {
+        _imageUris.value = _imageUris.value + uri
+    }
+
+    fun removeImageUri(uri: Uri) {
+        _imageUris.value = _imageUris.value - uri
     }
 
     fun createCar(name: String) {
-        if (name.isNotEmpty()) {
+        if (name.isNotEmpty() && _imageUris.value.size == 3) {
             val generatedId = crud.generateId("Car") ?: return
             val car = Car(id = generatedId, name = name)
-            crud.create(Car::class.java, car, getApplication())
-            loadCars()
-        } else {
-            showToast("Please enter a car name")
-        }
-    }
 
-    fun updateCar(name: String) {
-        if (carIdToUpdate != null && name.isNotEmpty()) {
-            crud.updateEntityIfExists(Car::class.java, carIdToUpdate!!, mapOf("name" to name), getApplication(),
-                onSuccess = {
-                    resetForm()
-                    loadCars()
-                },
-                onError = {
-                    showToast("Car does not exist anymore.")
-                    resetForm()
+            viewModelScope.launch {
+                uploadImagesToFirebase(car.id) {
+                    car.imageUrls.addAll(it) // Añadir las URLs de las imágenes al carro
+                    crud.create(Car::class.java, car, getApplication())
+                    loadCars()  // Recarga los carros después de crear uno
                 }
-            )
+            }
         } else {
-            showToast("Please enter a car name")
+            showToast("Please enter a car name and select 3 images")
         }
-    }
-
-    fun deleteCar(car: Car) {
-        crud.delete(Car::class.java, car.id, getApplication())
-        loadCars()
-    }
-
-    fun prepareForUpdate(car: Car) {
-        carIdToUpdate = car.id
-    }
-
-    private fun resetForm() {
-        carIdToUpdate = null
     }
 
     private fun loadCars() {
-        crud.read(Car::class.java, { cars ->
-            _carList.value = cars
-        }, getApplication())
+        viewModelScope.launch {
+            crud.readAll(Car::class.java, getApplication()) { carList ->
+                _carList.value = carList.sortedBy { it.name }
+            }
+        }
+    }
+
+    private fun uploadImagesToFirebase(carId: String, onSuccess: (List<String>) -> Unit) {
+        val urls = mutableListOf<String>()
+        _imageUris.value.forEachIndexed { index, uri ->
+            val storageRef = FirebaseStorage.getInstance().reference.child("car_images/${carId}_$index.jpg")
+            storageRef.putFile(uri)
+                .addOnSuccessListener {
+                    storageRef.downloadUrl.addOnSuccessListener { url ->
+                        urls.add(url.toString())
+                        if (urls.size == 3) onSuccess(urls)  // Solo continuar si ya se subieron las 3 imágenes
+                    }
+                }
+                .addOnFailureListener {
+                    showToast("Failed to upload image")
+                }
+        }
+    }
+
+    fun resetForm() {
+        carIdToUpdate = null
+        _imageUris.value = emptyList()  // Resetea las imágenes seleccionadas
     }
 
     private fun showToast(message: String) {
