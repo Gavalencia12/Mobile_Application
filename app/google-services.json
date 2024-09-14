@@ -1,14 +1,13 @@
 {
   "project_info": {
-    "project_number": "704320609169",
-    "firebase_url": "https://carhive-5ff20-default-rtdb.firebaseio.com",
-    "project_id": "carhive-5ff20",
-    "storage_bucket": "carhive-5ff20.appspot.com"
+    "project_number": "841790744550",
+    "project_id": "carhive-4f0d3",
+    "storage_bucket": "carhive-4f0d3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:704320609169:android:036e9f88ef1a3c2bc85830",
+        "mobilesdk_app_id": "1:841790744550:android:2970ef5afb045472ce5827",
         "android_client_info": {
           "package_name": "com.example.carhive"
         }
@@ -16,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBVFHAnPT3ZQdOPBZaMlqAFlnxn_uvL3ds"
+          "current_key": "AIzaSyDbvTKba3UFRkQMZhGPIxfOQJQ-qq4xcBE"
         }
       ],
       "services": {

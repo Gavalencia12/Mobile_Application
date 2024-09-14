@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.carhive">
+
+    <!-- Permisos requeridos para acceder a almacenamiento -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,23 +21,14 @@
 
         <!-- Actividad CarActivity con el tema por defecto de la aplicación -->
         <activity
-            android:name="CarActivity"
+            android:name=".CarActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/Theme.CarHive"> <!-- Asegúrate de usar el tema de tu app -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <!-- Actividad CRUD utilizando un tema basado en AppCompat -->
-        <activity
-            android:name=".CRUD"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light"> <!-- Tema basado en AppCompat -->
-        </activity>
-
         <!-- Actividad Principal (MainActivity) -->
         <activity
             android:name=".MainActivity"
