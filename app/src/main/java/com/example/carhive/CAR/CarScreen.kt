@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
@@ -37,6 +38,7 @@ fun <T> CarScreen(viewModel: CarViewModel = viewModel()) {
     val imageUris by viewModel.imageUris.collectAsState()
     val context = LocalContext.current
 
+    // Image picker launcher
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -44,39 +46,42 @@ fun <T> CarScreen(viewModel: CarViewModel = viewModel()) {
             if (imageUris.size < 5) {
                 viewModel.addImageUri(it)
             } else {
-                Toast.makeText(context, "Only 3 images are allowed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.max_images_allowed), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
+        // Car name input field
         TextField(
             value = carName,
             onValueChange = { carName = it },
-            label = { Text("Car Name") },
+            label = { Text(stringResource(R.string.car_name_label)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Button to select image
         Button(onClick = { imagePickerLauncher.launch("image/*") }, modifier = Modifier.fillMaxWidth()) {
-            Text("Select Image")
+            Text(stringResource(R.string.select_image))
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Display selected images in a LazyColumn
         LazyColumn {
             items(imageUris) { uri ->
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Image(
                         painter = rememberAsyncImagePainter(uri),
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.image_preview_description),
                         modifier = Modifier.size(100.dp),
                         contentScale = ContentScale.Crop
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(onClick = { viewModel.removeImageUri(uri) }) {
-                        Text("Remove")
+                        Text(stringResource(R.string.remove_image))
                     }
                 }
             }
@@ -84,18 +89,19 @@ fun <T> CarScreen(viewModel: CarViewModel = viewModel()) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Create car button
         Button(
             onClick = {
                 if (imageUris.size == 5) {
                     viewModel.createCar(carName)
                     carName = ""
                 } else {
-                    Toast.makeText(context, "You need to select 3 images", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.need_five_images), Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Create Car")
+            Text(text = stringResource(R.string.create_car))
         }
     }
 }

@@ -2,26 +2,29 @@ package com.example.carhive
 
 import android.content.Context
 import android.widget.Toast
-import com.example.carhive.models.Car
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentToast: Toast?) {
 
-    // Generate a random ID for a given type
+    // Generates a random ID for the given collection
     fun generateId(collectionName: String): String? {
         return firebaseDatabase.getReference(collectionName).push().key
     }
 
-    fun create(entityClass: Class<Car>, entity: Car, context: Context) {
+    // Generic create function for any entity
+    fun <T> create(entity: T, entityId: String, entityClass: Class<T>, context: Context) {
         val entityName = entityClass.simpleName
         val reference = firebaseDatabase.getReference(entityName)
 
-        reference.child(entity.id).setValue(entity)
+        reference.child(entityId).setValue(entity)
             .addOnSuccessListener {
-                showToast(context, "$entityName created successfully")
+                showToast(context, context.getString(R.string.entity_created_success, entityName))
             }
             .addOnFailureListener {
-                showToast(context, "Failed to create $entityName")
+                showToast(context, context.getString(R.string.entity_create_failed, entityName))
             }
     }
 
@@ -41,33 +44,12 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
             }
 
             override fun onCancelled(error: DatabaseError) {
-                showToast(context, "Failed to load $entityName")
+                showToast(context, context.getString(R.string.entity_load_failed, entityName))
             }
         })
     }
 
-    // Generic read all function to retrieve all instances of Car
-    fun readAll(entityClass: Class<Car>, context: Context, callback: (List<Car>) -> Unit) {
-        val entityName = entityClass.simpleName
-        val reference = firebaseDatabase.getReference(entityName)
-
-        reference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val cars = mutableListOf<Car>()
-                for (carSnapshot in snapshot.children) {
-                    val car = carSnapshot.getValue(entityClass)
-                    car?.let { cars.add(it) }
-                }
-                callback(cars)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                showToast(context, "Failed to load $entityName")
-            }
-        })
-    }
-
-    // Generic update function to update an entity only if it exists
+    // Generic update function to update an entity if it exists
     fun <T> updateEntityIfExists(
         entityClass: Class<T>,
         entityId: String,
@@ -84,11 +66,11 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
                 if (snapshot.exists()) {
                     reference.child(entityId).updateChildren(updates)
                         .addOnSuccessListener {
-                            showToast(context, "$entityName updated successfully")
+                            showToast(context, context.getString(R.string.entity_updated_success, entityName))
                             onSuccess()
                         }
                         .addOnFailureListener {
-                            showToast(context, "Failed to update $entityName")
+                            showToast(context, context.getString(R.string.entity_update_failed, entityName))
                         }
                 } else {
                     onError()
@@ -96,7 +78,7 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
             }
 
             override fun onCancelled(error: DatabaseError) {
-                showToast(context, "Failed to update $entityName")
+                showToast(context, context.getString(R.string.entity_update_failed, entityName))
             }
         })
     }
@@ -108,14 +90,14 @@ class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentTo
 
         reference.child(entityId).removeValue()
             .addOnSuccessListener {
-                showToast(context, "$entityName deleted successfully")
+                showToast(context, context.getString(R.string.entity_deleted_success, entityName))
             }
             .addOnFailureListener {
-                showToast(context, "Failed to delete $entityName")
+                showToast(context, context.getString(R.string.entity_delete_failed, entityName))
             }
     }
 
-    // Helper method to display Toast messages
+    // Displays Toast messages with a single active instance
     private fun showToast(context: Context, message: String) {
         currentToast?.cancel()
         currentToast = Toast.makeText(context, message, Toast.LENGTH_SHORT)

@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,38 +19,41 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.carhive.CarViewModel
+import com.example.carhive.R
 import com.example.carhive.models.Car
 
+/**
+ * Displays a list of cars with options to update or delete each car.
+ * A dialog shows the car's image album when an image is clicked.
+ */
 @Composable
 fun CarList(viewModel: CarViewModel = viewModel()) {
     val cars by viewModel.carList.collectAsState()
-    var selectedCar by remember { mutableStateOf<Car?>(null) } // Estado para manejar el carro seleccionado
+    var selectedCar by remember { mutableStateOf<Car?>(null) }
+    val newName = stringResource(R.string.new_name)
 
     LazyColumn(modifier = Modifier.padding(16.dp)) {
         items(cars) { car ->
             Row(modifier = Modifier.fillMaxWidth()) {
-                // Mostrar la primera imagen del carro, si tiene imágenes
+                // Display the first image of the car if available
                 if (car.imageUrls.isNotEmpty()) {
                     Box(modifier = Modifier.size(100.dp)) {
-                        // Imagen como botón
                         Image(
                             painter = rememberAsyncImagePainter(car.imageUrls.first()),
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .clickable { selectedCar = car }, // Imagen es clickeable
+                                .clickable { selectedCar = car },
                             contentScale = ContentScale.Crop
                         )
-
-                        // Recuadro centrado que muestra cuántas imágenes tiene el carro
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .alpha(0.7f) // Un poco de transparencia para mejor visibilidad
+                                .alpha(0.7f)
                         ) {
                             Text(
-                                text = "${car.imageUrls.size} Photos",
+                                text = stringResource(R.string.num_photos, car.imageUrls.size),
                                 color = MaterialTheme.colorScheme.onPrimary,
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
@@ -60,58 +64,77 @@ fun CarList(viewModel: CarViewModel = viewModel()) {
                         }
                     }
                 }
+
                 Spacer(modifier = Modifier.width(16.dp))
+
                 Column {
+                    // Display car name
                     Text(text = car.name)
 
-                    // Botón para actualizar
+                    // Button to update the car
                     Button(onClick = {
-                        viewModel.updateCar(car, "New Name")  // Cambia el nombre con el valor deseado
+                        viewModel.updateCar(car, newName)
                     }) {
-                        Text("Update")
+                        Text(stringResource(R.string.update))
                     }
 
-                    // Botón para eliminar
+                    // Button to delete the car
                     Button(onClick = {
                         viewModel.deleteCar(car)
                     }) {
-                        Text("Delete")
+                        Text(stringResource(R.string.delete))
                     }
                 }
             }
+
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 
-    // Mostrar el Dialog si se selecciona un carro
+    // Show the image album dialog when a car is selected
     selectedCar?.let { car ->
         CarImageAlbumDialog(car = car, onDismiss = { selectedCar = null })
     }
 }
 
+/**
+ * Dialog to display a car's image album.
+ *
+ * @param car The selected car.
+ * @param onDismiss Function to close the dialog.
+ */
 @Composable
 fun CarImageAlbumDialog(car: Car, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
-        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-            Text(text = car.name, style = MaterialTheme.typography.headlineLarge)
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.background,
+            modifier = Modifier.wrapContentSize()
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = car.name, style = MaterialTheme.typography.headlineLarge)
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            LazyRow(modifier = Modifier.fillMaxWidth()) {
-                items(car.imageUrls) { imageUrl ->
-                    Image(
-                        painter = rememberAsyncImagePainter(imageUrl),
-                        contentDescription = null,
-                        modifier = Modifier.size(200.dp).padding(8.dp),
-                        contentScale = ContentScale.Crop
-                    )
+                // Display all car images in a horizontal scrollable list
+                LazyRow(modifier = Modifier.fillMaxWidth()) {
+                    items(car.imageUrls) { imageUrl ->
+                        Image(
+                            painter = rememberAsyncImagePainter(imageUrl),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(200.dp)
+                                .padding(8.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = onDismiss, modifier = Modifier.align(Alignment.End)) {
-                Text("Close")
+                Button(onClick = onDismiss, modifier = Modifier.align(Alignment.End)) {
+                    Text(stringResource(R.string.close))
+                }
             }
         }
     }
