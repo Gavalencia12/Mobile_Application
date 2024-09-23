@@ -21,7 +21,7 @@
 
         <!-- Actividad CarActivity con el tema por defecto de la aplicación -->
         <activity
-            android:name=".CAR.CarActivity"
+            android:name=".CAR.Backend.CarActivity"
             android:exported="true"
             android:theme="@style/Theme.CarHive"> <!-- Asegúrate de usar el tema de tu app -->
             <intent-filter>

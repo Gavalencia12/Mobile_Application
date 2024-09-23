@@ -27,4 +27,7 @@
     <string name="entity_update_failed">Failed to update %1$s</string>
     <string name="entity_deleted_success">%1$s deleted successfully</string>
     <string name="entity_delete_failed">Failed to delete %1$s</string>
+    <string name="add_car">add car\n</string>
+    <string name="full_image_description">full image view\n</string>
+    <string name="images_selected">0</string>
 </resources>

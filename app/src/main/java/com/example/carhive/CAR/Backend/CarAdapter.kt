@@ -33,17 +33,20 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * Adds an image URI to the list of selected images.
+     * Adds multiple image URIs to the list of selected images, limiting to 5.
      */
-    fun addImageUri(uri: Uri) {
-        _imageUris.value += uri
+    fun addImageUris(uris: List<Uri>) {
+        val currentList = _imageUris.value.toMutableList()
+        val remainingSpace = 5 - currentList.size
+        currentList.addAll(uris.take(remainingSpace))  // Add only up to the remaining limit
+        _imageUris.value = currentList
     }
 
     /**
      * Removes an image URI from the list of selected images.
      */
     fun removeImageUri(uri: Uri) {
-        _imageUris.value -= uri
+        _imageUris.value = _imageUris.value.toMutableList().apply { remove(uri) }
     }
 
     /**
@@ -58,7 +61,6 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
             viewModelScope.launch {
                 uploadImagesToFirebase(car.id) { urls ->
                     car.imageUrls.addAll(urls)
-                    // Corrected call to crud.create
                     crud.create(car, car.id, Car::class.java, getApplication())
                     loadCars()  // Reload the car list after creating a car
                     resetForm()  // Clear the selected images and reset form fields
@@ -70,14 +72,12 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     /**
      * Loads the list of cars from Firebase in real-time.
      */
     private fun loadCars() {
         val reference = FirebaseDatabase.getInstance().getReference("Car")
 
-        // Real-time listener to update car list on data change
         reference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val carList = mutableListOf<Car>()
