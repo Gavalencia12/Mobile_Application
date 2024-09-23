@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">CarHive</string>
+    <string name="update_car">Actualizar Carro</string>
+    <string name="create_car">Crear Carro</string>
+    <string name="car_created_successfully">Car created successfully</string>
+    <string name="enter_car_name_and_select_images">Please enter a car name and select 5 images</string>
+    <string name="failed_to_load_cars">Failed to load cars</string>
+    <string name="car_updated_successfully">Car updated successfully</string>
+    <string name="failed_to_update_car">Failed to update car</string>
+    <string name="car_name_cannot_be_empty">Car name cannot be empty</string>
+    <string name="failed_to_upload_image">Failed to upload image</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="close">Close</string>
+    <string name="num_photos">%d Photos</string>
+    <string name="new_name">New Name</string>
+    <string name="car_name_label">Car Name</string>
+    <string name="select_image">Select Image</string>
+    <string name="remove_image">Remove</string>
+    <string name="max_images_allowed">Only 5 images are allowed</string>
+    <string name="need_five_images">You need to select 5 images</string>
+    <string name="image_preview_description">Image preview</string>
+    <string name="entity_created_success">%1$s created successfully</string>
+    <string name="entity_create_failed">Failed to create %1$s</string>
+    <string name="entity_load_failed">Failed to load %1$s</string>
+    <string name="entity_updated_success">%1$s updated successfully</string>
+    <string name="entity_update_failed">Failed to update %1$s</string>
+    <string name="entity_deleted_success">%1$s deleted successfully</string>
+    <string name="entity_delete_failed">Failed to delete %1$s</string>
+    <string name="add_car">add car\n</string>
+    <string name="full_image_description">full image view\n</string>
+    <string name="images_selected">0</string>
 </resources>
