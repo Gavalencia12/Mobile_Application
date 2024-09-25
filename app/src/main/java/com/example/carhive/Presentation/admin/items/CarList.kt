@@ -1,4 +1,4 @@
-package com.example.carhive.ui
+package com.example.carhive.Presentation.admin.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Brush
 import coil.compose.rememberAsyncImagePainter
 import com.example.carhive.CarViewModel
-import com.example.carhive.models.Car
+import com.example.carhive.Data.admin.models.Car
 
 @Composable
 fun CarList(viewModel: CarViewModel) {

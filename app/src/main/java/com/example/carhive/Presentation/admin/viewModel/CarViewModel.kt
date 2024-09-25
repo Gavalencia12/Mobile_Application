@@ -1,13 +1,14 @@
-package com.example.carhive
+package com.example.carhive.Presentation.admin.viewModel
 
 import android.content.Context
 import android.widget.Toast
+import com.example.carhive.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class CRUD(private val firebaseDatabase: FirebaseDatabase, private var currentToast: Toast?) {
+class CarViewModel(private val firebaseDatabase: FirebaseDatabase, private var currentToast: Toast?) {
 
     // Generates a random ID for the given collection
     fun generateId(collectionName: String): String? {
