@@ -1,34 +1,27 @@
 [versions]
-agp = "8.6.0"
-coilCompose = "2.2.2"
-firebaseStorage = "21.0.0"
-kotlin = "1.9.0"
-coreKtx = "1.10.1"
-junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-kotlinxCoroutinesAndroid = "1.7.3"
-lifecycleRuntimeKtx = "2.6.1"
-activityCompose = "1.8.0"
-composeBom = "2024.04.01"
-material3Android = "1.2.1"
-googleGmsGoogleServices = "4.4.2"
-firebaseDatabase = "21.0.0"
-appcompat = "1.7.0"
-material = "1.12.0"
-activity = "1.9.1"
-constraintlayout = "2.1.4"
-materialVersion = "1.9.0"
+agp = "8.6.0"  # Android Gradle Plugin version.
+coilCompose = "2.2.2"  # Library for loading images in Jetpack Compose.
+kotlin = "1.9.0"  # Kotlin version.
+coreKtx = "1.10.1"  # Kotlin extensions for Android APIs.
+junit = "4.13.2"  # JUnit for unit testing.
+junitVersion = "1.1.5"  # JUnit for instrumentation testing.
+espressoCore = "3.5.1"  # AndroidX Espresso for UI testing.
+kotlinxCoroutinesAndroid = "1.7.3"  # Coroutines for Android.
+lifecycleRuntimeKtx = "2.6.1"  # Lifecycle extensions for Android in Kotlin.
+activityCompose = "1.8.0"  # Activity support in Compose.
+composeBom = "2024.04.01"  # BoM for Jetpack Compose dependencies.
+googleGmsGoogleServices = "4.4.2"  # Google Services Plugin.
+firebaseBom = "33.1.1"  # Firebase BoM for version control.
+navigationCompose = "2.7.7"  # Navigation in Jetpack Compose.
+crashlytics = "3.0.2"  # Firebase Crashlytics for error handling.
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-firebase-storage = { module = "com.google.firebase:firebase-storage", version.ref = "firebaseStorage" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+
+# Compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -38,17 +31,38 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
-firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+# Coil library for image loading in Compose.
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+# Navigation in Jetpack Compose.
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+# ViewModel support in Jetpack Compose.
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+# Lifecycle extensions in Kotlin for AndroidX.
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+
+# Libraries for Firebase
+# Firebase BoM for version management across Firebase libraries.
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+# Firebase Crashlytics for error tracking and reporting.
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+# Firebase Auth for user authentication.
+firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+# Firebase Realtime Database.
+firebase-database = { group = "com.google.firebase", name = "firebase-database" }
+# Firebase Storage for file management.
+firebase-storage = { module = "com.google.firebase:firebase-storage" }
+
+# Coroutines for asynchronous operations on Android.
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-material-v190 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+# Google Services plugin for Firebase integration.
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 
+# Firebase Crashlytics plugin for error reporting.
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }

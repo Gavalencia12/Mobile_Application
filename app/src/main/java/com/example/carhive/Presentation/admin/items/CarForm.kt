@@ -1,4 +1,4 @@
-package com.example.carhive
+package com.example.carhive.Presentation.admin.items
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.example.carhive.CarViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

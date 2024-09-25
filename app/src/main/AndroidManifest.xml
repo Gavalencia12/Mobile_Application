@@ -19,21 +19,15 @@
         android:theme="@style/Theme.CarHive"
         tools:targetApi="31">
 
-        <!-- Actividad CarActivity con el tema por defecto de la aplicación -->
         <activity
-            android:name=".CAR.Backend.CarActivity"
+            android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.CarHive"> <!-- Asegúrate de usar el tema de tu app -->
+            android:theme="@style/Theme.CarHive">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Actividad Principal (MainActivity) -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.CarHive" />
 
     </application>
 </manifest>

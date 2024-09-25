@@ -5,7 +5,8 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.carhive.models.Car
+import com.example.carhive.Presentation.admin.viewModel.CarViewModel
+import com.example.carhive.Data.admin.models.Car
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -21,7 +22,10 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
     private val _carList = MutableStateFlow<List<Car>>(emptyList())
     val carList: StateFlow<List<Car>> = _carList
 
-    private val crud = CRUD(FirebaseDatabase.getInstance(), null)
+    private val crud = CarViewModel(
+        FirebaseDatabase.getInstance(),
+        null
+    )
     private var carIdToUpdate: String? = null
 
     // Flow to hold selected image URIs

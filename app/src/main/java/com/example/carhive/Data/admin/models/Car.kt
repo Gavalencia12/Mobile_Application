@@ -1,4 +1,4 @@
-package com.example.carhive.models
+package com.example.carhive.Data.admin.models
 
 data class Car(
     var id: String = "",
