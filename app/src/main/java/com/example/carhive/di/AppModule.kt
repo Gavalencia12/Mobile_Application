@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.carhive.Data.initial.repository.AuthRepository
 import com.example.carhive.Data.initial.repository.FirebaseRepositoryImpl
 import com.example.carhive.Data.initial.session.UserSessionManager
+import com.example.carhive.Data.initial.storage.UserPreferences
 import com.example.carhive.Domain.initial.usecase.GetUserByIdUseCase
 import com.example.carhive.Domain.initial.usecase.LoginUseCase
 import com.example.carhive.Domain.initial.usecase.RegisterUseCase
@@ -84,5 +85,12 @@ object AppModule {
     fun provideGetUserByIdUseCase(repository: AuthRepository): GetUserByIdUseCase {
         return GetUserByIdUseCase(repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideUserPreferences(context: Context): UserPreferences {
+        return UserPreferences(context)
+    }
+
 
 }

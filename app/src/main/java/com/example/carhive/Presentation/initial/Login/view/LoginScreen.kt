@@ -2,6 +2,7 @@ package com.example.carhive.Presentation.initial.Login.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.carhive.Presentation.initial.Login.viewModel.LoginViewModel
 import com.example.carhive.ui.theme.Purple40
 import com.example.carhive.ui.theme.SelectedField

@@ -2,6 +2,8 @@
 agp = "8.6.0"  # Android Gradle Plugin version.
 coilCompose = "2.2.2"  # Library for loading images in Jetpack Compose.
 kotlin = "1.9.0"  # Kotlin version.
+dagger = "2.48" # Dagger version.
+
 coreKtx = "1.10.1"  # Kotlin extensions for Android APIs.
 junit = "4.13.2"  # JUnit for unit testing.
 junitVersion = "1.1.5"  # JUnit for instrumentation testing.
@@ -14,6 +16,7 @@ googleGmsGoogleServices = "4.4.2"  # Google Services Plugin.
 firebaseBom = "33.1.1"  # Firebase BoM for version control.
 navigationCompose = "2.7.7"  # Navigation in Jetpack Compose.
 crashlytics = "3.0.2"  # Firebase Crashlytics for error handling.
+hilt = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +34,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+hilt-naivgation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
 # Coil library for image loading in Compose.
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 # Navigation in Jetpack Compose.
@@ -55,7 +59,9 @@ firebase-storage = { module = "com.google.firebase:firebase-storage" }
 # Coroutines for asynchronous operations on Android.
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 
-
+# Dagger hilt
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+dagger-hilt-compile = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -66,3 +72,6 @@ google-gms-google-services = { id = "com.google.gms.google-services", version.re
 
 # Firebase Crashlytics plugin for error reporting.
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+
+# Dagger
+dagger = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
