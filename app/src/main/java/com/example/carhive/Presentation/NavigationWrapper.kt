@@ -18,10 +18,10 @@ fun NavigationWrapper(
         composable("Login") {
             LoginScreen(
                 navigateToUser = { navHostController.navigate("User") },
-                navigateToRegister = { navHostController.navigate("Register") }
+                navigateToRegister = { navHostController.navigate("FirstRegister") }
             )
         }
-        composable("Register") {
+        composable("FirstRegister") {
             FirstRegisterScreen(
                 navigateToLogin = { navHostController.navigate("Login") },
                 navigateToNext = { navHostController.navigate("SecondRegister") }
@@ -29,7 +29,7 @@ fun NavigationWrapper(
         }
         composable("SecondRegister") {
             SecondRegisterScreen(
-                navigateToPrevious = { navHostController.navigate("SecondRegister") },
+                navigateToPrevious = { navHostController.navigate("FirstRegister") },
                 navigateToNext = { navHostController.navigate("ThirdRegister") }
             )
         }

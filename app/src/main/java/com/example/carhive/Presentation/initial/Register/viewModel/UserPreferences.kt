@@ -3,7 +3,6 @@ package com.example.carhive.Data.initial.storage
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.carhive.Data.initial.model.UserModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 class UserPreferences(context: Context) {
     private val sharedPreferences: SharedPreferences =

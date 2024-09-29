@@ -3,9 +3,7 @@ package com.example.carhive.di
 import android.content.Context
 import com.example.carhive.Data.initial.repository.AuthRepository
 import com.example.carhive.Data.initial.repository.FirebaseRepositoryImpl
-import com.example.carhive.Data.initial.session.UserSessionManager
 import com.example.carhive.Data.initial.storage.UserPreferences
-import com.example.carhive.Domain.initial.usecase.GetUserByIdUseCase
 import com.example.carhive.Domain.initial.usecase.LoginUseCase
 import com.example.carhive.Domain.initial.usecase.RegisterUseCase
 import com.example.carhive.Domain.initial.usecase.SaveUserToDatabaseUseCase
@@ -37,18 +35,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserSessionManager(context: Context): UserSessionManager {
-        return UserSessionManager(context)
-    }
-
-    @Provides
-    @Singleton
     fun provideAuthRepository(
         auth: FirebaseAuth,
         database: FirebaseDatabase,
         storage: FirebaseStorage,
-        userSessionManager: UserSessionManager // Inyectar UserSessionManager
-    ): AuthRepository = FirebaseRepositoryImpl(auth, database, storage, userSessionManager)
+    ): AuthRepository = FirebaseRepositoryImpl(auth, database, storage)
 
     @Provides
     @Singleton
@@ -78,12 +69,6 @@ object AppModule {
     @Singleton
     fun provideLoginUserCase(repository: AuthRepository): LoginUseCase {
         return LoginUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetUserByIdUseCase(repository: AuthRepository): GetUserByIdUseCase {
-        return GetUserByIdUseCase(repository)
     }
 
     @Provides

@@ -8,5 +8,4 @@ interface AuthRepository {
     suspend fun uploadProfileImage(userId: String, uri: Uri): Result<String>
     suspend fun saveUserToDatabase(userId: String, user: UserModel): Result<Unit>
     suspend fun loginUser(email: String, password: String): Result<Unit>
-    suspend fun getUserById(userId: String): Result<UserModel>
 }
