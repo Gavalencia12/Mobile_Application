@@ -1,35 +1,48 @@
 package com.example.carhive.Presentation.initial.Login.viewModel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.carhive.Domain.initial.usecase.LoginUseCase
+import com.example.carhive.Domain.usecase.auth.LoginUseCase
+import com.example.carhive.Domain.usecase.session.GetUserRoleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val getUserRoleUseCase: GetUserRoleUseCase
 ) : ViewModel() {
-    
-    var uiState by mutableStateOf(LoginUiState())
+    private val _userRole = MutableStateFlow<Int?>(null)
+    val userRole: StateFlow<Int?> get() = _userRole
 
-    fun onLogicClick(email:String, password:String, navigateToUser:()->Unit){
+    private val _isLogin = MutableStateFlow(false)
+    val isLogin: StateFlow<Boolean> get() = _isLogin
+
+    // Función para manejar el clic en login y decidir a dónde navegar
+    fun onLoginClick(email: String, password: String, navigateBasedOnRole: (String) -> Unit) {
         viewModelScope.launch {
-            val result = loginUseCase(email, password)
-            result.onSuccess {
-                navigateToUser()
-            }.onFailure {
-                uiState = uiState.copy(errorMessage = it.localizedMessage.toString())
+            val loginResult = loginUseCase(email, password)
+
+            _isLogin.value = loginResult.isSuccess && loginResult.getOrNull() != null
+            if (_isLogin.value) {
+                val userId = loginResult.getOrNull()
+                userId?.let {
+                    val roleResult = getUserRoleUseCase(it)
+                    _userRole.value = roleResult.getOrNull()
+
+                    // Lógica de navegación basada en el rol
+                    when (_userRole.value) {
+                        0 -> navigateBasedOnRole("Admin")
+                        1 -> navigateBasedOnRole("Seller")
+                        2 -> navigateBasedOnRole("User")
+                        else -> navigateBasedOnRole("Login")
+                    }
+                }
             }
         }
     }
-    
 }
-
-data class LoginUiState(
-    val errorMessage: String = ""
-)

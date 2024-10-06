@@ -2,14 +2,16 @@ package com.example.carhive.Presentation.initial.Register.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.carhive.Data.initial.storage.UserPreferences
+import com.example.carhive.Domain.usecase.user.GetUserPreferencesUseCase
+import com.example.carhive.Domain.usecase.user.SaveUserPreferencesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SecondRegisterViewModel @Inject constructor(
-    private  val userPreferences: UserPreferences
+    private  val saveUserPreferencesUseCase: SaveUserPreferencesUseCase,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase
 ) : ViewModel() {
 
     fun saveSecondPartOfUserData(
@@ -18,12 +20,14 @@ class SecondRegisterViewModel @Inject constructor(
         voterID: String,
     ) {
         viewModelScope.launch {
-            val user = userPreferences.getUser().copy(
+            val existingUser = getUserPreferencesUseCase()
+            val update = existingUser.getOrNull() ?: return@launch
+            val user = update.copy(
                 phoneNumber = phoneNumber,
                 voterID = voterID,
                 curp = curp
             )
-            userPreferences.saveUser(user) // Guardar en SharedPreferences
+            saveUserPreferencesUseCase(user) // Guardar en SharedPreferences
             // Registro del usuario
         }
     }

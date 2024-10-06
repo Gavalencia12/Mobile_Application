@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.carhive.Presentation.initial.Login.viewModel.LoginViewModel
 import com.example.carhive.ui.theme.Purple40
 import com.example.carhive.ui.theme.SelectedField
@@ -33,12 +34,12 @@ import com.example.carhive.ui.theme.white
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    navigateToUser: () -> Unit = {},
-    navigateToRegister: () -> Unit = {}
+    navHostController: NavHostController,
+    navigateToRegister: () -> Unit
 ) {
     var email: String by remember { mutableStateOf("") }
     var password: String by remember { mutableStateOf("") }
-    var errorMessage: String by remember { mutableStateOf("") }
+    val errorMessage: String by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -47,7 +48,7 @@ fun LoginScreen(
             .padding(vertical = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Emxail", color = white, fontWeight = FontWeight.Bold, fontSize = 40.sp)
+        Text("Email", color = white, fontWeight = FontWeight.Bold, fontSize = 40.sp)
         TextField(
             value = email,
             onValueChange = { email = it },
@@ -70,7 +71,9 @@ fun LoginScreen(
         )
         Spacer(Modifier.height(48.dp))
         Button(onClick = {
-            viewModel.onLogicClick(email, password, navigateToUser)
+            viewModel.onLoginClick(email, password) { destination ->
+                navHostController.navigate(destination)
+            }
         }) {
             Text("Login")
         }

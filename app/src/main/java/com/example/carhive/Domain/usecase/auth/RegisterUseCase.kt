@@ -1,6 +1,6 @@
-package com.example.carhive.Domain.initial.usecase
+package com.example.carhive.Domain.usecase.auth
 
-import com.example.carhive.Data.initial.repository.AuthRepository
+import com.example.carhive.Data.repository.AuthRepository
 
 class RegisterUseCase(private val repository: AuthRepository) {
     suspend operator fun invoke(email: String, password: String): Result<String> {
