@@ -19,19 +19,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.carhive.Presentation.admin.items.CarForm
 import com.example.carhive.Presentation.admin.items.CarList
+import com.example.carhive.Presentation.admin.viewModel.CarViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarScreen(viewModel: CarViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    // State to control the visibility of the car form modal
     var isModalOpen by remember { mutableStateOf(false) }
+    // Coroutine scope for launching asynchronous operations
     val coroutineScope = rememberCoroutineScope()
 
+    // Scaffold provides the basic material design visual layout structure
     Scaffold(
         topBar = {
+            // Top app bar with title and add button
             TopAppBar(
                 title = { Text("CarHive") },
                 actions = {
+                    // Add button to open the car form
                     IconButton(onClick = {
                         coroutineScope.launch {
                             isModalOpen = true
@@ -43,10 +49,12 @@ fun CarScreen(viewModel: CarViewModel = androidx.lifecycle.viewmodel.compose.vie
             )
         }
     ) { paddingValues ->
-        // Car list and form modal
+        // Content area of the screen
         Box(modifier = Modifier.padding(paddingValues)) {
-            CarList(viewModel = viewModel)  // Show car list
+            // Display the list of cars
+            CarList(viewModel = viewModel)
 
+            // Show the car form modal if isModalOpen is true
             if (isModalOpen) {
                 CarForm(
                     viewModel = viewModel,

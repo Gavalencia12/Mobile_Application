@@ -10,28 +10,31 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
 import com.example.carhive.Data.admin.models.Car
+import com.example.carhive.R
 
 @Composable
 fun CarImageAlbumDialog(car: Car, onDismiss: () -> Unit) {
-    var selectedImageUrl by remember { mutableStateOf<String?>(null) } // Estado para la imagen seleccionada
+    // State to keep track of the selected image for full-screen view
+    var selectedImageUrl by remember { mutableStateOf<String?>(null) }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface {
             Column(modifier = Modifier.padding(16.dp)) {
-                // Nombre del carro
-                Text(text = car.name)
+                // Display car name
+                Text(text = car.modelo)
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Mostrar cuántas imágenes hay en total
+                // Display total number of images
                 Text(text = "Images: ${car.imageUrls.size}")
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Carrusel de imágenes
+                // Image carousel
                 LazyRow {
                     items(car.imageUrls) { imageUrl ->
                         Image(
@@ -40,22 +43,22 @@ fun CarImageAlbumDialog(car: Car, onDismiss: () -> Unit) {
                             modifier = Modifier
                                 .size(200.dp)
                                 .padding(end = 8.dp)
-                                .clickable { selectedImageUrl = imageUrl }  // Al hacer clic, establece la imagen seleccionada
+                                .clickable { selectedImageUrl = imageUrl }  // Set selected image on click
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Botón para cerrar el diálogo
+                // Button to close the dialog
                 Button(onClick = onDismiss) {
-                    Text("Close")
+                    Text(text = stringResource(id = R.string.close))
                 }
             }
         }
     }
 
-    // Si hay una imagen seleccionada, mostrarla en un diálogo de pantalla completa
+    // Show full-screen dialog if an image is selected
     selectedImageUrl?.let { imageUrl ->
         FullScreenImageDialog(imageUrl = imageUrl, onDismiss = { selectedImageUrl = null })
     }
@@ -66,13 +69,13 @@ fun FullScreenImageDialog(imageUrl: String, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.fillMaxSize()) {
-                // Imagen en pantalla completa
+                // Full-screen image
                 Image(
                     painter = rememberAsyncImagePainter(imageUrl),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable { onDismiss() }  // Al hacer clic, cerrar el diálogo
+                        .clickable { onDismiss() }  // Close dialog on click
                 )
             }
         }

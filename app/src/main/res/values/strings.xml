@@ -30,4 +30,14 @@
     <string name="add_car">add car\n</string>
     <string name="full_image_description">full image view\n</string>
     <string name="images_selected">0</string>
+    <string name="failed_to_create_car">failed to create car\n</string>
+    <string name="car_deleted_successfully">car deleted successfly\n</string>
+    <string name="failed_to_delete_car">failed to delete car</string>
+    <string name="failed_to_delete_car_images">failed to delete car images\n</string>
+    <string name="no_images_available">No images available</string>
+    <string name="confirm_deletion">Confirm Deletion</string>
+    <string name="deletion_confirmation_message">Are you sure you want to delete this car?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="failed_to_delete_images">failed to delete images\n</string>
 </resources>
