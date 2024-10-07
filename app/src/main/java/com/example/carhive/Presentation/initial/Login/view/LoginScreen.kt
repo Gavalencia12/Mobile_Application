@@ -1,8 +1,9 @@
-package com.example.carhive.Presentation.initial.Register
+package com.example.carhive.Presentation.initial.Login.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,24 +24,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.carhive.Presentation.initial.Login.viewModel.LoginViewModel
 import com.example.carhive.ui.theme.Purple40
 import com.example.carhive.ui.theme.SelectedField
 import com.example.carhive.ui.theme.UnselectedField
 import com.example.carhive.ui.theme.white
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun SignupScreen(
-    auth: FirebaseAuth,
-    navigateToSecondRegister: (firstName:String, lastName:String, email:String, password:String) -> Unit
-){
-
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-    var errorMessage : String by remember { mutableStateOf("") }
+fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel(),
+    navHostController: NavHostController,
+    navigateToRegister: () -> Unit
+) {
+    var email: String by remember { mutableStateOf("") }
+    var password: String by remember { mutableStateOf("") }
+    val errorMessage: String by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -49,29 +48,6 @@ fun SignupScreen(
             .padding(vertical = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row() {
-            Spacer(modifier = Modifier.weight(1f))
-        }
-        Text("Firsts Name", color = white, fontWeight = FontWeight.Bold, fontSize = 40.sp)
-        TextField(
-            value = firstName,
-            onValueChange = { firstName = it },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = UnselectedField,
-                focusedContainerColor = SelectedField
-            )
-        )
-        Text("Last Name", color = white, fontWeight = FontWeight.Bold, fontSize = 40.sp)
-        TextField(
-            value = lastName,
-            onValueChange = { lastName = it },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = UnselectedField,
-                focusedContainerColor = SelectedField
-            )
-        )
         Text("Email", color = white, fontWeight = FontWeight.Bold, fontSize = 40.sp)
         TextField(
             value = email,
@@ -95,21 +71,22 @@ fun SignupScreen(
         )
         Spacer(Modifier.height(48.dp))
         Button(onClick = {
-            if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()){
-                navigateToSecondRegister(firstName, lastName, email, password)
-             }else {
-                errorMessage = "Please fill in all field"
+            viewModel.onLoginClick(email, password) { destination ->
+                navHostController.navigate(destination)
             }
         }) {
-            Text(text = "Sign Up")
+            Text("Login")
         }
+        if (errorMessage.isNotEmpty()){
+            Text(errorMessage, color = Color.Red)
+        }
+        Spacer(Modifier.height(40.dp))
+        Text(
+            text = "Register Now",
+            color = Color.White,
+            modifier = Modifier.padding(24.dp).clickable { navigateToRegister() },
+            fontWeight = FontWeight.Bold
+        )
 
-        if (errorMessage.isNotEmpty()) {
-            Text(
-                text = errorMessage,
-                color = Color.Red,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        }
     }
 }

@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.crashlytics)
+    id ("kotlin-kapt") // No se puede convertir en alias porque es parte del sistema de plugins de Kotlin y se debe aplicar de manera directa
+    alias(libs.plugins.dagger)
 }
 
 android {
@@ -56,8 +58,12 @@ android {
 
 dependencies {
 
-//    Corrutinas
+//    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)
+
+//    Dagger dependencies
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compile)
 
 //    Kotlin dependencies
     implementation(libs.androidx.core.ktx)
@@ -69,6 +75,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.hilt.naivgation)
     implementation(libs.androidx.lifecycle.runtime.ktx) // Lifecycle.
     implementation(libs.coil.compose) // Coil.
     implementation(libs.androidx.navigation.compose) // Navigation.
@@ -92,4 +99,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+}
+
+kapt {
+    correctErrorTypes = true
 }
