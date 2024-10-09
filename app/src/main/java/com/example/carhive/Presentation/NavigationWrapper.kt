@@ -9,12 +9,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.carhive.CarScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.carhive.Presentation.seller.navigate.SellerNavigationWrapper
 import com.example.carhive.Presentation.initial.Login.view.LoginScreen
+import com.example.carhive.Presentation.initial.Login.view.RecoveryPasswordScreen
 import com.example.carhive.Presentation.initial.Register.view.FirstRegisterScreen
+import com.example.carhive.Presentation.initial.Register.view.FiveRegisterScreen
+import com.example.carhive.Presentation.initial.Register.view.FortRegisterScreen
 import com.example.carhive.Presentation.initial.Register.view.SecondRegisterScreen
-import com.example.carhive.Presentation.user.view.UserScreen
-import com.example.carhive.Presentation.user.view.sellerScreen
+import com.example.carhive.Presentation.user.navigate.UserNavigationWrapper
 
 @Composable
 fun NavigationWrapper(
@@ -38,7 +41,13 @@ fun NavigationWrapper(
         composable("Login") {
             LoginScreen(
                 navHostController = navHostController,
+                navigateToRecoveryPassword = { navHostController.navigate("RecoveryPassword") },
                 navigateToRegister = { navHostController.navigate("FirstRegister") }
+            )
+        }
+        composable("RecoveryPassword") {
+            RecoveryPasswordScreen(
+                navigateToLogin = { navHostController.navigate("Login") }
             )
         }
         composable("FirstRegister") {
@@ -56,21 +65,35 @@ fun NavigationWrapper(
         composable("ThirdRegister") {
             ThirdRegisterScreen(
                 navigateToPrevious = { navHostController.navigate("SecondRegister") },
-                navigateToUser = { navHostController.navigate("User") }
+                navigateToNext = { navHostController.navigate("FortRegister") }
+            )
+        }
+        composable("FortRegister") {
+            FortRegisterScreen(
+                navigateToNext = { navHostController.navigate("FiveRegister") }
+            )
+        }
+        composable("FiveRegister") {
+            FiveRegisterScreen(
+                navigateToNext = { navHostController.navigate("user") }
             )
         }
         composable("User") {
-            UserScreen(
-                navigateToLogin = { navHostController.navigate("Login")}
+            val userNavController = rememberNavController()
+            UserNavigationWrapper(
+                userNavHostController = userNavController,
+                parentNavHostController = navHostController
             )
         }
         composable("Seller") {
-            sellerScreen(
-                navigateToLogin = { navHostController.navigate("Login")}
+            val sellerNavController = rememberNavController()
+            SellerNavigationWrapper(
+                sellerNavHostController = sellerNavController,
+                parentNavHostController = navHostController
             )
         }
         composable("Admin") {
-            CarScreen()
+
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.carhive.Presentation.admin.items
+package com.example.carhive.Presentation.seller.items
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

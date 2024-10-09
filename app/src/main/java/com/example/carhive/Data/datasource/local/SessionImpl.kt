@@ -42,12 +42,10 @@ class SessionImpl @Inject constructor(
      *                         si ocurre un error durante la verificación.
      */
     override suspend fun isUserAuthenticated(): Result<String?> {
-        return withContext(Dispatchers.IO) {
-            try {
-                repository.getCurrentUserId() // Se obtiene el ID del usuario autenticado
-            } catch (e: Exception) {
-                Result.failure(RepositoryException("Error checking authentication: ${e.message}", e))
-            }
+        return try {
+            repository.getCurrentUserId() // Se obtiene el ID del usuario autenticado
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error checking authentication: ${e.message}", e))
         }
     }
 
@@ -65,12 +63,10 @@ class SessionImpl @Inject constructor(
      *                      durante la recuperación del rol.
      */
     override suspend fun getUserRole(userId: String): Result<Int?> {
-        return withContext(Dispatchers.IO) {
-            try {
-                repository.getUserRole(userId) // Se obtiene el rol del usuario según su ID
-            } catch (e: Exception) {
-                Result.failure(RepositoryException("Error retrieving user role: ${e.message}", e))
-            }
+        return try {
+            repository.getUserRole(userId) // Se obtiene el rol del usuario según su ID
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error retrieving user role: ${e.message}", e))
         }
     }
 

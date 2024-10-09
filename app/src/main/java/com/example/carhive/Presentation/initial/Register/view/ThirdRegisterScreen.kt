@@ -16,7 +16,7 @@ import com.example.carhive.Presentation.initial.Register.viewModel.ThirdRegister
 
 @Composable
 fun ThirdRegisterScreen(
-    navigateToUser: () -> Unit,
+    navigateToNext: () -> Unit,
     navigateToPrevious: () -> Unit,
     viewModel: ThirdRegisterViewModel = hiltViewModel()
 ) {
@@ -61,7 +61,7 @@ fun ThirdRegisterScreen(
             onClick = {
                 imageUri?.let { uri ->
                     viewModel.uploadProfileImage(uri)
-                    navigateToUser()
+                    navigateToNext()
                 }
             },
             enabled = imageUri != null

@@ -14,6 +14,7 @@ package com.example.carhive.Data.datasource.remote.Firebase
 
 import com.example.carhive.Data.exception.RepositoryException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -65,14 +66,23 @@ class FirebaseAuthDataSource @Inject constructor(
             val result = auth.createUserWithEmailAndPassword(email, password).await()
             val userId = result.user?.uid ?: "" // Obtiene el ID del usuario creado.
 
-            // Nota: La siguiente línea está comentada pero podría ser necesaria si se requiere
-            // iniciar sesión automáticamente después del registro.
-            // auth.signInWithEmailAndPassword(email, password).await()
+            // Envía el correo de verificación después de registrar al usuario
+            result.user?.let { sendVerificationEmail(it) }
 
             Result.success(userId) // Retorna el ID del usuario creado.
         } catch (e: Exception) {
             // Captura cualquier excepción y devuelve un resultado de error.
             Result.failure(RepositoryException("Error registering user: ${e.message}", e))
+        }
+    }
+
+    // Método para enviar el correo de verificación
+    private suspend fun sendVerificationEmail(user: FirebaseUser): Result<Unit> {
+        return try {
+            user.sendEmailVerification().await() // Envía el correo de verificación
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

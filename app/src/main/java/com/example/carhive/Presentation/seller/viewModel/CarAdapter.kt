@@ -1,4 +1,4 @@
-package com.example.carhive.Presentation.admin.viewModel
+package com.example.carhive.Presentation.seller.viewModel
 
 import android.app.Application
 import android.net.Uri
@@ -176,7 +176,7 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun uploadImagesToFirebase(
+    private fun  uploadImagesToFirebase(
         carId: String,
         newImageUris: List<Uri>,
         onSuccess: (List<String>) -> Unit

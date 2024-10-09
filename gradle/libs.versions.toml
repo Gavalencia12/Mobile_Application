@@ -17,6 +17,10 @@ firebaseBom = "33.1.1"  # Firebase BoM for version control.
 navigationCompose = "2.7.7"  # Navigation in Jetpack Compose.
 crashlytics = "3.0.2"  # Firebase Crashlytics for error handling.
 hilt = "1.0.0"
+runtimeLivedata = "1.7.3"
+constrainsversion = "2.1.4"
+fragmentversion = "1.6.1"
+navigationfragment = "2.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +48,12 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 # Lifecycle extensions in Kotlin for AndroidX.
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 
+# XML
+constrain-layout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constrainsversion" }
+fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentversion" }
+fragment-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationfragment" }
+navigation = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationfragment" }
+
 # Libraries for Firebase
 # Firebase BoM for version management across Firebase libraries.
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -62,6 +72,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 # Dagger hilt
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hilt-compile = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

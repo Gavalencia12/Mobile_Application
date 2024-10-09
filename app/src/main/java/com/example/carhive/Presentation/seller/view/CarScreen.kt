@@ -17,9 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.example.carhive.Presentation.admin.items.CarForm
-import com.example.carhive.Presentation.admin.items.CarList
-import com.example.carhive.Presentation.admin.viewModel.CarViewModel
+import com.example.carhive.Presentation.seller.items.CarForm
+import com.example.carhive.Presentation.seller.items.CarList
+import com.example.carhive.Presentation.seller.viewModel.CarViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -35,7 +35,8 @@ import com.example.carhive.ui.theme.white
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
     navHostController: NavHostController,
-    navigateToRegister: () -> Unit
+    navigateToRegister: () -> Unit,
+    navigateToRecoveryPassword: () -> Unit
 ) {
     var email: String by remember { mutableStateOf("") }
     var password: String by remember { mutableStateOf("") }
@@ -68,6 +69,13 @@ fun LoginScreen(
                 unfocusedContainerColor = UnselectedField,
                 focusedContainerColor = SelectedField
             )
+        )
+        Spacer(Modifier.height(40.dp))
+        Text(
+            text = "Forgot your Password?",
+            color = Color.White,
+            modifier = Modifier.padding(24.dp).clickable { navigateToRecoveryPassword() },
+            fontWeight = FontWeight.Bold
         )
         Spacer(Modifier.height(48.dp))
         Button(onClick = {

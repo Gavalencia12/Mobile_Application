@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SellerViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
 
 ) : ViewModel() {
     fun onLogicClick(){
