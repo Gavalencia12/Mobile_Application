@@ -49,6 +49,7 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 
 # XML
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 constrain-layout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constrainsversion" }
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentversion" }
 fragment-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationfragment" }

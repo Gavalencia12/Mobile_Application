@@ -1,47 +1,53 @@
 package com.example.carhive
 
-import com.example.carhive.Presentation.NavigationWrapper
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.carhive.ui.theme.CarHiveTheme
-import com.google.firebase.auth.FirebaseAuth
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.example.carhive.Presentation.AuthViewModel
+import com.example.carhive.R
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var navHostController: NavHostController
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            navHostController = rememberNavController()
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            if(currentUser!=null){
-                Log.i("angel", "Esta logeado")
-            } else{
-                Log.i("angel", "No estas logeado")
-            }
-            CarHiveTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    NavigationWrapper(
-                        navHostController
-                    )
+        setContentView(R.layout.activity_main)
+
+        // Configurar el NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        NavigationUI.setupActionBarWithNavController(this, navHostFragment.navController)
+
+        // Verificar la autenticación en el inicio
+        checkAuthentication(navHostFragment)
+    }
+
+    private fun checkAuthentication(navHostFragment: NavHostFragment) {
+        // Usar lifecycleScope para lanzar la coroutine
+        lifecycleScope.launch {
+            // Observar el estado de autenticación
+            authViewModel.isAuthenticated.collect { isAuthenticated ->
+                if (isAuthenticated) {
+                    // Si está autenticado, redirigir según el rol
+                    authViewModel.userRole.collect { role ->
+                        when (role) {
+                            0 -> navHostFragment.navController.navigate(R.id.action_loginFragment_to_adminFragment)
+                            1 -> navHostFragment.navController.navigate(R.id.action_loginFragment_to_sellerFragment)
+                            2 -> navHostFragment.navController.navigate(R.id.action_loginFragment_to_userhomeFragment)
+                            else -> navHostFragment.navController.navigate(R.id.action_loginFragment_to_loginFragment)
+                        }
+                    }
+                } else {
+                    // Si no está autenticado, ir al login
+                    navHostFragment.navController.navigate(R.id.action_loginFragment_to_loginFragment)
                 }
             }
         }
     }
 }
-
-

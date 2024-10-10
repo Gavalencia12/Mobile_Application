@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.fragment.navigation)
     implementation(libs.fragment)
     implementation(libs.navigation)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)

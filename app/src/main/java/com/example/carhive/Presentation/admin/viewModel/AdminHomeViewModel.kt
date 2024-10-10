@@ -1,4 +1,4 @@
-package com.example.carhive.Presentation.user.viewModel
+package com.example.carhive.Presentation.admin.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
+class AdminHomeViewModel @Inject constructor(
 
 ) : ViewModel() {
     fun onLogicClick(){

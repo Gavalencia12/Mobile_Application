@@ -28,11 +28,15 @@ class LoginViewModel @Inject constructor(
             val loginResult = loginUseCase(email, password)
 
             _isLogin.value = loginResult.isSuccess && loginResult.getOrNull() != null
+            Log.d("LoginViewModel", "Login Result: $loginResult")
+
             if (_isLogin.value) {
                 val userId = loginResult.getOrNull()
+                Log.d("LoginViewModel", "User ID: $userId")
                 userId?.let {
                     val roleResult = getUserRoleUseCase(it)
                     _userRole.value = roleResult.getOrNull()
+                    Log.d("LoginViewModel", "User Role: ${_userRole.value}")
 
                     // Lógica de navegación basada en el rol
                     when (_userRole.value) {
@@ -45,4 +49,5 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
 }

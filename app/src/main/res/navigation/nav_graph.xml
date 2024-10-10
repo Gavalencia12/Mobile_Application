@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.carhive.Presentation.initial.Login.view.LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_recoveryPasswordFragment"
+            app:destination="@id/recoveryPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_firstRegisterFragment"
+            app:destination="@id/firstRegisterFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_adminFragment"
+            app:destination="@id/adminHomeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_sellerFragment"
+            app:destination="@id/sellerHomeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_userhomeFragment"
+            app:destination="@id/userHomeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recoveryPasswordFragment"
+        android:name="com.example.carhive.Presentation.initial.Login.view.RecoveryPasswordFragment"
+        tools:layout="@layout/fragment_recovery_password">
+        <action
+            android:id="@+id/action_recoveryPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/firstRegisterFragment"
+        android:name="com.example.carhive.Presentation.initial.Register.view.FirstRegisterFragment"
+        tools:layout="@layout/fragment_register_first">
+        <action
+            android:id="@+id/action_firstRegisterFragment_to_secondRegisterFragment"
+            app:destination="@id/secondRegisterFragment" />
+        <action
+            android:id="@+id/action_firstRegisterFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/secondRegisterFragment"
+        android:name="com.example.carhive.Presentation.initial.Register.view.SecondRegisterFragment"
+        tools:layout="@layout/fragment_register_second">
+        <action
+            android:id="@+id/action_secondRegisterFragment_to_thirdRegisterFragment"
+            app:destination="@id/thirdRegisterFragment" />
+        <action
+            android:id="@+id/action_secondRegisterFragment_to_firstRegisterFragment"
+            app:destination="@id/firstRegisterFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/thirdRegisterFragment"
+        android:name="com.example.carhive.Presentation.initial.Register.view.ThirdRegisterFragment"
+        tools:layout="@layout/fragment_register_third">
+        <action
+            android:id="@+id/action_thirdRegisterFragment_to_fortRegisterFragment"
+            app:destination="@id/fortRegisterFragment" />
+        <action
+            android:id="@+id/action_thirdRegisterFragment_to_secondRegisterFragment"
+            app:destination="@id/secondRegisterFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fortRegisterFragment"
+        android:name="com.example.carhive.Presentation.initial.Register.view.FortRegisterFragment"
+        tools:layout="@layout/fragment_register_fourth">
+        <action
+            android:id="@+id/action_fortRegisterFragment_to_fiveRegisterFragment"
+            app:destination="@id/fiveRegisterFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fiveRegisterFragment"
+        android:name="com.example.carhive.Presentation.initial.Register.view.FiveRegisterFragment"
+        tools:layout="@layout/fragment_register_five">
+        <action
+            android:id="@+id/action_fiveRegisterFragment_to_userFragment"
+            app:destination="@id/userHomeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userHomeFragment"
+        android:name="com.example.carhive.Presentation.user.view.UserHomeFragment"
+        tools:layout="@layout/fragment_user_home">
+        <action
+            android:id="@+id/action_userFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sellerHomeFragment"
+        android:name="com.example.carhive.Presentation.seller.view.SellerHomeFragment"
+        tools:layout="@layout/fragment_seller_home">
+        <action
+            android:id="@+id/action_userFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminHomeFragment"
+        android:name="com.example.carhive.Presentation.admin.view.AdminHomeFragment"
+        tools:layout="@layout/fragment_admin_home">
+        <action
+            android:id="@+id/action_userFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+</navigation>

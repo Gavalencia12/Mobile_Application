@@ -1,18 +1,16 @@
-package com.example.carhive.Presentation.user.viewModel
+package com.example.carhive.Presentation.seller.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class UserViewModel @Inject constructor(
+class SellerHomeViewModel @Inject constructor(
 
 ) : ViewModel() {
-    fun onLogicClick(){
+    fun onLogicClick() {
         viewModelScope.launch {
             FirebaseAuth.getInstance().signOut()
             Log.i("angel", "Log out")
