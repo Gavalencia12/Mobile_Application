@@ -52,17 +52,28 @@ android {
         }
     }
     viewBinding{
-        enable = false
+        enable = true
+    }
+    dataBinding{
+        enable = true
     }
 }
 
 dependencies {
+
+//    XML dependencies
+    implementation(libs.constrain.layout)
+    implementation(libs.fragment.navigation)
+    implementation(libs.fragment)
+    implementation(libs.navigation)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)
 
 //    Dagger dependencies
     implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.runtime.livedata)
     kapt(libs.dagger.hilt.compile)
 
 //    Kotlin dependencies

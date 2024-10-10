@@ -39,6 +39,8 @@ class AuthViewModel @Inject constructor(
                     val roleResult = getUserRoleUseCase(it)
                     _userRole.value = roleResult.getOrNull()
                 }
+            } else {
+                _userRole.value = null
             }
         }
     }

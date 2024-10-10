@@ -3,7 +3,6 @@ package com.example.carhive.Presentation.initial.Register.viewModel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.carhive.Domain.model.UserRole
 import com.example.carhive.Domain.usecase.user.ClearUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.user.GetPasswordUseCase
 import com.example.carhive.Domain.usecase.user.GetUserPreferencesUseCase

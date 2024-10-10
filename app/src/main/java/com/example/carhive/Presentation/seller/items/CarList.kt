@@ -1,4 +1,4 @@
-package com.example.carhive.Presentation.admin.items
+package com.example.carhive.Presentation.seller.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,7 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.carhive.Presentation.admin.viewModel.CarViewModel
+import com.example.carhive.Presentation.seller.viewModel.CarViewModel
 import com.example.carhive.Data.admin.models.Car
 import com.example.carhive.R
 

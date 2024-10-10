@@ -1,4 +1,4 @@
-package com.example.carhive.Presentation.user.view
+package com.example.carhive.Presentation.seller.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +12,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.carhive.Presentation.user.viewModel.UserViewModel
 
 @Composable
-fun sellerScreen(
+fun HomeScreen(
     viewModel: UserViewModel = hiltViewModel(),
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToCrud: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -27,6 +28,12 @@ fun sellerScreen(
             navigateToLogin()
         }) {
             Text("Sign out")
+        }
+        Button(onClick = {
+            viewModel.onLogicClick()
+            navigateToCrud()
+        }) {
+            Text("Crud")
         }
     }
 

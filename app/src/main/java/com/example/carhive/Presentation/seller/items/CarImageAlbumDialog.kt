@@ -1,4 +1,4 @@
-package com.example.carhive.Presentation.admin.items
+package com.example.carhive.Presentation.seller.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

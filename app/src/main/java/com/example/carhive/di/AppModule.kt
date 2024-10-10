@@ -87,7 +87,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSessionRepository(sharedPreferences: SharedPreferences, repository: AuthRepository): SessionRepository =
+    fun provideSessionRepository(
+        sharedPreferences: SharedPreferences,
+        repository: AuthRepository,
+    ): SessionRepository =
         SessionImpl(sharedPreferences, repository) // Proporciona la implementación de SessionRepository.
 
     // Provisión de casos de uso relacionados con la sesión y la autenticación
