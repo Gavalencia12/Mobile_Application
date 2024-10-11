@@ -23,6 +23,7 @@
 package com.example.carhive.Data.datasource.remote.Firebase
 
 import com.example.carhive.Data.exception.RepositoryException
+import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Data.model.UserEntity
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.tasks.await
@@ -63,6 +64,67 @@ class FirebaseDatabaseDataSource @Inject constructor(
         } catch (e: Exception) {
             // Captura cualquier excepción y devuelve un resultado de error
             Result.failure(RepositoryException("Error saving user to database: ${e.message}", e))
+        }
+    }
+
+    suspend fun saveCarToDatabase(userId: String, car: CarEntity): Result<String> {
+        return try {
+            // Crea una referencia para el nuevo coche
+            val carRef = database.getReference("Car")
+                .child(userId)
+                .push()
+
+            // Guarda el coche en la base de datos con el ID generado
+            carRef.setValue(car).await()
+
+            // Devuelve el ID del coche recién creado
+            Result.success(carRef.key ?: throw Exception("Error generating car ID"))
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error saving car to database: ${e.message}", e))
+        }
+    }
+
+
+    suspend fun updateCarInDatabase(userId: String, carId: String, car: CarEntity): Result<Unit> {
+        return try {
+            database.getReference("Car")
+                .child(userId)
+                .child(carId) // Usar el ID del coche existente
+                .setValue(car)
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error updating car in database: ${e.message}", e))
+        }
+    }
+
+
+    suspend fun deleteCarInDatabase(userId: String, carId: String): Result<Unit>{
+        return try {
+            database.getReference("Car")
+                .child(userId)
+                .child(carId)
+                .removeValue()
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error deleting car from database: ${e.message}", e))
+        }
+    }
+
+    suspend fun getCarUserFromDatabase(userId: String): Result<CarEntity?>{
+        return try {
+            // Obtén la referencia del coche
+            val carSnapshot = database.getReference("Car")
+                .child(userId)
+                .get()
+                .await()
+
+            // Convierte el snapshot a un objeto CarEntity si existe
+            val car = carSnapshot.getValue(CarEntity::class.java)
+            Result.success(car)
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error fetching car from database: ${e.message}", e))
         }
     }
 

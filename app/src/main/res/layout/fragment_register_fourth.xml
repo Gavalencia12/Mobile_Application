@@ -23,6 +23,12 @@
         android:layout_height="wrap_content"
         android:visibility="visible" /> <!-- Visible por defecto -->
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waiting for you to verify email address."
+        android:textSize="15sp"/>
+
     <Button
         android:id="@+id/continueButton"
         android:layout_width="match_parent"

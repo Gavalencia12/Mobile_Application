@@ -108,6 +108,16 @@
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_crud"
+            app:destination="@id/sellerCrudFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sellerCrudFragment"
+        android:name="com.example.carhive.Presentation.seller.view.SellerCrudFragment"
+        tools:layout="@layout/fragment_seller_crud">
+
     </fragment>
 
     <fragment

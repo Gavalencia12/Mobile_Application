@@ -36,6 +36,10 @@ class SellerHomeFragment : Fragment() {
             viewModel.onLogicClick() // Llama a la lógica en el ViewModel
             findNavController().navigate(R.id.action_userFragment_to_loginFragment) // Navega a LoginFragment
         }
+
+        binding.crud.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_crud)
+        }
     }
 
     override fun onDestroyView() {

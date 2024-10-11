@@ -74,6 +74,7 @@ dependencies {
 //    Dagger dependencies
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.room.ktx)
     kapt(libs.dagger.hilt.compile)
 
 //    Kotlin dependencies

@@ -22,18 +22,6 @@ class FirebaseAuthDataSource @Inject constructor(
     private val auth: FirebaseAuth // Instancia de FirebaseAuth para operaciones de autenticación
 ) {
 
-    /**
-     * Realiza el inicio de sesión de un usuario en Firebase.
-     *
-     * @param email Correo electrónico del usuario.
-     * @param password Contraseña del usuario.
-     * @return Result<String?> Éxito con el ID del usuario si el inicio de sesión es exitoso,
-     *                        o failure con [RepositoryException] si ocurre un error durante el proceso.
-     *
-     * El proceso incluye:
-     * 1. Autenticación del usuario con el correo electrónico y la contraseña.
-     * 2. Obtención del ID del usuario autenticado.
-     */
     suspend fun loginUser(email: String, password: String): Result<String?> {
         return try {
             // Realiza la autenticación del usuario utilizando email y contraseña.
@@ -48,18 +36,6 @@ class FirebaseAuthDataSource @Inject constructor(
         }
     }
 
-    /**
-     * Registra un nuevo usuario en Firebase Authentication.
-     *
-     * @param email Correo electrónico para el nuevo usuario.
-     * @param password Contraseña para el nuevo usuario.
-     * @return Result<String> Éxito con el ID del usuario creado,
-     *                       o failure con [RepositoryException] si ocurre un error durante el registro.
-     *
-     * El proceso:
-     * 1. Crea una nueva cuenta en Firebase Auth.
-     * 2. Retorna el UID generado por Firebase.
-     */
     suspend fun registerUser(email: String, password: String): Result<String> {
         return try {
             // Crea un nuevo usuario utilizando email y contraseña.
@@ -86,16 +62,6 @@ class FirebaseAuthDataSource @Inject constructor(
         }
     }
 
-    /**
-     * Obtiene el ID del usuario actualmente autenticado en Firebase.
-     *
-     * @return Result<String?> Éxito con el ID del usuario si está autenticado,
-     *                        null si no hay usuario autenticado,
-     *                        o failure con Exception si ocurre un error.
-     *
-     * Este método es sincrónico ya que Firebase mantiene el estado de autenticación
-     * en memoria y no requiere operaciones asíncronas para obtener el usuario actual.
-     */
     fun getCurrentUserId(): Result<String?> {
         return try {
             val currentUser = FirebaseAuth.getInstance().currentUser // Obtiene el usuario actual.
