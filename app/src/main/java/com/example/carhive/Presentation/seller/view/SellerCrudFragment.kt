@@ -41,8 +41,8 @@ class SellerCrudFragment : Fragment() {
             carAdapter.submitList(cars) // Asegúrate de que tu adaptador tenga este método
         }
 
-        // Cargar coches al inicio
-        viewModel.loadCarsForUser()
+      /*  // Cargar coches al inicio
+        viewModel.loadCarsForUser()*/
 
         // Llamar al modal cuando lo necesites, por ejemplo, con un botón
         binding.btnAddCar.setOnClickListener {
