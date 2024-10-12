@@ -16,6 +16,7 @@ googleGmsGoogleServices = "4.4.2"  # Google Services Plugin.
 firebaseBom = "33.1.1"  # Firebase BoM for version control.
 navigationCompose = "2.7.7"  # Navigation in Jetpack Compose.
 crashlytics = "3.0.2"  # Firebase Crashlytics for error handling.
+glideversion = "4.15.1"
 hilt = "1.0.0"
 runtimeLivedata = "1.7.3"
 constrainsversion = "2.1.4"
@@ -55,6 +56,9 @@ constrain-layout = { module = "androidx.constraintlayout:constraintlayout", vers
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentversion" }
 fragment-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationfragment" }
 navigation = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationfragment" }
+# Glide
+bumptech-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideversion" }
+bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideversion" }
 
 # Libraries for Firebase
 # Firebase BoM for version management across Firebase libraries.

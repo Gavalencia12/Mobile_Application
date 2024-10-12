@@ -112,21 +112,29 @@ class FirebaseDatabaseDataSource @Inject constructor(
         }
     }
 
-    suspend fun getCarUserFromDatabase(userId: String): Result<CarEntity?>{
+    suspend fun getCarUserFromDatabase(userId: String): Result<List<CarEntity>> {
         return try {
-            // Obtén la referencia del coche
+            // Obtén la referencia del nodo del coche
             val carSnapshot = database.getReference("Car")
                 .child(userId)
                 .get()
                 .await()
 
-            // Convierte el snapshot a un objeto CarEntity si existe
-            val car = carSnapshot.getValue(CarEntity::class.java)
-            Result.success(car)
+            // Verifica si el snapshot existe y tiene datos
+            if (carSnapshot.exists()) {
+                // Convierte el snapshot a una lista de CarEntity
+                val carList = carSnapshot.children.mapNotNull { childSnapshot ->
+                    childSnapshot.getValue(CarEntity::class.java) // Mapea cada hijo a un CarEntity
+                }
+                Result.success(carList) // Retorna la lista de CarEntity
+            } else {
+                Result.success(emptyList()) // Retorna una lista vacía si no hay coches
+            }
         } catch (e: Exception) {
-            Result.failure(RepositoryException("Error fetching car from database: ${e.message}", e))
+            Result.failure(RepositoryException("Error fetching car from database", e))
         }
     }
+
 
     /**
      * Recupera el rol de un usuario específico desde la base de datos.

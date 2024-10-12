@@ -75,7 +75,7 @@ class RepositoryImpl(
         return dataSource.deleteCarInDatabase(userId, carId)
     }
 
-    override suspend fun getCarUserFromDatabase(userId: String): Result<CarEntity?> {
+    override suspend fun getCarUserFromDatabase(userId: String): Result<List<CarEntity>> {
         return dataSource.getCarUserFromDatabase(userId)
     }
 

@@ -1,44 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- item_seller_car.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:padding="16dp">
 
-    <!-- Título del coche (modelo) -->
     <TextView
-        android:id="@+id/textView_modelo"
+        android:id="@+id/carModelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black" />
+        android:text="Modelo"
+        android:textStyle="bold" />
 
-    <!-- Color del coche -->
     <TextView
-        android:id="@+id/textView_color"
+        android:id="@+id/carColorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray" />
+        android:text="Color" />
 
-    <!-- Precio del coche -->
     <TextView
-        android:id="@+id/textView_price"
+        android:id="@+id/carPriceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/holo_red_dark" />
+        android:text="Precio" />
 
-    <!-- Agrega más detalles del coche aquí si es necesario -->
+    <TextView
+        android:id="@+id/carSpeedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Velocidad" />
 
-    <!-- Imagen del coche -->
     <ImageView
-        android:id="@+id/imageView_car"
+        android:id="@+id/carImageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop"
-         />
+        android:scaleType="centerCrop" />
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete" />
 
 </LinearLayout>

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetCarUserInDatabaseUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
-    suspend operator fun invoke(userId:String) : Result<CarEntity?> {
+    suspend operator fun invoke(userId:String) : Result<List<CarEntity>> {
         return repository.getCarUserFromDatabase(userId)
     }
 }

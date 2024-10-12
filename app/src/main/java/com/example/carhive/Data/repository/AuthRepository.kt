@@ -33,7 +33,7 @@ interface AuthRepository {
     ): Result<Unit>
 
     suspend fun deleteCarInDatabase(userId: String, carId: String): Result<Unit>
-    suspend fun getCarUserFromDatabase(userId: String): Result<CarEntity?>
+    suspend fun getCarUserFromDatabase(userId: String): Result<List<CarEntity>>
     suspend fun loginUser(email: String, password: String): Result<String?>
     suspend fun getCurrentUserId(): Result<String?>
     suspend fun getUserRole(userId: String): Result<Int?>

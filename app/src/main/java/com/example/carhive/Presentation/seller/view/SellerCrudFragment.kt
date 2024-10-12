@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SellerCrudFragment : Fragment() {
+
     private var _binding: FragmentSellerCrudBinding? = null
     private val binding get() = _binding!!
 
@@ -31,18 +33,26 @@ class SellerCrudFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configurar el RecyclerView
-        carAdapter = CarAdapter()
-        binding.recyclerView.adapter = carAdapter // Asegúrate de que tienes un RecyclerView en tu XML
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // Observa la lista de coches en el ViewModel
-        viewModel.cars.observe(viewLifecycleOwner) { cars ->
-            carAdapter.submitList(cars) // Asegúrate de que tu adaptador tenga este método
+        // Configura el RecyclerView con su adaptador
+        carAdapter = CarAdapter(emptyList()) // Inicializa con una lista vacía
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = carAdapter
         }
 
-      /*  // Cargar coches al inicio
-        viewModel.loadCarsForUser()*/
+        // Observa los cambios en la lista de coches
+        viewModel.carList.observe(viewLifecycleOwner) { cars ->
+            carAdapter.updateCars(cars) // Actualiza el adaptador cuando cambien los datos
+        }
+
+        // Observa los errores
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            // Mostrar un mensaje de error
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        }
+
+        // Llama a la función para obtener los coches del usuario
+        viewModel.fetchCarsForUser()
 
         // Llamar al modal cuando lo necesites, por ejemplo, con un botón
         binding.btnAddCar.setOnClickListener {
@@ -51,7 +61,6 @@ class SellerCrudFragment : Fragment() {
     }
 
     private fun showCarOptionsDialog() {
-        // Mostrar el modal
         val dialog = CrudDialogFragment()
         dialog.show(parentFragmentManager, "CarOptionsDialog")
     }

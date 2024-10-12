@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.util.copy
 import com.example.carhive.Data.mapper.CarMapper
+import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Domain.model.Car
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.database.DeleteCarInDatabaseUseCase
@@ -26,34 +27,58 @@ class CrudViewModel @Inject constructor(
     private val deleteCarInDatabaseUseCase: DeleteCarInDatabaseUseCase,
     private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase,
     private val uploadToCarImageUseCase: UploadToCarImageUseCase,
-    private val carMapper: CarMapper
 ) : ViewModel() {
 
-    private val _cars = MutableLiveData<List<Car>>()
-    val cars: LiveData<List<Car>> get() = _cars
+    // LiveData para almacenar la lista de coches del usuario
+    private val _carList = MutableLiveData<List<CarEntity>>()
+    val carList: LiveData<List<CarEntity>> get() = _carList
 
-//    fun loadCarsForUser() {
+    // LiveData para manejar errores
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> get() = _error
+
+    // Función para obtener los coches del usuario desde la base de datos
+    fun fetchCarsForUser() {
+        viewModelScope.launch {
+            val currentUserResult = getCurrentUserIdUseCase()
+            val userId = currentUserResult.getOrNull()
+
+            userId?.let {
+                val result = getCarUserInDatabaseUseCase(it)
+                result.onSuccess { cars ->
+                    _carList.value = cars // Actualiza el LiveData con la lista de coches
+                }.onFailure { exception ->
+                    _error.value = "Error fetching cars: ${exception.message}" // Actualiza el LiveData de error
+                }
+            } ?: run {
+                _error.value = "User not authenticated"
+            }
+        }
+    }
+
+//    // Método para actualizar un coche
+//    fun updateCar(userId: String, carId: String, car: Car) {
 //        viewModelScope.launch {
-//            val currentUser = getCurrentUserIdUseCase()
-//            val userId = currentUser.getOrNull() ?: return@launch
-//
-//            // Cargar coches del usuario
-//            val result = getCarUserInDatabaseUseCase(userId) // Asegúrate de que esta función ahora devuelva CarEntity con ID
-//            result.fold(
-//                onSuccess = { carEntities ->
-//                    // Mapea CarEntity a Car y agrega los IDs
-//                    val cars = carEntities.map { carEntity ->
-//                        carMapper.mapToDomain(carEntity) // Asegúrate de que el ID esté en Car
-//                    }
-//                    _cars.value = cars // Suponiendo que _cars es un MutableLiveData<List<Car>>
-//                },
-//                onFailure = { error ->
-//                    // Manejar error
-//                }
-//            )
+//            val result = updateCarToDatabaseUseCase(userId, carId, car)
+//            result.onSuccess {
+//                // Manejar éxito
+//            }.onFailure {
+//                // Manejar error
+//            }
 //        }
 //    }
-// NO JALA PIPI
+//
+//    // Método para eliminar un coche
+//    fun deleteCar(userId: String, carId: String) {
+//        viewModelScope.launch {
+//            val result = deleteCarInDatabaseUseCase(userId, carId)
+//            result.onSuccess {
+//                // Manejar éxito, por ejemplo, recargar la lista
+//            }.onFailure {
+//                // Manejar error
+//            }
+//        }
+//    }
 
     fun addCarToDatabase(
         modelo: String,
