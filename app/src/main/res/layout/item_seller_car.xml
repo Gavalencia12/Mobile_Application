@@ -1,52 +1,129 @@
-<!-- item_seller_car.xml -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    android:background="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="12dp">
 
-    <TextView
-        android:id="@+id/carModelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Modelo"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/carColorTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color" />
-
-    <TextView
-        android:id="@+id/carPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Precio" />
-
-    <TextView
-        android:id="@+id/carSpeedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Velocidad" />
-
-    <ImageView
-        android:id="@+id/carImageView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/editButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
 
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete" />
+            <!-- Car Image -->
+            <ImageView
+                android:id="@+id/carImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="16dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/ic_img"
+                android:contentDescription="@string/car_image"
+                android:clipToOutline="true"
+                android:elevation="2dp" />
 
-</LinearLayout>
+            <!-- Car Details and Actions -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Car Model -->
+                <TextView
+                    android:id="@+id/carModelTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Model Name"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+
+                <!-- Car Color -->
+                <TextView
+                    android:id="@+id/carColorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Color"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray" />
+
+                <!-- Car Price -->
+                <TextView
+                    android:id="@+id/carPriceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$0.00"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray" />
+
+                <!-- Car Speed -->
+                <TextView
+                    android:id="@+id/carSpeedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 km/h"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray" />
+
+                <!-- Button Row: Edit, Delete, View More -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end"
+                    android:layout_marginTop="12dp"
+                    android:weightSum="3">
+
+                    <!-- Edit Button -->
+                    <Button
+                        android:id="@+id/editButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/edit"
+                        android:background="@drawable/button_edit"
+                        android:textColor="@android:color/white"
+                        android:elevation="4dp"
+                        android:textStyle="bold" />
+
+                    <!-- Delete Button -->
+                    <Button
+                        android:id="@+id/deleteButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/delete"
+                        android:background="@drawable/button_delete"
+                        android:textColor="@android:color/white"
+                        android:elevation="4dp"
+                        android:textStyle="bold" />
+
+                    <!-- View More Button -->
+                    <Button
+                        android:id="@+id/viewMoreButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/view_more"
+                        android:backgroundTint="@color/blue"
+                        android:textColor="@android:color/white"
+                        android:elevation="10dp"
+                        android:textStyle="bold"
+                        android:background="@drawable/button_viewmore" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>

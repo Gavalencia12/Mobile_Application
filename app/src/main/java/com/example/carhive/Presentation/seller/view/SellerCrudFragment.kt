@@ -34,8 +34,8 @@ class SellerCrudFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Configura el RecyclerView con su adaptador
-        carAdapter = CarAdapter(emptyList()) // Inicializa con una lista vacía
-        binding.recyclerView.apply {
+        carAdapter = CarAdapter(emptyList(), requireActivity()) // Pasa la actividad actual
+        binding.recyclerViewCar.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = carAdapter
         }
