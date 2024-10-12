@@ -6,13 +6,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.carhive.Presentation.seller.viewModel.CrudViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.DialogCarOptionsBinding
+import com.example.carhive.databinding.ItemSelectedImageBinding
 
 class CrudDialogFragment : DialogFragment() {
 
@@ -22,6 +26,9 @@ class CrudDialogFragment : DialogFragment() {
 
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private val selectedImages = mutableListOf<Uri>()
+    private lateinit var selectedImagesAdapter: SelectedImagesAdapter
+
+    private val maxImages = 5 // Limite de imágenes
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,33 +41,56 @@ class CrudDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inicializa el RecyclerView y el adaptador para mostrar las imágenes seleccionadas
+        selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position ->
+            removeImage(position)
+        }
+
+        binding.rvSelectedImages.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = selectedImagesAdapter
+        }
+
         // Inicializa el lanzador de la actividad para seleccionar imágenes
         imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == android.app.Activity.RESULT_OK) {
                 val clipData = result.data?.clipData
                 if (clipData != null) {
-                    // Permite seleccionar múltiples imágenes
-                    for (i in 0 until clipData.itemCount) {
-                        val imageUri = clipData.getItemAt(i).uri
-                        selectedImages.add(imageUri)
-                        // Aquí puedes mostrar las imágenes seleccionadas en el contenedor (opcional)
+                    // Permite seleccionar múltiples imágenes, pero con un límite
+                    val newImagesCount = clipData.itemCount
+                    if (selectedImages.size + newImagesCount <= maxImages) {
+                        for (i in 0 until newImagesCount) {
+                            val imageUri = clipData.getItemAt(i).uri
+                            selectedImages.add(imageUri)
+                        }
+                    } else {
+                        showMaxImagesError()
                     }
                 } else {
                     // Si solo se selecciona una imagen
                     result.data?.data?.let { uri ->
-                        selectedImages.add(uri)
-                        // Aquí puedes mostrar la imagen seleccionada en el contenedor (opcional)
+                        if (selectedImages.size < maxImages) {
+                            selectedImages.add(uri)
+                        } else {
+                            showMaxImagesError()
+                        }
                     }
                 }
+                selectedImagesAdapter.notifyDataSetChanged()
+                updateImageCounter() // Actualiza el contador
             }
         }
 
         // Botón para seleccionar imágenes
         binding.buttonSelectImages.setOnClickListener {
-            openImagePicker()
+            if (selectedImages.size < maxImages) {
+                openImagePicker()
+            } else {
+                showMaxImagesError()
+            }
         }
 
-        // Obtener los datos introducidos en los campos de texto
+        // Crear el coche con las imágenes seleccionadas
         binding.buttonCreate.setOnClickListener {
             val modelo = binding.etModelo.text.toString()
             val color = binding.etColor.text.toString()
@@ -69,25 +99,32 @@ class CrudDialogFragment : DialogFragment() {
             val description = binding.etDescription.text.toString()
             val price = binding.etPrice.text.toString()
 
-            // Aquí puedes usar los valores obtenidos para crear el coche
-            viewModel.addCarToDatabase(
-                modelo = modelo,
-                color = color,
-                speed = speed,
-                addOn = addOn,
-                description = description,
-                price = price,
-                images = selectedImages
-            )
+            // Verificar que todos los campos estén llenos
+            if (modelo.isEmpty() || color.isEmpty() || speed.isEmpty() || addOn.isEmpty() ||
+                description.isEmpty() || price.isEmpty() || selectedImages.isEmpty()) {
+                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.addCarToDatabase(
+                    modelo = modelo,
+                    color = color,
+                    speed = speed,
+                    addOn = addOn,
+                    description = description,
+                    price = price,
+                    images = selectedImages
+                )
 
-            dismiss() // Cierra el diálogo
+                dismiss() // Cierra el diálogo
+            }
         }
 
         binding.buttonCancel.setOnClickListener {
             dismiss() // Cierra el diálogo
         }
-    }
 
+        // Actualiza el contador de imágenes al iniciar
+        updateImageCounter()
+    }
     // Función para abrir el selector de imágenes
     private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -98,6 +135,23 @@ class CrudDialogFragment : DialogFragment() {
         imagePickerLauncher.launch(intent)
     }
 
+    // Función para eliminar una imagen seleccionada
+    private fun removeImage(position: Int) {
+        selectedImages.removeAt(position)
+        selectedImagesAdapter.notifyItemRemoved(position)
+        updateImageCounter() // Actualiza el contador
+    }
+
+    // Mostrar error si se excede el número máximo de imágenes
+    private fun showMaxImagesError() {
+        Toast.makeText(requireContext(), "Solo puedes seleccionar un máximo de $maxImages imágenes", Toast.LENGTH_SHORT).show()
+    }
+
+    // Función para actualizar el contador de imágenes seleccionadas
+    private fun updateImageCounter() {
+        binding.tvImageCount.text = "${selectedImages.size}/$maxImages images selected"
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -106,4 +160,30 @@ class CrudDialogFragment : DialogFragment() {
     override fun getTheme(): Int {
         return R.style.AppTheme_Dialog // Puedes personalizar el tema si es necesario
     }
+}
+
+class SelectedImagesAdapter(
+    private val images: List<Uri>,
+    private val onRemoveClick: (Int) -> Unit
+) : RecyclerView.Adapter<SelectedImagesAdapter.ImageViewHolder>() {
+
+    inner class ImageViewHolder(private val binding: ItemSelectedImageBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(uri: Uri, position: Int) {
+            binding.ivSelectedImage.setImageURI(uri)
+            binding.btnRemoveImage.setOnClickListener {
+                onRemoveClick(position)
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+        val binding = ItemSelectedImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ImageViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+        holder.bind(images[position], position)
+    }
+
+    override fun getItemCount(): Int = images.size
 }

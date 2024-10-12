@@ -19,7 +19,7 @@
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_modelo"
@@ -32,7 +32,7 @@
         android:hint="Model"
         app:layout_constraintTop_toBottomOf="@+id/dialog_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_color"
@@ -45,7 +45,7 @@
         android:hint="Color"
         app:layout_constraintTop_toBottomOf="@+id/et_modelo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_speed"
@@ -58,7 +58,7 @@
         android:hint="Speed (km/h)"
         app:layout_constraintTop_toBottomOf="@+id/et_color"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_addOn"
@@ -71,7 +71,7 @@
         android:hint="Add-ons"
         app:layout_constraintTop_toBottomOf="@+id/et_speed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_description"
@@ -84,7 +84,7 @@
         android:hint="Description"
         app:layout_constraintTop_toBottomOf="@+id/et_addOn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_price"
@@ -97,7 +97,7 @@
         android:hint="Price ($)"
         app:layout_constraintTop_toBottomOf="@+id/et_description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/button_select_images"
@@ -109,17 +109,32 @@
         app:layout_constraintTop_toBottomOf="@id/et_price"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <LinearLayout
-        android:id="@+id/selected_images_container"
-        android:layout_width="match_parent"
+        android:layout_marginTop="8dp" />
+    <!-- Contador de imágenes seleccionadas -->
+    <TextView
+        android:id="@+id/tv_image_count"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:text="0/5 images selected"
+        android:textSize="14sp"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/button_select_images"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
+
+
+    <!-- Contenedor para las imágenes seleccionadas (previsualización) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_selected_images"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tv_image_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/item_selected_image" />
 
     <Button
         android:id="@+id/button_create"
@@ -128,10 +143,10 @@
         android:text="Create"
         android:backgroundTint="@color/yellow"
         android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/selected_images_container"
+        app:layout_constraintTop_toBottomOf="@id/rv_selected_images"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/button_cancel"
@@ -143,6 +158,6 @@
         app:layout_constraintTop_toBottomOf="@id/button_create"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
