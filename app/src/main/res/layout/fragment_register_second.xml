@@ -1,75 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:background="@color/blue"
     tools:context=".Presentation.initial.Register.view.SecondRegisterFragment">
 
-    <TextView
-        android:id="@+id/curpLabel"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvImagen"
         android:layout_height="wrap_content"
-        android:text="CURP" />
-
-    <EditText
-        android:id="@+id/curpEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your CURP" />
+        android:backgroundTint="@color/blue"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
 
-    <Space
+        <TextView
+            android:id="@+id/goBackLink"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="30dp"
+            android:layout_gravity="start"
+            android:drawableStart="@drawable/ic_arrow_back"
+            android:drawableTint="@color/white"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="30dp"
+            android:contentDescription="image"
+            android:src="@drawable/ic_register2" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="16dp" />
+        android:layout_height="0dp"
+        android:backgroundTint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@+id/cvImagen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardPreventCornerOverlap="true">
 
-    <TextView
-        android:id="@+id/phoneNumberLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Phone Number" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_top_cornes"
+            android:padding="24dp"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <EditText
-        android:id="@+id/phoneNumberEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your phone number" />
+            <TextView
+                android:id="@+id/tv_rgt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="30dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Personal information"
+                android:textColor="@color/dark_blue"
+                android:textSize="24sp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
+            <EditText
+                android:id="@+id/curpEditText"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="CURP"
+                android:textSize="16sp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_edit_text"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="15dp"
+                android:padding="16dp"/>
 
-    <TextView
-        android:id="@+id/voterIDLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Voter ID" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
 
-    <EditText
-        android:id="@+id/voterIDEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your voter ID" />
+            <EditText
+                android:id="@+id/phoneNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone number"
+                android:textSize="16sp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_edit_text"
+                android:drawableStart="@drawable/ic_phone"
+                android:drawablePadding="15dp"
+                android:padding="16dp"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
 
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Next" />
+            <EditText
+                android:id="@+id/voterIDEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Voter ID"
+                android:textSize="16sp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_edit_text"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="15dp"
+                android:padding="16dp"/>
 
-    <TextView
-        android:id="@+id/goBackLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go back"
-        android:textColor="@android:color/holo_blue_dark"
-        android:layout_marginTop="16dp"
-        android:clickable="true"
-        android:focusable="true"/>
-</LinearLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent">
+                <TextView
+                    android:id="@+id/tv_rgt_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/inter_extrabold"
+                    android:text="Next"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/nextButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_arrow_next"
+                    android:backgroundTint="@color/blue" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

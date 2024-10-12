@@ -22,6 +22,8 @@ constrainsversion = "2.1.4"
 fragmentversion = "1.6.1"
 navigationfragment = "2.7.3"
 
+gifdrawable = "1.2.25"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -54,6 +56,7 @@ constrain-layout = { module = "androidx.constraintlayout:constraintlayout", vers
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentversion" }
 fragment-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationfragment" }
 navigation = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationfragment" }
+gifdrawable = { group = "pl.droidsonroids.gif", name = "android-gif-drawable", version.ref = "gifdrawable" }
 
 # Libraries for Firebase
 # Firebase BoM for version management across Firebase libraries.

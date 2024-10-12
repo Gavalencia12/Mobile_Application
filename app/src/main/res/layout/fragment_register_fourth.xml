@@ -1,33 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
+    android:background="@color/white"
     tools:context=".Presentation.initial.Register.view.FortRegisterFragment">
 
-    <TextView
-        android:id="@+id/emailVerificationStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Esperando verificación de correo..."
-        android:visibility="gone" /> <!-- Oculto por defecto -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/rounded_top_cornes"
+            android:padding="24dp"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <ProgressBar
-        android:id="@+id/loadingIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible" /> <!-- Visible por defecto -->
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/myGifImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="208dp"
+                android:src="@drawable/ic_register4" />
 
-    <Button
-        android:id="@+id/continueButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Continuar"
-        android:enabled="false"
-        android:layout_marginTop="16dp"/> <!-- Deshabilitado por defecto -->
-</LinearLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <ProgressBar
+                android:id="@+id/loadingIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" /> <!-- Estaba visible por defecto -->
+
+            <TextView
+                android:id="@+id/emailVerificationStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esperando verificación de correo..."
+                android:visibility="visible" /> <!-- Estaba oculto por defecto -->
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <Button
+                android:id="@+id/continueButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continuar"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/other_blue"
+                android:enabled="false"/> <!-- Deshabilitado por defecto -->
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:id="@+id/loginLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Didn't you receive the email? Resend"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/dark_blue"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
