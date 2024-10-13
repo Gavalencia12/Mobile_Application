@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.fragment)
     implementation(libs.navigation)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.gifdrawable)
 
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)
