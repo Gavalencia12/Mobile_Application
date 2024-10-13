@@ -17,6 +17,7 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
+        <!-- Botón para regresar -->
         <Button
             android:id="@+id/btnPrevious"
             android:layout_width="30dp"
@@ -27,6 +28,8 @@
             android:background="@drawable/ic_arrow_back"
             android:backgroundTint="@color/white"
             android:visibility="invisible"/>
+
+        <!-- Imagen de registro -->
         <ImageView
             android:layout_width="350dp"
             android:layout_height="wrap_content"
@@ -38,6 +41,7 @@
 
     </androidx.cardview.widget.CardView>
 
+    <!-- CardView del formulario de registro -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -54,6 +58,7 @@
             android:padding="24dp"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Título -->
             <TextView
                 android:id="@+id/tv_rgt_title"
                 android:layout_width="wrap_content"
@@ -66,6 +71,7 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
+            <!-- Campos de entrada para el nombre -->
             <EditText
                 android:id="@+id/firstNameEditText"
                 android:layout_width="match_parent"
@@ -86,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-
+            <!-- Campos de entrada para el apellido -->
             <EditText
                 android:id="@+id/lastNameEditText"
                 android:layout_width="match_parent"
@@ -107,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-
+            <!-- Campos de entrada para el correo electrónico -->
             <EditText
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
@@ -128,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-
+            <!-- Campos de entrada para la contraseña -->
             <EditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
@@ -150,6 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
+            <!-- Campo de entrada para confirmar la contraseña -->
             <EditText
                 android:id="@+id/confirmPasswordEditText"
                 android:layout_width="match_parent"
@@ -171,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
+            <!-- Checkbox para aceptar términos y condiciones -->
             <CheckBox
                 android:id="@+id/cbTerms"
                 android:layout_width="wrap_content"
@@ -190,12 +198,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
+            <!-- Enlace para iniciar sesión y botón para continuar -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent">
+                <!-- Enlace para iniciar sesión -->
                 <TextView
                     android:id="@+id/loginLink"
                     android:layout_width="wrap_content"
@@ -216,7 +226,6 @@
                     android:text="Next"
                     android:textColor="@color/dark_blue"
                     android:textSize="20sp" />
-
                 <Button
                     android:id="@+id/nextButton"
                     android:layout_width="30dp"

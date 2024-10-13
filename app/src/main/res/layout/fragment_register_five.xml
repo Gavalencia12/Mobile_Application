@@ -10,6 +10,7 @@
     android:padding="16dp"
     tools:context=".Presentation.initial.Register.view.FiveRegisterFragment">
 
+    <!-- Título de bienvenida -->
     <TextView
         android:id="@+id/welcomeName"
         android:layout_width="wrap_content"
@@ -24,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="8dp" />
 
+    <!-- Imagen de bienvenida -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="24dp" />
 
-    <!-- Título de bienvenida -->
+    <!-- Texto principal -->
     <TextView
         android:id="@+id/welcomeTitle"
         android:layout_width="wrap_content"

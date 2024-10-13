@@ -8,6 +8,7 @@
     android:background="@color/blue"
     tools:context=".Presentation.initial.Login.view.LoginFragment">
 
+    <!-- CardView de bienvenida -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvWelcome"
         android:layout_height="wrap_content"
@@ -16,6 +17,7 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
+        <!-- Texto de bienvenida -->
         <TextView
             android:id="@+id/welcome_text"
             android:layout_width="wrap_content"
@@ -30,6 +32,7 @@
             app:layout_constraintBottom_toTopOf="@+id/hive"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Contenedor lineal para los textos "Car" y "Hive" -->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,6 +41,7 @@
             android:gravity="center"
             tools:ignore="MissingConstraints">
 
+            <!-- Texto "Car" -->
             <TextView
                 android:id="@+id/car"
                 android:layout_width="wrap_content"
@@ -48,6 +52,7 @@
                 android:textSize="48sp"
                 android:textStyle="bold" />
 
+            <!-- Texto "Hive" -->
             <TextView
                 android:id="@+id/hive"
                 android:layout_width="90dp"
@@ -61,6 +66,7 @@
 
     </androidx.cardview.widget.CardView>
 
+    <!-- CardView para la información de inicio de sesión -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -76,6 +82,7 @@
             android:background="@drawable/rounded_top_cornes"
             android:padding="24dp">
 
+            <!-- Mensaje de saludo -->
             <TextView
                 android:id="@+id/nice_to_see_you"
                 android:layout_width="wrap_content"
@@ -88,6 +95,7 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
+            <!-- Instrucciones -->
             <TextView
                 android:id="@+id/instruction"
                 android:layout_width="wrap_content"
@@ -99,6 +107,7 @@
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
 
+            <!-- Campo de entrada para el correo electrónico -->
             <EditText
                 android:id="@+id/email_edit_text"
                 android:layout_width="320dp"
@@ -117,6 +126,7 @@
                 android:textColorHint="@color/gray"
                 android:textSize="16sp" />
 
+            <!-- Campo de entrada para la contraseña -->
             <EditText
                 android:id="@+id/password_edit_text"
                 android:layout_width="320dp"
@@ -136,6 +146,7 @@
                 android:textColorHint="@color/gray"
                 android:textSize="16sp" />
 
+            <!-- Texto para recuperar la contraseña -->
             <TextView
                 android:id="@+id/forgot_password_text"
                 android:layout_width="wrap_content"
@@ -148,6 +159,7 @@
                 android:textColor="@color/gray"
                 android:textSize="16sp" />
 
+            <!-- Botón para iniciar sesión -->
             <Button
                 android:id="@+id/login_button"
                 android:layout_width="320dp"
@@ -162,12 +174,14 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
 
+            <!-- Registro -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
+                <!-- Texto "Don't have an account?" -->
                 <TextView
                     android:id="@+id/register_question"
                     android:layout_width="wrap_content"
@@ -178,6 +192,7 @@
                     android:textColor="@color/dark_blue"
                     android:textSize="15sp" />
 
+                <!-- Enlace para registrarse -->
                 <TextView
                     android:id="@+id/register_now_text"
                     android:layout_width="wrap_content"
@@ -188,6 +203,8 @@
                     android:text="Register Now!"
                     android:textColor="@color/blue"
                     android:textSize="15sp" />
+
+                <!-- Errores -->
                 <TextView
                     android:id="@+id/error_text_view"
                     android:layout_width="wrap_content"

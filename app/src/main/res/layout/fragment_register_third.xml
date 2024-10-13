@@ -15,6 +15,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginBottom="30dp">
 
+        <!-- Enlace para reresar -->
         <TextView
             android:id="@+id/backToSecondPartLink"
             android:layout_width="40dp"
@@ -28,6 +29,7 @@
             android:clickable="true"
             android:focusable="true"/>
 
+        <!-- Título -->
         <TextView
             android:id="@+id/tv_rgt_title"
             android:layout_width="wrap_content"
@@ -43,7 +45,7 @@
             app:layout_constraintHorizontal_bias="0.5" /> <!-- Centrado horizontal -->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <!-- Imagen de registro -->
     <ImageView
         android:id="@+id/selectedImageView"
         android:layout_width="match_parent"
@@ -53,6 +55,7 @@
         android:contentDescription="image"
         android:src="@drawable/ic_register3" />
 
+    <!-- Texto de selección de imagen -->
     <TextView
         android:id="@+id/selectProfileImageLabel"
         android:layout_width="wrap_content"
@@ -68,6 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="16dp" />
 
+    <!-- Botón para seleccionar imagen -->
     <Button
         android:id="@+id/chooseImageButton"
         android:layout_width="wrap_content"
@@ -81,22 +85,11 @@
         android:background="@android:color/transparent"
         android:layout_gravity="center"/>
 
-    <!--<Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
-
-    <ImageView
-
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:scaleType="centerCrop"
-        android:visibility="gone" />  Inicialmente oculto -->
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="16dp" />
 
+    <!-- Botón para finalizar el registro -->
     <Button
         android:id="@+id/finishRegistrationButton"
         android:layout_width="match_parent"

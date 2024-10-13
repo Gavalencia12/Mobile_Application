@@ -9,6 +9,7 @@
     android:background="@color/blue"
     tools:context=".Presentation.initial.Register.view.SecondRegisterFragment">
 
+    <!-- CardView con imagen y enlace para regresar -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvImagen"
         android:layout_height="wrap_content"
@@ -17,6 +18,7 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
+        <!-- Enlace para regresar -->
         <TextView
             android:id="@+id/goBackLink"
             android:layout_width="40dp"
@@ -29,6 +31,7 @@
             android:clickable="true"
             android:focusable="true"/>
 
+        <!-- Imagen de registro -->
         <ImageView
             android:layout_width="350dp"
             android:layout_height="wrap_content"
@@ -40,6 +43,7 @@
 
     </androidx.cardview.widget.CardView>
 
+    <!-- CardView del formulario de datos personales -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -56,6 +60,7 @@
             android:padding="24dp"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Título -->
             <TextView
                 android:id="@+id/tv_rgt_title"
                 android:layout_width="wrap_content"
@@ -68,6 +73,7 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
+            <!-- Campo de entrada para la CURP -->
             <EditText
                 android:id="@+id/curpEditText"
                 android:layout_width="match_parent"
@@ -87,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
+            <!-- Campo de entrada para el número de teléfono -->
             <EditText
                 android:id="@+id/phoneNumberEditText"
                 android:layout_width="match_parent"
@@ -106,6 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
+            <!-- Campo de entrada para el número de identificación del votante -->
             <EditText
                 android:id="@+id/voterIDEditText"
                 android:layout_width="match_parent"
@@ -125,6 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
+            <!-- Botón "Next" y texto al final del formulario -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
