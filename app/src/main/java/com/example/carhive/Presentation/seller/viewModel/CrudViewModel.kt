@@ -5,16 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.copy
-import com.example.carhive.Data.mapper.CarMapper
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Domain.model.Car
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
-import com.example.carhive.Domain.usecase.database.DeleteCarInDatabaseUseCase
-import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
-import com.example.carhive.Domain.usecase.database.SaveCarToDatabaseUseCase
-import com.example.carhive.Domain.usecase.database.UpdateCarToDatabaseUseCase
-import com.example.carhive.Domain.usecase.database.UploadToCarImageUseCase
+import com.example.carhive.Domain.usecase.database.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -56,30 +50,7 @@ class CrudViewModel @Inject constructor(
         }
     }
 
-//    // Método para actualizar un coche
-//    fun updateCar(userId: String, carId: String, car: Car) {
-//        viewModelScope.launch {
-//            val result = updateCarToDatabaseUseCase(userId, carId, car)
-//            result.onSuccess {
-//                // Manejar éxito
-//            }.onFailure {
-//                // Manejar error
-//            }
-//        }
-//    }
-//
-//    // Método para eliminar un coche
-//    fun deleteCar(userId: String, carId: String) {
-//        viewModelScope.launch {
-//            val result = deleteCarInDatabaseUseCase(userId, carId)
-//            result.onSuccess {
-//                // Manejar éxito, por ejemplo, recargar la lista
-//            }.onFailure {
-//                // Manejar error
-//            }
-//        }
-//    }
-
+    // Método para añadir un coche a la base de datos
     fun addCarToDatabase(
         modelo: String,
         color: String,
@@ -92,6 +63,8 @@ class CrudViewModel @Inject constructor(
         viewModelScope.launch {
             val currentUser = getCurrentUserIdUseCase()
             val userId = currentUser.getOrNull() ?: return@launch
+
+            // Crear el objeto del coche
             val car = Car(
                 modelo = modelo,
                 color = color,
@@ -105,26 +78,86 @@ class CrudViewModel @Inject constructor(
             val result = saveCarToDatabaseUseCase(userId, car)
             result.fold(
                 onSuccess = { carId ->
-                    // Subir imágenes y obtener sus URLs
+                    // Subir imágenes a Firebase y obtener las URLs
                     val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
                     val imageUrls = imageUploadResult.getOrNull()
 
-                    // Actualizar el coche en la base de datos con las URLs de las imágenes
                     if (imageUrls != null) {
-                        // Actualizar el objeto Car con las nuevas URLs de las imágenes
+                        // Actualizar el coche con las URLs de las imágenes
                         val updatedCar = car.copy(imageUrls = imageUrls, id = carId)
-
-                        // Usar el ID del coche guardado para actualizar
-                        updateCarToDatabaseUseCase(userId, carId, updatedCar)
+                        updateCarInDatabase(userId, carId, updatedCar)
                     }
                 },
                 onFailure = { error ->
-                    // Manejar errores en la creación del coche
+                    _error.value = "Error adding car: ${error.message}"
                 }
             )
         }
     }
 
+    // Función para actualizar el coche en la base de datos y refrescar la lista
+    private fun updateCarInDatabase(userId: String, carId: String, updatedCar: Car) {
+        viewModelScope.launch {
+            val result = updateCarToDatabaseUseCase(userId, carId, updatedCar)
+            result.fold(
+                onSuccess = {
+                    fetchCarsForUser() // Refrescar la lista de coches
+                },
+                onFailure = { error ->
+                    _error.value = "Error updating car: ${error.message}"
+                }
+            )
+        }
+    }
 
+    // Método para eliminar un coche
+    fun deleteCar(userId: String, carId: String) {
+        viewModelScope.launch {
+            val result = deleteCarInDatabaseUseCase(userId, carId)
+            result.fold(
+                onSuccess = {
+                    fetchCarsForUser() // Refrescar la lista después de eliminar
+                },
+                onFailure = { error ->
+                    _error.value = "Error deleting car: ${error.message}"
+                }
+            )
+        }
+    }
 
+    // Método para actualizar un coche
+    fun updateCar(
+        userId: String,
+        carId: String,
+        modelo: String,
+        color: String,
+        speed: String,
+        addOn: String,
+        description: String,
+        price: String,
+        images: List<Uri>
+    ) {
+        viewModelScope.launch {
+            val car = Car(
+                id = carId,
+                modelo = modelo,
+                color = color,
+                speed = speed,
+                addOn = addOn,
+                description = description,
+                price = price
+            )
+
+            // Subir imágenes nuevas y actualizar en la base de datos
+            val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
+            val imageUrls = imageUploadResult.getOrNull()
+
+            if (imageUrls != null) {
+                val updatedCar = car.copy(imageUrls = imageUrls)
+                updateCarInDatabase(userId, carId, updatedCar)
+            } else {
+                _error.value = "Error uploading images"
+            }
+        }
+    }
 }
