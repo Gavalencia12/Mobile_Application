@@ -59,10 +59,10 @@ constrain-layout = { module = "androidx.constraintlayout:constraintlayout", vers
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentversion" }
 fragment-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationfragment" }
 navigation = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationfragment" }
+gifdrawable = { group = "pl.droidsonroids.gif", name = "android-gif-drawable", version.ref = "gifdrawable" }
 # Glide
 bumptech-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideversion" }
 bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideversion" }
-gifdrawable = { group = "pl.droidsonroids.gif", name = "android-gif-drawable", version.ref = "gifdrawable" }
 
 # Libraries for Firebase
 # Firebase BoM for version management across Firebase libraries.
