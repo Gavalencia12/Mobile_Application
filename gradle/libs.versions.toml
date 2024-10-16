@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.0"  # Android Gradle Plugin version.
+agp = "8.5.0"  # Android Gradle Plugin version.
 coilCompose = "2.2.2"  # Library for loading images in Jetpack Compose.
 kotlin = "1.9.0"  # Kotlin version.
 dagger = "2.48" # Dagger version.
