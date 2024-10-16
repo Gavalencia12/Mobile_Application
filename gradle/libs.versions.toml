@@ -25,6 +25,8 @@ navigationfragment = "2.7.3"
 roomKtx = "2.6.1"
 firebaseFirestoreKtx = "25.1.0"
 
+gifdrawable = "1.2.25"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -57,6 +59,7 @@ constrain-layout = { module = "androidx.constraintlayout:constraintlayout", vers
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentversion" }
 fragment-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationfragment" }
 navigation = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationfragment" }
+gifdrawable = { group = "pl.droidsonroids.gif", name = "android-gif-drawable", version.ref = "gifdrawable" }
 # Glide
 bumptech-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideversion" }
 bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideversion" }

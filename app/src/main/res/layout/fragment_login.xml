@@ -1,108 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
+    android:orientation="vertical"
+    android:background="@color/blue"
     tools:context=".Presentation.initial.Login.view.LoginFragment">
 
-    <TextView
-        android:id="@+id/email_label"
-        android:layout_width="0dp"
+    <!-- CardView de bienvenida -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvWelcome"
         android:layout_height="wrap_content"
-        android:text="Email"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        android:layout_width="match_parent"
+        android:backgroundTint="@color/blue"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
 
-    <EditText
-        android:id="@+id/email_edit_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter your email"
-        android:textColorHint="@color/white"
-        android:backgroundTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_label"
-        app:layout_constraintVertical_bias="0.0" />
+        <!-- Texto de bienvenida -->
+        <TextView
+            android:id="@+id/welcome_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="90dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="Welcome back!"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/hive"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/password_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_edit_text"
-        app:layout_constraintVertical_bias="0.1" />
+        <!-- Contenedor lineal para los textos "Car" y "Hive" -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="120dp"
+            android:layout_marginBottom="50dp"
+            android:gravity="center"
+            tools:ignore="MissingConstraints">
 
-    <EditText
-        android:id="@+id/password_edit_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter your password"
-        android:textColorHint="@color/white"
-        android:backgroundTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_label"
-        app:layout_constraintVertical_bias="0.0" />
+            <!-- Texto "Car" -->
+            <TextView
+                android:id="@+id/car"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/inter_bold"
+                android:text="Car"
+                android:textColor="@color/white"
+                android:textSize="48sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/forgot_password_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgot your Password?"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:paddingTop="24dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_edit_text" />
+            <!-- Texto "Hive" -->
+            <TextView
+                android:id="@+id/hive"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/kaushan_script"
+                android:text="Hive"
+                android:textColor="@color/white"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/forgot_password_text"
-        app:layout_constraintVertical_bias="0.2" />
+    </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/register_now_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register Now"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button"
-        app:layout_constraintVertical_bias="0.2" />
+    <!-- CardView para la información de inicio de sesión -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@+id/cvWelcome"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardPreventCornerOverlap="true">
 
-    <TextView
-        android:id="@+id/error_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_now_text"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_top_cornes"
+            android:padding="24dp">
+
+            <!-- Mensaje de saludo -->
+            <TextView
+                android:id="@+id/nice_to_see_you"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/inter_extrabold"
+                android:text="Nice to see you again!"
+                android:textColor="@color/dark_blue"
+                android:textSize="24sp" />
+
+            <!-- Instrucciones -->
+            <TextView
+                android:id="@+id/instruction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Please enter your information for continue"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <!-- Campo de entrada para el correo electrónico -->
+            <EditText
+                android:id="@+id/email_edit_text"
+                android:layout_width="320dp"
+                android:layout_height="52dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:autofillHints="Email"
+                android:background="@drawable/rounded_edit_text"
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/inter_semibold"
+                android:hint="Enter your email"
+                android:inputType="textEmailAddress"
+                android:padding="16dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <!-- Campo de entrada para la contraseña -->
+            <EditText
+                android:id="@+id/password_edit_text"
+                android:layout_width="320dp"
+                android:layout_height="52dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:autofillHints="Password"
+                android:background="@drawable/rounded_edit_text"
+                android:drawableStart="@drawable/ic_password"
+                android:drawableEnd="@drawable/ic_visibility"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/inter_semibold"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <!-- Texto para recuperar la contraseña -->
+            <TextView
+                android:id="@+id/forgot_password_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="60dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Forgot your Password?"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+
+            <!-- Botón para iniciar sesión -->
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="320dp"
+                android:layout_height="52dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/blue"
+                android:fontFamily="@font/inter_bold"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <!-- Registro -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <!-- Texto "Don't have an account?" -->
+                <TextView
+                    android:id="@+id/register_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Don't have an account?"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="15sp" />
+
+                <!-- Enlace para registrarse -->
+                <TextView
+                    android:id="@+id/register_now_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Register Now!"
+                    android:textColor="@color/blue"
+                    android:textSize="15sp" />
+
+                <!-- Errores -->
+                <TextView
+                    android:id="@+id/error_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/register_now_text"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
