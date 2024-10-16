@@ -12,11 +12,14 @@ import com.example.carhive.Data.mapper.UserMapper
 import com.example.carhive.Data.repository.SessionRepository
 import com.example.carhive.Data.repository.UserRepository
 import com.example.carhive.Data.datasource.local.SessionImpl
+import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.user.ClearUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.user.GetPasswordUseCase
 import com.example.carhive.Domain.usecase.user.GetUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.auth.LoginUseCase
 import com.example.carhive.Domain.usecase.auth.RegisterUseCase
+import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.Domain.usecase.user.SavePasswordUseCase
 import com.example.carhive.Domain.usecase.user.SaveUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.database.SaveUserToDatabaseUseCase
@@ -45,15 +48,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance() // Proporciona la instancia de FirebaseAuth.
+    fun provideFirebaseAuth(): FirebaseAuth =
+        FirebaseAuth.getInstance() // Proporciona la instancia de FirebaseAuth.
 
     @Provides
     @Singleton
-    fun provideFirebaseDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance() // Proporciona la instancia de FirebaseDatabase.
+    fun provideFirebaseDatabase(): FirebaseDatabase =
+        FirebaseDatabase.getInstance() // Proporciona la instancia de FirebaseDatabase.
 
     @Provides
     @Singleton
-    fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance() // Proporciona la instancia de FirebaseStorage.
+    fun provideFirebaseStorage(): FirebaseStorage =
+        FirebaseStorage.getInstance() // Proporciona la instancia de FirebaseStorage.
 
     @Provides
     @Singleton
@@ -71,19 +77,26 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideContext(application: android.app.Application): Context = application // Proporciona el contexto de la aplicación.
+    fun provideContext(application: android.app.Application): Context =
+        application // Proporciona el contexto de la aplicación.
 
     @Provides
     @Singleton
     fun provideSharedPreferences(context: Context): SharedPreferences =
-        context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE) // Proporciona SharedPreferences para la gestión de preferencias del usuario.
+        context.getSharedPreferences(
+            "UserPrefs",
+            Context.MODE_PRIVATE
+        ) // Proporciona SharedPreferences para la gestión de preferencias del usuario.
 
     @Provides
     @Singleton
     fun provideUserRepository(
         sharedPreferences: SharedPreferences,
         userMapper: UserMapper
-    ): UserRepository = UserRepositoryImpl(sharedPreferences, userMapper) // Proporciona la implementación de UserRepository.
+    ): UserRepository = UserRepositoryImpl(
+        sharedPreferences,
+        userMapper
+    ) // Proporciona la implementación de UserRepository.
 
     @Provides
     @Singleton
@@ -91,7 +104,10 @@ object AppModule {
         sharedPreferences: SharedPreferences,
         repository: AuthRepository,
     ): SessionRepository =
-        SessionImpl(sharedPreferences, repository) // Proporciona la implementación de SessionRepository.
+        SessionImpl(
+            sharedPreferences,
+            repository
+        ) // Proporciona la implementación de SessionRepository.
 
     // Provisión de casos de uso relacionados con la sesión y la autenticación
     @Provides
@@ -109,6 +125,11 @@ object AppModule {
     fun provideIsUserAuthenticatedUseCase(repository: SessionRepository): IsUserAuthenticatedUseCase =
         IsUserAuthenticatedUseCase(repository)
 
+    @Provides
+    @Singleton
+    fun provideGetCurrentUserIdUseCase(repository: AuthRepository): GetCurrentUserIdUseCase =
+        GetCurrentUserIdUseCase(repository)
+
     // Provisión de casos de uso relacionados con la gestión de usuarios
     @Provides
     @Singleton
@@ -119,6 +140,16 @@ object AppModule {
     @Singleton
     fun provideSaveUserToDatabaseUseCase(repository: AuthRepository): SaveUserToDatabaseUseCase =
         SaveUserToDatabaseUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetUserDataUseCase(repository: AuthRepository): GetUserDataUseCase =
+        GetUserDataUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetAllCarsFromDatabaseUseCase(repository: AuthRepository): GetAllCarsFromDatabaseUseCase =
+        GetAllCarsFromDatabaseUseCase(repository)
 
     @Provides
     @Singleton

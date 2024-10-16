@@ -223,7 +223,6 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:fontFamily="@font/inter_extrabold"
-                    android:text="Next"
                     android:textColor="@color/dark_blue"
                     android:textSize="20sp" />
                 <Button

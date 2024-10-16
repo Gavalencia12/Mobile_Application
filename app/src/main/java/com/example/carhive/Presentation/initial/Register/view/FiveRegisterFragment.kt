@@ -41,7 +41,7 @@ class FiveRegisterFragment : Fragment() {
     }
 
     private fun navigateToNext() {
-        findNavController().navigate(R.id.action_fiveRegisterFragment_to_userFragment) // Cambia a tu siguiente fragmento
+        findNavController().navigate(R.id.action_fiveRegisterFragment_to_userHomeFragment) // Cambia a tu siguiente fragmento
     }
 
     override fun onDestroyView() {

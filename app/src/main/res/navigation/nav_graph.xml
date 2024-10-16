@@ -88,17 +88,46 @@
         android:name="com.example.carhive.Presentation.initial.Register.view.FiveRegisterFragment"
         tools:layout="@layout/fragment_register_five">
         <action
-            android:id="@+id/action_fiveRegisterFragment_to_userFragment"
+            android:id="@+id/action_fiveRegisterFragment_to_userHomeFragment"
             app:destination="@id/userHomeFragment" />
     </fragment>
+
+    <!-- Fragments de Usuario -->
 
     <fragment
         android:id="@+id/userHomeFragment"
         android:name="com.example.carhive.Presentation.user.view.UserHomeFragment"
         tools:layout="@layout/fragment_user_home">
         <action
-            android:id="@+id/action_userFragment_to_loginFragment"
+            android:id="@+id/action_userHomeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.carhive.Presentation.user.view.ProfileFragment"
+        tools:layout="@layout/fragment_user_profile">
+        <action
+            android:id="@+id/action_userProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_profileSellerFragment"
+            app:destination="@id/userProfileSellerFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userHomeFragment"
+            app:destination="@id/userHomeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userProfileSellerFragment"
+        android:name="com.example.carhive.Presentation.user.view.ProfileSellerFragment"
+        tools:layout="@layout/fragment_user_profile_seller">
+        <action
+            android:id="@+id/action_userProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
+            app:destination="@id/sellerHomeFragment" />
     </fragment>
 
     <fragment
