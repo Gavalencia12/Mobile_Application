@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         NavigationUI.setupActionBarWithNavController(this, navHostFragment.navController)
 
-        // Verificar la autenticación en el inicio
+        // Verificar la autenticación en el inicio de la actividad
         checkAuthentication(navHostFragment)
     }
 
