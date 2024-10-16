@@ -58,7 +58,8 @@
         android:hint="Speed (km/h)"
         app:layout_constraintTop_toBottomOf="@+id/et_color"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/et_addOn"
@@ -97,7 +98,8 @@
         android:hint="Price ($)"
         app:layout_constraintTop_toBottomOf="@+id/et_description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="number"/>
 
     <Button
         android:id="@+id/button_select_images"

@@ -30,11 +30,19 @@ class SellerCrudFragment : Fragment() {
         return binding.root
     }
 
+    private fun setupRecyclerView() {
+        carAdapter = CarAdapter(emptyList(), requireActivity(), viewModel) // Pasa el ViewModel
+        binding.recyclerViewCar.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = carAdapter
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configura el RecyclerView con su adaptador
-        carAdapter = CarAdapter(emptyList(), requireActivity()) // Pasa la actividad actual
+        // Configura el RecyclerView con su adaptador, pasando el ViewModel
+        carAdapter = CarAdapter(emptyList(), requireActivity(), viewModel) // Pasa el ViewModel
         binding.recyclerViewCar.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = carAdapter

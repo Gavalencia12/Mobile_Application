@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.navigation)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.bumptech.glide)
+    implementation(libs.firebase.firestore.ktx)
     annotationProcessor(libs.bumptech.glide.compiler)
 
 //    Corrutinas dependencies
@@ -94,6 +95,8 @@ dependencies {
     implementation(libs.coil.compose) // Coil.
     implementation(libs.androidx.navigation.compose) // Navigation.
     implementation(libs.androidx.lifecycle.viewmodel.compose) // ViewModel.
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 
 //    Firebase dependencies
     implementation(platform(libs.firebase.bom)) // Firebase Bom.
@@ -112,6 +115,7 @@ dependencies {
 //    Debugging dependencies
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 
 }
 

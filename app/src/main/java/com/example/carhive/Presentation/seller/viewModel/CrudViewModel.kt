@@ -160,4 +160,10 @@ class CrudViewModel @Inject constructor(
             }
         }
     }
+    // Agrega esta función en CrudViewModel
+    suspend fun getCurrentUserId(): String {
+        val currentUser = getCurrentUserIdUseCase()
+        return currentUser.getOrNull() ?: throw IllegalArgumentException("User not authenticated")
+    }
+
 }
