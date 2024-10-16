@@ -10,20 +10,43 @@
     android:padding="16dp"
     tools:context=".Presentation.initial.Register.view.FiveRegisterFragment">
 
+    <!-- Título de bienvenida -->
+    <TextView
+        android:id="@+id/welcomeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_extrabold"
+        android:gravity="center"
+        android:text="Welcome to CarHive"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+
+    <!-- Imagen de bienvenida -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="image"
+        android:src="@drawable/ic_register5" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="24dp" />
 
-    <!-- Título de bienvenida -->
+    <!-- Texto principal -->
     <TextView
         android:id="@+id/welcomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:textSize="28sp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:gravity="center" />
+        android:fontFamily="@font/inter_extrabold"
+        android:gravity="center"
+        android:text="You are already part of us!"
+        android:textColor="@color/dark_blue"
+        android:textSize="20sp" />
 
     <View
         android:layout_width="match_parent"
@@ -34,9 +57,10 @@
         android:id="@+id/welcomeSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You are already part of us!\nThanks for joining us! Your next car is just a few clicks away."
+        android:text="Thanks for joining us! Your next car is just a few clicks away."
+        android:fontFamily="@font/inter_semibold"
         android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/dark_gray"
         android:gravity="center" />
 
     <View
@@ -49,6 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:text="Get started"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#3E6DDC" /> <!-- Color del botón -->
+        android:fontFamily="@font/inter_bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/blue" /> <!-- Color del botón -->
 </LinearLayout>

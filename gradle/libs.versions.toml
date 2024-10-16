@@ -25,6 +25,8 @@ navigationfragment = "2.7.3"
 roomKtx = "2.6.1"
 firebaseFirestoreKtx = "25.1.0"
 
+gifdrawable = "1.2.25"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -60,6 +62,7 @@ navigation = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "
 # Glide
 bumptech-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideversion" }
 bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideversion" }
+gifdrawable = { group = "pl.droidsonroids.gif", name = "android-gif-drawable", version.ref = "gifdrawable" }
 
 # Libraries for Firebase
 # Firebase BoM for version management across Firebase libraries.
