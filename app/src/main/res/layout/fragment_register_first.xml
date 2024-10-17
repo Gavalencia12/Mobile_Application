@@ -27,7 +27,7 @@
             android:layout_gravity="start"
             android:background="@drawable/ic_arrow_back"
             android:backgroundTint="@color/white"
-            android:visibility="invisible"/>
+            android:visibility="visible"/>
 
         <!-- Imagen de registro -->
         <ImageView
@@ -54,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:weightSum="9"
             android:background="@drawable/rounded_top_cornes"
             android:padding="24dp"
             app:layout_constraintEnd_toEndOf="parent">
@@ -61,21 +62,34 @@
             <!-- Título -->
             <TextView
                 android:id="@+id/tv_rgt_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:fontFamily="@font/inter_bold"
                 android:text="Registration"
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
+            <!-- Instrucciones -->
+            <TextView
+                android:id="@+id/instruction"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:fontFamily="@font/inter_bold"
+                android:text="Please enter your information for continue"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
             <!-- Campos de entrada para el nombre -->
             <EditText
                 android:id="@+id/firstNameEditText"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="20dp"
                 android:hint="First name"
                 android:inputType="textPersonName"
                 android:textSize="16sp"
@@ -88,16 +102,14 @@
                 android:drawablePadding="15dp"
                 android:padding="16dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
-
             <!-- Campos de entrada para el apellido -->
             <EditText
                 android:id="@+id/lastNameEditText"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
                 android:hint="Last name"
+                android:layout_marginBottom="20dp"
                 android:inputType="textPersonName"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
@@ -109,16 +121,15 @@
                 android:drawablePadding="15dp"
                 android:padding="16dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
 
             <!-- Campos de entrada para el correo electrónico -->
             <EditText
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
                 android:hint="Email address"
+                android:layout_marginBottom="20dp"
                 android:inputType="textEmailAddress"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
@@ -130,16 +141,15 @@
                 android:drawablePadding="15dp"
                 android:padding="16dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
 
             <!-- Campos de entrada para la contraseña -->
             <EditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
                 android:hint="Password"
+                android:layout_marginBottom="20dp"
                 android:inputType="textPassword"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
@@ -147,21 +157,20 @@
                 android:textColorHint="@color/gray"
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_edit_text"
-                android:drawableStart="@drawable/ic_password"
+                android:drawableStart="@drawable/ic_passw"
                 android:drawableEnd="@drawable/ic_visibility"
                 android:drawablePadding="15dp"
                 android:padding="16dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
 
             <!-- Campo de entrada para confirmar la contraseña -->
             <EditText
                 android:id="@+id/confirmPasswordEditText"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="8dp"
+                android:layout_weight="1"
                 android:hint="Confirm password"
+                android:layout_marginBottom="25dp"
                 android:inputType="textPassword"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
@@ -169,24 +178,22 @@
                 android:textColorHint="@color/gray"
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_edit_text"
-                android:drawableStart="@drawable/ic_password"
+                android:drawableStart="@drawable/ic_passw"
                 android:drawableEnd="@drawable/ic_visibility"
                 android:drawablePadding="15dp"
                 android:padding="16dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
 
             <!-- Checkbox para aceptar términos y condiciones -->
             <CheckBox
                 android:id="@+id/cbTerms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="Acepto los Términos y Condiciones"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/dark_blue"
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:buttonTint="@color/checkbox_color_selector"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -194,46 +201,49 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
 
             <!-- Enlace para iniciar sesión y botón para continuar -->
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent">
                 <!-- Enlace para iniciar sesión -->
                 <TextView
                     android:id="@+id/loginLink"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="Already have an account? Log in"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/dark_blue"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="60dp"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
                     android:id="@+id/tv_rgt_next"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:fontFamily="@font/inter_extrabold"
                     android:text="Next"
                     android:textColor="@color/dark_blue"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toStartOf="@+id/nextButton"/>
+
                 <Button
                     android:id="@+id/nextButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="center"
                     android:background="@drawable/ic_arrow_next"
-                    android:backgroundTint="@color/blue" />
-            </LinearLayout>
+                    android:backgroundTint="@color/blue"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
