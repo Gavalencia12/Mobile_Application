@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:drawable="@color/blue_disabled"/> <!-- deshabilitado -->
+    <item android:state_pressed="true" android:drawable="@color/blue_pressed"/> <!-- presionado -->
+    <item android:state_focused="true" android:drawable="@color/blue"/> <!-- en foco -->
+    <item android:drawable="@color/blue"/> <!-- por defecto -->
+</selector>
