@@ -57,6 +57,10 @@ android {
     dataBinding{
         enable = true
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Presentation.seller.view.SellerHomeFragment">
+    tools:context=".Presentation.seller.view.SellerHomeFragment"
+    android:paddingTop="24dp">
 
     <TextView
         android:id="@+id/user_text"

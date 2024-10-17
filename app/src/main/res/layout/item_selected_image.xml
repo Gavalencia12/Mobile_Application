@@ -1,23 +1,22 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    android:layout_width="200dp"
+    android:layout_height="220dp"
     android:layout_margin="8dp">
 
     <ImageView
         android:id="@+id/iv_selected_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="200dp"
+        android:layout_height="220dp"
         android:scaleType="centerCrop"
         android:contentDescription="Selected Image" />
 
     <ImageButton
         android:id="@+id/btn_remove_image"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="end|top"
-        android:background="@drawable/ic_create"
-        android:contentDescription="Remove Image"
         android:layout_margin="4dp"
-        android:scaleType="centerInside"
-        android:tint="@color/red" />
+        android:background="@drawable/ic_selector_delete"
+        android:contentDescription="Remove Image"
+        android:scaleType="centerInside" />
 </FrameLayout>
