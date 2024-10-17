@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.bumptech.glide)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.material)
     annotationProcessor(libs.bumptech.glide.compiler)
     implementation(libs.gifdrawable)
 

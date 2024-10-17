@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Presentation.seller.view.CarDetailDialogFragment
+import com.example.carhive.Presentation.seller.view.EditCarDialogFragment
 import com.example.carhive.R
-// Asegúrate de importar el nuevo diálogo
 
 class CarAdapter(
     private var cars: List<CarEntity>,
     private val activity: FragmentActivity,
-    private val viewModel: CrudViewModel // Agrega el ViewModel para acceder a la función de eliminar
+    private val viewModel: CrudViewModel
 ) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
 
     class CarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -62,10 +62,14 @@ class CarAdapter(
             dialog.show(activity.supportFragmentManager, "CarDetailDialog")
         }
 
-        // Configurar el botón de eliminar
         holder.deleteButton.setOnClickListener {
-            // Mostrar el diálogo de confirmación
             ConfirmDeleteDialogFragment(car.id, viewModel).show(activity.supportFragmentManager, "ConfirmDeleteDialog")
+        }
+
+        // Add edit button functionality
+        holder.editButton.setOnClickListener {
+            val dialog = EditCarDialogFragment.newInstance(car, viewModel)
+            dialog.show(activity.supportFragmentManager, "EditCarDialog")
         }
     }
 
