@@ -26,6 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         // Verificar la autenticación en el inicio
         checkAuthentication(navHostFragment)
+
+        // Ocultar la ActionBar
+        supportActionBar?.hide()
     }
 
     private fun checkAuthentication(navHostFragment: NavHostFragment) {
