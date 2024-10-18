@@ -16,56 +16,59 @@ class ConfirmDeleteDialogFragment(private val carId: String, viewModel: CrudView
     private var _binding: DialogConfirmDeleteBinding? = null
     private val binding get() = _binding!!
 
-    // Obtén el ViewModel usando activityViewModels
+    // Get the ViewModel using activityViewModels
     private val viewModel: CrudViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogConfirmDeleteBinding.inflate(inflater, container, false)
+        _binding = DialogConfirmDeleteBinding.inflate(inflater, container, false) // Inflate the dialog layout
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Confirm deletion button click listener
         binding.btnConfirm.setOnClickListener {
-            // Llama a la función suspendida dentro de una corrutina
+            // Launch a coroutine to perform the delete operation
             viewLifecycleOwner.lifecycleScope.launch {
-                val userId = viewModel.getCurrentUserId() // Obtén el ID del usuario actual
+                val userId = viewModel.getCurrentUserId() // Get the current user's ID
 
-                // Primero, eliminamos el coche de la base de datos
-                viewModel.deleteCar(userId, carId) // Eliminar el coche al confirmar
+                // First, delete the car from the database
+                viewModel.deleteCar(userId, carId) // Delete the car on confirmation
 
-                // Luego, eliminamos la carpeta del coche en Firebase Storage
+                // Then, delete the car folder in Firebase Storage
                 deleteCarFolderFromStorage(userId, carId)
 
-                // Cierra el diálogo después de completar la operación
+                // Close the dialog after completing the operation
                 dismiss()
             }
         }
 
+        // Cancel button click listener
         binding.btnCancel.setOnClickListener {
-            dismiss() // Cerrar el diálogo al cancelar
+            dismiss() // Close the dialog on cancel
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Clean up binding to prevent memory leaks
     }
 
+    // Suspend function to delete the car folder from Firebase Storage
     private suspend fun deleteCarFolderFromStorage(userId: String, carId: String) {
-        // Referencia a la carpeta en Firebase Storage
+        // Reference to the folder in Firebase Storage
         val storageRef = FirebaseStorage.getInstance().reference.child("Car/$userId/$carId/")
 
-        // Obtén todos los archivos dentro de la carpeta
-        val files = storageRef.listAll().await() // Asegúrate de tener la librería kotlinx-coroutines-play-services
+        // Get all files inside the folder
+        val files = storageRef.listAll().await() // Ensure you have the kotlinx-coroutines-play-services library
 
-        // Elimina cada archivo encontrado
+        // Delete each file found
         files.items.forEach { file ->
-            file.delete().await() // Eliminar cada archivo de la carpeta
+            file.delete().await() // Delete each file in the folder
         }
     }
 }

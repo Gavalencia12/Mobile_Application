@@ -28,40 +28,42 @@ class EditCarDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: CrudViewModel
     private lateinit var car: CarEntity
-    private val selectedImages = mutableListOf<Uri>()
+    private val selectedImages = mutableListOf<Uri>() // Store selected images
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
-    private val existingImageUrls = mutableListOf<String>()
+    private val existingImageUrls = mutableListOf<String>() // Store URLs of existing images
 
+    // Activity result launcher for selecting images
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == android.app.Activity.RESULT_OK) {
                 result.data?.let { data ->
-                    // Manejar múltiples imágenes seleccionadas
+                    // Handle multiple images selected
                     val clipData = data.clipData
                     if (clipData != null) {
                         for (i in 0 until clipData.itemCount) {
                             val uri = clipData.getItemAt(i).uri
+                            // Persist URI permission
                             requireContext().contentResolver.takePersistableUriPermission(
                                 uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                             )
-                            selectedImages.add(uri)
+                            selectedImages.add(uri) // Add URI to selected images
                         }
                     } else {
                         data.data?.let { uri ->
                             requireContext().contentResolver.takePersistableUriPermission(
                                 uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                             )
-                            selectedImages.add(uri)
+                            selectedImages.add(uri) // Add single URI to selected images
                         }
                     }
-                    selectedImagesAdapter.notifyDataSetChanged()
-                    updateImageCounter()
+                    selectedImagesAdapter.notifyDataSetChanged() // Notify adapter of changes
+                    updateImageCounter() // Update image count display
                 }
             }
         }
 
-
     companion object {
+        // Factory method to create an instance of the dialog with car data
         fun newInstance(car: CarEntity, viewModel: CrudViewModel): EditCarDialogFragment {
             val fragment = EditCarDialogFragment()
             fragment.car = car
@@ -71,23 +73,22 @@ class EditCarDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(requireContext(), R.style.DialogTheme_FullScreen)
+        return Dialog(requireContext(), R.style.DialogTheme_FullScreen) // Full-screen dialog
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DialogCarOptionsBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding.root // Inflate and return the dialog view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupUI()
-        setupListeners()
+        setupUI() // Initialize UI elements
+        setupListeners() // Set up button listeners
     }
 
     private fun setupUI() {
-        // Cargar los datos actuales del coche
+        // Load current car data into input fields
         binding.etModelo.setText(car.modelo)
         binding.etColor.setText(car.color)
         binding.etSpeed.setText(car.speed)
@@ -95,57 +96,62 @@ class EditCarDialogFragment : DialogFragment() {
         binding.etDescription.setText(car.description)
         binding.etPrice.setText(car.price)
 
-        // Añade las URLs de las imágenes existentes a la lista de imágenes seleccionadas
+        // Add existing image URLs to the selected images list
         car.imageUrls?.forEach { imageUrl ->
             existingImageUrls.add(imageUrl)
-            selectedImages.add(Uri.parse(imageUrl)) // Añadir a la lista de URIs para el adaptador
+            selectedImages.add(Uri.parse(imageUrl)) // Convert to URI for adapter
         }
 
-        // Configura el RecyclerView para mostrar las imágenes seleccionadas
+        // Set up RecyclerView for displaying selected images
         selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position ->
-            selectedImages.removeAt(position)
-            selectedImagesAdapter.notifyItemRemoved(position)
-            updateImageCounter()
+            selectedImages.removeAt(position) // Remove image from list
+            selectedImagesAdapter.notifyItemRemoved(position) // Notify adapter
+            updateImageCounter() // Update image count display
         }
 
         binding.rvSelectedImages.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = selectedImagesAdapter
+            adapter = selectedImagesAdapter // Set adapter for RecyclerView
         }
 
-        updateImageCounter()
+        updateImageCounter() // Update image count display
     }
 
     private fun setupListeners() {
+        // Set up listener for selecting images button
         binding.buttonSelectImages.setOnClickListener {
-            openImagePicker()
+            openImagePicker() // Open image picker
         }
 
+        // Set up listener for create button
         binding.buttonCreate.setOnClickListener {
-            updateCar()
+            updateCar() // Attempt to update the car
         }
 
+        // Set up listener for cancel button
         binding.buttonCancel.setOnClickListener {
-            dismiss()
+            dismiss() // Close the dialog
         }
     }
 
     private fun openImagePicker() {
+        // Launch an intent to pick images
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "image/*"
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Allow multiple selections
             addCategory(Intent.CATEGORY_OPENABLE)
         }
-        imagePickerLauncher.launch(intent)
+        imagePickerLauncher.launch(intent) // Launch the image picker
     }
 
     private fun updateImageCounter() {
         val maxImages = 5
+        // Update the display of the number of selected images
         binding.tvImageCount.text = "${selectedImages.size} / $maxImages images selected"
     }
 
-
     private fun updateCar() {
+        // Get input values from the text fields
         val modelo = binding.etModelo.text.toString()
         val color = binding.etColor.text.toString()
         val speed = binding.etSpeed.text.toString()
@@ -153,31 +159,34 @@ class EditCarDialogFragment : DialogFragment() {
         val description = binding.etDescription.text.toString()
         val price = binding.etPrice.text.toString()
 
+        // Check that all fields are filled
         if (modelo.isNotEmpty() && color.isNotEmpty() && speed.isNotEmpty() && addOn.isNotEmpty() &&
             description.isNotEmpty() && price.isNotEmpty()) {
 
+            // Filter new images and images to keep
             val newImages = selectedImages.filter { uri -> !existingImageUrls.contains(uri.toString()) }
             val imagesToKeep = selectedImages.filter { uri -> existingImageUrls.contains(uri.toString()) }
 
-            // Mostrar el ProgressDialog o ProgressBar
+            // Show progress dialog
             val progressDialog = ProgressDialog(requireContext())
-            progressDialog.setMessage("Subiendo imágenes, por favor espera 3 segundos más...")
-            progressDialog.setCancelable(false)
+            progressDialog.setMessage("Uploading images, please wait...")
+            progressDialog.setCancelable(false) // Prevent canceling
             progressDialog.show()
 
             viewModel.viewModelScope.launch {
                 try {
-                    val userId = viewModel.getCurrentUserId()
+                    val userId = viewModel.getCurrentUserId() // Get current user ID
 
-                    // Subir imágenes nuevas a Firebase Storage
+                    // Upload new images to Firebase Storage
                     val uploadedImageUrls = mutableListOf<String>()
                     newImages.forEach { uri ->
                         val imageRef = FirebaseStorage.getInstance().reference.child("cars/${uri.lastPathSegment}")
-                        val uploadTask = imageRef.putFile(uri)
-                        val downloadUrl = uploadTask.await().storage.downloadUrl.await()
-                        uploadedImageUrls.add(downloadUrl.toString())
+                        val uploadTask = imageRef.putFile(uri) // Upload the image
+                        val downloadUrl = uploadTask.await().storage.downloadUrl.await() // Get download URL
+                        uploadedImageUrls.add(downloadUrl.toString()) // Store uploaded image URL
                     }
 
+                    // Update car details in the database
                     viewModel.updateCar(
                         userId = userId,
                         carId = car.id,
@@ -191,24 +200,25 @@ class EditCarDialogFragment : DialogFragment() {
                         existingImages = imagesToKeep
                     )
 
-                    // Cerrar ProgressDialog y mostrar mensaje de éxito
+                    // Close progress dialog and show success message
                     progressDialog.dismiss()
-                    Toast.makeText(requireContext(), "Los cambios se han guardado exitosamente.", Toast.LENGTH_SHORT).show()
-                    dismiss()
+                    Toast.makeText(requireContext(), "Changes saved successfully.", Toast.LENGTH_SHORT).show()
+                    dismiss() // Close the dialog
 
                 } catch (e: Exception) {
-                    // Si ocurre un error, cerrar ProgressDialog y mostrar mensaje de error
+                    // If an error occurs, close progress dialog and show error message
                     progressDialog.dismiss()
-                    Toast.makeText(requireContext(), "Error al subir imágenes o guardar cambios. Inténtalo de nuevo.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Error uploading images or saving changes. Please try again.", Toast.LENGTH_LONG).show()
                 }
             }
         } else {
-            Toast.makeText(requireContext(), "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+            // Show error if fields are not completed
+            Toast.makeText(requireContext(), "Please complete all fields.", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Clean up binding to prevent memory leaks
     }
 }

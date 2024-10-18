@@ -14,36 +14,37 @@ import com.example.carhive.R
 class FullImageDialogFragment(private val imageUrl: String) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.setCanceledOnTouchOutside(true)
-        return dialog
+        val dialog = super.onCreateDialog(savedInstanceState) // Create the dialog
+        dialog.setCanceledOnTouchOutside(true) // Allow dialog to be dismissed when touched outside
+        return dialog // Return the created dialog
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for the dialog
         val view = inflater.inflate(R.layout.dialog_full_image, container, false)
 
-        val imageView: ImageView = view.findViewById(R.id.fullImageView)
+        val imageView: ImageView = view.findViewById(R.id.fullImageView) // Reference to the ImageView
 
-        // Cargar la imagen con Glide
+        // Load the image using Glide
         Glide.with(requireContext()).load(imageUrl).into(imageView)
 
-        // Cerrar el dialog al hacer clic en la imagen
+        // Dismiss the dialog when the image is clicked
         imageView.setOnClickListener {
-            dismiss()
+            dismiss() // Close the dialog
         }
 
-        return view
+        return view // Return the inflated view
     }
 
     override fun onStart() {
         super.onStart()
-        // Configurar el tamaño del DialogFragment para ocupar la pantalla completa
+        // Configure the size of the DialogFragment to occupy the full screen
         dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT
+            WindowManager.LayoutParams.MATCH_PARENT, // Match parent width
+            WindowManager.LayoutParams.MATCH_PARENT // Match parent height
         )
     }
 }

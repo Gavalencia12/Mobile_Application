@@ -14,10 +14,13 @@ import com.example.carhive.R
 class CarDetailDialogFragment(private val car: CarEntity) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // Create an AlertDialog Builder
         val builder = AlertDialog.Builder(requireContext())
+
+        // Inflate the custom layout for the dialog
         val view = requireActivity().layoutInflater.inflate(R.layout.dialog_car_detail, null)
 
-        // Referencias a los elementos del diálogo
+        // References to dialog elements
         val carModelTextView: TextView = view.findViewById(R.id.carModelDetailTextView)
         val carColorTextView: TextView = view.findViewById(R.id.carColorDetailTextView)
         val carSpeedTextView: TextView = view.findViewById(R.id.carSpeedDetailTextView)
@@ -27,7 +30,7 @@ class CarDetailDialogFragment(private val car: CarEntity) : DialogFragment() {
         val closeButton: Button = view.findViewById(R.id.closeButton)
         val imageCountTextView: TextView = view.findViewById(R.id.imageCountTextView)
 
-        // Configurar los datos en el diálogo
+        // Set the data in the dialog
         carModelTextView.text = "Model: ${car.modelo}"
         carColorTextView.text = "Color: ${car.color}"
         carSpeedTextView.text = "Speed: ${car.speed} km/h"
@@ -35,29 +38,30 @@ class CarDetailDialogFragment(private val car: CarEntity) : DialogFragment() {
         carAddOnTextView.text = "Add On: ${car.addOn}"
         carDescriptionTextView.text = "Description: ${car.description}"
 
-        // Actualiza el contador de imágenes
+        // Update the image counter
         imageCountTextView.text = "Image 1 of ${car.imageUrls?.size ?: 0}"
 
-        // Configura el ViewPager
+        // Set up the ViewPager for car images
         val viewPager: ViewPager = view.findViewById(R.id.carImagesViewPager)
         val imageAdapter = CarImageAdapter(car.imageUrls ?: emptyList())
         viewPager.adapter = imageAdapter
 
-        // Actualiza el contador de imágenes
+        // Update the image counter based on the current image
         imageCountTextView.text = "1/${car.imageUrls?.size ?: 0}"
 
-        // Listener para actualizar el conteo de imágenes al deslizar
+        // Listener to update the image count when swiping through images
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
             override fun onPageSelected(position: Int) {
+                // Update the image count text based on the selected position
                 imageCountTextView.text = "${position + 1}/${car.imageUrls?.size ?: 0}"
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
 
-        // Configura el botón de cerrar
+        // Set the close button listener to dismiss the dialog
         closeButton.setOnClickListener {
             dismiss()
         }

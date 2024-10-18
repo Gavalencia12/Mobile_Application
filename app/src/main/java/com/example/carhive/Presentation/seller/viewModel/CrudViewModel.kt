@@ -23,34 +23,36 @@ class CrudViewModel @Inject constructor(
     private val uploadToCarImageUseCase: UploadToCarImageUseCase,
 ) : ViewModel() {
 
-    // LiveData para almacenar la lista de coches del usuario
+    // LiveData to hold the list of cars for the user
     private val _carList = MutableLiveData<List<CarEntity>>()
     val carList: LiveData<List<CarEntity>> get() = _carList
 
-    // LiveData para manejar errores
+    // LiveData to manage errors
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
-    // Función para obtener los coches del usuario desde la base de datos
+    // Function to fetch cars for the user from the database
     fun fetchCarsForUser() {
         viewModelScope.launch {
+            // Get the current user's ID
             val currentUserResult = getCurrentUserIdUseCase()
             val userId = currentUserResult.getOrNull()
 
             userId?.let {
+                // Fetch cars for the current user
                 val result = getCarUserInDatabaseUseCase(it)
                 result.onSuccess { cars ->
-                    _carList.value = cars // Actualiza el LiveData con la lista de coches
+                    _carList.value = cars // Update LiveData with the list of cars
                 }.onFailure { exception ->
-                    _error.value = "Error fetching cars: ${exception.message}" // Actualiza el LiveData de error
+                    _error.value = "Error fetching cars: ${exception.message}" // Update error LiveData
                 }
             } ?: run {
-                _error.value = "User not authenticated"
+                _error.value = "User not authenticated" // Handle case where user is not authenticated
             }
         }
     }
 
-    // Método para añadir un coche a la base de datos
+    // Method to add a car to the database
     fun addCarToDatabase(
         modelo: String,
         color: String,
@@ -61,10 +63,11 @@ class CrudViewModel @Inject constructor(
         images: List<Uri>
     ) {
         viewModelScope.launch {
+            // Get the current user's ID
             val currentUser = getCurrentUserIdUseCase()
             val userId = currentUser.getOrNull() ?: return@launch
 
-            // Crear el objeto del coche
+            // Create a Car object
             val car = Car(
                 modelo = modelo,
                 color = color,
@@ -74,58 +77,60 @@ class CrudViewModel @Inject constructor(
                 price = price
             )
 
-            // Guardar el coche en la base de datos
+            // Save the car in the database
             val result = saveCarToDatabaseUseCase(userId, car)
             result.fold(
                 onSuccess = { carId ->
-                    // Subir imágenes a Firebase y obtener las URLs
+                    // Upload images to Firebase and get URLs
                     val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
                     val imageUrls = imageUploadResult.getOrNull()
 
                     if (imageUrls != null) {
-                        // Actualizar el coche con las URLs de las imágenes
+                        // Update the car with the image URLs
                         val updatedCar = car.copy(imageUrls = imageUrls, id = carId)
                         updateCarInDatabase(userId, carId, updatedCar)
                     }
                 },
                 onFailure = { error ->
-                    _error.value = "Error adding car: ${error.message}"
+                    _error.value = "Error adding car: ${error.message}" // Update error LiveData
                 }
             )
         }
     }
 
-    // Función para actualizar el coche en la base de datos y refrescar la lista
+    // Function to update a car in the database and refresh the list
     private fun updateCarInDatabase(userId: String, carId: String, updatedCar: Car) {
         viewModelScope.launch {
+            // Update the car in the database
             val result = updateCarToDatabaseUseCase(userId, carId, updatedCar)
             result.fold(
                 onSuccess = {
-                    fetchCarsForUser() // Refrescar la lista de coches
+                    fetchCarsForUser() // Refresh the list of cars
                 },
                 onFailure = { error ->
-                    _error.value = "Error updating car: ${error.message}"
+                    _error.value = "Error updating car: ${error.message}" // Update error LiveData
                 }
             )
         }
     }
 
-    // Método para eliminar un coche
+    // Method to delete a car
     fun deleteCar(userId: String, carId: String) {
         viewModelScope.launch {
+            // Delete the car from the database
             val result = deleteCarInDatabaseUseCase(userId, carId)
             result.fold(
                 onSuccess = {
-                    fetchCarsForUser() // Refrescar la lista después de eliminar
+                    fetchCarsForUser() // Refresh the list after deletion
                 },
                 onFailure = { error ->
-                    _error.value = "Error deleting car: ${error.message}"
+                    _error.value = "Error deleting car: ${error.message}" // Update error LiveData
                 }
             )
         }
     }
 
-    // Método para actualizar un coche
+    // Method to update a car
     fun updateCar(
         userId: String,
         carId: String,
@@ -135,10 +140,11 @@ class CrudViewModel @Inject constructor(
         addOn: String,
         description: String,
         price: String,
-        newImages: List<Uri>, // Nuevas imágenes a subir
-        existingImages: List<Uri> // Imágenes que ya existen y no necesitan ser subidas
+        newImages: List<Uri>, // New images to upload
+        existingImages: List<Uri> // Existing images that do not need to be uploaded
     ) {
         viewModelScope.launch {
+            // Create a Car object with updated details
             val car = Car(
                 id = carId,
                 modelo = modelo,
@@ -149,24 +155,23 @@ class CrudViewModel @Inject constructor(
                 price = price
             )
 
-            // Subir solo las nuevas imágenes
+            // Upload only new images
             val imageUploadResult = uploadToCarImageUseCase(userId, carId, newImages)
             val newImageUrls = imageUploadResult.getOrNull() ?: emptyList()
 
-            // Combina las URLs existentes con las nuevas
+            // Combine existing URLs with new ones
             val combinedImageUrls = existingImages.map { it.toString() } + newImageUrls
 
-            // Actualizar el coche con todas las URLs de imágenes
+            // Update the car with all image URLs
             val updatedCar = car.copy(imageUrls = combinedImageUrls)
             updateCarInDatabase(userId, carId, updatedCar)
         }
     }
 
-
-    // Agrega esta función en CrudViewModel
+    // Add this function in CrudViewModel
     suspend fun getCurrentUserId(): String {
+        // Get the current user's ID
         val currentUser = getCurrentUserIdUseCase()
-        return currentUser.getOrNull() ?: throw IllegalArgumentException("User not authenticated")
+        return currentUser.getOrNull() ?: throw IllegalArgumentException("User not authenticated") // Handle not authenticated case
     }
-
 }

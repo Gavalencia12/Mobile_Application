@@ -23,77 +23,77 @@ import com.example.carhive.databinding.ItemSelectedImageBinding
 
 class CrudDialogFragment : DialogFragment() {
 
-    private val viewModel: CrudViewModel by activityViewModels()
+    private val viewModel: CrudViewModel by activityViewModels() // Get the ViewModel
     private var _binding: DialogCarOptionsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
-    private val selectedImages = mutableListOf<Uri>()
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent> // Launcher for image picking
+    private val selectedImages = mutableListOf<Uri>() // Store selected image URIs
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
 
-    private val maxImages = 5 // Limite de imágenes
+    private val maxImages = 5 // Maximum number of images allowed
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = DialogCarOptionsBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding.root // Inflate the dialog layout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializa el RecyclerView y el adaptador para mostrar las imágenes seleccionadas
+        // Initialize RecyclerView and adapter for displaying selected images
         selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position ->
-            removeImage(position)
+            removeImage(position) // Handle image removal
         }
 
         binding.rvSelectedImages.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = selectedImagesAdapter
+            adapter = selectedImagesAdapter // Set the adapter for the RecyclerView
         }
 
-        // Inicializa el lanzador de la actividad para seleccionar imágenes
+        // Initialize the image picker activity result launcher
         imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == android.app.Activity.RESULT_OK) {
                 val clipData = result.data?.clipData
                 if (clipData != null) {
-                    // Permite seleccionar múltiples imágenes, pero con un límite
+                    // Allow multiple image selections, with a limit
                     val newImagesCount = clipData.itemCount
                     if (selectedImages.size + newImagesCount <= maxImages) {
                         for (i in 0 until newImagesCount) {
                             val imageUri = clipData.getItemAt(i).uri
-                            selectedImages.add(imageUri)
+                            selectedImages.add(imageUri) // Add the selected image URI
                         }
                     } else {
-                        showMaxImagesError()
+                        showMaxImagesError() // Show error if limit exceeded
                     }
                 } else {
-                    // Si solo se selecciona una imagen
+                    // Handle single image selection
                     result.data?.data?.let { uri ->
                         if (selectedImages.size < maxImages) {
-                            selectedImages.add(uri)
+                            selectedImages.add(uri) // Add the selected image URI
                         } else {
-                            showMaxImagesError()
+                            showMaxImagesError() // Show error if limit exceeded
                         }
                     }
                 }
-                selectedImagesAdapter.notifyDataSetChanged()
-                updateImageCounter() // Actualiza el contador
+                selectedImagesAdapter.notifyDataSetChanged() // Notify the adapter of changes
+                updateImageCounter() // Update the image counter display
             }
         }
 
-        // Botón para seleccionar imágenes
+        // Button to select images
         binding.buttonSelectImages.setOnClickListener {
             if (selectedImages.size < maxImages) {
-                openImagePicker()
+                openImagePicker() // Open the image picker
             } else {
-                showMaxImagesError()
+                showMaxImagesError() // Show error if limit exceeded
             }
         }
 
-        // Crear el coche con las imágenes seleccionadas
+        // Button to create the car with selected images
         binding.buttonCreate.setOnClickListener {
             val modelo = binding.etModelo.text.toString()
             val color = binding.etColor.text.toString()
@@ -102,11 +102,12 @@ class CrudDialogFragment : DialogFragment() {
             val description = binding.etDescription.text.toString()
             val price = binding.etPrice.text.toString()
 
-            // Verificar que todos los campos estén llenos
+            // Check that all fields are filled
             if (modelo.isEmpty() || color.isEmpty() || speed.isEmpty() || addOn.isEmpty() ||
                 description.isEmpty() || price.isEmpty() || selectedImages.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show() // Show error message
             } else {
+                // Add car to the database
                 viewModel.addCarToDatabase(
                     modelo = modelo,
                     color = color,
@@ -117,96 +118,98 @@ class CrudDialogFragment : DialogFragment() {
                     images = selectedImages
                 )
 
-                dismiss() // Cierra el diálogo
+                dismiss() // Close the dialog
             }
         }
 
+        // Cancel button to close the dialog
         binding.buttonCancel.setOnClickListener {
-            dismiss() // Cierra el diálogo
+            dismiss() // Close the dialog
         }
 
-        // Actualiza el contador de imágenes al iniciar
+        // Update the image counter on startup
         updateImageCounter()
     }
-    // Función para abrir el selector de imágenes
+
+    // Function to open the image picker
     private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "image/*"
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Permitir seleccionar múltiples imágenes
-            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*" // Allow image selection
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Allow multiple images
+            addCategory(Intent.CATEGORY_OPENABLE) // Make the intent openable
         }
-        imagePickerLauncher.launch(intent)
+        imagePickerLauncher.launch(intent) // Launch the image picker
     }
 
-    // Función para eliminar una imagen seleccionada
+    // Function to remove a selected image
     private fun removeImage(position: Int) {
-        selectedImages.removeAt(position)
-        selectedImagesAdapter.notifyItemRemoved(position)
-        updateImageCounter() // Actualiza el contador
+        selectedImages.removeAt(position) // Remove image from the list
+        selectedImagesAdapter.notifyItemRemoved(position) // Notify the adapter of removal
+        updateImageCounter() // Update the image counter display
     }
 
-    // Mostrar error si se excede el número máximo de imágenes
+    // Show error if the maximum number of images is exceeded
     private fun showMaxImagesError() {
-        Toast.makeText(requireContext(), "Solo puedes seleccionar un máximo de $maxImages imágenes", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "You can only select a maximum of $maxImages images", Toast.LENGTH_SHORT).show()
     }
 
-    // Función para actualizar el contador de imágenes seleccionadas
+    // Function to update the count of selected images
     private fun updateImageCounter() {
         binding.tvImageCount.text = "${selectedImages.size}/$maxImages images selected"
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Clean up binding to prevent memory leaks
     }
 
     override fun getTheme(): Int {
-        return R.style.AppTheme_Dialog // Puedes personalizar el tema si es necesario
+        return R.style.AppTheme_Dialog // You can customize the theme if necessary
     }
 }
 
+// Adapter for displaying selected images in a RecyclerView
 class SelectedImagesAdapter(
-    private val images: List<Uri>,
-    private val onRemoveImage: (Int) -> Unit
+    private val images: List<Uri>, // List of image URIs
+    private val onRemoveImage: (Int) -> Unit // Callback for removing an image
 ) : RecyclerView.Adapter<SelectedImagesAdapter.ImageViewHolder>() {
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val selectedImageView: ImageView = itemView.findViewById(R.id.iv_selected_image)
-        val removeImageButton: ImageButton = itemView.findViewById(R.id.btn_remove_image)
+        val selectedImageView: ImageView = itemView.findViewById(R.id.iv_selected_image) // ImageView for displaying image
+        val removeImageButton: ImageButton = itemView.findViewById(R.id.btn_remove_image) // Button to remove image
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_selected_image, parent, false)
-        return ImageViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_selected_image, parent, false) // Inflate item layout
+        return ImageViewHolder(view) // Return the ViewHolder
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val imageUri = images[position]
+        val imageUri = images[position] // Get the URI for the current image
 
         if (imageUri.scheme == "content") {
-            // Cargar desde Uri local (imágenes nuevas)
+            // Load from local URI (new images)
             Glide.with(holder.itemView.context)
                 .load(imageUri)
-                .placeholder(R.drawable.ic_img)  // Imagen por defecto mientras carga
-                .error(R.drawable.ic_error)      // Imagen si hay error
-                .into(holder.selectedImageView)
+                .placeholder(R.drawable.ic_img) // Placeholder while loading
+                .error(R.drawable.ic_error) // Image to show on error
+                .into(holder.selectedImageView) // Load the image into the ImageView
         } else {
-            // Cargar desde una URL (imágenes existentes de Firebase)
+            // Load from a URL (existing images from Firebase)
             Glide.with(holder.itemView.context)
-                .load(imageUri.toString())  // Convertir Uri a String para Glide
-                .placeholder(R.drawable.ic_img)  // Imagen por defecto mientras carga
-                .error(R.drawable.ic_error)      // Imagen si hay error
-                .into(holder.selectedImageView)
+                .load(imageUri.toString()) // Convert URI to String for Glide
+                .placeholder(R.drawable.ic_img) // Placeholder while loading
+                .error(R.drawable.ic_error) // Image to show on error
+                .into(holder.selectedImageView) // Load the image into the ImageView
         }
 
-        // Eliminar imagen
+        // Remove image button click listener
         holder.removeImageButton.setOnClickListener {
-            onRemoveImage(position)
+            onRemoveImage(position) // Call the remove image callback
         }
     }
 
-
     override fun getItemCount(): Int {
-        return images.size
+        return images.size // Return the total number of images
     }
 }

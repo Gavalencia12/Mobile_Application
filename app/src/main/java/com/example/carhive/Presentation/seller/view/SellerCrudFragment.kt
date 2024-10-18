@@ -16,65 +16,67 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SellerCrudFragment : Fragment() {
 
-    private var _binding: FragmentSellerCrudBinding? = null
-    private val binding get() = _binding!!
+    private var _binding: FragmentSellerCrudBinding? = null // ViewBinding for the fragment
+    private val binding get() = _binding!! // Getter for the binding object
 
-    private val viewModel: CrudViewModel by activityViewModels()
-    private lateinit var carAdapter: CarAdapter
+    private val viewModel: CrudViewModel by activityViewModels() // Shared ViewModel for CRUD operations
+    private lateinit var carAdapter: CarAdapter // Adapter for the RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSellerCrudBinding.inflate(inflater, container, false)
-        return binding.root
+        _binding = FragmentSellerCrudBinding.inflate(inflater, container, false) // Inflate the binding layout
+        return binding.root // Return the root view of the binding
     }
 
+    // Function to set up the RecyclerView
     private fun setupRecyclerView() {
-        carAdapter = CarAdapter(emptyList(), requireActivity(), viewModel) // Pasa el ViewModel
+        carAdapter = CarAdapter(emptyList(), requireActivity(), viewModel) // Initialize the adapter with an empty list
         binding.recyclerViewCar.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = carAdapter
+            layoutManager = LinearLayoutManager(context) // Set layout manager
+            adapter = carAdapter // Set the adapter
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configura el RecyclerView con su adaptador, pasando el ViewModel
-        carAdapter = CarAdapter(emptyList(), requireActivity(), viewModel) // Pasa el ViewModel
+        // Set up the RecyclerView with its adapter and ViewModel
+        carAdapter = CarAdapter(emptyList(), requireActivity(), viewModel) // Initialize the adapter again
         binding.recyclerViewCar.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = carAdapter
+            layoutManager = LinearLayoutManager(context) // Set layout manager
+            adapter = carAdapter // Set the adapter
         }
 
-        // Observa los cambios en la lista de coches
+        // Observe changes in the car list from the ViewModel
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
-            carAdapter.updateCars(cars) // Actualiza el adaptador cuando cambien los datos
+            carAdapter.updateCars(cars) // Update the adapter when data changes
         }
 
-        // Observa los errores
+        // Observe error messages from the ViewModel
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            // Mostrar un mensaje de error
+            // Show a Toast message for any error
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         }
 
-        // Llama a la función para obtener los coches del usuario
+        // Fetch cars for the current user from the ViewModel
         viewModel.fetchCarsForUser()
 
-        // Llamar al modal cuando lo necesites, por ejemplo, con un botón
+        // Set up the button to show the car options dialog
         binding.btnAddCar.setOnClickListener {
-            showCarOptionsDialog()
+            showCarOptionsDialog() // Call the function to show the dialog
         }
     }
 
+    // Function to display the car options dialog
     private fun showCarOptionsDialog() {
-        val dialog = CrudDialogFragment()
-        dialog.show(parentFragmentManager, "CarOptionsDialog")
+        val dialog = CrudDialogFragment() // Create an instance of the dialog
+        dialog.show(parentFragmentManager, "CarOptionsDialog") // Show the dialog
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Clear the binding reference to avoid memory leaks
     }
 }
