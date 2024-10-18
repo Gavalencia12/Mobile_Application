@@ -13,7 +13,7 @@
     <!-- Título de bienvenida -->
     <TextView
         android:id="@+id/welcomeName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_extrabold"
         android:gravity="center"
@@ -40,7 +40,7 @@
     <!-- Texto principal -->
     <TextView
         android:id="@+id/welcomeTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_extrabold"
         android:gravity="center"
@@ -71,9 +71,9 @@
     <Button
         android:id="@+id/getStartedButton"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:text="Get started"
         android:fontFamily="@font/inter_bold"
         android:textColor="@color/white"
-        android:backgroundTint="@color/blue" /> <!-- Color del botón -->
+        android:background="@drawable/btn_pulsado" />
 </LinearLayout>
