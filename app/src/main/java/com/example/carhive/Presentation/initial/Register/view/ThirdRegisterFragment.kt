@@ -23,7 +23,7 @@ class ThirdRegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ThirdRegisterViewModel by viewModels()
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri? = null // Inicializa la variable como nullable
     private lateinit var launcher: ActivityResultLauncher<String>
 
     override fun onCreateView(
@@ -37,13 +37,17 @@ class ThirdRegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inicializa el botón como deshabilitado
+        binding.finishRegistrationButton.isEnabled = false
+
         launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 imageUri = uri
+                binding.selectedImageView.visibility = View.VISIBLE
+                binding.selectedImageView.load(uri) // Carga la imagen seleccionada
             }
-            binding.selectedImageView.visibility = View.VISIBLE
-            binding.selectedImageView.load(uri) // Carga la imagen seleccionada
-            binding.finishRegistrationButton.isEnabled = uri != null // Habilitar el botón si hay imagen
+            // Habilitar el botón si hay una imagen seleccionada
+            binding.finishRegistrationButton.isEnabled = uri != null
         }
 
         binding.chooseImageButton.setOnClickListener {
@@ -51,7 +55,7 @@ class ThirdRegisterFragment : Fragment() {
         }
 
         binding.finishRegistrationButton.setOnClickListener {
-            imageUri.let { uri ->
+            imageUri?.let { uri ->
                 viewModel.uploadProfileImage(uri) // Llama al método de carga de la imagen
                 findNavController().navigate(R.id.action_thirdRegisterFragment_to_fortRegisterFragment) // Cambia a tu siguiente fragmento
             }

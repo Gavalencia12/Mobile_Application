@@ -17,4 +17,5 @@
     <color name="dark_gray">#434343</color>
     <color name="gray_bg">#E4E4E4</color>
     <color name="form_input">#D6DCF1</color>
+    <color name="red">#FF0000</color>
 </resources>

@@ -92,8 +92,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="30dp"
                 android:hint="CURP"
+                android:inputType="textCapCharacters"
+                android:layout_gravity="center"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/gray"
@@ -101,7 +103,8 @@
                 android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="15dp"
-                android:padding="16dp"/>
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
 
             <!-- Campo de entrada para el número de teléfono -->
             <EditText
@@ -109,8 +112,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="30dp"
                 android:hint="Phone number"
+                android:inputType="number"
+                android:layout_gravity="center"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/gray"
@@ -118,7 +123,8 @@
                 android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="15dp"
-                android:padding="16dp"/>
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
 
 
             <!-- Campo de entrada para el número de identificación del votante -->
@@ -127,8 +133,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="30dp"
                 android:hint="Voter ID"
+                android:inputType="textCapCharacters"
+                android:layout_gravity="center"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/gray"
@@ -136,7 +144,41 @@
                 android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_person"
                 android:drawablePadding="15dp"
-                android:padding="16dp"/>
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                app:layout_constraintTop_toBottomOf="@+id/ivIsVerified"
+                android:orientation="horizontal">
+                <!-- Checkbox para aceptar términos y condiciones -->
+                <CheckBox
+                    android:id="@+id/cbTerms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="I accept the "
+                    android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/dark_blue"
+                    android:gravity="end|center_vertical"
+                    android:buttonTint="@color/checkbox_color_selector"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <TextView
+                    android:id="@+id/terms_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/terms_and_conditions"
+                    android:textColor="@color/blue" />
+
+            </LinearLayout>
 
 
             <!-- Botón "Next" y texto al final del formulario -->

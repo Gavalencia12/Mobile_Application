@@ -68,6 +68,8 @@ dependencies {
     implementation(libs.navigation)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.gifdrawable)
+    implementation(libs.bumptech.glide)
+    annotationProcessor(libs.bumptech.glide.compiler)
 
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)

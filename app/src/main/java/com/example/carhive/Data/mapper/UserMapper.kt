@@ -53,7 +53,8 @@ class UserMapper @Inject constructor() {
             curp = entity.curp,
             imageUrl = entity.imageUrl,
             role = mapRoleToDomain(entity.role),
-            terms = entity.terms,
+            termsUser = entity.termsUser,
+            termsSeller = entity.termsSeller,
             isVerified = entity.isverified
         )
     }
@@ -83,7 +84,8 @@ class UserMapper @Inject constructor() {
             curp = domainModel.curp,
             imageUrl = domainModel.imageUrl,
             role = mapRoleToEntity(domainModel.role),
-            terms = domainModel.terms,
+            termsUser = domainModel.termsUser,
+            termsSeller = domainModel.termsSeller,
             isverified = domainModel.isVerified
         )
     }

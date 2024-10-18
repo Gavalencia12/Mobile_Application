@@ -18,6 +18,7 @@ class SecondRegisterViewModel @Inject constructor(
         curp: String,
         phoneNumber: String,
         voterID: String,
+        terms: Boolean
     ) {
         viewModelScope.launch {
             val existingUser = getUserPreferencesUseCase()
@@ -25,7 +26,8 @@ class SecondRegisterViewModel @Inject constructor(
             val user = update.copy(
                 phoneNumber = phoneNumber,
                 voterID = voterID,
-                curp = curp
+                curp = curp,
+                termsUser = terms
             )
             saveUserPreferencesUseCase(user) // Guardar en SharedPreferences
             // Registro del usuario

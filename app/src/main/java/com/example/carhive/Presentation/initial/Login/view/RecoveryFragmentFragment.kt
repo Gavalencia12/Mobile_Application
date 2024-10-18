@@ -38,8 +38,11 @@ class RecoveryPasswordFragment : Fragment() {
         // Configura el botón para enviar el correo de recuperación
         binding.sendButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
-            if (email.isNotEmpty()) {
+            if (email.isNotEmpty() && isValidEmail(email)) {
                 viewModel.sendPasswordResetEmail(email) // Llama al ViewModel para enviar el correo
+            } else {
+                binding.errorMessageTextView.visibility = View.VISIBLE
+                binding.errorMessageTextView.text = "Por favor, ingresa un correo válido"
             }
         }
 
@@ -72,7 +75,16 @@ class RecoveryPasswordFragment : Fragment() {
                 }
             }
         }
+        binding.goBackLink.setOnClickListener{
+            findNavController().navigate(R.id.action_recoveryPasswordFragment_to_loginFragment)
+        }
     }
+
+    // Función para validar el formato de correo electrónico
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
 
     private fun navigateToLogin() {
         findNavController().navigate(R.id.action_recoveryPasswordFragment_to_loginFragment)
