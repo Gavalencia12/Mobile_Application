@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.carhive.Presentation.seller.viewModel.CrudViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.DialogCarOptionsBinding
@@ -164,26 +167,46 @@ class CrudDialogFragment : DialogFragment() {
 
 class SelectedImagesAdapter(
     private val images: List<Uri>,
-    private val onRemoveClick: (Int) -> Unit
+    private val onRemoveImage: (Int) -> Unit
 ) : RecyclerView.Adapter<SelectedImagesAdapter.ImageViewHolder>() {
 
-    inner class ImageViewHolder(private val binding: ItemSelectedImageBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(uri: Uri, position: Int) {
-            binding.ivSelectedImage.setImageURI(uri)
-            binding.btnRemoveImage.setOnClickListener {
-                onRemoveClick(position)
-            }
-        }
+    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val selectedImageView: ImageView = itemView.findViewById(R.id.iv_selected_image)
+        val removeImageButton: ImageButton = itemView.findViewById(R.id.btn_remove_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val binding = ItemSelectedImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ImageViewHolder(binding)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_selected_image, parent, false)
+        return ImageViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bind(images[position], position)
+        val imageUri = images[position]
+
+        if (imageUri.scheme == "content") {
+            // Cargar desde Uri local (imágenes nuevas)
+            Glide.with(holder.itemView.context)
+                .load(imageUri)
+                .placeholder(R.drawable.ic_img)  // Imagen por defecto mientras carga
+                .error(R.drawable.ic_error)      // Imagen si hay error
+                .into(holder.selectedImageView)
+        } else {
+            // Cargar desde una URL (imágenes existentes de Firebase)
+            Glide.with(holder.itemView.context)
+                .load(imageUri.toString())  // Convertir Uri a String para Glide
+                .placeholder(R.drawable.ic_img)  // Imagen por defecto mientras carga
+                .error(R.drawable.ic_error)      // Imagen si hay error
+                .into(holder.selectedImageView)
+        }
+
+        // Eliminar imagen
+        holder.removeImageButton.setOnClickListener {
+            onRemoveImage(position)
+        }
     }
 
-    override fun getItemCount(): Int = images.size
+
+    override fun getItemCount(): Int {
+        return images.size
+    }
 }

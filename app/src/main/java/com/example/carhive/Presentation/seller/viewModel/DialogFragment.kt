@@ -1,6 +1,5 @@
 package com.example.carhive.Presentation.seller.view
 
-import com.example.carhive.Presentation.seller.items.CarImageAdapter
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
@@ -9,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
 import com.example.carhive.Data.model.CarEntity
+import com.example.carhive.Presentation.seller.items.CarImageAdapter
 import com.example.carhive.R
 
 class CarDetailDialogFragment(private val car: CarEntity) : DialogFragment() {
@@ -31,13 +31,12 @@ class CarDetailDialogFragment(private val car: CarEntity) : DialogFragment() {
         carModelTextView.text = "Model: ${car.modelo}"
         carColorTextView.text = "Color: ${car.color}"
         carSpeedTextView.text = "Speed: ${car.speed} km/h"
-        carPriceTextView.text = "Price: $${String.format("%.2f", car.price.toDouble())}"
+        carPriceTextView.text = "Price: $${car.price}"
         carAddOnTextView.text = "Add On: ${car.addOn}"
         carDescriptionTextView.text = "Description: ${car.description}"
 
         // Actualiza el contador de imágenes
         imageCountTextView.text = "Image 1 of ${car.imageUrls?.size ?: 0}"
-
 
         // Configura el ViewPager
         val viewPager: ViewPager = view.findViewById(R.id.carImagesViewPager)

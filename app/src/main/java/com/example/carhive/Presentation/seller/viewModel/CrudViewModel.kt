@@ -135,7 +135,8 @@ class CrudViewModel @Inject constructor(
         addOn: String,
         description: String,
         price: String,
-        images: List<Uri>
+        newImages: List<Uri>, // Nuevas imágenes a subir
+        existingImages: List<Uri> // Imágenes que ya existen y no necesitan ser subidas
     ) {
         viewModelScope.launch {
             val car = Car(
@@ -148,18 +149,20 @@ class CrudViewModel @Inject constructor(
                 price = price
             )
 
-            // Subir imágenes nuevas y actualizar en la base de datos
-            val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
-            val imageUrls = imageUploadResult.getOrNull()
+            // Subir solo las nuevas imágenes
+            val imageUploadResult = uploadToCarImageUseCase(userId, carId, newImages)
+            val newImageUrls = imageUploadResult.getOrNull() ?: emptyList()
 
-            if (imageUrls != null) {
-                val updatedCar = car.copy(imageUrls = imageUrls)
-                updateCarInDatabase(userId, carId, updatedCar)
-            } else {
-                _error.value = "Error uploading images"
-            }
+            // Combina las URLs existentes con las nuevas
+            val combinedImageUrls = existingImages.map { it.toString() } + newImageUrls
+
+            // Actualizar el coche con todas las URLs de imágenes
+            val updatedCar = car.copy(imageUrls = combinedImageUrls)
+            updateCarInDatabase(userId, carId, updatedCar)
         }
     }
+
+
     // Agrega esta función en CrudViewModel
     suspend fun getCurrentUserId(): String {
         val currentUser = getCurrentUserIdUseCase()
