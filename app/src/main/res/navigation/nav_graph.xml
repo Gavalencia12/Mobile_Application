@@ -117,5 +117,46 @@
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminUserListFragment"
+            app:destination="@id/adminUserListFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminUserBanFragment"
+            app:destination="@id/adminUserBanFragment" />
+
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminUserActiveFragment"
+            app:destination="@id/adminUserActiveFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/adminUserListFragment"
+        android:name="com.example.carhive.Presentation.admin.view.AdminUserListFragment"
+        android:label="User List">
+
+        <action
+            android:id="@+id/action_adminUserListFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminUserBanFragment"
+        android:name="com.example.carhive.Presentation.admin.view.AdminUserBanFragment"
+        android:label="Banear Usuarios">
+        <action
+            android:id="@+id/action_adminUserBanFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminUserActiveFragment"
+        android:name="com.example.carhive.Presentation.admin.view.AdminUserActiveFragment"
+        android:label="Usuarios Activos Usuarios">
+        <action
+            android:id="@+id/action_adminUserActiveFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+    </fragment>
+
+
 </navigation>

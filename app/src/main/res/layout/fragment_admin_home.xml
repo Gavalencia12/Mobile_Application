@@ -105,7 +105,7 @@
                     android:textSize="20sp"/>
 
                 <Button
-                    android:id="@+id/more"
+                    android:id="@+id/viewstadisticsButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -141,7 +141,7 @@
                     android:drawableTop="@drawable/user_history"/>
 
                 <Button
-                    android:id="@+id/btn_baneos"
+                    android:id="@+id/viewBanersButton"
                     android:layout_width="132dp"
                     android:layout_height="130dp"
                     android:layout_gravity="end"
@@ -175,7 +175,7 @@
                     android:fontFamily="@font/inter_bold"/>
 
                 <Button
-                    android:id="@+id/btn_new"
+                    android:id="@+id/viewUsersButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"

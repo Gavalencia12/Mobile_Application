@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.0"  # Android Gradle Plugin version.
+agp = "8.6.0"  # Android Gradle Plugin version.
 coilCompose = "2.2.2"  # Library for loading images in Jetpack Compose.
 kotlin = "1.9.0"  # Kotlin version.
 dagger = "2.48" # Dagger version.
@@ -21,10 +21,15 @@ runtimeLivedata = "1.7.3"
 constrainsversion = "2.1.4"
 fragmentversion = "1.6.1"
 navigationfragment = "2.7.3"
+mpandroidchart = "3.1.0"
+
 
 gifdrawable = "1.2.25"
 
 [libraries]
+
+mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
