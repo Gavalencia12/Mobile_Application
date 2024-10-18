@@ -1,34 +1,34 @@
 package com.example.carhive.Presentation.seller.view
 
+import SelectedImagesAdapter
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.carhive.Presentation.seller.viewModel.CrudViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.DialogCarOptionsBinding
-import com.example.carhive.databinding.ItemSelectedImageBinding
 
 class CrudDialogFragment : DialogFragment() {
 
-    private val viewModel: CrudViewModel by activityViewModels() // Get the ViewModel
+    // Get the ViewModel for managing UI-related data
+    private val viewModel: CrudViewModel by activityViewModels()
     private var _binding: DialogCarOptionsBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding!! // Getter for binding to avoid null checks
 
-    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent> // Launcher for image picking
-    private val selectedImages = mutableListOf<Uri>() // Store selected image URIs
+    // Launcher for image picking
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
+    // List to store selected image URIs
+    private val selectedImages = mutableListOf<Uri>()
+    // Adapter for displaying selected images in a RecyclerView
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
 
     private val maxImages = 5 // Maximum number of images allowed
@@ -37,8 +37,9 @@ class CrudDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inflate the dialog layout
         _binding = DialogCarOptionsBinding.inflate(inflater, container, false)
-        return binding.root // Inflate the dialog layout
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +65,10 @@ class CrudDialogFragment : DialogFragment() {
                     if (selectedImages.size + newImagesCount <= maxImages) {
                         for (i in 0 until newImagesCount) {
                             val imageUri = clipData.getItemAt(i).uri
+                            // Persist URI permission for the selected image
+                            requireContext().contentResolver.takePersistableUriPermission(
+                                imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            )
                             selectedImages.add(imageUri) // Add the selected image URI
                         }
                     } else {
@@ -72,6 +77,9 @@ class CrudDialogFragment : DialogFragment() {
                 } else {
                     // Handle single image selection
                     result.data?.data?.let { uri ->
+                        requireContext().contentResolver.takePersistableUriPermission(
+                            uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        )
                         if (selectedImages.size < maxImages) {
                             selectedImages.add(uri) // Add the selected image URI
                         } else {
@@ -95,6 +103,7 @@ class CrudDialogFragment : DialogFragment() {
 
         // Button to create the car with selected images
         binding.buttonCreate.setOnClickListener {
+            // Get input data from fields
             val modelo = binding.etModelo.text.toString()
             val color = binding.etColor.text.toString()
             val speed = binding.etSpeed.text.toString()
@@ -102,12 +111,15 @@ class CrudDialogFragment : DialogFragment() {
             val description = binding.etDescription.text.toString()
             val price = binding.etPrice.text.toString()
 
-            // Check that all fields are filled
+            // Validate that all fields are filled
             if (modelo.isEmpty() || color.isEmpty() || speed.isEmpty() || addOn.isEmpty() ||
-                description.isEmpty() || price.isEmpty() || selectedImages.isEmpty()) {
+                description.isEmpty() || price.isEmpty()) {
                 Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show() // Show error message
+            } else if (selectedImages.size != 5) {
+                // Show message if the number of selected images is not exactly 5
+                Toast.makeText(requireContext(), "You must select exactly 5 images", Toast.LENGTH_SHORT).show()
             } else {
-                // Add car to the database
+                // If everything is correct, perform the action
                 viewModel.addCarToDatabase(
                     modelo = modelo,
                     color = color,
@@ -143,9 +155,14 @@ class CrudDialogFragment : DialogFragment() {
 
     // Function to remove a selected image
     private fun removeImage(position: Int) {
-        selectedImages.removeAt(position) // Remove image from the list
-        selectedImagesAdapter.notifyItemRemoved(position) // Notify the adapter of removal
-        updateImageCounter() // Update the image counter display
+        if (position in selectedImages.indices) { // Check if position is valid
+            selectedImages.removeAt(position) // Remove image from the list
+            selectedImagesAdapter.notifyItemRemoved(position) // Notify the adapter of the removal
+            selectedImagesAdapter.notifyItemRangeChanged(position, selectedImages.size) // Update the range of items
+            updateImageCounter() // Update the image counter
+        } else {
+            Toast.makeText(requireContext(), "Invalid position for removal.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Show error if the maximum number of images is exceeded
@@ -163,53 +180,8 @@ class CrudDialogFragment : DialogFragment() {
         _binding = null // Clean up binding to prevent memory leaks
     }
 
+    // Function to customize the dialog theme
     override fun getTheme(): Int {
         return R.style.AppTheme_Dialog // You can customize the theme if necessary
-    }
-}
-
-// Adapter for displaying selected images in a RecyclerView
-class SelectedImagesAdapter(
-    private val images: List<Uri>, // List of image URIs
-    private val onRemoveImage: (Int) -> Unit // Callback for removing an image
-) : RecyclerView.Adapter<SelectedImagesAdapter.ImageViewHolder>() {
-
-    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val selectedImageView: ImageView = itemView.findViewById(R.id.iv_selected_image) // ImageView for displaying image
-        val removeImageButton: ImageButton = itemView.findViewById(R.id.btn_remove_image) // Button to remove image
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_selected_image, parent, false) // Inflate item layout
-        return ImageViewHolder(view) // Return the ViewHolder
-    }
-
-    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val imageUri = images[position] // Get the URI for the current image
-
-        if (imageUri.scheme == "content") {
-            // Load from local URI (new images)
-            Glide.with(holder.itemView.context)
-                .load(imageUri)
-                .placeholder(R.drawable.ic_img) // Placeholder while loading
-                .error(R.drawable.ic_error) // Image to show on error
-                .into(holder.selectedImageView) // Load the image into the ImageView
-        } else {
-            // Load from a URL (existing images from Firebase)
-            Glide.with(holder.itemView.context)
-                .load(imageUri.toString()) // Convert URI to String for Glide
-                .placeholder(R.drawable.ic_img) // Placeholder while loading
-                .error(R.drawable.ic_error) // Image to show on error
-                .into(holder.selectedImageView) // Load the image into the ImageView
-        }
-
-        // Remove image button click listener
-        holder.removeImageButton.setOnClickListener {
-            onRemoveImage(position) // Call the remove image callback
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return images.size // Return the total number of images
     }
 }
