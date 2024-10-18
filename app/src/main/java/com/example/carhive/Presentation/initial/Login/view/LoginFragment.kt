@@ -73,8 +73,8 @@ class LoginFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loginError.collectLatest { error ->
                 error?.let {
-                    binding.errorTextView.text = it
-                    binding.errorTextView.visibility = View.VISIBLE
+                    binding.instruction.text = it
+                    binding.instruction.visibility = View.VISIBLE
                 }
             }
         }
@@ -96,11 +96,11 @@ class LoginFragment : Fragment() {
         if (isPasswordVisible) {
             // Si la contraseña está visible, ocultarla
             binding.passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_img, 0, R.drawable.ic_visibility_off, 0)
+            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_passw, 0, R.drawable.ic_visibility_off, 0)
         } else {
             // Si la contraseña está oculta, mostrarla
             binding.passwordEditText.inputType = InputType.TYPE_CLASS_TEXT
-            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_img, 0, R.drawable.ic_visibility_on, 0)
+            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_passw, 0, R.drawable.ic_visibility_on, 0)
         }
         isPasswordVisible = !isPasswordVisible
 

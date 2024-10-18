@@ -23,6 +23,7 @@ interface AuthRepository {
     suspend fun getUserData(userId: String): Result<List<UserEntity>>
     suspend fun updateUserRole(userId: String, newRole: Int): Result<Unit>
     suspend fun updateTermsSeller(userId: String, termsSeller: Boolean): Result<Unit>
+    suspend fun isVerifiedTheEmail(): Result<Unit>
     suspend fun loginUser(email: String, password: String): Result<String?>
     suspend fun getCurrentUserId(): Result<String?>
     suspend fun getUserRole(userId: String): Result<Int?>

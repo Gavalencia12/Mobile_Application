@@ -54,7 +54,7 @@ class LoginViewModel @Inject constructor(
                     navigateToVerifyEmail()
                 } else {
                     // Mostrar mensaje de error de credenciales incorrectas
-                    _loginError.value = "Credenciales incorrectas."
+                    _loginError.value = "Incorrect credentials."
                 }
             }
         }

@@ -83,54 +83,49 @@ class FirstRegisterFragment : Fragment() {
             clearErrors()
 
             var errorMessage = ""
-
-            // Validación de campos vacíos
-            if (firstName.isEmpty()) {
-                setErrorHint(binding.firstNameEditText, "First name is required")
-                errorMessage += " First name, "
-            }
-            if (lastName.isEmpty()) {
-                setErrorHint(binding.lastNameEditText, "Last name is required")
-                errorMessage += " Last name, "
-            }
-            if (email.isEmpty()) {
-                setErrorHint(binding.emailEditText, "Email is required")
-                errorMessage += " Email, "
-            } else if (!isValidEmail(email)) {
-                setErrorTextAndHint(binding.emailEditText, "Invalid email format")
-                errorMessage += "Invalid email format."
-            }
-            if (password.isEmpty()) {
-                setErrorHint(binding.passwordEditText, "Password is required")
-                errorMessage += " Password, ."
-            } else if (password.length < 6) {
-                setErrorTextAndHint(
-                    binding.passwordEditText,
-                    "Password must be at least 6 characters"
-                )
-                errorMessage += "Password must be at least 6 characters."
-            }
-            if (confirmPassword.isEmpty()) {
-                setErrorHint(binding.confirmPasswordEditText, "Confirm password is required")
-                errorMessage += " Confirm password, "
-            } else if (password.length < 6) {
-                setErrorTextAndHint(
-                    binding.confirmPasswordEditText,
-                    "Password must be at least 6 characters"
-                )
-            } else if (confirmPassword != password) {
-                setErrorTextAndHint(binding.confirmPasswordEditText, "Passwords do not match")
-                errorMessage += "Passwords do not match."
-            }
-            if(!termsResult){
-                setErrorButton(binding.cbTerms, "Terms is not selected")
-                errorMessage += " Terms, ."
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                errorMessage += "Enter the data correctly to continue."
+                if (firstName.isEmpty()) {
+                    setErrorHint(binding.firstNameEditText, "First name is required")
+                }
+                if (lastName.isEmpty()) {
+                    setErrorHint(binding.lastNameEditText, "Last name is required")
+                }
+                if (email.isEmpty()) {
+                    setErrorHint(binding.emailEditText, "Email is required")
+                } else if (!isValidEmail(email)) {
+                    setErrorTextAndHint(binding.emailEditText, "Invalid email format")
+                    errorMessage = "Invalid email format."
+                }
+                if (password.isEmpty()) {
+                    setErrorHint(binding.passwordEditText, "Password is required")
+                } else if (password.length < 6) {
+                    setErrorTextAndHint(
+                        binding.passwordEditText,
+                        "Password must be at least 6 characters"
+                    )
+                    setErrorTextAndHint(
+                        binding.confirmPasswordEditText,
+                        "Password must be at least 6 characters"
+                    )
+                    errorMessage = "Password must be at least 6 characters."
+                }
+                if (confirmPassword.isEmpty()) {
+                    setErrorHint(binding.confirmPasswordEditText, "Confirm password is required")
+                } else if (confirmPassword != password) {
+                    setErrorTextAndHint(binding.confirmPasswordEditText, "Passwords do not match")
+                    errorMessage = "Passwords do not match."
+                }
+                setErrorButton(binding.cbTerms)
+            } else if (!termsResult) {
+                errorMessage = "Terms is not selected."
+                setErrorButton(binding.cbTerms)
             }
 
             // Si hay errores, muestra el mensaje en la parte superior
             if (errorMessage.isNotEmpty()) {
-                binding.errorMessageTextView.text = errorMessage.trim()
-                binding.errorMessageTextView.visibility = View.VISIBLE
+                binding.instruction.text = errorMessage.trim()
+                binding.instruction.visibility = View.VISIBLE
             } else {
                 // Si no hay errores, navega a la siguiente pantalla
                 viewModel.saveFirstPartOfUserData(firstName, lastName, email, password, termsResult)
@@ -148,7 +143,7 @@ class FirstRegisterFragment : Fragment() {
         if (isVisible) {
             editText.inputType = InputType.TYPE_CLASS_TEXT
             editText.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_img,
+                R.drawable.ic_passw,
                 0,
                 R.drawable.ic_visibility_on,
                 0
@@ -156,7 +151,7 @@ class FirstRegisterFragment : Fragment() {
         } else {
             editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             editText.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_img,
+                R.drawable.ic_passw,
                 0,
                 R.drawable.ic_visibility_off,
                 0
@@ -177,14 +172,20 @@ class FirstRegisterFragment : Fragment() {
 
     // Función para cambiar el hint temporalmente a rojo
     private fun setErrorHint(editText: EditText, message: String) {
-        editText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red)) // Cambia el hint a rojo
+        editText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        ) // Cambia el hint a rojo
         editText.hint = message // Cambia el hint temporalmente
     }
 
     // Función para cambiar el hint temporalmente a rojo
-    private fun setErrorButton(editText: CheckBox, message: String) {
+    private fun setErrorButton(editText: CheckBox) {
         // Cambiar el color del botón del CheckBox a rojo
-        binding.cbTerms.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
+        binding.cbTerms.buttonTintList =
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
 
         // Cambiar el color del texto del CheckBox a rojo
         binding.cbTerms.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
@@ -192,31 +193,77 @@ class FirstRegisterFragment : Fragment() {
 
     // Función para cambiar el texto y hint a rojo
     private fun setErrorTextAndHint(editText: EditText, message: String) {
-        editText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.red)) // Cambia el hint a rojo
-        editText.setTextColor(ContextCompat.getColor(requireContext(), R.color.red)) // Cambia el texto a rojo
+        editText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        ) // Cambia el hint a rojo
+        editText.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        ) // Cambia el texto a rojo
         editText.hint = message // Cambia el hint temporalmente
     }
 
     // Función para limpiar los errores anteriores
     private fun clearErrors() {
-        binding.errorMessageTextView.visibility = View.GONE
+        binding.instruction.visibility = View.GONE
         // Usar ContextCompat para obtener colores de forma segura y compatible con versiones antiguas
-        binding.firstNameEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
-        binding.lastNameEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
-        binding.emailEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
-        binding.passwordEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
-        binding.confirmPasswordEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
+        binding.firstNameEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.lastNameEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.emailEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.passwordEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.confirmPasswordEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
 
         // Cambiar el color del botón del CheckBox a rojo
-        binding.cbTerms.buttonTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.cbTerms.buttonTintList =
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
 
         // Cambiar el color del texto del CheckBox a rojo
         binding.cbTerms.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
 
         // Devuelve el color del texto de los campos de entrada a negro
         binding.emailEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-        binding.passwordEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-        binding.confirmPasswordEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.passwordEditText.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
+        binding.confirmPasswordEditText.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
 
     }
 

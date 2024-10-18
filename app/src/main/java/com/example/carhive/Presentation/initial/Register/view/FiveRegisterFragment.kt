@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentRegisterFiveBinding
@@ -29,9 +30,6 @@ class FiveRegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializar elementos de la vista
-        val welcomeTitle: TextView = binding.welcomeTitle
-        val welcomeSubtitle: TextView = binding.welcomeSubtitle
         val getStartedButton: Button = binding.getStartedButton
 
         // Configurar el botón de "Get Started"

@@ -45,37 +45,40 @@ class SecondRegisterFragment : Fragment() {
             var errorMessage = ""
 
             // Validación de campos vacíos
-            if (curp.isEmpty()) {
-                setErrorHint(binding.curpEditText, "CURP is required")
-                errorMessage += " First name, "
-            } else if (curp.length < 18) {
-                setErrorTextAndHint(
-                    binding.curpEditText,
-                    "CURP must be less than 18 characters"
-                )
-                errorMessage += "CURP must be less than 18 characters."
+            if(curp.isEmpty() || phoneNumber.isEmpty() || voterID.isEmpty()){
+                errorMessage = "Enter the data correctly to continue."
+                if (curp.isEmpty()) {
+                    setErrorHint(binding.curpEditText, "CURP is required")
+                } else if (curp.length < 18) {
+                    setErrorTextAndHint(
+                        binding.curpEditText,
+                        "CURP must be less than 18 characters"
+                    )
+                    errorMessage = "CURP must be less than 18 characters."
+                }
+                // Validación de campos vacíos
+                if (phoneNumber.isEmpty()) {
+                    setErrorHint(binding.phoneNumberEditText, "Phone number is required")
+                }
+                // Validación de campos vacíos
+                if (voterID.isEmpty()) {
+                    setErrorHint(binding.voterIDEditText, "Voter ID is required")
+                } else if (voterID.length < 18) {
+                    setErrorTextAndHint(
+                        binding.voterIDEditText,
+                        "Voter Id must be less than 18 characters"
+                    )
+                    errorMessage = "Voter Id must be less than 18 characters."
+                }
             }
-            // Validación de campos vacíos
-            if (phoneNumber.isEmpty()) {
-                setErrorHint(binding.phoneNumberEditText, "Phone number is required")
-                errorMessage += " Phone number, "
-            }
-            // Validación de campos vacíos
-            if (voterID.isEmpty()) {
-                setErrorHint(binding.voterIDEditText, "Voter ID is required")
-                errorMessage += " Voter ID, "
-            } else if (voterID.length < 18) {
-                setErrorTextAndHint(
-                    binding.voterIDEditText,
-                    "Voter Id must be less than 18 characters"
-                )
-                errorMessage += "Voter Id must be less than 18 characters."
-            }
+
+
+
 
             // Si hay errores, muestra el mensaje en la parte superior
             if (errorMessage.isNotEmpty()) {
-                binding.errorMessageTextView.text = errorMessage.trim()
-                binding.errorMessageTextView.visibility = View.VISIBLE
+                binding.instruction.text = errorMessage.trim()
+                binding.instruction.visibility = View.VISIBLE
             } else {
                 // Si no hay errores, navega a la siguiente pantalla
                 viewModel.saveSecondPartOfUserData(curp, phoneNumber, voterID)
@@ -101,20 +104,20 @@ class SecondRegisterFragment : Fragment() {
 
     // Función para cambiar el hint temporalmente a rojo
     private fun setErrorHint(editText: EditText, message: String) {
-        editText.setHintTextColor(resources.getColor(R.color.red)) // Cambia el hint a rojo
+        editText.setHintTextColor(ContextCompat.getColor(requireContext(),R.color.red)) // Cambia el hint a rojo
         editText.hint = message // Cambia el hint temporalmente
     }
 
     // Función para cambiar el texto y hint a rojo
     private fun setErrorTextAndHint(editText: EditText, message: String) {
-        editText.setHintTextColor(resources.getColor(R.color.red)) // Cambia el hint a rojo
-        editText.setTextColor(resources.getColor(R.color.red)) // Cambia el texto a rojo
+        editText.setHintTextColor(ContextCompat.getColor(requireContext(),R.color.red)) // Cambia el hint a rojo
+        editText.setTextColor(ContextCompat.getColor(requireContext(),R.color.red)) // Cambia el texto a rojo
         editText.hint = message // Cambia el hint temporalmente
     }
 
     // Función para limpiar los errores anteriores
     private fun clearErrors() {
-        binding.errorMessageTextView.visibility = View.GONE
+        binding.instruction.visibility = View.GONE
         binding.curpEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
         binding.phoneNumberEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
         binding.voterIDEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))

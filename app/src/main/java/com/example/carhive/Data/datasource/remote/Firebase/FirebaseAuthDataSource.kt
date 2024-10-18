@@ -83,13 +83,6 @@ class FirebaseAuthDataSource @Inject constructor(
             // Envía el correo de verificación después de registrar al usuario.
             sendVerificationEmail(user)
 
-            // Comprueba si el correo está verificado.
-            if (!user.isEmailVerified) {
-                // Si el correo no está verificado, no permite iniciar sesión.
-                auth.signOut() // Cierra sesión para evitar que se quede autenticado.
-                return Result.failure(RepositoryException("Please verify your email to log in."))
-            }
-
             Result.success(userId) // Retorna el ID del usuario creado si todo está bien.
         } catch (e: Exception) {
             // Captura cualquier excepción y devuelve un resultado de error.
@@ -127,4 +120,27 @@ class FirebaseAuthDataSource @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun isVerifiedTheEmail(): Result<Unit> {
+        return try {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                // Verificar si el correo está verificado
+                if (!currentUser.isEmailVerified) {
+                    // Cerrar sesión si el correo no está verificado
+                    FirebaseAuth.getInstance().signOut()
+                    Result.failure(Exception("El correo no está verificado, sesión cerrada."))
+                } else {
+                    // Si está verificado, retornamos éxito
+                    Result.success(Unit)
+                }
+            } else {
+                Result.failure(Exception("Usuario no autenticado."))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }

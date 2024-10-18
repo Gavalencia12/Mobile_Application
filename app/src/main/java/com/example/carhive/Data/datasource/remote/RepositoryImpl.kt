@@ -67,6 +67,10 @@ class RepositoryImpl(
         return dataSource.updateTermsSeller(userId, termsSeller)
     }
 
+    override suspend fun isVerifiedTheEmail(): Result<Unit> {
+        return dataSourceAuth.isVerifiedTheEmail()
+    }
+
     override suspend fun loginUser(email: String, password: String): Result<String?> {
         return dataSourceAuth.loginUser(email, password)
     }
