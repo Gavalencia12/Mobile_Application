@@ -21,6 +21,7 @@ data class UserEntity(
     var curp: String = "",
     var imageUrl: String? = null,
     var role: Int = 2,
-    var terms: Boolean = false,
+    var termsUser: Boolean = false,
+    var termsSeller: Boolean = false,
     var isverified: Boolean = false
 )

@@ -73,6 +73,18 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
+            <TextView
+                android:id="@+id/errorMessageTextView"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="-30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                android:textSize="14sp"
+                android:text="Error message will appear here." />
+
             <!-- Campo de entrada para la CURP -->
             <EditText
                 android:id="@+id/curpEditText"

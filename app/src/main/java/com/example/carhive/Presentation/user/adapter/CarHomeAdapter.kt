@@ -12,7 +12,8 @@ import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.R
 
 class CarHomeAdapter(
-    private var carList: List<CarEntity>
+    private var carList: List<CarEntity>,
+    private val onCarClick: (CarEntity) -> Unit
 ) : RecyclerView.Adapter<CarHomeAdapter.CarViewHolder>() {
 
     class CarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,28 +33,27 @@ class CarHomeAdapter(
         val car = carList[position]
         holder.carModel.text = car.modelo
         holder.carMarca.text = car.addOn
-        holder.carPrice.text = "$  ${car.price}"
+        holder.carPrice.text = "$ ${car.price}"
 
         val imageUrl = car.imageUrls?.firstOrNull()
         if (imageUrl != null) {
             Glide.with(holder.itemView.context)
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_img)
-                .error(R.drawable.ic_img)
                 .into(holder.carImage)
         } else {
             holder.carImage.setImageResource(R.drawable.ic_img)
         }
 
+        // Click listener para el coche
+        holder.itemView.setOnClickListener {
+            onCarClick(car)
+        }
     }
 
     override fun getItemCount(): Int = carList.size
 
-    // Actualiza la li|sta de coches cuando hay nuevos datos
     fun updateCars(newCars: List<CarEntity>) {
         carList = newCars
         notifyDataSetChanged()
     }
-
-
 }

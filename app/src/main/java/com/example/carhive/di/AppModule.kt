@@ -23,6 +23,8 @@ import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.Domain.usecase.user.SavePasswordUseCase
 import com.example.carhive.Domain.usecase.user.SaveUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.database.SaveUserToDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.UpdateTermsSellerUseCase
+import com.example.carhive.Domain.usecase.database.UpdateUserRoleUseCase
 import com.example.carhive.Domain.usecase.database.UploadToProfileImageUseCase
 import com.example.carhive.Domain.usecase.session.GetUserRoleUseCase
 import com.example.carhive.Domain.usecase.session.IsUserAuthenticatedUseCase
@@ -129,6 +131,16 @@ object AppModule {
     @Singleton
     fun provideGetCurrentUserIdUseCase(repository: AuthRepository): GetCurrentUserIdUseCase =
         GetCurrentUserIdUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateUserRoleUseCase(repository: AuthRepository): UpdateUserRoleUseCase =
+        UpdateUserRoleUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateTermsSellerUseCase(repository: AuthRepository): UpdateTermsSellerUseCase =
+        UpdateTermsSellerUseCase(repository)
 
     // Provisión de casos de uso relacionados con la gestión de usuarios
     @Provides

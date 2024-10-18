@@ -19,8 +19,10 @@ interface AuthRepository {
     suspend fun registerUser(email: String, password: String): Result<String>
     suspend fun uploadProfileImage(userId: String, uri: Uri): Result<String>
     suspend fun saveUserToDatabase(userId: String, user: User): Result<Unit>
-    suspend fun getAllCarsFromDatabase() : Result<List<CarEntity>>
+    suspend fun getAllCarsFromDatabase(): Result<List<CarEntity>>
     suspend fun getUserData(userId: String): Result<List<UserEntity>>
+    suspend fun updateUserRole(userId: String, newRole: Int): Result<Unit>
+    suspend fun updateTermsSeller(userId: String, termsSeller: Boolean): Result<Unit>
     suspend fun loginUser(email: String, password: String): Result<String?>
     suspend fun getCurrentUserId(): Result<String?>
     suspend fun getUserRole(userId: String): Result<Int?>

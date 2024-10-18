@@ -59,6 +59,14 @@ class RepositoryImpl(
         return dataSource.getUserRole(userId)
     }
 
+    override suspend fun updateUserRole(userId: String, newRole: Int): Result<Unit> {
+        return dataSource.updateUserRole(userId, newRole)
+    }
+
+    override suspend fun updateTermsSeller(userId: String, termsSeller: Boolean): Result<Unit> {
+        return dataSource.updateTermsSeller(userId, termsSeller)
+    }
+
     override suspend fun loginUser(email: String, password: String): Result<String?> {
         return dataSourceAuth.loginUser(email, password)
     }

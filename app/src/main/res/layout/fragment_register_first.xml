@@ -71,6 +71,18 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
+            <TextView
+                android:id="@+id/errorMessageTextView"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="-30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                android:textSize="14sp"
+                android:text="Error message will appear here." />
+
             <!-- Campos de entrada para el nombre -->
             <EditText
                 android:id="@+id/firstNameEditText"
@@ -148,7 +160,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_password"
-                android:drawableEnd="@drawable/ic_visibility"
+                android:drawableEnd="@drawable/ic_visibility_off"
                 android:drawablePadding="15dp"
                 android:padding="16dp" />
 
@@ -170,7 +182,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_password"
-                android:drawableEnd="@drawable/ic_visibility"
+                android:drawableEnd="@drawable/ic_visibility_off"
                 android:drawablePadding="15dp"
                 android:padding="16dp" />
 

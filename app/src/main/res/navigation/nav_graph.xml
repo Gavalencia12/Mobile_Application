@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_loginFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_verifyEmailFragment"
+            app:destination="@id/fortRegisterFragment" />
     </fragment>
 
     <fragment
@@ -99,7 +102,16 @@
         android:name="com.example.carhive.Presentation.user.view.UserHomeFragment"
         tools:layout="@layout/fragment_user_home">
         <action
-            android:id="@+id/action_userHomeFragment_to_loginFragment"
+            android:id="@+id/action_userHomeFragment_to_carDetailFragment"
+            app:destination="@id/userHomeCarDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userHomeCarDetailFragment"
+        android:name="com.example.carhive.Presentation.user.view.CarDetailFragment"
+        tools:layout="@layout/fragment_user_home_cardetails">
+        <action
+            android:id="@+id/action_userHomeFragment_to_carDetailFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 

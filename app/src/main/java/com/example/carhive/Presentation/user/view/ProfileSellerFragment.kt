@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.MainActivity
-import com.example.carhive.Presentation.user.viewModel.ProfileViewModel
+import com.example.carhive.Presentation.user.viewModel.ProfileSellerViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserProfileSellerBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +21,7 @@ class ProfileSellerFragment : Fragment() {
     private var _binding: FragmentUserProfileSellerBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ProfileViewModel by viewModels()
+    private val viewModel: ProfileSellerViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +50,7 @@ class ProfileSellerFragment : Fragment() {
         // Iniciar la obtención de los datos del usuario
         viewModel.fetchUserData()
 
+        // Listener para el botón de "Atrás"
         binding.ibtnBack.setOnClickListener {
             // Navegar al userHomeFragment
             findNavController().navigate(R.id.action_userProfileFragment_to_userProfileFragment)
@@ -57,24 +58,39 @@ class ProfileSellerFragment : Fragment() {
             // Actualizar la selección del BottomNavigationView
             (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.profile // Cambia el ID al correspondiente
         }
-        binding.btnSeller.setOnClickListener{
+
+        // Listener para el CheckBox
+        binding.cbTerms.setOnCheckedChangeListener { _, isChecked ->
+            toggleSellerButton() // Llamar para verificar si el botón debe estar habilitado
+        }
+
+        // Listener para el botón de "Convertir a Vendedor"
+        binding.btnSeller.setOnClickListener {
+            viewModel.saveRolSeller()
+            viewModel.saveTermsSeller()
             findNavController().navigate(R.id.action_userProfileFragment_to_sellerHomeFragment)
         }
     }
 
     // Método para actualizar la UI con los datos del usuario
     private fun updateUserProfileUI(user: UserEntity) {
-
+        // Actualizar los datos de verificación
         if (user.isverified) {
-            binding.tvVerified.text = "Estas Verificado" // Actualizar el nombre del usuario
+            binding.tvVerified.text = "Estás Verificado"
             binding.ivIsVerified.visibility = View.VISIBLE
-            binding.btnSeller.isEnabled = true
-
         } else {
-            binding.tvVerified.text = "No Estas Verificado"
+            binding.tvVerified.text = "No estás Verificado"
             binding.ivIsVerified.visibility = View.GONE
-            binding.btnSeller.isEnabled = false
         }
+
+        // Llamar para verificar si el botón debe estar habilitado
+        toggleSellerButton(user.isverified)
+    }
+
+    // Método para habilitar o deshabilitar el botón btnSeller
+    private fun toggleSellerButton(isVerified: Boolean? = null) {
+        val verified = isVerified ?: viewModel.userData.value?.getOrNull()?.firstOrNull()?.isverified == true
+        binding.btnSeller.isEnabled = verified && binding.cbTerms.isChecked
     }
 
     override fun onDestroyView() {

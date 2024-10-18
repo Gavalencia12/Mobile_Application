@@ -109,4 +109,55 @@ class FirebaseDatabaseDataSource @Inject constructor(
         }
     }
 
+    suspend fun updateUserRole(userId: String, newRole: Int): Result<Unit> {
+        return try {
+            // Obtener la referencia a la base de datos para el usuario específico
+            val userRef = database.getReference("Users")
+                .child(userId)
+
+            // Verificar si el usuario existe en la base de datos
+            val userSnapshot = userRef.get().await()
+
+            if (userSnapshot.exists()) {
+                // Actualizar el campo de "role" del usuario en la base de datos
+                userRef.child("role").setValue(newRole).await()
+
+                // Si la actualización fue exitosa, retornamos un resultado de éxito
+                Result.success(Unit)
+            } else {
+                // Si el usuario no existe, retornamos un fallo con un mensaje adecuado
+                Result.failure(RepositoryException("User with ID $userId not found"))
+            }
+        } catch (e: Exception) {
+            // En caso de error durante la operación, retornamos un fallo con el mensaje de excepción
+            Result.failure(RepositoryException("Error updating user role in database", e))
+        }
+    }
+
+    suspend fun updateTermsSeller(userId: String, termsSeller: Boolean): Result<Unit> {
+        return try {
+            // Obtener la referencia a la base de datos para el usuario específico
+            val userRef = database.getReference("Users")
+                .child(userId)
+
+            // Verificar si el usuario existe en la base de datos
+            val userSnapshot = userRef.get().await()
+
+            if (userSnapshot.exists()) {
+                // Actualizar el campo de "role" del usuario en la base de datos
+                userRef.child("termsSeller").setValue(termsSeller).await()
+
+                // Si la actualización fue exitosa, retornamos un resultado de éxito
+                Result.success(Unit)
+            } else {
+                // Si el usuario no existe, retornamos un fallo con un mensaje adecuado
+                Result.failure(RepositoryException("User with ID $userId not found"))
+            }
+        } catch (e: Exception) {
+            // En caso de error durante la operación, retornamos un fallo con el mensaje de excepción
+            Result.failure(RepositoryException("Error updating user role in database", e))
+        }
+    }
+
+
 }

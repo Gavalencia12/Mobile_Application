@@ -36,21 +36,34 @@ class UserHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        carAdapter = CarHomeAdapter(emptyList())
+        carAdapter = CarHomeAdapter(emptyList()) { car ->
+            // Crea un Bundle con los datos del coche
+            val bundle = Bundle().apply {
+                putString("carModel", car.modelo)
+                putString("carMarca", car.addOn)
+                putString("carPrice", car.price)
+                putString("carColor", car.color)
+                putString("carSpeed", car.speed)
+                putString("carDescription", car.description)
+                putStringArrayList("carImageUrls", ArrayList(car.imageUrls)) // Si tiene imágenes
+            }
+
+            // Navegar manualmente a CarDetailFragment pasando el Bundle
+            findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
+        }
+
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = carAdapter
         }
 
-        // Observa los cambios en la lista de coches
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
-            carAdapter.updateCars(cars) // Actualiza el adaptador cuando cambien los datos
+            carAdapter.updateCars(cars)
         }
 
-        // Llama al método para obtener los coches
         viewModel.fetchCars()
-
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

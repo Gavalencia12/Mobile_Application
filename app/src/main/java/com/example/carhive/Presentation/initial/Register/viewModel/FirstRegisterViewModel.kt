@@ -1,5 +1,8 @@
 package com.example.carhive.Presentation.initial.Register.viewModel
 
+import android.widget.CheckBox
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.Domain.model.User
@@ -15,18 +18,36 @@ class FirstRegisterViewModel @Inject constructor(
     private val saveUserPreferencesUseCase: SaveUserPreferencesUseCase
 ) : ViewModel() {
 
+    private val _isPasswordVisible = MutableLiveData(false)
+    val isPasswordVisible: LiveData<Boolean> get() = _isPasswordVisible
+
+    private val _isConfirmPasswordVisible = MutableLiveData(false)
+    val isConfirmPasswordVisible: LiveData<Boolean> get() = _isConfirmPasswordVisible
+
+    // Alternar visibilidad de la contraseña
+    fun togglePasswordVisibility() {
+        _isPasswordVisible.value = _isPasswordVisible.value?.not()
+    }
+
+    // Alternar visibilidad de la confirmación de contraseña
+    fun toggleConfirmPasswordVisibility() {
+        _isConfirmPasswordVisible.value = _isConfirmPasswordVisible.value?.not()
+    }
+
     fun saveFirstPartOfUserData(
         firstName: String,
         lastName: String,
         email: String,
-        password: String
+        password: String,
+        terms: Boolean
     ) {
         viewModelScope.launch {
             // Crear una instancia del modelo de dominio User
             val user = User(
                 firstName = firstName,
                 lastName = lastName,
-                email = email
+                email = email,
+                termsUser = terms
             )
 
             // Guardar los datos del usuario en SharedPreferences

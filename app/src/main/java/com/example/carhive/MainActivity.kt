@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         // Controlar la visibilidad del BottomNavigationView
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.userHomeFragment, R.id.userProfileFragment -> showBottomNavigation()
+                R.id.userHomeFragment, R.id.userProfileFragment, R.id.userHomeCarDetailFragment -> showBottomNavigation()
                 else -> hideBottomNavigation()
             }
         }
@@ -84,6 +84,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     private fun showBottomNavigation() {

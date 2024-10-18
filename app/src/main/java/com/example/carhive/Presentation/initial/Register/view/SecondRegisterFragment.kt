@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -37,10 +39,48 @@ class SecondRegisterFragment : Fragment() {
             val phoneNumber = binding.phoneNumberEditText.text.toString()
             val voterID = binding.voterIDEditText.text.toString()
 
-            // Llama al ViewModel para guardar la información del usuario
-            viewModel.saveSecondPartOfUserData(curp, phoneNumber, voterID)
-            // Navega a la siguiente pantalla
-            findNavController().navigate(R.id.action_secondRegisterFragment_to_thirdRegisterFragment) // Cambia a tu siguiente fragmento
+            // Limpia los mensajes de error previos
+            clearErrors()
+
+            var errorMessage = ""
+
+            // Validación de campos vacíos
+            if (curp.isEmpty()) {
+                setErrorHint(binding.curpEditText, "CURP is required")
+                errorMessage += " First name, "
+            } else if (curp.length < 18) {
+                setErrorTextAndHint(
+                    binding.curpEditText,
+                    "CURP must be less than 18 characters"
+                )
+                errorMessage += "CURP must be less than 18 characters."
+            }
+            // Validación de campos vacíos
+            if (phoneNumber.isEmpty()) {
+                setErrorHint(binding.phoneNumberEditText, "Phone number is required")
+                errorMessage += " Phone number, "
+            }
+            // Validación de campos vacíos
+            if (voterID.isEmpty()) {
+                setErrorHint(binding.voterIDEditText, "Voter ID is required")
+                errorMessage += " Voter ID, "
+            } else if (voterID.length < 18) {
+                setErrorTextAndHint(
+                    binding.voterIDEditText,
+                    "Voter Id must be less than 18 characters"
+                )
+                errorMessage += "Voter Id must be less than 18 characters."
+            }
+
+            // Si hay errores, muestra el mensaje en la parte superior
+            if (errorMessage.isNotEmpty()) {
+                binding.errorMessageTextView.text = errorMessage.trim()
+                binding.errorMessageTextView.visibility = View.VISIBLE
+            } else {
+                // Si no hay errores, navega a la siguiente pantalla
+                viewModel.saveSecondPartOfUserData(curp, phoneNumber, voterID)
+                findNavController().navigate(R.id.action_secondRegisterFragment_to_thirdRegisterFragment)
+            }
         }
 
         // Configura el enlace para regresar
@@ -52,5 +92,34 @@ class SecondRegisterFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Evitar fugas de memoria
+    }
+
+    // Función para validar el formato de correo electrónico
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    // Función para cambiar el hint temporalmente a rojo
+    private fun setErrorHint(editText: EditText, message: String) {
+        editText.setHintTextColor(resources.getColor(R.color.red)) // Cambia el hint a rojo
+        editText.hint = message // Cambia el hint temporalmente
+    }
+
+    // Función para cambiar el texto y hint a rojo
+    private fun setErrorTextAndHint(editText: EditText, message: String) {
+        editText.setHintTextColor(resources.getColor(R.color.red)) // Cambia el hint a rojo
+        editText.setTextColor(resources.getColor(R.color.red)) // Cambia el texto a rojo
+        editText.hint = message // Cambia el hint temporalmente
+    }
+
+    // Función para limpiar los errores anteriores
+    private fun clearErrors() {
+        binding.errorMessageTextView.visibility = View.GONE
+        binding.curpEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
+        binding.phoneNumberEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
+        binding.voterIDEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
+
+        // Devuelve el color del texto a su estado normal si ha sido cambiado
+        binding.phoneNumberEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
     }
 }

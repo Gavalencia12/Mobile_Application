@@ -1,16 +1,22 @@
 package com.example.carhive.Presentation.initial.Login.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.carhive.Presentation.initial.Login.viewModel.LoginViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -20,24 +26,55 @@ class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
 
+    // Variable para saber si la contraseña está visible
+    private var isPasswordVisible = false
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
+        // Configurar el evento de clic en el icono de la contraseña
+        binding.passwordEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (binding.passwordEditText.right - binding.passwordEditText.compoundDrawables[2].bounds.width())) {
+                    // Cambiar la visibilidad de la contraseña
+                    togglePasswordVisibility()
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+
         // Configurando el botón de login
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            viewModel.onLoginClick(email, password) { destination ->
+            viewModel.onLoginClick(email, password,
                 // Navegar según el rol
-                when (destination) {
-                    "Admin" -> findNavController().navigate(R.id.action_loginFragment_to_adminFragment)
-                    "Seller" -> findNavController().navigate(R.id.action_loginFragment_to_sellerFragment)
-                    "User" -> findNavController().navigate(R.id.action_loginFragment_to_userhomeFragment)
-                    else -> findNavController().navigate(R.id.action_loginFragment_to_loginFragment)
+                { destination ->
+                    when (destination) {
+                        "Admin" -> findNavController().navigate(R.id.action_loginFragment_to_adminFragment)
+                        "Seller" -> findNavController().navigate(R.id.action_loginFragment_to_sellerFragment)
+                        "User" -> findNavController().navigate(R.id.action_loginFragment_to_userhomeFragment)
+                        else -> findNavController().navigate(R.id.action_loginFragment_to_loginFragment)
+                    }
+                },
+                // Navegar a la pantalla de verificación de correo
+                {
+                    findNavController().navigate(R.id.action_loginFragment_to_verifyEmailFragment)
+                })
+        }
+
+        // Observar los errores de login
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loginError.collectLatest { error ->
+                error?.let {
+                    binding.errorTextView.text = it
+                    binding.errorTextView.visibility = View.VISIBLE
                 }
             }
         }
@@ -53,6 +90,22 @@ class LoginFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            // Si la contraseña está visible, ocultarla
+            binding.passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_img, 0, R.drawable.ic_visibility_off, 0)
+        } else {
+            // Si la contraseña está oculta, mostrarla
+            binding.passwordEditText.inputType = InputType.TYPE_CLASS_TEXT
+            binding.passwordEditText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_img, 0, R.drawable.ic_visibility_on, 0)
+        }
+        isPasswordVisible = !isPasswordVisible
+
+        // Mover el cursor al final del texto
+        binding.passwordEditText.setSelection(binding.passwordEditText.text.length)
     }
 
     override fun onDestroyView() {

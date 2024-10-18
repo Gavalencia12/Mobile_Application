@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost = "true"/>
 
     <!-- Menú inferior -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

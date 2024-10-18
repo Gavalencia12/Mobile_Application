@@ -19,7 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/ibtnBack"
-        android:text="Convertir en Vendedor"/>
+        android:text="Convertir en Vendedor"
+        android:enabled="false"/>
     <TextView
         android:id="@+id/tvVerified"
         android:layout_width="wrap_content"
@@ -32,5 +33,17 @@
         android:layout_height="24dp"
         app:layout_constraintTop_toBottomOf="@+id/tvVerified"
         android:src="@drawable/ic_verified" />
+    <CheckBox
+        android:id="@+id/cbTerms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Acepto los Términos y Condiciones"
+        android:fontFamily="@font/inter_bold"
+        android:textColor="@color/dark_blue"
+        android:layout_gravity="center"
+        android:buttonTint="@color/checkbox_color_selector"
+        app:layout_constraintTop_toBottomOf="@+id/ivIsVerified"
+        android:clickable="true"
+        android:focusable="true"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

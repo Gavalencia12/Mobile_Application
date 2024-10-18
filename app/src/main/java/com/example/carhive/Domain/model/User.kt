@@ -9,6 +9,7 @@ data class User(
     var curp: String = "",
     var imageUrl: String? = null,
     var role: UserRole = UserRole.NORMAL_USER,
-    var terms: Boolean = false,
+    var termsUser: Boolean = false,
+    var termsSeller: Boolean = false,
     var isVerified: Boolean = false
 )

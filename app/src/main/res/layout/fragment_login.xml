@@ -136,7 +136,7 @@
                 android:autofillHints="Password"
                 android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_password"
-                android:drawableEnd="@drawable/ic_visibility"
+                android:drawableEnd="@drawable/ic_visibility_off"
                 android:drawablePadding="15dp"
                 android:fontFamily="@font/inter_semibold"
                 android:hint="Password"
