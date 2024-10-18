@@ -77,67 +77,71 @@ class FirstRegisterFragment : Fragment() {
             val email = binding.emailEditText.text.toString().trim()
             val password = binding.passwordEditText.text.toString().trim()
             val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
-            val termsResult = binding.cbTerms.isChecked
 
             // Limpia los mensajes de error previos
             clearErrors()
 
             var errorMessage = ""
-            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                errorMessage += "Enter the data correctly to continue."
-                if (firstName.isEmpty()) {
-                    setErrorHint(binding.firstNameEditText, "First name is required")
-                }
-                if (lastName.isEmpty()) {
-                    setErrorHint(binding.lastNameEditText, "Last name is required")
-                }
-                if (email.isEmpty()) {
-                    setErrorHint(binding.emailEditText, "Email is required")
-                } else if (!isValidEmail(email)) {
-                    setErrorTextAndHint(binding.emailEditText, "Invalid email format")
-                    errorMessage = "Invalid email format."
-                }
-                if (password.isEmpty()) {
-                    setErrorHint(binding.passwordEditText, "Password is required")
-                } else if (password.length < 6) {
-                    setErrorTextAndHint(
-                        binding.passwordEditText,
-                        "Password must be at least 6 characters"
-                    )
-                    setErrorTextAndHint(
-                        binding.confirmPasswordEditText,
-                        "Password must be at least 6 characters"
-                    )
-                    errorMessage = "Password must be at least 6 characters."
-                }
-                if (confirmPassword.isEmpty()) {
-                    setErrorHint(binding.confirmPasswordEditText, "Confirm password is required")
-                } else if (confirmPassword != password) {
-                    setErrorTextAndHint(binding.confirmPasswordEditText, "Passwords do not match")
-                    errorMessage = "Passwords do not match."
-                }
-                setErrorButton(binding.cbTerms)
-            } else if (!termsResult) {
-                errorMessage = "Terms is not selected."
-                setErrorButton(binding.cbTerms)
+
+            if (firstName.isEmpty()) {
+                setErrorHint(binding.firstNameEditText, "First name is required")
+                errorMessage = "Enter the data correctly to continue."
+            }
+            if (lastName.isEmpty()) {
+                setErrorHint(binding.lastNameEditText, "Last name is required")
+                errorMessage = "Enter the data correctly to continue."
+            }
+            if (email.isEmpty()) {
+                setErrorHint(binding.emailEditText, "Email is required")
+                errorMessage = "Enter the data correctly to continue."
+            } else if (!isValidEmail(email)) {
+                setErrorTextAndHint(binding.emailEditText, "Invalid email format")
+                errorMessage = "Invalid email format."
+            }
+            if (password.isEmpty()) {
+                setErrorHint(binding.passwordEditText, "Password is required")
+                errorMessage = "Enter the data correctly to continue."
+            } else if (!isPasswordSecure(password)) {
+                setErrorTextAndHint(
+                    binding.passwordEditText,
+                    "Password must be at least 8 characters, include uppercase, lowercase, digit, and special character."
+                )
+                errorMessage = "Password is not secure."
             }
 
+            if (confirmPassword.isEmpty()) {
+                setErrorHint(binding.confirmPasswordEditText, "Confirm password is required")
+                errorMessage = "Enter the data correctly to continue."
+            } else if (confirmPassword != password) {
+                setErrorTextAndHint(binding.confirmPasswordEditText, "Passwords do not match")
+                errorMessage = "Passwords do not match."
+            }
             // Si hay errores, muestra el mensaje en la parte superior
             if (errorMessage.isNotEmpty()) {
                 binding.instruction.text = errorMessage.trim()
+                binding.instruction.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.black
+                    )
+                )
                 binding.instruction.visibility = View.VISIBLE
             } else {
                 // Si no hay errores, navega a la siguiente pantalla
-                viewModel.saveFirstPartOfUserData(firstName, lastName, email, password, termsResult)
+                viewModel.saveFirstPartOfUserData(firstName, lastName, email, password)
                 findNavController().navigate(R.id.action_firstRegisterFragment_to_secondRegisterFragment)
             }
         }
-
         // Configura el enlace de inicio de sesión
         binding.loginLink.setOnClickListener {
             findNavController().navigate(R.id.action_firstRegisterFragment_to_loginFragment)
         }
+        binding.btnPrevious.setOnClickListener{
+            findNavController().navigate(R.id.action_firstRegisterFragment_to_loginFragment)
+        }
+
     }
+
 
     private fun togglePasswordVisibility(isVisible: Boolean, editText: EditText) {
         if (isVisible) {
@@ -179,16 +183,6 @@ class FirstRegisterFragment : Fragment() {
             )
         ) // Cambia el hint a rojo
         editText.hint = message // Cambia el hint temporalmente
-    }
-
-    // Función para cambiar el hint temporalmente a rojo
-    private fun setErrorButton(editText: CheckBox) {
-        // Cambiar el color del botón del CheckBox a rojo
-        binding.cbTerms.buttonTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
-
-        // Cambiar el color del texto del CheckBox a rojo
-        binding.cbTerms.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
     }
 
     // Función para cambiar el texto y hint a rojo
@@ -243,13 +237,6 @@ class FirstRegisterFragment : Fragment() {
             )
         )
 
-        // Cambiar el color del botón del CheckBox a rojo
-        binding.cbTerms.buttonTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
-
-        // Cambiar el color del texto del CheckBox a rojo
-        binding.cbTerms.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-
         // Devuelve el color del texto de los campos de entrada a negro
         binding.emailEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         binding.passwordEditText.setTextColor(
@@ -266,5 +253,17 @@ class FirstRegisterFragment : Fragment() {
         )
 
     }
+
+    // Función para validar la seguridad de la contraseña
+    private fun isPasswordSecure(password: String): Boolean {
+        val hasUppercase = password.any { it.isUpperCase() }
+        val hasLowercase = password.any { it.isLowerCase() }
+        val hasDigit = password.any { it.isDigit() }
+        val hasSpecialChar = password.any { !it.isLetterOrDigit() }
+        val isValidLength = password.length >= 8
+
+        return hasUppercase && hasLowercase && hasDigit && hasSpecialChar && isValidLength
+    }
+
 
 }

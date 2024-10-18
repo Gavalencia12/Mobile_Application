@@ -75,6 +75,9 @@ class RecoveryPasswordFragment : Fragment() {
                 }
             }
         }
+        binding.goBackLink.setOnClickListener{
+            findNavController().navigate(R.id.action_recoveryPasswordFragment_to_loginFragment)
+        }
     }
 
     // Función para validar el formato de correo electrónico

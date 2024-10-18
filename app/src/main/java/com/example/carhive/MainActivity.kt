@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +11,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.carhive.Presentation.AuthViewModel
-import com.example.carhive.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -22,7 +20,10 @@ class MainActivity : AppCompatActivity() {
 
     private val authViewModel: AuthViewModel by viewModels()
     private lateinit var navController: NavController
-    lateinit var bottomNavigationView: BottomNavigationView
+
+    // Definir las BottomNavigationViews
+    lateinit var bottomNavigationViewUser: BottomNavigationView
+    lateinit var bottomNavigationViewSeller: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +36,15 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Configurar el BottomNavigationView con el NavController
-        bottomNavigationView = findViewById(R.id.bottom_navigation)
-        NavigationUI.setupWithNavController(bottomNavigationView, navController)
+        // Inicializar las BottomNavigationViews
+        bottomNavigationViewUser = findViewById(R.id.bottom_navigation_user)
+        bottomNavigationViewSeller = findViewById(R.id.bottom_navigation_seller)
 
+        // Configurar el BottomNavigationView con el NavController
+        NavigationUI.setupWithNavController(bottomNavigationViewUser, navController)
+        NavigationUI.setupWithNavController(bottomNavigationViewSeller, navController)
+
+        // Configurar la ventana para que sea fullscreen y transparente
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.statusBarColor = Color.TRANSPARENT
 
@@ -49,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         // Verificar la autenticación en el inicio
         checkAuthentication()
 
-        // Configura el BottomNavigationView para navegar entre fragmentos
-        bottomNavigationView.setOnItemSelectedListener { item ->
+        // Configura el BottomNavigationView para navegar entre fragmentos del usuario
+        bottomNavigationViewUser.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
                     navController.navigate(R.id.userHomeFragment)
@@ -64,12 +70,34 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Configura el BottomNavigationView para navegar entre fragmentos del vendedor
+        bottomNavigationViewSeller.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    navController.navigate(R.id.sellerHomeFragment)
+                    true
+                }
+                R.id.profile -> {
+                    navController.navigate(R.id.sellerHomeFragment)
+                    true
+                }
 
-        // Controlar la visibilidad del BottomNavigationView
+                else -> false
+            }
+        }
+
+        // Controlar la visibilidad del BottomNavigationView según el fragmento actual
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.userHomeFragment, R.id.userProfileFragment, R.id.userHomeCarDetailFragment -> showBottomNavigation()
-                else -> hideBottomNavigation()
+                R.id.userHomeFragment, R.id.userProfileFragment, R.id.userHomeCarDetailFragment -> {
+                    hideAllBottomNavigation()
+                    showUserBottomNavigation()
+                }
+                R.id.sellerHomeFragment -> {
+                    hideAllBottomNavigation()
+                    showSellerBottomNavigation()
+                }
+                else -> hideAllBottomNavigation()
             }
         }
     }
@@ -82,9 +110,20 @@ class MainActivity : AppCompatActivity() {
                     // Si está autenticado, redirigir según el rol
                     authViewModel.userRole.collect { role ->
                         when (role) {
-                            0 -> navController.navigate(R.id.action_loginFragment_to_adminFragment)
-                            1 -> navController.navigate(R.id.action_loginFragment_to_sellerFragment)
-                            2 -> navController.navigate(R.id.action_loginFragment_to_userhomeFragment)
+                            0 -> { // Admin
+                                hideAllBottomNavigation()
+                                navController.navigate(R.id.action_loginFragment_to_adminFragment)
+                            }
+                            1 -> { // Seller
+                                hideAllBottomNavigation()
+                                showSellerBottomNavigation()
+                                navController.navigate(R.id.action_loginFragment_to_sellerFragment)
+                            }
+                            2 -> { // User
+                                hideAllBottomNavigation()
+                                showUserBottomNavigation()
+                                navController.navigate(R.id.action_loginFragment_to_userhomeFragment)
+                            }
                             else -> navController.navigate(R.id.action_loginFragment_to_loginFragment)
                         }
                     }
@@ -96,15 +135,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Métodos para mostrar/ocultar las BottomNavigationViews
+    private fun showUserBottomNavigation() {
+        bottomNavigationViewUser.visibility = View.VISIBLE
+    }
+
+    private fun showSellerBottomNavigation() {
+        bottomNavigationViewSeller.visibility = View.VISIBLE
+    }
+
+    private fun hideAllBottomNavigation() {
+        bottomNavigationViewUser.visibility = View.GONE
+        bottomNavigationViewSeller.visibility = View.GONE
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    private fun showBottomNavigation() {
-        bottomNavigationView.visibility = View.VISIBLE
-    }
-
-    private fun hideBottomNavigation() {
-        bottomNavigationView.visibility = View.GONE
     }
 }

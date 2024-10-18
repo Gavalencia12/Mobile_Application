@@ -188,25 +188,6 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
 
-
-            <!-- Checkbox para aceptar términos y condiciones -->
-            <CheckBox
-                android:id="@+id/cbTerms"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Acepto los Términos y Condiciones"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/dark_blue"
-                android:gravity="center"
-                android:buttonTint="@color/checkbox_color_selector"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:clickable="true"
-                android:focusable="true"/>
-
-
             <!-- Enlace para iniciar sesión y botón para continuar -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

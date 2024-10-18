@@ -23,7 +23,7 @@ data class UserEntity(
     var imageUrl: String? = null,
     var role: Int = 2,
     var isverified: Boolean = false,
-    var isBanned: Boolean = false // Nuevo campo para el estado de baneo
+    var isBanned: Boolean = false, // Nuevo campo para el estado de baneo
     var termsUser: Boolean = false,
-    var termsSeller: Boolean = false,
+    var termsSeller: Boolean = false
 )

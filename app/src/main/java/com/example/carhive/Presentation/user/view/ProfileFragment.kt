@@ -56,9 +56,6 @@ class ProfileFragment : Fragment() {
         binding.ibtnBack.setOnClickListener {
             // Navegar al userHomeFragment
             findNavController().navigate(R.id.action_userProfileFragment_to_userHomeFragment)
-
-            // Actualizar la selección del BottomNavigationView
-            (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.home // Cambia el ID al correspondiente
         }
 
 
@@ -74,7 +71,6 @@ class ProfileFragment : Fragment() {
                 "Cerrar sesión" -> {
                     viewModel.logout()
                     findNavController().navigate(R.id.action_userProfileFragment_to_loginFragment)
-//                    (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.home
                 }
                 "Quieres ser un Vendedor?" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_profileSellerFragment)

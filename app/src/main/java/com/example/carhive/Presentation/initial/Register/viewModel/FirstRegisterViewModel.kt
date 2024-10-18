@@ -39,7 +39,6 @@ class FirstRegisterViewModel @Inject constructor(
         lastName: String,
         email: String,
         password: String,
-        terms: Boolean
     ) {
         viewModelScope.launch {
             // Crear una instancia del modelo de dominio User
@@ -47,7 +46,6 @@ class FirstRegisterViewModel @Inject constructor(
                 firstName = firstName,
                 lastName = lastName,
                 email = email,
-                termsUser = terms
             )
 
             // Guardar los datos del usuario en SharedPreferences

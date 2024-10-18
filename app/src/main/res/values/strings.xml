@@ -40,4 +40,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="failed_to_delete_images">failed to delete images\n</string>
+    <string name="terms_and_conditions"><u>terms and conditions</u></string>
 </resources>

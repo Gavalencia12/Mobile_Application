@@ -11,6 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.MainActivity
+import com.example.carhive.Presentation.initial.Register.view.TermsAndConditionsDialog
+import com.example.carhive.Presentation.initial.Register.view.TermsAndConditionsDialogSeller
 import com.example.carhive.Presentation.user.viewModel.ProfileSellerViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserProfileSellerBinding
@@ -56,7 +58,7 @@ class ProfileSellerFragment : Fragment() {
             findNavController().navigate(R.id.action_userProfileFragment_to_userProfileFragment)
 
             // Actualizar la selección del BottomNavigationView
-            (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.profile // Cambia el ID al correspondiente
+//            (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.profile // Cambia el ID al correspondiente
         }
 
         // Listener para el CheckBox
@@ -69,6 +71,12 @@ class ProfileSellerFragment : Fragment() {
             viewModel.saveRolSeller()
             viewModel.saveTermsSeller()
             findNavController().navigate(R.id.action_userProfileFragment_to_sellerHomeFragment)
+        }
+
+        // Mostrar el modal de términos y condiciones cuando se hace clic en el TextView
+        binding.termsTextView.setOnClickListener {
+            val termsDialog = TermsAndConditionsDialogSeller()
+            termsDialog.show(parentFragmentManager, "TermsAndConditionsDialogSeller")
         }
     }
 
