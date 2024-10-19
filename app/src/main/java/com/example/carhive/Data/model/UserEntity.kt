@@ -25,5 +25,6 @@ data class UserEntity(
     var isverified: Boolean = false,
     var isBanned: Boolean = false, // Nuevo campo para el estado de baneo
     var termsUser: Boolean = false,
-    var termsSeller: Boolean = false
+    var termsSeller: Boolean = false,
+    var isExpanded: Boolean = false
 )
