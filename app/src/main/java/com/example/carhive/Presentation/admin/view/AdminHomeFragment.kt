@@ -1,6 +1,7 @@
 package com.example.carhive.Presentation.admin.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,19 @@ class AdminHomeFragment : Fragment() {
         binding.signOutButton.setOnClickListener {
             viewModel.onLogicClick() // Llama a la lógica en el ViewModel
             findNavController().navigate(R.id.action_userFragment_to_loginFragment) // Navega a LoginFragment
+        }
+
+        binding.viewUsersButton.setOnClickListener {
+            Log.d("AdminHomeFragment", "Botón de Usuarios presionado")
+            findNavController().navigate(R.id.action_adminHomeFragment_to_adminUserListFragment)
+        }
+        binding.viewBanersButton.setOnClickListener {
+            Log.d("AdminHomeFragment", "Botón de Baneos presionado")
+            findNavController().navigate(R.id.action_adminHomeFragment_to_adminUserBanFragment)
+        }
+        binding.viewstadisticsButton.setOnClickListener {
+            Log.d("AdminHomeFragment", "Botón de usuarios activos presionado")
+            findNavController().navigate(R.id.action_adminHomeFragment_to_adminUserActiveFragment)
         }
     }
 

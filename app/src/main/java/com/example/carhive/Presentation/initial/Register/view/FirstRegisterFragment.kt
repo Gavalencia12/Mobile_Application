@@ -1,9 +1,17 @@
 package com.example.carhive.Presentation.initial.Register.view
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,30 +36,234 @@ class FirstRegisterFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configura el botón de siguiente
-        binding.nextButton.setOnClickListener {
-            val firstName = binding.firstNameEditText.text.toString()
-            val lastName = binding.lastNameEditText.text.toString()
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
-
-            // Llama al ViewModel para guardar la información del usuario
-            viewModel.saveFirstPartOfUserData(firstName, lastName, email, password)
-            // Navega a la siguiente pantalla
-            findNavController().navigate(R.id.action_firstRegisterFragment_to_secondRegisterFragment)
+        // Observa el estado de visibilidad de la contraseña
+        viewModel.isPasswordVisible.observe(viewLifecycleOwner) { isVisible ->
+            togglePasswordVisibility(isVisible, binding.passwordEditText)
         }
 
+        // Observa el estado de visibilidad de la confirmación de contraseña
+        viewModel.isConfirmPasswordVisible.observe(viewLifecycleOwner) { isVisible ->
+            togglePasswordVisibility(isVisible, binding.confirmPasswordEditText)
+        }
+
+        // Configura el evento de clic para alternar la visibilidad de la contraseña
+        binding.passwordEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP && event.rawX >= binding.passwordEditText.right - binding.passwordEditText.compoundDrawables[2].bounds.width()) {
+                viewModel.togglePasswordVisibility()
+                true
+            } else {
+                false
+            }
+        }
+
+        // Configura el evento de clic para alternar la visibilidad de la confirmación de contraseña
+        binding.confirmPasswordEditText.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP && event.rawX >= binding.confirmPasswordEditText.right - binding.confirmPasswordEditText.compoundDrawables[2].bounds.width()) {
+                viewModel.toggleConfirmPasswordVisibility()
+                true
+            } else {
+                false
+            }
+        }
+
+        // Configura el botón de siguiente
+        binding.nextButton.setOnClickListener {
+            val firstName = binding.firstNameEditText.text.toString().trim()
+            val lastName = binding.lastNameEditText.text.toString().trim()
+            val email = binding.emailEditText.text.toString().trim()
+            val password = binding.passwordEditText.text.toString().trim()
+            val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
+
+            // Limpia los mensajes de error previos
+            clearErrors()
+
+            var errorMessage = ""
+
+            if (firstName.isEmpty()) {
+                setErrorHint(binding.firstNameEditText, "First name is required")
+                errorMessage = "Enter the data correctly to continue."
+            }
+            if (lastName.isEmpty()) {
+                setErrorHint(binding.lastNameEditText, "Last name is required")
+                errorMessage = "Enter the data correctly to continue."
+            }
+            if (email.isEmpty()) {
+                setErrorHint(binding.emailEditText, "Email is required")
+                errorMessage = "Enter the data correctly to continue."
+            } else if (!isValidEmail(email)) {
+                setErrorTextAndHint(binding.emailEditText, "Invalid email format")
+                errorMessage = "Invalid email format."
+            }
+            if (password.isEmpty()) {
+                setErrorHint(binding.passwordEditText, "Password is required")
+                errorMessage = "Enter the data correctly to continue."
+            } else if (!isPasswordSecure(password)) {
+                setErrorTextAndHint(
+                    binding.passwordEditText,
+                    "Password must be at least 8 characters, include uppercase, lowercase, digit, and special character."
+                )
+                errorMessage = "Password is not secure."
+            }
+
+            if (confirmPassword.isEmpty()) {
+                setErrorHint(binding.confirmPasswordEditText, "Confirm password is required")
+                errorMessage = "Enter the data correctly to continue."
+            } else if (confirmPassword != password) {
+                setErrorTextAndHint(binding.confirmPasswordEditText, "Passwords do not match")
+                errorMessage = "Passwords do not match."
+            }
+            // Si hay errores, muestra el mensaje en la parte superior
+            if (errorMessage.isNotEmpty()) {
+                binding.instruction.text = errorMessage.trim()
+                binding.instruction.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.black
+                    )
+                )
+                binding.instruction.visibility = View.VISIBLE
+            } else {
+                // Si no hay errores, navega a la siguiente pantalla
+                viewModel.saveFirstPartOfUserData(firstName, lastName, email, password)
+                findNavController().navigate(R.id.action_firstRegisterFragment_to_secondRegisterFragment)
+            }
+        }
         // Configura el enlace de inicio de sesión
         binding.loginLink.setOnClickListener {
             findNavController().navigate(R.id.action_firstRegisterFragment_to_loginFragment)
         }
+        binding.btnPrevious.setOnClickListener{
+            findNavController().navigate(R.id.action_firstRegisterFragment_to_loginFragment)
+        }
+
+    }
+
+
+    private fun togglePasswordVisibility(isVisible: Boolean, editText: EditText) {
+        if (isVisible) {
+            editText.inputType = InputType.TYPE_CLASS_TEXT
+            editText.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_passw,
+                0,
+                R.drawable.ic_visibility_on,
+                0
+            )
+        } else {
+            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            editText.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_passw,
+                0,
+                R.drawable.ic_visibility_off,
+                0
+            )
+        }
+        editText.setSelection(editText.text.length)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Evitar fugas de memoria
     }
+
+    // Función para validar el formato de correo electrónico
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    // Función para cambiar el hint temporalmente a rojo
+    private fun setErrorHint(editText: EditText, message: String) {
+        editText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        ) // Cambia el hint a rojo
+        editText.hint = message // Cambia el hint temporalmente
+    }
+
+    // Función para cambiar el texto y hint a rojo
+    private fun setErrorTextAndHint(editText: EditText, message: String) {
+        editText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        ) // Cambia el hint a rojo
+        editText.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.red
+            )
+        ) // Cambia el texto a rojo
+        editText.hint = message // Cambia el hint temporalmente
+    }
+
+    // Función para limpiar los errores anteriores
+    private fun clearErrors() {
+        binding.instruction.visibility = View.GONE
+        // Usar ContextCompat para obtener colores de forma segura y compatible con versiones antiguas
+        binding.firstNameEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.lastNameEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.emailEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.passwordEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+        binding.confirmPasswordEditText.setHintTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.gray
+            )
+        )
+
+        // Devuelve el color del texto de los campos de entrada a negro
+        binding.emailEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.passwordEditText.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
+        binding.confirmPasswordEditText.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.black
+            )
+        )
+
+    }
+
+    // Función para validar la seguridad de la contraseña
+    private fun isPasswordSecure(password: String): Boolean {
+        val hasUppercase = password.any { it.isUpperCase() }
+        val hasLowercase = password.any { it.isLowerCase() }
+        val hasDigit = password.any { it.isDigit() }
+        val hasSpecialChar = password.any { !it.isLetterOrDigit() }
+        val isValidLength = password.length >= 8
+
+        return hasUppercase && hasLowercase && hasDigit && hasSpecialChar && isValidLength
+    }
+
+
 }

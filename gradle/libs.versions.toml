@@ -24,11 +24,16 @@ fragmentversion = "1.6.1"
 navigationfragment = "2.7.3"
 roomKtx = "2.6.1"
 firebaseFirestoreKtx = "25.1.0"
+mpandroidchart = "3.1.0"
+
 
 gifdrawable = "1.2.25"
 material = "1.12.0"
 
 [libraries]
+
+mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

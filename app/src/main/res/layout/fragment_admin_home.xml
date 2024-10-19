@@ -1,30 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Presentation.admin.view.AdminHomeFragment">
+    android:background="@color/blue">
 
     <TextView
-        android:id="@+id/User_text"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:text="Car"
+        android:fontFamily="@font/inter_bold"
+        android:textSize="48sp"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="62dp"
+        android:text="Hive"
+        android:fontFamily="@font/kaushan_script"
+        android:textSize="48sp"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/Sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginStart="140dp"
+        android:fontFamily="@font/inter_bold"
         android:text="Admin"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="240dp"
+        android:layout_height="250dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="-11dp"
+        android:src="@drawable/bushines_man" />
 
     <Button
-        android:id="@+id/sign_out_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Sign out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_text" />
+        android:id="@+id/signOutButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="right"
+        android:background="@drawable/rounded_btn"
+        android:text="Salir"
+        android:textColor="#000000"
+        android:textSize="8dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_alignParentEnd="true"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title"
+        android:layout_marginTop="85dp"
+        android:background="@drawable/rounded_tag"
+        >
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/btn_profile"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="Bienvenido Ulises"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_profile"
+                android:textColor="@color/white"/>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounder_information"
+                android:padding="16dp"
+                android:columnCount="2">
+
+                <TextView
+                    android:id="@+id/rectangle_text"
+                    android:layout_height="wrap_content"
+                    android:layout_columnSpan="2"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="30dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center"
+                    android:text="Informacion"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"/>
+
+                <Button
+                    android:id="@+id/viewstadisticsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="Ver mas"
+                    android:background="@drawable/rounded_btn"
+                    android:textColor="#000000"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/cars"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="Autos"
+                    android:background="@drawable/rounded_btn"
+                    android:textColor="#000000"
+                    android:layout_marginStart="8dp"
+                    android:textSize="11dp"/>
+            </GridLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:layout_marginTop="16dp">
+
+                <Button
+                    android:id="@+id/btn_user_history"
+                    android:layout_height="130dp"
+                    android:layout_columnWeight="1"
+                    android:text="Historial de Usuarios"
+                    android:background="@drawable/rounded_option"
+                    android:drawableTop="@drawable/user_history"/>
+
+                <Button
+                    android:id="@+id/viewBanersButton"
+                    android:layout_width="132dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/rounder_baneos"
+                    android:drawableTop="@drawable/warning"
+                    android:text="Baneos"
+                    android:textColor="@color/white" />
+
+            </GridLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounder_security"
+                android:padding="16dp"
+                android:columnCount="2">
+
+                <TextView
+                    android:id="@+id/security"
+                    android:layout_height="wrap_content"
+                    android:text="Filtro de Seguridad"
+                    android:textSize="20sp"
+                    android:textColor="#FFFFFF"
+                    android:textAlignment="center"
+                    android:layout_columnSpan="2"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="30dp"
+                    android:fontFamily="@font/inter_bold"/>
+
+                <Button
+                    android:id="@+id/viewUsersButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="Nuevo Ingreso de Perfil"
+                    android:background="@drawable/rounded_btn"
+                    android:textColor="#000000"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="11dp"
+                    android:drawableTop="@drawable/user_new"/>
+
+                <Button
+                    android:id="@+id/btn_new_car"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:text="Nuevos Ingresos de Carro"
+                    android:background="@drawable/rounded_btn"
+                    android:textColor="#000000"
+                    android:layout_marginStart="8dp"
+                    android:textSize="11dp"
+                    android:drawableTop="@drawable/new_car"/>
+            </GridLayout>
+
+            <Button
+                android:id="@+id/btn_report"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:text="Reporte General"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_option"
+                android:drawableLeft="@drawable/report"/>
+        </GridLayout>
+    </ScrollView>
+</RelativeLayout>
+

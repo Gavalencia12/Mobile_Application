@@ -13,6 +13,7 @@
 package com.example.carhive.Data.model
 
 data class UserEntity(
+    var id: String = "",
     var firstName: String = "",
     var lastName: String = "",
     var email: String = "",
@@ -21,6 +22,8 @@ data class UserEntity(
     var curp: String = "",
     var imageUrl: String? = null,
     var role: Int = 2,
-    var terms: Boolean = false,
-    var isverified: Boolean = false
+    var isverified: Boolean = false,
+    var isBanned: Boolean = false, // Nuevo campo para el estado de baneo
+    var termsUser: Boolean = false,
+    var termsSeller: Boolean = false
 )

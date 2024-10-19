@@ -20,9 +20,9 @@
         <!-- Texto de bienvenida -->
         <TextView
             android:id="@+id/welcome_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:layout_marginTop="90dp"
             android:fontFamily="@font/inter_bold"
             android:text="Welcome back!"
@@ -79,17 +79,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:weightSum="6"
             android:background="@drawable/rounded_top_cornes"
             android:padding="24dp">
 
             <!-- Mensaje de saludo -->
             <TextView
                 android:id="@+id/nice_to_see_you"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:fontFamily="@font/inter_extrabold"
                 android:text="Nice to see you again!"
                 android:textColor="@color/dark_blue"
@@ -98,10 +98,10 @@
             <!-- Instrucciones -->
             <TextView
                 android:id="@+id/instruction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:fontFamily="@font/inter_bold"
                 android:text="Please enter your information for continue"
                 android:textColor="@color/gray"
@@ -110,10 +110,10 @@
             <!-- Campo de entrada para el correo electrónico -->
             <EditText
                 android:id="@+id/email_edit_text"
-                android:layout_width="320dp"
-                android:layout_height="52dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="20dp"
                 android:autofillHints="Email"
                 android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_email"
@@ -129,14 +129,14 @@
             <!-- Campo de entrada para la contraseña -->
             <EditText
                 android:id="@+id/password_edit_text"
-                android:layout_width="320dp"
-                android:layout_height="52dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="20dp"
                 android:autofillHints="Password"
                 android:background="@drawable/rounded_edit_text"
-                android:drawableStart="@drawable/ic_password"
-                android:drawableEnd="@drawable/ic_visibility"
+                android:drawableStart="@drawable/ic_passw"
+                android:drawableEnd="@drawable/ic_visibility_off"
                 android:drawablePadding="15dp"
                 android:fontFamily="@font/inter_semibold"
                 android:hint="Password"
@@ -149,11 +149,10 @@
             <!-- Texto para recuperar la contraseña -->
             <TextView
                 android:id="@+id/forgot_password_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end"
                 android:fontFamily="@font/inter_bold"
                 android:text="Forgot your Password?"
                 android:textColor="@color/gray"
@@ -162,12 +161,9 @@
             <!-- Botón para iniciar sesión -->
             <Button
                 android:id="@+id/login_button"
-                android:layout_width="320dp"
-                android:layout_height="52dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="@color/blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_pulsado"
                 android:fontFamily="@font/inter_bold"
                 android:text="Login"
                 android:textAllCaps="false"
@@ -176,9 +172,10 @@
 
             <!-- Registro -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <!-- Texto "Don't have an account?" -->
@@ -186,7 +183,7 @@
                     android:id="@+id/register_question"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:fontFamily="@font/inter_semibold"
                     android:text="Don't have an account?"
                     android:textColor="@color/dark_blue"
@@ -199,21 +196,12 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
+                    android:gravity="center"
                     android:fontFamily="@font/inter_semibold"
                     android:text="Register Now!"
                     android:textColor="@color/blue"
                     android:textSize="15sp" />
 
-                <!-- Errores -->
-                <TextView
-                    android:id="@+id/error_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/register_now_text"
-                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

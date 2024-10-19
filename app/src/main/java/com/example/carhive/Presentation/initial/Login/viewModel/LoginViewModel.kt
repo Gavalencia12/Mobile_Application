@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val getUserRoleUseCase: GetUserRoleUseCase
+    private val getUserRoleUseCase: GetUserRoleUseCase,
 ) : ViewModel() {
     private val _userRole = MutableStateFlow<Int?>(null)
     val userRole: StateFlow<Int?> get() = _userRole
@@ -22,21 +22,21 @@ class LoginViewModel @Inject constructor(
     private val _isLogin = MutableStateFlow(false)
     val isLogin: StateFlow<Boolean> get() = _isLogin
 
+    private val _loginError = MutableStateFlow<String?>(null)
+    val loginError: StateFlow<String?> get() = _loginError
+
     // Función para manejar el clic en login y decidir a dónde navegar
-    fun onLoginClick(email: String, password: String, navigateBasedOnRole: (String) -> Unit) {
+    fun onLoginClick(email: String, password: String, navigateBasedOnRole: (String) -> Unit, navigateToVerifyEmail: () -> Unit) {
         viewModelScope.launch {
             val loginResult = loginUseCase(email, password)
 
-            _isLogin.value = loginResult.isSuccess && loginResult.getOrNull() != null
-            Log.d("LoginViewModel", "Login Result: $loginResult")
-
-            if (_isLogin.value) {
+            if (loginResult.isSuccess) {
                 val userId = loginResult.getOrNull()
-                Log.d("LoginViewModel", "User ID: $userId")
+                _isLogin.value = true
+
                 userId?.let {
                     val roleResult = getUserRoleUseCase(it)
                     _userRole.value = roleResult.getOrNull()
-                    Log.d("LoginViewModel", "User Role: ${_userRole.value}")
 
                     // Lógica de navegación basada en el rol
                     when (_userRole.value) {
@@ -46,8 +46,17 @@ class LoginViewModel @Inject constructor(
                         else -> navigateBasedOnRole("Login")
                     }
                 }
+            } else {
+                // Si falla, revisamos el tipo de error
+                val exception = loginResult.exceptionOrNull()
+                if (exception?.message == "Email not verified.") {
+                    // Navegar a una pantalla para verificar el email
+                    navigateToVerifyEmail()
+                } else {
+                    // Mostrar mensaje de error de credenciales incorrectas
+                    _loginError.value = "Incorrect credentials."
+                }
             }
         }
     }
-
 }

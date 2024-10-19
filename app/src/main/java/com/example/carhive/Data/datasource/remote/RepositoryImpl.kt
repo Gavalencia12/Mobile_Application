@@ -22,6 +22,7 @@ import com.example.carhive.Data.datasource.remote.Firebase.FirebaseStorageDataSo
 import com.example.carhive.Data.mapper.CarMapper
 import com.example.carhive.Data.mapper.UserMapper
 import com.example.carhive.Data.model.CarEntity
+import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.Data.repository.AuthRepository
 import com.example.carhive.Domain.model.Car
 import com.example.carhive.Domain.model.User
@@ -57,6 +58,14 @@ class RepositoryImpl(
         return dataSource.saveUserToDatabase(userId, userEntity)
     }
 
+    override suspend fun getAllCarsFromDatabase(): Result<List<CarEntity>> {
+        return dataSource.getAllCarsFromDatabase()
+    }
+
+    override suspend fun getUserData(userId: String): Result<List<UserEntity>> {
+        return dataSource.getUserData(userId)
+    }
+
     override suspend fun saveCarToDatabase(userId: String, car: Car): Result<String> {
         val carEntity = carMapper.mapToEntity(car)
         return dataSource.saveCarToDatabase(userId, carEntity)
@@ -81,6 +90,18 @@ class RepositoryImpl(
 
     override suspend fun getUserRole(userId: String): Result<Int?> {
         return dataSource.getUserRole(userId)
+    }
+
+    override suspend fun updateUserRole(userId: String, newRole: Int): Result<Unit> {
+        return dataSource.updateUserRole(userId, newRole)
+    }
+
+    override suspend fun updateTermsSeller(userId: String, termsSeller: Boolean): Result<Unit> {
+        return dataSource.updateTermsSeller(userId, termsSeller)
+    }
+
+    override suspend fun isVerifiedTheEmail(): Result<Unit> {
+        return dataSourceAuth.isVerifiedTheEmail()
     }
 
     override suspend fun loginUser(email: String, password: String): Result<String?> {

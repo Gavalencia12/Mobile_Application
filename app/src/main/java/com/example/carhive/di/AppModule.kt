@@ -14,6 +14,7 @@ import com.example.carhive.Data.repository.UserRepository
 import com.example.carhive.Data.datasource.local.SessionImpl
 import com.example.carhive.Data.mapper.CarMapper
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
+import com.example.carhive.Domain.usecase.auth.IsVerifiedTheEmailUseCase
 import com.example.carhive.Domain.usecase.user.ClearUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.user.GetPasswordUseCase
 import com.example.carhive.Domain.usecase.user.GetUserPreferencesUseCase
@@ -22,11 +23,15 @@ import com.example.carhive.Domain.usecase.auth.RegisterUseCase
 import com.example.carhive.Domain.usecase.database.DeleteCarInDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.SaveCarToDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.Domain.usecase.user.SavePasswordUseCase
 import com.example.carhive.Domain.usecase.user.SaveUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.database.SaveUserToDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.UpdateCarToDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.UploadToCarImageUseCase
+import com.example.carhive.Domain.usecase.database.UpdateTermsSellerUseCase
+import com.example.carhive.Domain.usecase.database.UpdateUserRoleUseCase
 import com.example.carhive.Domain.usecase.database.UploadToProfileImageUseCase
 import com.example.carhive.Domain.usecase.session.GetUserRoleUseCase
 import com.example.carhive.Domain.usecase.session.IsUserAuthenticatedUseCase
@@ -142,6 +147,21 @@ object AppModule {
     fun provideGetCurrentUserIdUseCase(repository: AuthRepository): GetCurrentUserIdUseCase =
         GetCurrentUserIdUseCase(repository)
 
+    @Provides
+    @Singleton
+    fun provideUpdateUserRoleUseCase(repository: AuthRepository): UpdateUserRoleUseCase =
+        UpdateUserRoleUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateTermsSellerUseCase(repository: AuthRepository): UpdateTermsSellerUseCase =
+        UpdateTermsSellerUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideIsVerifiedTheEmailUseCase(repository: AuthRepository): IsVerifiedTheEmailUseCase =
+        IsVerifiedTheEmailUseCase(repository)
+
     // Provisión de casos de uso relacionados con la gestión de usuarios
     @Provides
     @Singleton
@@ -157,6 +177,16 @@ object AppModule {
     @Singleton
     fun provideSaveUserToDatabaseUseCase(repository: AuthRepository): SaveUserToDatabaseUseCase =
         SaveUserToDatabaseUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetUserDataUseCase(repository: AuthRepository): GetUserDataUseCase =
+        GetUserDataUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetAllCarsFromDatabaseUseCase(repository: AuthRepository): GetAllCarsFromDatabaseUseCase =
+        GetAllCarsFromDatabaseUseCase(repository)
 
     @Provides
     @Singleton
