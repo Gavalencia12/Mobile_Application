@@ -56,6 +56,7 @@ class UserRepositoryImpl @Inject constructor(
                     putString("curp", userEntity.curp)
                     putString("imageUrl", userEntity.imageUrl)
                     putInt("role", userEntity.role)
+                    putBoolean("termsUser", userEntity.termsUser)
                     apply() // Aplica los cambios en SharedPreferences
                 }
                 Result.success(Unit) // Retorno exitoso
@@ -89,7 +90,8 @@ class UserRepositoryImpl @Inject constructor(
                     voterID = sharedPreferences.getString("voterID", "") ?: "",
                     curp = sharedPreferences.getString("curp", "") ?: "",
                     imageUrl = sharedPreferences.getString("imageUrl", null),
-                    role = sharedPreferences.getInt("role", -1) // -1 indica usuario sin rol asignado
+                    role = sharedPreferences.getInt("role", -1), // -1 indica usuario sin rol asignado
+                    termsUser = sharedPreferences.getBoolean("termsUser",false)
                 )
                 val user = userMapper.mapToDomain(userEntity) // Mapea a User del dominio
                 Result.success(user) // Retorno exitoso con el usuario

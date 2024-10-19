@@ -37,8 +37,6 @@ class FortRegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val emailVerificationStatus: TextView = binding.emailVerificationStatus
-        val loadingIndicator: ProgressBar = binding.loadingIndicator
         val continueButton: Button = binding.continueButton
 
         // Observa el LiveData para verificar el estado del correo electrónico

@@ -37,16 +37,29 @@ class FirebaseAuthDataSource @Inject constructor(
     suspend fun loginUser(email: String, password: String): Result<String?> {
         return try {
             // Realiza la autenticación del usuario utilizando email y contraseña.
-            auth.signInWithEmailAndPassword(email, password).await()
-            // Obtiene el ID del usuario autenticado.
-            val userIdResult = getCurrentUserId()
-            val userId = userIdResult.getOrNull()
-            Result.success(userId) // Retorna el ID del usuario.
+            val authResult = auth.signInWithEmailAndPassword(email, password).await()
+            val firebaseUser = authResult.user
+
+            if (firebaseUser != null) {
+                if (firebaseUser.isEmailVerified) {
+                    // Si el correo está verificado, obtenemos el ID del usuario autenticado.
+                    val userIdResult = getCurrentUserId()
+                    val userId = userIdResult.getOrNull()
+                    Result.success(userId) // Retorna el ID del usuario.
+                } else {
+                    // Si el correo no está verificado, devolvemos un error personalizado.
+                    sendVerificationEmail(firebaseUser)
+                    Result.failure(RepositoryException("Email not verified."))
+                }
+            } else {
+                Result.failure(RepositoryException("User not found."))
+            }
         } catch (e: Exception) {
             // Captura cualquier excepción y devuelve un resultado de error.
             Result.failure(RepositoryException("Error logging in user: ${e.message}", e))
         }
     }
+
 
     /**
      * Registra un nuevo usuario en Firebase Authentication.
@@ -64,12 +77,13 @@ class FirebaseAuthDataSource @Inject constructor(
         return try {
             // Crea un nuevo usuario utilizando email y contraseña.
             val result = auth.createUserWithEmailAndPassword(email, password).await()
-            val userId = result.user?.uid ?: "" // Obtiene el ID del usuario creado.
+            val user = result.user ?: return Result.failure(RepositoryException("User creation failed"))
+            val userId = user.uid
 
-            // Envía el correo de verificación después de registrar al usuario
-            result.user?.let { sendVerificationEmail(it) }
+            // Envía el correo de verificación después de registrar al usuario.
+            sendVerificationEmail(user)
 
-            Result.success(userId) // Retorna el ID del usuario creado.
+            Result.success(userId) // Retorna el ID del usuario creado si todo está bien.
         } catch (e: Exception) {
             // Captura cualquier excepción y devuelve un resultado de error.
             Result.failure(RepositoryException("Error registering user: ${e.message}", e))
@@ -106,4 +120,27 @@ class FirebaseAuthDataSource @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun isVerifiedTheEmail(): Result<Unit> {
+        return try {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                // Verificar si el correo está verificado
+                if (!currentUser.isEmailVerified) {
+                    // Cerrar sesión si el correo no está verificado
+                    FirebaseAuth.getInstance().signOut()
+                    Result.failure(Exception("El correo no está verificado, sesión cerrada."))
+                } else {
+                    // Si está verificado, retornamos éxito
+                    Result.success(Unit)
+                }
+            } else {
+                Result.failure(Exception("Usuario no autenticado."))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }
