@@ -21,6 +21,7 @@ class CrudViewModel @Inject constructor(
     private val deleteCarInDatabaseUseCase: DeleteCarInDatabaseUseCase,
     private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase,
     private val uploadToCarImageUseCase: UploadToCarImageUseCase,
+    private val updateCarSoldStatusUseCase: UpdateCarSoldStatusUseCase
 ) : ViewModel() {
 
     // LiveData to hold the list of cars for the user
@@ -34,20 +35,18 @@ class CrudViewModel @Inject constructor(
     // Function to fetch cars for the user from the database
     fun fetchCarsForUser() {
         viewModelScope.launch {
-            // Get the current user's ID
             val currentUserResult = getCurrentUserIdUseCase()
             val userId = currentUserResult.getOrNull()
 
             userId?.let {
-                // Fetch cars for the current user
                 val result = getCarUserInDatabaseUseCase(it)
                 result.onSuccess { cars ->
-                    _carList.value = cars // Update LiveData with the list of cars
+                    _carList.value = cars
                 }.onFailure { exception ->
-                    _error.value = "Error fetching cars: ${exception.message}" // Update error LiveData
+                    _error.value = "Error fetching cars: ${exception.message}"
                 }
             } ?: run {
-                _error.value = "User not authenticated" // Handle case where user is not authenticated
+                _error.value = "User not authenticated"
             }
         }
     }
@@ -63,11 +62,9 @@ class CrudViewModel @Inject constructor(
         images: List<Uri>
     ) {
         viewModelScope.launch {
-            // Get the current user's ID
             val currentUser = getCurrentUserIdUseCase()
             val userId = currentUser.getOrNull() ?: return@launch
 
-            // Create a Car object
             val car = Car(
                 modelo = modelo,
                 color = color,
@@ -77,22 +74,19 @@ class CrudViewModel @Inject constructor(
                 price = price
             )
 
-            // Save the car in the database
             val result = saveCarToDatabaseUseCase(userId, car)
             result.fold(
                 onSuccess = { carId ->
-                    // Upload images to Firebase and get URLs
                     val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
                     val imageUrls = imageUploadResult.getOrNull()
 
                     if (imageUrls != null) {
-                        // Update the car with the image URLs
                         val updatedCar = car.copy(imageUrls = imageUrls, id = carId)
                         updateCarInDatabase(userId, carId, updatedCar)
                     }
                 },
                 onFailure = { error ->
-                    _error.value = "Error adding car: ${error.message}" // Update error LiveData
+                    _error.value = "Error adding car: ${error.message}"
                 }
             )
         }
@@ -101,14 +95,13 @@ class CrudViewModel @Inject constructor(
     // Function to update a car in the database and refresh the list
     private fun updateCarInDatabase(userId: String, carId: String, updatedCar: Car) {
         viewModelScope.launch {
-            // Update the car in the database
             val result = updateCarToDatabaseUseCase(userId, carId, updatedCar)
             result.fold(
                 onSuccess = {
-                    fetchCarsForUser() // Refresh the list of cars
+                    fetchCarsForUser()
                 },
                 onFailure = { error ->
-                    _error.value = "Error updating car: ${error.message}" // Update error LiveData
+                    _error.value = "Error updating car: ${error.message}"
                 }
             )
         }
@@ -117,14 +110,13 @@ class CrudViewModel @Inject constructor(
     // Method to delete a car
     fun deleteCar(userId: String, carId: String) {
         viewModelScope.launch {
-            // Delete the car from the database
             val result = deleteCarInDatabaseUseCase(userId, carId)
             result.fold(
                 onSuccess = {
-                    fetchCarsForUser() // Refresh the list after deletion
+                    fetchCarsForUser()
                 },
                 onFailure = { error ->
-                    _error.value = "Error deleting car: ${error.message}" // Update error LiveData
+                    _error.value = "Error deleting car: ${error.message}"
                 }
             )
         }
@@ -140,11 +132,10 @@ class CrudViewModel @Inject constructor(
         addOn: String,
         description: String,
         price: String,
-        newImages: List<Uri>, // New images to upload
-        existingImages: List<Uri> // Existing images that do not need to be uploaded
+        newImages: List<Uri>,
+        existingImages: List<Uri>
     ) {
         viewModelScope.launch {
-            // Create a Car object with updated details
             val car = Car(
                 id = carId,
                 modelo = modelo,
@@ -155,23 +146,29 @@ class CrudViewModel @Inject constructor(
                 price = price
             )
 
-            // Upload only new images
             val imageUploadResult = uploadToCarImageUseCase(userId, carId, newImages)
             val newImageUrls = imageUploadResult.getOrNull() ?: emptyList()
 
-            // Combine existing URLs with new ones
             val combinedImageUrls = existingImages.map { it.toString() } + newImageUrls
 
-            // Update the car with all image URLs
             val updatedCar = car.copy(imageUrls = combinedImageUrls)
             updateCarInDatabase(userId, carId, updatedCar)
         }
     }
 
-    // Add this function in CrudViewModel
+    fun updateCarSoldStatus(userId: String, carId: String, sold: Boolean) {
+        viewModelScope.launch {
+            val result = updateCarSoldStatusUseCase(userId, carId, sold)
+            result.onFailure { exception ->
+                _error.value = "Error updating car sold status: ${exception.message}"
+            }
+        }
+    }
     suspend fun getCurrentUserId(): String {
         // Get the current user's ID
         val currentUser = getCurrentUserIdUseCase()
-        return currentUser.getOrNull() ?: throw IllegalArgumentException("User not authenticated") // Handle not authenticated case
+        return currentUser.getOrNull()
+            ?: throw IllegalArgumentException("User not authenticated") // Handle not authenticated case
     }
+
 }

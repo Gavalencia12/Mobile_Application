@@ -8,5 +8,7 @@ data class Car(
     var addOn: String = "",
     var description: String = "",
     var price: String = "",
+    var sold: Boolean = false,
     var imageUrls: List<String>? = mutableListOf()
+
 )

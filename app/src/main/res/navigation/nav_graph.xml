@@ -209,5 +209,14 @@
             app:destination="@id/adminHomeFragment" />
     </fragment>
 
+    <fragment
+        android:id="@id/sellerHomeFragment"
+        android:name="com.example.carhive.Presentation.seller.view.SellerHomeFragment"
+        android:label="Seller Home" />
+
+    <fragment
+        android:id="@+id/carsListFragment"
+        android:name="com.example.carhive.Presentation.seller.viewModel.CarsListFragment"
+        android:label="Cars List" />
 
 </navigation>

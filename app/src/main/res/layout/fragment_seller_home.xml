@@ -14,23 +14,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Contenido del toolbar
+        <!-- Botón de retroceso -->
         <Button
-            android:id="@+id/crud"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/button_add"
-            android:drawableLeft="@drawable/ic__add"
-            android:elevation="4dp"
-            android:gravity="center"
-            android:paddingLeft="3dp"
-            tools:ignore="MissingConstraints" /> -->
-
-        <Button
-            android:id="@+id/ic_back"
+            android:id="@+id/btn_back"
             android:layout_width="45dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/button_sign_out"
             android:drawableLeft="@drawable/ic_back"
             android:gravity="center"/>
@@ -45,12 +33,12 @@
 
         <!-- Sección de bienvenida -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/welcomeSeller"
+            android:id="@+id/section_welcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvdate"
+                android:id="@+id/tv_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Monday 15 April"
@@ -60,45 +48,45 @@
                 android:paddingBottom="5dp" />
 
             <TextView
-                android:id="@+id/tvwelcome"
+                android:id="@+id/tv_welcome_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Welcome back!"
                 android:paddingLeft="20dp"
                 android:textSize="18sp"
                 android:textColor="@color/gray_aqua"
-                app:layout_constraintTop_toBottomOf="@+id/tvdate" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
             <TextView
-                android:id="@+id/tvnameuser"
+                android:id="@+id/tv_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="John Wick"
                 android:paddingLeft="20dp"
                 android:textSize="26sp"
                 android:textColor="@color/dark_gray"
                 android:textStyle="bold"
                 android:layout_marginTop="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvwelcome" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_welcome_message" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Sección de tarjetas -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/contents"
+            android:id="@+id/section_cards_1"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/welcomeSeller"
+            app:layout_constraintTop_toBottomOf="@+id/section_welcome"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Tarjeta 1 -->
+            <!-- Tarjeta 1: Todos los coches -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card1"
+                android:id="@+id/card_all_cars"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@drawable/cards_data"
@@ -108,38 +96,37 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
-                    android:id="@+id/car_icon"
+                    android:id="@+id/icon_all_cars"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_car" />
 
-
                 <TextView
-                    android:id="@+id/count_car3"
+                    android:id="@+id/tv_all_cars_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Car inventory"
+                    android:text="All cars"
                     android:textColor="@color/gray_aqua"
-                    app:layout_constraintTop_toBottomOf="@id/car_icon"
+                    app:layout_constraintTop_toBottomOf="@id/icon_all_cars"
                     android:layout_marginTop="25dp"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_all_cars_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"
                     android:textSize="25sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/count_car3"
+                    app:layout_constraintTop_toBottomOf="@id/tv_all_cars_label"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Tarjeta 2 -->
+            <!-- Tarjeta 2: Coches vendidos -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card2"
+                android:id="@+id/card_sold_cars"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@drawable/cards_data"
@@ -149,53 +136,53 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
-                    android:id="@+id/vendedor_icon"
+                    android:id="@+id/icon_sold_cars"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_car" />
 
                 <TextView
-                    android:id="@id/count_car4"
+                    android:id="@+id/tv_sold_cars_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Car inventory"
+                    android:text="Sold Cars"
                     android:textColor="@color/gray_aqua"
-                    app:layout_constraintTop_toBottomOf="@id/vendedor_icon"
+                    app:layout_constraintTop_toBottomOf="@id/icon_sold_cars"
                     android:layout_marginTop="25dp"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-
                 <TextView
+                    android:id="@+id/tv_sold_cars_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"
                     android:textSize="25sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/count_car4"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sold_cars_label"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
 
+        <!-- Segunda fila de tarjetas -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/contents2"
+            android:id="@+id/section_cards_2"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:layout_marginTop="15dp"
             android:layout_gravity="center_horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/contents"
+            app:layout_constraintTop_toBottomOf="@+id/section_cards_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Tarjeta 3 -->
+            <!-- Tarjeta 3: Coches no vendidos -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card3"
+                android:id="@+id/card_unsold_cars"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@drawable/cards_data"
@@ -204,37 +191,38 @@
                 android:paddingVertical="15dp">
 
                 <ImageView
-                    android:id="@+id/car_icon3"
+                    android:id="@+id/icon_unsold_cars"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_car" />
 
                 <TextView
-                    android:id="@+id/count_car4"
+                    android:id="@+id/tv_unsold_cars_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Car inventory"
+                    android:text="Unsold Cars"
                     android:textColor="@color/gray_aqua"
-                    app:layout_constraintTop_toBottomOf="@id/car_icon3"
+                    app:layout_constraintTop_toBottomOf="@id/icon_unsold_cars"
                     android:layout_marginTop="25dp"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_unsold_cars_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"
+
                     android:textSize="25sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/count_car4"
+                    app:layout_constraintTop_toBottomOf="@id/tv_unsold_cars_label"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Tarjeta 4 -->
+            <!-- Tarjeta 4: Coches favoritos -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card4"
+                android:id="@+id/card_favorite_cars"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="@drawable/cards_data"
@@ -243,36 +231,36 @@
                 android:paddingVertical="15dp">
 
                 <ImageView
-                    android:id="@+id/vendedor_icon4"
+                    android:id="@+id/icon_favorite_cars"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_car" />
 
                 <TextView
-                    android:id="@+id/count_car7"
+                    android:id="@+id/tv_favorite_cars_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Car inventory"
+                    android:text="Favorite Cars"
                     android:textColor="@color/gray_aqua"
-                    app:layout_constraintTop_toBottomOf="@id/vendedor_icon4"
+                    app:layout_constraintTop_toBottomOf="@id/icon_favorite_cars"
                     android:layout_marginTop="25dp"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_favorite_cars_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"
                     android:textSize="25sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/count_car7"
+                    app:layout_constraintTop_toBottomOf="@id/tv_favorite_cars_label"
                     app:layout_constraintBottom_toBottomOf="parent" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -282,7 +270,6 @@
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_menu"
         android:background="@drawable/navigation_bar"
-        app:layout_constraintBottom_toBottomOf="parent" >
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
 </androidx.constraintlayout.widget.ConstraintLayout>

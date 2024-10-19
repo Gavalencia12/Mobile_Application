@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Presentation.seller.view.CarDetailDialogFragment
 import com.example.carhive.Presentation.seller.view.EditCarDialogFragment
 import com.example.carhive.R
+import kotlinx.coroutines.launch
 
+// Adapter to display a list of cars in a RecyclerView for the seller
 class CarAdapter(
-    private var cars: List<CarEntity>, // List of cars to be displayed
-    private val activity: FragmentActivity, // Activity context for displaying dialogs
+    private var cars: List<CarEntity>, // List of cars to display
+    private val activity: FragmentActivity, // Context to show dialogs
     private val viewModel: CrudViewModel // ViewModel to manage car operations
 ) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
 
@@ -26,72 +30,94 @@ class CarAdapter(
         val editButton: Button = itemView.findViewById(R.id.editButton)
         val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
         val viewMoreButton: Button = itemView.findViewById(R.id.viewMoreButton)
-
         val modeloTextView: TextView = itemView.findViewById(R.id.carModelTextView)
-        //        val colorTextView: TextView = itemView.findViewById(R.id.carColorTextView)
         val priceTextView: TextView = itemView.findViewById(R.id.carPriceTextView)
         val speedTextView: TextView = itemView.findViewById(R.id.carSpeedTextView)
         val carImageView: ImageView = itemView.findViewById(R.id.carImageView)
+        val soldIcon: ImageView = itemView.findViewById(R.id.soldIcon)
     }
 
-    // Inflate the view for each item in the RecyclerView
+    // Inflate the view for each car item in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_seller_car, parent, false)
         return CarViewHolder(itemView)
     }
 
-    // Bind the data to the views in each item
+    // Bind the car data to the views in each item
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
         val car = cars[position]
-        holder.modeloTextView.text = car.modelo // Set the car model text
 
-        // Show the color to the right of the text (commented out)
-        // holder.colorTextView.text = "Color: ${car.color}  " // Adds spaces for separation
-        // holder.colorTextView.textAlignment = View.TEXT_ALIGNMENT_VIEW_END // Align text to the right
-
-        // Add the dollar sign to the price and format it to two decimal places
+        // Set the car model text
+        holder.modeloTextView.text = car.modelo
+        // Format the price and set the text
         holder.priceTextView.text = "$${String.format("%.2f", car.price.toDouble())}"
-
-        // Append "km/h" to the speed
+        // Set the speed text
         holder.speedTextView.text = "${car.speed} km/h"
 
-        // Load the image using Glide (if there are image URLs)
+        // Load the car image using Glide
         val imageUrl = car.imageUrls?.firstOrNull()
         if (imageUrl != null) {
             Glide.with(holder.itemView.context)
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_img) // Placeholder image while loading
-                .error(R.drawable.ic_error) // Error image if loading fails
-                .into(holder.carImageView) // Set the loaded image to the ImageView
+                .placeholder(R.drawable.ic_img) // Placeholder while loading
+                .error(R.drawable.ic_error) // Error image if load fails
+                .into(holder.carImageView)
         } else {
-            holder.carImageView.setImageResource(R.drawable.ic_img) // Set default image if no URL is available
+            holder.carImageView.setImageResource(R.drawable.ic_img) // Default image if no URL
         }
 
-        // Set listener for the "View More" button to show car details
+        // Update the UI based on whether the car is sold
+        updateSoldIcon(holder.soldIcon, car.sold)
+
+        // Listener to toggle the "sold" status of the car when the sold icon is clicked
+        holder.soldIcon.setOnClickListener {
+            activity.lifecycleScope.launch {
+                car.sold = !car.sold // Toggle the sold status
+                updateSoldIcon(holder.soldIcon, car.sold) // Update the sold icon
+
+                // Get the current user ID from the ViewModel and update the sold status in the database
+                val userId = viewModel.getCurrentUserId()
+                viewModel.updateCarSoldStatus(userId, car.id, car.sold)
+            }
+        }
+
+        // Listener to view more details about the car
         holder.viewMoreButton.setOnClickListener {
             val dialog = CarDetailDialogFragment(car)
             dialog.show(activity.supportFragmentManager, "CarDetailDialog")
         }
 
-        // Set listener for the "Delete" button to confirm deletion
+        // Listener to delete the car
         holder.deleteButton.setOnClickListener {
-            ConfirmDeleteDialogFragment(car.id, viewModel).show(activity.supportFragmentManager, "ConfirmDeleteDialog")
+            ConfirmDeleteDialogFragment(car.id, viewModel)
+                .show(activity.supportFragmentManager, "ConfirmDeleteDialog")
         }
 
-        // Add functionality for the "Edit" button
+        // Listener to edit the car details
         holder.editButton.setOnClickListener {
             val dialog = EditCarDialogFragment.newInstance(car, viewModel)
             dialog.show(activity.supportFragmentManager, "EditCarDialog")
         }
     }
 
-    // Return the number of items in the list
+    // Function to update the "sold" icon based on the car's sold status
+    private fun updateSoldIcon(soldIcon: ImageView, isSold: Boolean) {
+        if (isSold) {
+            // Set the icon to green if the car is sold
+            soldIcon.setColorFilter(ContextCompat.getColor(soldIcon.context, R.color.green))
+        } else {
+            // Set the icon to gray if the car is unsold
+            soldIcon.setColorFilter(ContextCompat.getColor(soldIcon.context, R.color.gray))
+        }
+    }
+
+    // Return the number of items in the car list
     override fun getItemCount() = cars.size
 
-    // Update the list of cars when there are new data
+    // Update the car list and refresh the RecyclerView
     fun updateCars(newCars: List<CarEntity>) {
         cars = newCars
-        notifyDataSetChanged() // Notify the adapter that the data has changed
+        notifyDataSetChanged()
     }
 }
