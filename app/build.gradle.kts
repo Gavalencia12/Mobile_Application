@@ -1,4 +1,4 @@
-plugins {
+    plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
@@ -68,8 +68,10 @@ dependencies {
     implementation(libs.navigation)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.gifdrawable)
-    implementation(libs.bumptech.glide)
-    annotationProcessor(libs.bumptech.glide.compiler)
+    implementation("com.google.android.material:material:1.6.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
+
 
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)
