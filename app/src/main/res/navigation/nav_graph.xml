@@ -146,19 +146,19 @@
         android:id="@+id/sellerHomeFragment"
         android:name="com.example.carhive.Presentation.seller.view.SellerHomeFragment"
         tools:layout="@layout/fragment_seller_home">
-        <action
-            android:id="@+id/action_userFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_crud"
-            app:destination="@id/sellerCrudFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/sellerCrudFragment"
         android:name="com.example.carhive.Presentation.seller.view.SellerCrudFragment"
         tools:layout="@layout/fragment_seller_crud">
+    </fragment>
 
+    <!-- Fragmento para el perfil del vendedor -->
+    <fragment
+        android:id="@+id/sellerProfileFragment"
+        android:name="com.example.carhive.Presentation.seller.view.SellerProfileFragment"
+        tools:layout="@layout/fragment_seller_profile">
     </fragment>
 
     <fragment
@@ -174,7 +174,6 @@
         <action
             android:id="@+id/action_adminHomeFragment_to_adminUserBanFragment"
             app:destination="@id/adminUserBanFragment" />
-
         <action
             android:id="@+id/action_adminHomeFragment_to_adminUserActiveFragment"
             app:destination="@id/adminUserActiveFragment" />
@@ -184,11 +183,9 @@
         android:id="@+id/adminUserListFragment"
         android:name="com.example.carhive.Presentation.admin.view.AdminUserListFragment"
         android:label="User List">
-
         <action
             android:id="@+id/action_adminUserListFragment_to_adminHomeFragment"
             app:destination="@id/adminHomeFragment" />
-
     </fragment>
 
     <fragment
@@ -208,11 +205,6 @@
             android:id="@+id/action_adminUserActiveFragment_to_adminHomeFragment"
             app:destination="@id/adminHomeFragment" />
     </fragment>
-
-    <fragment
-        android:id="@id/sellerHomeFragment"
-        android:name="com.example.carhive.Presentation.seller.view.SellerHomeFragment"
-        android:label="Seller Home" />
 
     <fragment
         android:id="@+id/carsListFragment"

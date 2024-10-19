@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.profile -> {
-                    navController.navigate(R.id.sellerHomeFragment)
+                    navController.navigate(R.id.sellerProfileFragment)
                     true
                 }
                 R.id.crud -> {
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.signOutButton -> {
                     navController.navigate(R.id.loginFragment)
-                    FirebaseAuth.getInstance().signOut() // Sign out seller when "Sign Out" is clicked
+                    FirebaseAuth.getInstance().signOut()
                     true
                 }
                 else -> false
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     hideAllBottomNavigation() // Hide other navigations and show the user navigation
                     showUserBottomNavigation()
                 }
-                R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.userProfileFragment -> {
+                R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.sellerProfileFragment -> {
                     hideAllBottomNavigation() // Hide other navigations and show the seller navigation
                     showSellerBottomNavigation()
                 }

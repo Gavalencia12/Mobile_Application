@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.Presentation.seller.viewModel.CarsListFragment
 import com.example.carhive.Presentation.seller.viewModel.SellerHomeViewModel
@@ -37,6 +38,10 @@ class SellerHomeFragment : Fragment() {
     // Handle logic after the view has been created
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Configurar el BottomNavigationView con el NavController
+        val navController = findNavController()
+        NavigationUI.setupWithNavController(binding.bottomNavigationSeller, navController)
 
         // Observe user data and update UI when data is available
         viewModel.userData.observe(viewLifecycleOwner) { result ->
@@ -111,4 +116,5 @@ class SellerHomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
