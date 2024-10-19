@@ -15,12 +15,13 @@
     <color name="dark_blue">#000356</color>
     <color name="gray">#6F6F6F</color>
     <color name="dark_gray">#434343</color>
+    <color name="gray_aqua">#868D9D</color>
     <color name="gray_bg">#E4E4E4</color>
     <color name="form_input">#D6DCF1</color>
     <color name="red">#FF0000</color>
     <color name="green">#25D025</color>"
     <color name="yellow">#FFC107</color>"
     <color name="accent">#FF6200EE</color>""
-    <color name="background">#FBFBFB</color>""
+    <color name="background">#f0f0f0</color>""
     <color name="gray_light">#F2F2F2</color>
 </resources>

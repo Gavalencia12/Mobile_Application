@@ -29,17 +29,6 @@ class SellerHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set up the Sign Out button
-        binding.signOutButton.setOnClickListener {
-            viewModel.onLogicClick() // Call logic in the ViewModel
-            findNavController().navigate(R.id.action_userFragment_to_loginFragment) // Navigate to LoginFragment
-        }
-
-        // Set up the CRUD button to navigate to the CRUD operations screen
-        binding.crud.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_crud) // Navigate to CRUD screen
-        }
     }
 
     override fun onDestroyView() {

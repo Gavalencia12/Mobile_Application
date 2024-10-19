@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.carhive.Presentation.AuthViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -75,6 +76,11 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.userProfileFragment)
                     true
                 }
+                R.id.signOutButton -> {
+                    navController.navigate(R.id.loginFragment)
+                    FirebaseAuth.getInstance().signOut()
+                    true
+                }
                 else -> false
             }
         }
@@ -90,6 +96,15 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.sellerHomeFragment)
                     true
                 }
+                R.id.crud -> {
+                    navController.navigate(R.id.sellerCrudFragment)
+                    true
+                }
+                R.id.signOutButton -> {
+                    navController.navigate(R.id.loginFragment)
+                    FirebaseAuth.getInstance().signOut()
+                    true
+                }
 
                 else -> false
             }
@@ -102,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     hideAllBottomNavigation()
                     showUserBottomNavigation()
                 }
-                R.id.sellerHomeFragment -> {
+                R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.userProfileFragment-> {
                     hideAllBottomNavigation()
                     showSellerBottomNavigation()
                 }

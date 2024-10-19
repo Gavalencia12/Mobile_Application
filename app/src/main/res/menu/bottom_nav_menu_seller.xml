@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/home"
         android:icon="@drawable/ic_home"
         android:title="Home" />
 
     <item
-        android:id="@+id/message"
-        android:icon="@drawable/ic_message"
-        android:title="Message" />
-
+        android:id="@+id/crud"
+        android:icon="@drawable/ic_car"
+        android:title="Inventory" />
     <item
-        android:id="@+id/favorites"
-        android:icon="@drawable/ic_favorite"
-        android:title="Favorites" />
-
-    <item
-        android:id="@+id/notifications"
-        android:icon="@drawable/ic_notifications"
-        android:title="Notifications" />
+        android:id="@+id/signOutButton"
+        android:icon="@drawable/ic_selector_sign_out"
+        android:title="Sign Out" />
 
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_person"
         android:title="Profile" />
-
 </menu>

@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/ic_sign_out_white" /> <!-- Ícono cuando el botón está presionado -->
+    <item android:drawable="@drawable/ic_sign_out"/> <!-- Ícono en estado normal -->
+</selector>

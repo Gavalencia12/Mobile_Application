@@ -18,7 +18,8 @@
             android:background="@drawable/button_close"
             android:drawableLeft="@drawable/ic_exit"
             android:elevation="4dp"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/dialog_title"

@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Presentation.seller.view.SellerHomeFragment"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:paddingTop="24dp">
 
     <Button
         android:id="@+id/btn_addCar"
