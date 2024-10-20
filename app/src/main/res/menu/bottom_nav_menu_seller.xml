@@ -7,15 +7,16 @@
 
     <item
         android:id="@+id/crud"
-        android:icon="@drawable/ic_car"
+        android:icon="@drawable/ic_cars"
         android:title="Inventory" />
-    <item
-        android:id="@+id/signOutButton"
-        android:icon="@drawable/ic_selector_sign_out"
-        android:title="Sign Out" />
 
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_person"
         android:title="Profile" />
+
+    <item
+        android:id="@+id/signOutButton"
+        android:icon="@drawable/ic_selector_sign_out"
+        android:title="Sign Out" />
 </menu>

@@ -24,4 +24,5 @@
     <color name="accent">#FF6200EE</color>""
     <color name="background">#f0f0f0</color>""
     <color name="gray_light">#F2F2F2</color>
+    <color name="other_gray">#ABABAB</color>
 </resources>
