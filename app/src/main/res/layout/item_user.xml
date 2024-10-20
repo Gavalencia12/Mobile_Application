@@ -1,68 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/user_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/userImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:contentDescription="User Image" />
-
-    <TextView
-        android:id="@+id/firstNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="First Name" />
-
-    <TextView
-        android:id="@+id/lastNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last Name" />
-
-    <TextView
-        android:id="@+id/emailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email" />
-    <TextView
-        android:id="@+id/verifiedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Verified" />
-    <TextView
-        android:id="@+id/idText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ID" />
-
-    <TextView
-        android:id="@+id/rolText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rol"
-        />
-
-    <!-- Contenedor para los botones -->
+    <!-- Contenedor de información principal -->
     <LinearLayout
+        android:id="@+id/basic_info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+        android:gravity="center"
+        android:paddingStart="20dp"
+        android:background="@drawable/rounded_corner_background">
 
-        <Button
-            android:id="@+id/verification"
+        <!-- Imagen de perfil redonda -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/userImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Imagen de usuario"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+        <!-- Contenedor de texto -->
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="verificar" />
+            android:orientation="vertical"
+            android:padding="10dp">
 
+            <!-- Nombre y apellido -->
+            <TextView
+                android:id="@+id/firstNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:layout_gravity="center"/>
 
+            <TextView
+                android:id="@+id/lastNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apellido"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:layout_gravity="center"/>
+
+            <!-- ID -->
+            <TextView
+                android:id="@+id/idText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID"
+                android:textSize="14sp"
+                android:layout_gravity="center"/>
+
+            <!-- Email -->
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+
+            <!-- Verificado -->
+            <TextView
+                android:id="@+id/verifiedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verificado"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+
+            <!-- Rol -->
+            <TextView
+                android:id="@+id/rolText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rol"
+                android:textSize="16sp"
+                android:layout_gravity="center"/>
+
+            <!-- Botón -->
+            <Button
+                android:id="@+id/verification"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Verificar"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_btn"
+                android:layout_marginBottom="10dp"/>
+
+        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>
-
