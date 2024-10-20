@@ -19,7 +19,6 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
     private var _binding: FragmentUserDetailsDialogBinding? = null
     private val binding get() = _binding!!
 
-    // Referencia a la base de datos
     private lateinit var database: DatabaseReference
 
     override fun onCreateView(
@@ -33,7 +32,6 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializa la referencia a la base de datos de Firebase
         database = FirebaseDatabase.getInstance().getReference("Users")
 
         // Mostrar los datos del usuario
@@ -43,68 +41,61 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
         binding.phoneNumberText.text = user.phoneNumber
         binding.voterIDText.text = user.voterID
         binding.curpText.text = user.curp
-        // Verificación del estado de usuario
         binding.verifiedText.text = if (user.isverified) {
-            "Verificado"
+            "Verified"
         } else {
-            "No verificado"
+            "Not Verified"
         }
 
 
-        // Cargar la imagen del usuario
         user.imageUrl?.let {
             Glide.with(this).load(it).into(binding.userImageView)
         }
 
-        // Botón para cerrar el modal
         binding.closeButton.setOnClickListener {
             dismiss()
         }
 
-        // Botón para verificar al usuario
         binding.userverified.setOnClickListener {
             verifyUser()
         }
-        // Botón para verificar al usuario
         binding.Desactivate.setOnClickListener {
             desactivateUser()
         }
     }
 
     private fun verifyUser() {
-        // Cambiar el estado de verificación del usuario
         user.isverified = true
+        user.verificationTimestamp = System.currentTimeMillis().toString()
 
 
-        // Referencia al usuario en Firebase utilizando el ID del usuario
         val userRef = database.child(user.id)
 
-        // Actualizar solo el campo isverified
         userRef.child("isverified").setValue(true).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(requireContext(), "Usuario verificado exitosamente.", Toast.LENGTH_SHORT).show()
-                dismiss()  // Cierra el diálogo después de la verificación
+                userRef.child("verificationTimestamp").setValue(user.verificationTimestamp)
+                Toast.makeText(requireContext(), "User successfully verified", Toast.LENGTH_SHORT).show()
+                dismiss()
             } else {
-                Toast.makeText(requireContext(), "Error al verificar al usuario.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error verifying the user", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun desactivateUser() {
-        // Cambiar el estado de verificación del usuario
         user.isverified = false
+        user.verificationTimestamp = System.currentTimeMillis().toString()
 
 
-        // Referencia al usuario en Firebase utilizando el ID del usuario
         val userRef = database.child(user.id)
 
-        // Actualizar solo el campo isverified
         userRef.child("isverified").setValue(false).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(requireContext(), "Usuario desactivado exitosamente.", Toast.LENGTH_SHORT).show()
-                dismiss()  // Cierra el diálogo después de la verificación
+                userRef.child("verificationTimestamp").setValue(user.verificationTimestamp)
+                Toast.makeText(requireContext(), "User successfully deactivated", Toast.LENGTH_SHORT).show()
+                dismiss()
             } else {
-                Toast.makeText(requireContext(), "Error al desactivar al usuario.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error deactivating the user", Toast.LENGTH_SHORT).show()
             }
         }
     }

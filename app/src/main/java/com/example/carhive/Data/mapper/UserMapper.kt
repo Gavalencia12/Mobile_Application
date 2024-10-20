@@ -55,7 +55,8 @@ class UserMapper @Inject constructor() {
             role = mapRoleToDomain(entity.role),
             termsUser = entity.termsUser,
             termsSeller = entity.termsSeller,
-            isVerified = entity.isverified
+            isVerified = entity.isverified,
+            verificationTimestamp = entity.verificationTimestamp
         )
     }
 
@@ -86,7 +87,8 @@ class UserMapper @Inject constructor() {
             role = mapRoleToEntity(domainModel.role),
             termsUser = domainModel.termsUser,
             termsSeller = domainModel.termsSeller,
-            isverified = domainModel.isVerified
+            isverified = domainModel.isVerified,
+            verificationTimestamp = domainModel.verificationTimestamp
         )
     }
 

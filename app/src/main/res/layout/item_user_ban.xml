@@ -62,14 +62,12 @@
                     android:textColor="@color/black"
                     android:textSize="16dp" />
             </LinearLayout>
-
-            <!-- TextView para el ID debajo del nombre y apellido -->
             <TextView
-                android:id="@+id/idText"
+                android:id="@+id/emailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="ID" />
+                android:text="Email"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -95,10 +93,10 @@
             android:visibility="gone">
 
         <TextView
-            android:id="@+id/emailText"
+            android:id="@+id/curpText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email"
+            android:text="CURP"
             android:fontFamily="@font/inter_light"
             android:textColor="@color/black"
             android:layout_gravity="center"/>
@@ -134,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:text="Desbanear"
+                android:text="UNBAN"
                 android:fontFamily="@font/inter_semibold"
                 android:background="@drawable/rounded_btn"/>
 
@@ -143,7 +141,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Banear"
+                android:text="BAN"
                 android:background="@drawable/rounded_btn"
                 android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/white"
@@ -155,7 +153,7 @@
             android:id="@+id/UserDeleted"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Eliminar"
+            android:text="DELETE"
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_btn"
             android:fontFamily="@font/inter_semibold"/>

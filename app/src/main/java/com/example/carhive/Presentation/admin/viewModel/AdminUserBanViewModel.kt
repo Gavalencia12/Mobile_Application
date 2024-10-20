@@ -16,7 +16,7 @@ class AdminUserBanViewModel : ViewModel() {
     private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users")
     private val _users = MutableLiveData<List<UserEntity>>()
     val users: LiveData<List<UserEntity>> = _users
-    // Método para banear a un usuario
+
     fun banUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -27,7 +27,6 @@ class AdminUserBanViewModel : ViewModel() {
         }
     }
 
-    // Método para desbanear a un usuario
     fun unbanUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -38,7 +37,6 @@ class AdminUserBanViewModel : ViewModel() {
         }
     }
 
-    // Método para eliminar a un usuario
     fun deleteUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -47,5 +45,14 @@ class AdminUserBanViewModel : ViewModel() {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun filterUsers(query: String): List<UserEntity> {
+        val lowercaseQuery = query.lowercase()
+        return _users.value?.filter { user ->
+            user.firstName.lowercase().contains(lowercaseQuery) ||
+                    user.lastName.lowercase().contains(lowercaseQuery) ||
+                    user.email.lowercase().contains(lowercaseQuery)
+        } ?: emptyList()
     }
 }

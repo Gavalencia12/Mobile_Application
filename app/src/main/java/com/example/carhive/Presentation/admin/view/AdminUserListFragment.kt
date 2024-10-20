@@ -1,6 +1,8 @@
 package com.example.carhive.Presentation.admin.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,13 +41,12 @@ class AdminUserListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializar el adaptador
         adapter = UserAdapter(listOf(),
             onVerifyClick = { user ->
                 val dialog = UserDetailsDialogFragment(user)
                 dialog.show(parentFragmentManager, "UserDetailsDialog")
             },
-            onDeleteClick = { user -> // Lógica para eliminar
+            onDeleteClick = { user ->
             }
         )
 
@@ -55,12 +56,11 @@ class AdminUserListFragment : Fragment() {
         }
 
 
-        // Observar la lista de usuarios desde el ViewModel o directamente de Firebase
         viewModel.users.observe(viewLifecycleOwner) { userList ->
             adapter.updateData(userList)
         }
 
-        // Lógica para obtener usuarios con ID desde Firebase
+
         val database = FirebaseDatabase.getInstance().getReference("Users")
         database.get().addOnSuccessListener { dataSnapshot ->
             val userList = mutableListOf<UserEntity>()
@@ -68,30 +68,36 @@ class AdminUserListFragment : Fragment() {
             dataSnapshot.children.forEach { userSnapshot ->
                 val user = userSnapshot.getValue(UserEntity::class.java)
                 user?.let {
-                    // Asignar el ID del nodo al objeto UserEntity
                     it.id = userSnapshot.key ?: ""
                     userList.add(it)
                 }
             }
 
-            // Actualizar la lista en el adaptador
             adapter.updateData(userList)
 
-        }.addOnFailureListener {
-            // Manejar el error en caso de que falle la recuperación de datos
-            Log.e("AdminUserListFragment", "Error al obtener usuarios", it)
+            binding.searchInput.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    filterUsers(s.toString(), userList)
+                }
+                override fun afterTextChanged(s: Editable?) {}
+            })
+
         }
 
-        // Navegación de regreso
         binding.bureturn.setOnClickListener {
-            Log.d("AdminUserListFragment", "Navegando de regreso a AdminHomeFragment")
             findNavController().navigate(R.id.action_adminUserListFragment_to_adminHomeFragment)
         }
     }
 
-
-
-
+    private fun filterUsers(query: String, userList: List<UserEntity>) {
+        val filteredList = userList.filter { user ->
+            user.firstName.contains(query, ignoreCase = true) ||
+                    user.lastName.contains(query, ignoreCase = true) ||
+                    user.email.contains(query, ignoreCase = true)
+        }
+        adapter.updateData(filteredList)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

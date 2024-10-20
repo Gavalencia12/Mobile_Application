@@ -17,45 +17,39 @@ class UserAdapterBan(
 
     inner class UserBanViewHolder(val binding: ItemUserBanBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: UserEntity) {
-            // Cargar la imagen del usuario
             user.imageUrl?.let {
                 Glide.with(binding.root.context)
                     .load(it)
                     .into(binding.userImageView)
             }
 
-            // Asignar la información básica
             binding.firstNameText.text = user.firstName
             binding.lastNameText.text = user.lastName
-            binding.idText.text = user.id
+            binding.curpText.text = user.curp
 
-            // Asignar la información expandida
             binding.emailText.text = user.email
             binding.verifiedText.text = if (user.isverified) {
-                "Verificado"
+                "Verified"
             } else {
-                "No verificado"
+                "Not Verified"
             }
             binding.rolText.text = when (user.role) {
-                0 -> "ADMINISTRADOR"
-                1 -> "VENDEDOR"
-                else -> "USUARIO NORMAL"
+                0 -> "ADMINISTRATOR"
+                1 -> "SELLER"
+                else -> "BUYER"
             }
 
-            // Configurar la visibilidad inicial del contenedor expandido
             binding.expandedInfoContainer.visibility = if (user.isExpanded) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
 
-            // Manejar el clic para expandir y contraer
             binding.basicInfoContainer.setOnClickListener {
                 user.isExpanded = !user.isExpanded
                 notifyItemChanged(adapterPosition)
             }
 
-            // Configurar los botones
             binding.Userbaner.setOnClickListener {
                 onBanClick(user)
             }

@@ -20,9 +20,8 @@ class UserAdapter(private var userList: List<UserEntity>, private val onVerifyCl
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = userList[position]
-        // Cargar la imagen del usuario
         user.imageUrl?.let {
-            Glide.with(holder.itemView.context) // Usar el contexto de la vista
+            Glide.with(holder.itemView.context)
                 .load(it)
                 .into(holder.binding.userImageView)
         }
@@ -30,20 +29,18 @@ class UserAdapter(private var userList: List<UserEntity>, private val onVerifyCl
         holder.binding.lastNameText.text = user.lastName
         holder.binding.emailText.text = user.email
         holder.binding.verifiedText.text = if (user.isverified) {
-            "Verificado"
+            "Verified"
         } else {
-            "No verificado"
+            "Not Verified"
         }
-        holder.binding.idText.text = user.id
         holder.binding.rolText.text = if (user.role == 0) {
-            "ADMINISTRADOR"
+            "ADMINISTRATORS"
         } else if (user.role == 1){
-            "VENDEDOR"
+            "SELLER"
         } else{
-            "USUARIO NORMAL"
+            "BUYER"
         }
 
-        // Botón de verificación
         holder.binding.verification.setOnClickListener {
             onVerifyClick(user)
         }

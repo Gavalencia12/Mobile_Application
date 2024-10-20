@@ -11,5 +11,6 @@ data class User(
     var role: UserRole = UserRole.NORMAL_USER,
     var termsUser: Boolean = false,
     var termsSeller: Boolean = false,
-    var isVerified: Boolean = false
+    var isVerified: Boolean = false,
+    var verificationTimestamp: String? = null
 )
