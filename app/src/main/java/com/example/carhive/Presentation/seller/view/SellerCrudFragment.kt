@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.Presentation.seller.viewModel.CarAdapter
 import com.example.carhive.Presentation.seller.viewModel.CrudViewModel
@@ -66,6 +67,10 @@ class SellerCrudFragment : Fragment() {
         // Set up the button to show the car options dialog
         binding.btnAddCar.setOnClickListener {
             showCarOptionsDialog() // Call the function to show the dialog
+        }
+
+        binding.ibtnBack.setOnClickListener {
+            findNavController().popBackStack()  // Navigate back to the previous screen
         }
     }
 

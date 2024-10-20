@@ -24,6 +24,8 @@ package com.example.carhive.Data.datasource.remote.Firebase
 
 import com.example.carhive.Data.exception.RepositoryException
 import com.example.carhive.Data.model.CarEntity
+import com.example.carhive.Data.model.FavoriteCar
+import com.example.carhive.Data.model.FavoriteUser
 import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.Domain.model.User
 import com.google.firebase.database.FirebaseDatabase
@@ -245,5 +247,147 @@ class FirebaseDatabaseDataSource @Inject constructor(
         }
     }
 
+    suspend fun addCarToFavorites(userId: String, userName: String, carId: String, carModel: String, carOwner: String): Result<Unit> {
+        return try {
+            val timestamp = System.currentTimeMillis()
+
+            // Agregar a "UserFavorites" con el userId como clave
+            database.getReference("Favorites/UserFavorites")
+                .child(userId) // Usar userId como clave aquí
+                .child(carId)
+                .setValue(
+                    mapOf(
+                        "addedAt" to timestamp,
+                        "carModel" to carModel,
+                        "carOwner" to carOwner
+                    )
+                ).await()
+
+            // Agregar a "CarFavorites" con el userId como clave y guardar el userName como un valor
+            database.getReference("Favorites/CarFavorites")
+                .child(carId)
+                .child("users")
+                .child(userId) // Asegúrate de que userId es la clave aquí
+                .setValue(
+                    mapOf(
+                        "userName" to userName, // Guardar el nombre completo como valor, no como clave
+                        "addedAt" to timestamp
+                    )
+                ).await()
+
+            // Incrementar el contador de favoritos
+            val favoriteCountRef = database.getReference("Favorites/CarFavorites")
+                .child(carId)
+                .child("favoriteCount")
+
+            val favoriteCount = favoriteCountRef.get().await().getValue(Int::class.java) ?: 0
+            favoriteCountRef.setValue(favoriteCount + 1).await()
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error adding car to favorites: ${e.message}", e))
+        }
+    }
+
+
+    suspend fun getUserFavorites(userId: String): Result<List<FavoriteCar>> {
+        return try {
+            val favoritesSnapshot = database.getReference("Favorites/UserFavorites")
+                .child(userId)
+                .get()
+                .await()
+
+            if (favoritesSnapshot.exists()) {
+                val favoritesList = favoritesSnapshot.children.mapNotNull { it.getValue(FavoriteCar::class.java) }
+                Result.success(favoritesList)
+            } else {
+                Result.success(emptyList())
+            }
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error fetching user favorites: ${e.message}", e))
+        }
+    }
+
+    suspend fun getCarFavoriteCountAndUsers(carId: String): Result<Pair<Int, List<FavoriteUser>>> {
+        return try {
+            val carFavoritesSnapshot = database.getReference("Favorites/CarFavorites")
+                .child(carId)
+                .get()
+                .await()
+
+            if (carFavoritesSnapshot.exists()) {
+                val favoriteCount = carFavoritesSnapshot.child("favoriteCount").getValue(Int::class.java) ?: 0
+                val users = carFavoritesSnapshot.child("users").children.mapNotNull { it.getValue(FavoriteUser::class.java) }
+                Result.success(favoriteCount to users)
+            } else {
+                Result.success(0 to emptyList())
+            }
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error fetching car favorites: ${e.message}", e))
+        }
+    }
+
+    suspend fun removeCarFromFavorites(userId: String, carId: String): Result<Unit> {
+        return try {
+            // Eliminar el coche de "UserFavorites"
+            val userFavorites = database.getReference("Favorites/UserFavorites")
+                .child(userId)
+                .child(carId)
+                .removeValue().await()
+
+            // Eliminar el usuario de "CarFavorites"
+            val carFavorites = database.getReference("Favorites/CarFavorites")
+                .child(carId)
+                .child("users")
+                .child(userId)
+                .removeValue().await()
+
+            // Decrementar el contador de favoritos
+            val favoriteCountRef = database.getReference("Favorites/CarFavorites")
+                .child(carId)
+                .child("favoriteCount")
+
+            val favoriteCount = favoriteCountRef.get().await().getValue(Int::class.java) ?: 0
+            if (favoriteCount > 0) {
+                favoriteCountRef.setValue(favoriteCount - 1).await()
+            }
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error removing car from favorites: ${e.message}", e))
+        }
+    }
+
+    suspend fun getUserFavoriteCars(userId: String): Result<List<CarEntity>> {
+        return try {
+            // Obtener los coches favoritos del usuario desde el nodo "Favorites/UserFavorites"
+            val userFavoritesSnapshot = database.getReference("Favorites/UserFavorites")
+                .child(userId)
+                .get()
+                .await()
+
+            if (userFavoritesSnapshot.exists()) {
+                // Obtener los IDs de los coches favoritos
+                val carIds = userFavoritesSnapshot.children.mapNotNull { it.key }
+
+                // Obtener los detalles completos de los coches favoritos
+                val favoriteCars = mutableListOf<CarEntity>()
+                for (carId in carIds) {
+                    // Consulta a la tabla "Cars" usando el carId para obtener el coche completo
+                    val carSnapshot = database.getReference("Cars")
+                        .child(carId)
+                        .get()
+                        .await()
+
+                    carSnapshot.getValue(CarEntity::class.java)?.let { favoriteCars.add(it) }
+                }
+                Result.success(favoriteCars)
+            } else {
+                Result.success(emptyList())
+            }
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error fetching user favorite cars: ${e.message}", e))
+        }
+    }
 
 }

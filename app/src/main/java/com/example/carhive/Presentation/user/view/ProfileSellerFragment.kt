@@ -10,9 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.carhive.Data.model.UserEntity
-import com.example.carhive.MainActivity
-import com.example.carhive.Presentation.initial.Register.view.TermsAndConditionsDialog
-import com.example.carhive.Presentation.initial.Register.view.TermsAndConditionsDialogSeller
+import com.example.carhive.Presentation.user.items.TermsAndConditionsDialogSeller
 import com.example.carhive.Presentation.user.viewModel.ProfileSellerViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserProfileSellerBinding

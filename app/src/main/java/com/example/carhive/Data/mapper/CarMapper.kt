@@ -15,7 +15,8 @@ class CarMapper @Inject constructor() {
             addOn = entity.addOn,
             description = entity.description,
             price = entity.price,
-            imageUrls = entity.imageUrls
+            imageUrls = entity.imageUrls,
+            ownerId = entity.ownerId
         )
     }
 
@@ -28,7 +29,8 @@ class CarMapper @Inject constructor() {
             addOn = domain.addOn,
             description = domain.description,
             price = domain.price,
-            imageUrls = domain.imageUrls
+            imageUrls = domain.imageUrls,
+            ownerId = domain.ownerId
         )
     }
 }

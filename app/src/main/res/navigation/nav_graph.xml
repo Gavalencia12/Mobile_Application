@@ -104,18 +104,18 @@
             app:destination="@id/userHomeCarDetailFragment" />
     </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/favoritesFragment"-->
-<!--        android:name="com.example.carhive.Presentation.user.view.FavoritesFragment"-->
-<!--        tools:layout="@layout/fragment_user_favorites">-->
-<!--        <action-->
-<!--            android:id="@+id/action_userHomeFragment_to_carDetailFragment"-->
-<!--            app:destination="@id/userHomeCarDetailFragment" />-->
-<!--    </fragment>-->
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.carhive.Presentation.user.view.FavoritesFragment"
+        tools:layout="@layout/fragment_user_favorites">
+        <action
+            android:id="@+id/action_userHomeFragment_to_carDetailFragment"
+            app:destination="@id/userHomeCarDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/userHomeCarDetailFragment"
-        android:name="com.example.carhive.Presentation.user.view.CarDetailFragment"
+        android:name="com.example.carhive.Presentation.user.items.CarDetailFragment"
         tools:layout="@layout/fragment_user_home_cardetails">
         <action
             android:id="@+id/action_userHomeFragment_to_carDetailFragment"
@@ -148,12 +148,14 @@
             android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
             app:destination="@id/sellerHomeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/sellerHomeFragment"
         android:name="com.example.carhive.Presentation.seller.view.SellerHomeFragment"
         tools:layout="@layout/fragment_seller_home">
 
     </fragment>
+
     <fragment
         android:id="@+id/sellerCrudFragment"
         android:name="com.example.carhive.Presentation.seller.view.SellerCrudFragment"
@@ -165,8 +167,15 @@
         android:id="@+id/sellerProfileFragment"
         android:name="com.example.carhive.Presentation.seller.view.SellerProfileFragment"
         tools:layout="@layout/fragment_seller_profile">
+    </fragment>
+
+    <fragment
+        android:id="@+id/sellerFavoriteFragment"
+        android:name="com.example.carhive.Presentation.seller.view.SellerFavoritesFragment"
+        tools:layout="@layout/fragment_seller_favorites">
 
     </fragment>
+
     <fragment
         android:id="@+id/adminHomeFragment"
         android:name="com.example.carhive.Presentation.admin.view.AdminHomeFragment"
@@ -211,8 +220,11 @@
             android:id="@+id/action_adminUserBanFragment_to_adminHomeFragment"
             app:destination="@id/adminHomeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/carsListFragment"
         android:name="com.example.carhive.Presentation.seller.view.CarsListFragment"
-        android:label="Cars List" />
+        android:label="Cars List" >
+    </fragment>
+
 </navigation>

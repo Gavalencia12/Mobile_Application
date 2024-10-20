@@ -11,34 +11,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:weightSum="2">
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/carImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/carImage"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="8dp"
-                android:scaleType="centerCrop" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:orientation="vertical"
-            android:layout_weight="2">
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/carModel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Aveo White 2004"
+                android:text="Car Model"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -46,25 +39,30 @@
                 android:id="@+id/carMarca"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nissan"
+                android:text="Car Brand"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/carPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="$50,000"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <CheckBox
-                android:id="@+id/favoriteCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Favorito" />
+                android:layout_marginTop="8dp"
+                android:text="$ Price"
+                android:textSize="16sp"
+                android:textColor="@android:color/holo_green_dark" />
 
         </LinearLayout>
 
+        <!-- Botón de eliminar de favoritos (icono de X) -->
+        <ImageButton
+            android:id="@+id/deleteFavoriteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_exit"
+            android:contentDescription="Eliminar de favoritos" />
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

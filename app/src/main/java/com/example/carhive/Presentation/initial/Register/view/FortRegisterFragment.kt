@@ -45,11 +45,11 @@ class FortRegisterFragment : Fragment() {
             updateUI(isVerified)
         }
 
-        // Inicia la verificación del correo electrónico
+        // Inicia la verificación del correo electrónico en intervalos
         coroutineScope.launch {
             while (!isEmailVerified) {
-                delay(3000) // Verifica cada 3 segundos
-                viewModel.checkEmailVerification()
+                delay(1500) // Verifica cada 3 segundos
+                viewModel.checkEmailVerification() // Verifica el correo en cada ciclo
             }
         }
 

@@ -98,6 +98,14 @@ class SellerHomeFragment : Fragment() {
                 CarsListFragment.newInstance(0, "Unsold Cars").arguments // Show unsold cars
             )
         }
+
+        binding.cardFavoriteCars.setOnClickListener{
+            findNavController().navigate(
+                R.id.sellerFavoriteFragment,
+                CarsListFragment.newInstance(0, "Favorites").arguments
+            )
+
+        }
     }
 
     // Function to set the user's full name in the username TextView in the UI

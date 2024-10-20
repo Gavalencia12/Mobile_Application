@@ -33,6 +33,11 @@ import com.example.carhive.Domain.usecase.database.UploadToCarImageUseCase
 import com.example.carhive.Domain.usecase.database.UpdateTermsSellerUseCase
 import com.example.carhive.Domain.usecase.database.UpdateUserRoleUseCase
 import com.example.carhive.Domain.usecase.database.UploadToProfileImageUseCase
+import com.example.carhive.Domain.usecase.favorites.AddCarToFavoritesUseCase
+import com.example.carhive.Domain.usecase.favorites.GetCarFavoriteCountAndUsersUseCase
+import com.example.carhive.Domain.usecase.favorites.GetUserFavoriteCarsUseCase
+import com.example.carhive.Domain.usecase.favorites.GetUserFavoritesUseCase
+import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
 import com.example.carhive.Domain.usecase.session.GetUserRoleUseCase
 import com.example.carhive.Domain.usecase.session.IsUserAuthenticatedUseCase
 import com.example.carhive.Domain.usecase.session.SaveUserRoleUseCase
@@ -242,4 +247,29 @@ object AppModule {
     @Singleton
     fun provideGetPasswordUseCase(userPreferences: UserRepositoryImpl): GetPasswordUseCase =
         GetPasswordUseCase(userPreferences)
+
+    @Provides
+    @Singleton
+    fun provideAddCarToFavoritesUseCase(repository: AuthRepository): AddCarToFavoritesUseCase =
+        AddCarToFavoritesUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetUserFavoritesUseCase(repository: AuthRepository): GetUserFavoritesUseCase =
+        GetUserFavoritesUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCarFavoriteCountAndUsersUseCase(repository: AuthRepository): GetCarFavoriteCountAndUsersUseCase =
+        GetCarFavoriteCountAndUsersUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideRemoveCarFromFavoritesUseCase(repository: AuthRepository): RemoveCarFromFavoritesUseCase =
+        RemoveCarFromFavoritesUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetUserFavoriteCarsUseCase(repository: AuthRepository): GetUserFavoriteCarsUseCase =
+        GetUserFavoriteCarsUseCase(repository)
 }
