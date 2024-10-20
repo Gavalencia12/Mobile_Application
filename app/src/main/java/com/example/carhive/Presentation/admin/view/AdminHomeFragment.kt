@@ -31,24 +31,28 @@ class AdminHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configura el botón de Sign Out
+        viewModel.getUserInfo { firstName, lastName ->
+            val welcomeMessage = "Welcome, $firstName!"
+            binding.btnProfile.text = welcomeMessage
+        }
+
         binding.signOutButton.setOnClickListener {
-            viewModel.onLogicClick() // Llama a la lógica en el ViewModel
-            findNavController().navigate(R.id.action_userFragment_to_loginFragment) // Navega a LoginFragment
+            viewModel.onLogicClick()
+            findNavController().navigate(R.id.action_userFragment_to_loginFragment)
         }
 
         binding.viewUsersButton.setOnClickListener {
-            Log.d("AdminHomeFragment", "Botón de Usuarios presionado")
             findNavController().navigate(R.id.action_adminHomeFragment_to_adminUserListFragment)
         }
         binding.viewBanersButton.setOnClickListener {
-            Log.d("AdminHomeFragment", "Botón de Baneos presionado")
             findNavController().navigate(R.id.action_adminHomeFragment_to_adminUserBanFragment)
         }
         binding.viewstadisticsButton.setOnClickListener {
-            Log.d("AdminHomeFragment", "Botón de usuarios activos presionado")
             findNavController().navigate(R.id.action_adminHomeFragment_to_adminUserActiveFragment)
         }
+//        binding.btnProfile.setOnClickListener {
+//            findNavController().navigate(R.id.action_adminHomeFragment_to_userProfileFragment)
+//        }
     }
 
     override fun onDestroyView() {

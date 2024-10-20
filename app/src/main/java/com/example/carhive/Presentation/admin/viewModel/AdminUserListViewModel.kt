@@ -39,16 +39,14 @@ class AdminUserListViewModel @Inject constructor(
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val userList = mutableListOf<UserEntity>()
                 for (snapshot in dataSnapshot.children) {
-                    // Obtener el usuario original
                     val userEntity = snapshot.getValue(UserEntity::class.java)
 
                     if (userEntity != null) {
-                        // Convertir el role de Int a UserRole
                         val userRole = when (userEntity.role) {
                             0 -> UserRole.ADMIN
                             1 -> UserRole.ADVANCED_USER
-                            2 -> UserRole.NORMAL_USER // Asignación según tu lógica
-                            else -> UserRole.NORMAL_USER // Valor por defecto
+                            2 -> UserRole.NORMAL_USER
+                            else -> UserRole.NORMAL_USER
                         }
 
 
@@ -62,5 +60,13 @@ class AdminUserListViewModel @Inject constructor(
                 Log.e("FirebaseError", databaseError.message)
             }
         })
+    }
+    fun filterUsers(query: String): List<UserEntity> {
+        val lowercaseQuery = query.lowercase()
+        return _users.value?.filter { user ->
+            user.firstName.lowercase().contains(lowercaseQuery) ||
+                    user.lastName.lowercase().contains(lowercaseQuery) ||
+                    user.email.lowercase().contains(lowercaseQuery)
+        } ?: emptyList()
     }
 }

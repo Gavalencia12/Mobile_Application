@@ -36,35 +36,34 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <!-- Nombre y apellido -->
-            <TextView
-                android:id="@+id/firstNameText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="50dp">
+                <!-- Nombre y apellido -->
+                <TextView
+                    android:id="@+id/firstNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre"
+                    android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"/>
 
-            <TextView
-                android:id="@+id/lastNameText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Apellido"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/lastNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apellido"
+                    android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
 
-            <!-- ID -->
-            <TextView
-                android:id="@+id/idText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID"
-                android:textSize="14sp"
-                android:layout_gravity="center"/>
+
 
             <!-- Email -->
             <TextView
@@ -98,7 +97,7 @@
                 android:id="@+id/verification"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="Verificar"
+                android:text="Verify"
                 android:layout_marginTop="8dp"
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_btn"

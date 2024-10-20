@@ -18,7 +18,7 @@
         android:id="@+id/textuser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Baneos de Usuarios"
+        android:text="USER BANS"
         android:textSize="25dp"
         android:gravity="center"
         android:fontFamily="@font/inter_bold"
@@ -29,27 +29,42 @@
         android:layout_marginStart="16dp"/>
 
     <!-- SearchView -->
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="Buscar usuarios..."
-        android:iconifiedByDefault="false"
-        android:clickable="true"
-        android:focusable="true"
         android:layout_below="@id/textuser"
-        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:id="@+id/search"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_search"/>
+        android:background="@drawable/rounded_search">
 
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Search..."
+            android:padding="10dp"
+            android:layout_marginStart="23dp"
+            android:background="@drawable/rounded_search"
+            android:textColor="@android:color/black" />
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search"
+            android:contentDescription="Buscar"
+            android:padding="10dp"/>
+    </RelativeLayout>
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchView"
+        android:layout_below="@id/search"
         android:layout_marginTop="16dp"/>
 
 </RelativeLayout>
