@@ -9,5 +9,6 @@ data class CarEntity (
     var description: String = "",
     var price: String = "",
     var sold: Boolean = false,
-    var imageUrls: List<String>? = mutableListOf()
+    var imageUrls: List<String>? = mutableListOf(),
+    var ownerId: String = ""
 )

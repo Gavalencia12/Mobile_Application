@@ -24,10 +24,19 @@ class FortRegisterViewModel @Inject constructor(
     // Método para verificar el estado del email
     fun checkEmailVerification() {
         viewModelScope.launch {
-            isVerifiedTheEmailUseCase()
             val user = auth.currentUser
-            user?.reload()?.await() // Refresca el estado del usuario en Firebase
-            _isEmailVerified.value = user?.isEmailVerified ?: false
+            if (user != null) {
+                try {
+                    // Recarga el estado del usuario desde Firebase
+                    user.reload().await()
+                    // Verifica si el email está verificado
+                    val isVerified = user.isEmailVerified
+                    _isEmailVerified.value = isVerified
+                } catch (e: Exception) {
+                    // Manejo de error en caso de fallo
+                    _isEmailVerified.value = false
+                }
+            }
         }
     }
 }

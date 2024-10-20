@@ -1,15 +1,11 @@
-package com.example.carhive.Presentation.user.view
+package com.example.carhive.Presentation.user.items
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Presentation.user.adapter.ImagePagerAdapter
-import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserHomeCardetailsBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint

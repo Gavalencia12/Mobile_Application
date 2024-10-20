@@ -8,38 +8,40 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.carhive.Presentation.user.adapter.CarFavoritesAdapter
 import com.example.carhive.Presentation.user.adapter.CarHomeAdapter
-import com.example.carhive.Presentation.user.viewModel.UserViewModel
+import com.example.carhive.Presentation.user.viewModel.FavoritesViewModel
 import com.example.carhive.R
-import com.example.carhive.databinding.FragmentUserHomeBinding
+import com.example.carhive.databinding.FragmentUserFavoritesBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserHomeFragment : Fragment() {
+class FavoritesFragment : Fragment() {
 
-    private var _binding: FragmentUserHomeBinding? = null
+    private var _binding: FragmentUserFavoritesBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: UserViewModel by viewModels()
+    private val viewModel: FavoritesViewModel by viewModels()
 
-    private lateinit var carAdapter: CarHomeAdapter
+    private lateinit var carAdapter: CarFavoritesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUserHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentUserFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        carAdapter = CarHomeAdapter(emptyList(), { car, isFavorite ->
-            viewModel.toggleFavorite(car, isFavorite)
-        }, { carId, callback ->
-            viewModel.isCarFavorite(carId, callback) // Llamamos a la función para verificar favoritos
-        }, {car->
+        // Inicializa el adaptador con el callback para eliminar de favoritos
+        carAdapter = CarFavoritesAdapter(emptyList(), { car ->
+            // Llama al ViewModel para eliminar el coche de favoritos
+            viewModel.removeFavoriteCar(car)
+
+        },{ car->
             val bundle = Bundle().apply {
                 putString("carModel", car.modelo)
                 putString("carMarca", car.addOn)
@@ -53,16 +55,25 @@ class UserHomeFragment : Fragment() {
             findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
         })
 
+        // Configura el RecyclerView
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = carAdapter
         }
 
-        viewModel.carList.observe(viewLifecycleOwner) { cars ->
-            carAdapter.updateCars(cars)
+        // Observa los coches favoritos en el ViewModel
+        viewModel.favoriteCars.observe(viewLifecycleOwner) { favoriteCars ->
+            carAdapter.updateCars(favoriteCars)
+            // Muestra un mensaje si no hay favoritos
+            if (favoriteCars.isEmpty()) {
+                binding.emptyView.visibility = View.VISIBLE
+            } else {
+                binding.emptyView.visibility = View.GONE
+            }
         }
 
-        viewModel.fetchCars()
+        // Cargar los coches favoritos
+        viewModel.fetchFavoriteCars()
     }
 
     override fun onDestroyView() {

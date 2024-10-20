@@ -1,6 +1,7 @@
 package com.example.carhive.Presentation.seller.viewModel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Domain.model.Car
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.database.*
+import com.example.carhive.Domain.usecase.favorites.GetCarFavoriteCountAndUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +23,8 @@ class CrudViewModel @Inject constructor(
     private val deleteCarInDatabaseUseCase: DeleteCarInDatabaseUseCase,
     private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase,
     private val uploadToCarImageUseCase: UploadToCarImageUseCase,
-    private val updateCarSoldStatusUseCase: UpdateCarSoldStatusUseCase
+    private val updateCarSoldStatusUseCase: UpdateCarSoldStatusUseCase,
+    private val getCarFavoriteCountAndUsersUseCase: GetCarFavoriteCountAndUsersUseCase,
 ) : ViewModel() {
 
     // LiveData to hold the list of cars for the user
@@ -32,6 +35,25 @@ class CrudViewModel @Inject constructor(
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
+    private val _favoriteCounts = MutableLiveData<Map<String, Int>>()
+    val favoriteCounts: LiveData<Map<String, Int>> get() = _favoriteCounts
+
+    // Función para obtener el contador de favoritos de los coches
+    fun fetchFavoriteCountsForCars(carIds: List<String>) {
+        viewModelScope.launch {
+            val favoriteCountMap = mutableMapOf<String, Int>()
+            for (carId in carIds) {
+                val result = getCarFavoriteCountAndUsersUseCase(carId)
+                result.onSuccess { (count, _) ->
+                    favoriteCountMap[carId] = count // Almacena el contador de favoritos
+                }.onFailure { exception ->
+                    Log.e("CrudViewModel", "Error fetching favorite count for car: ${exception.message}")
+                }
+            }
+            _favoriteCounts.value = favoriteCountMap // Actualiza el LiveData con los contadores
+        }
+    }
+
     // Function to fetch cars for the current user from the database
     fun fetchCarsForUser() {
         viewModelScope.launch {
@@ -39,15 +61,14 @@ class CrudViewModel @Inject constructor(
             val userId = currentUserResult.getOrNull()
 
             userId?.let {
-                // Fetch cars associated with the current user from the database
                 val result = getCarUserInDatabaseUseCase(it)
                 result.onSuccess { cars ->
-                    _carList.value = cars  // Update the LiveData with the list of cars
+                    _carList.value = cars
+                    // Obtener los contadores de favoritos para los coches del usuario
+                    fetchFavoriteCountsForCars(cars.map { car -> car.id })
                 }.onFailure { exception ->
-                    _error.value = "Error fetching cars: ${exception.message}"  // Handle error
+                    Log.e("CrudViewModel", "Error fetching cars: ${exception.message}")
                 }
-            } ?: run {
-                _error.value = "User not authenticated"  // Handle case where user is not logged in
             }
         }
     }
@@ -73,7 +94,8 @@ class CrudViewModel @Inject constructor(
                 speed = speed,
                 addOn = addOn,
                 description = description,
-                price = price
+                price = price,
+                ownerId = userId
             )
 
             // Save the car in the database

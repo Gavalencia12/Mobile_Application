@@ -1,4 +1,4 @@
-package com.example.carhive.Presentation.initial.Register.view
+package com.example.carhive.Presentation.user.items
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import com.example.carhive.R
 
 class TermsAndConditionsDialogSeller : DialogFragment() {

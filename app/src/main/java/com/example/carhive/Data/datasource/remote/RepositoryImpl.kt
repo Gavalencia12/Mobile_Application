@@ -22,6 +22,8 @@ import com.example.carhive.Data.datasource.remote.Firebase.FirebaseStorageDataSo
 import com.example.carhive.Data.mapper.CarMapper
 import com.example.carhive.Data.mapper.UserMapper
 import com.example.carhive.Data.model.CarEntity
+import com.example.carhive.Data.model.FavoriteCar
+import com.example.carhive.Data.model.FavoriteUser
 import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.Data.repository.AuthRepository
 import com.example.carhive.Domain.model.Car
@@ -114,5 +116,31 @@ class RepositoryImpl(
 
     override suspend fun getCurrentUserId(): Result<String?> {
         return dataSourceAuth.getCurrentUserId()
+    }
+
+    override suspend fun getCarFavoriteCountAndUsers(carId: String): Result<Pair<Int, List<FavoriteUser>>> {
+        return dataSource.getCarFavoriteCountAndUsers(carId)
+    }
+
+    override suspend fun getUserFavorites(userId: String): Result<List<FavoriteCar>> {
+        return dataSource.getUserFavorites(userId)
+    }
+
+    override suspend fun addCarToFavorites(
+        userId: String,
+        userName: String,
+        carId: String,
+        carModel: String,
+        carOwner: String
+    ): Result<Unit> {
+        return dataSource.addCarToFavorites(userId, userName, carId, carModel, carOwner)
+    }
+
+    override suspend fun removeCarFromFavorites(userId: String, carId: String): Result<Unit> {
+        return dataSource.removeCarFromFavorites(userId, carId)
+    }
+
+    override suspend fun getUserFavoriteCars(userId: String): Result<List<CarEntity>> {
+        return dataSource.getUserFavoriteCars(userId)
     }
 }

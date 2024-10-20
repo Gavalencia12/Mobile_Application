@@ -63,6 +63,10 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.userHomeFragment)
                     true
                 }
+                R.id.favorites -> {
+                    navController.navigate(R.id.favoritesFragment)
+                    true
+                }
                 R.id.profile -> {
                     navController.navigate(R.id.userProfileFragment)
                     true
@@ -96,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                     FirebaseAuth.getInstance().signOut()
                     true
                 }
+
                 else -> false
             }
         }
@@ -103,8 +108,8 @@ class MainActivity : AppCompatActivity() {
         // Adjust bottom navigation visibility based on the current destination (fragment)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.userHomeFragment, R.id.userProfileFragment, R.id.userHomeCarDetailFragment -> {
-                    hideAllBottomNavigation() // Hide other navigations and show the user navigation
+                R.id.userHomeFragment, R.id.userProfileFragment, R.id.favoritesFragment, R.id.userHomeCarDetailFragment -> {
+                    hideAllBottomNavigation()
                     showUserBottomNavigation()
                 }
                 R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.sellerProfileFragment -> {

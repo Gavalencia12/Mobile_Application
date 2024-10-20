@@ -2,8 +2,10 @@ package com.example.carhive.Data.repository
 
 import android.net.Uri
 import com.example.carhive.Data.model.CarEntity
-import com.example.carhive.Domain.model.Car
+import com.example.carhive.Data.model.FavoriteCar
+import com.example.carhive.Data.model.FavoriteUser
 import com.example.carhive.Data.model.UserEntity
+import com.example.carhive.Domain.model.Car
 import com.example.carhive.Domain.model.User
 
 /**
@@ -43,4 +45,9 @@ interface AuthRepository {
     suspend fun loginUser(email: String, password: String): Result<String?>
     suspend fun getCurrentUserId(): Result<String?>
     suspend fun getUserRole(userId: String): Result<Int?>
+    suspend fun removeCarFromFavorites(userId: String, carId: String): Result<Unit>
+    suspend fun addCarToFavorites(userId: String, userName: String, carId: String, carModel: String, carOwner: String): Result<Unit>
+    suspend fun getUserFavorites(userId: String): Result<List<FavoriteCar>>
+    suspend fun getCarFavoriteCountAndUsers(carId: String): Result<Pair<Int, List<FavoriteUser>>>
+    suspend fun getUserFavoriteCars(userId: String): Result<List<CarEntity>>
 }
