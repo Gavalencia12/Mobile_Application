@@ -19,10 +19,12 @@ import android.net.Uri
 import com.example.carhive.Data.datasource.remote.Firebase.FirebaseAuthDataSource
 import com.example.carhive.Data.datasource.remote.Firebase.FirebaseDatabaseDataSource
 import com.example.carhive.Data.datasource.remote.Firebase.FirebaseStorageDataSource
+import com.example.carhive.Data.mapper.CarMapper
 import com.example.carhive.Data.mapper.UserMapper
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.Data.repository.AuthRepository
+import com.example.carhive.Domain.model.Car
 import com.example.carhive.Domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -35,11 +37,20 @@ class RepositoryImpl(
     private val dataSource: FirebaseDatabaseDataSource,      // Fuente de datos para operaciones de base de datos, maneja el almacenamiento y recuperación de datos de usuario.
     private val dataSourceAuth: FirebaseAuthDataSource,      // Fuente de datos para operaciones de autenticación, maneja el inicio de sesión y registro de usuarios.
     private val dataSourceStorage: FirebaseStorageDataSource, // Fuente de datos para operaciones de almacenamiento, maneja la subida y recuperación de archivos.
-    private val userMapper: UserMapper                       // Mapper para convertir entre modelos de dominio (User) y datos (UserEntity).
+    private val userMapper: UserMapper,                       // Mapper para convertir entre modelos de dominio (User) y datos (UserEntity).
+    private val carMapper: CarMapper
 ) : AuthRepository {
 
     override suspend fun uploadProfileImage(userId: String, uri: Uri): Result<String> {
         return dataSourceStorage.uploadProfileImage(userId, uri)
+    }
+
+    override suspend fun uploadCardImage(
+        userId: String,
+        carId: String,
+        uris: List<Uri>
+    ): Result<List<String>> {
+        return dataSourceStorage.uploadCarImages(userId, carId, uris)
     }
 
     override suspend fun saveUserToDatabase(userId: String, user: User): Result<Unit> {
@@ -53,6 +64,28 @@ class RepositoryImpl(
 
     override suspend fun getUserData(userId: String): Result<List<UserEntity>> {
         return dataSource.getUserData(userId)
+    }
+
+    override suspend fun saveCarToDatabase(userId: String, car: Car): Result<String> {
+        val carEntity = carMapper.mapToEntity(car)
+        return dataSource.saveCarToDatabase(userId, carEntity)
+    }
+
+    override suspend fun updateCarToDatabase(
+        userId: String,
+        carId: String,
+        car: Car
+    ): Result<Unit> {
+        val carEntity = carMapper.mapToEntity(car)
+        return dataSource.updateCarInDatabase(userId, carId, carEntity)
+    }
+
+    override suspend fun deleteCarInDatabase(userId: String, carId: String): Result<Unit> {
+        return dataSource.deleteCarInDatabase(userId, carId)
+    }
+
+    override suspend fun getCarUserFromDatabase(userId: String): Result<List<CarEntity>> {
+        return dataSource.getCarUserFromDatabase(userId)
     }
 
     override suspend fun getUserRole(userId: String): Result<Int?> {

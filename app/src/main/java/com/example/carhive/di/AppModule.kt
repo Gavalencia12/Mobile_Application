@@ -12,6 +12,7 @@ import com.example.carhive.Data.mapper.UserMapper
 import com.example.carhive.Data.repository.SessionRepository
 import com.example.carhive.Data.repository.UserRepository
 import com.example.carhive.Data.datasource.local.SessionImpl
+import com.example.carhive.Data.mapper.CarMapper
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.auth.IsVerifiedTheEmailUseCase
 import com.example.carhive.Domain.usecase.user.ClearUserPreferencesUseCase
@@ -19,11 +20,16 @@ import com.example.carhive.Domain.usecase.user.GetPasswordUseCase
 import com.example.carhive.Domain.usecase.user.GetUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.auth.LoginUseCase
 import com.example.carhive.Domain.usecase.auth.RegisterUseCase
+import com.example.carhive.Domain.usecase.database.DeleteCarInDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.SaveCarToDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.Domain.usecase.user.SavePasswordUseCase
 import com.example.carhive.Domain.usecase.user.SaveUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.database.SaveUserToDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.UpdateCarToDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.UploadToCarImageUseCase
 import com.example.carhive.Domain.usecase.database.UpdateTermsSellerUseCase
 import com.example.carhive.Domain.usecase.database.UpdateUserRoleUseCase
 import com.example.carhive.Domain.usecase.database.UploadToProfileImageUseCase
@@ -73,9 +79,17 @@ object AppModule {
         dataSourceDatabase: FirebaseDatabaseDataSource,
         dataSourceAuth: FirebaseAuthDataSource,
         dataSourceStorage: FirebaseStorageDataSource,
-        userMapper: UserMapper
+        userMapper: UserMapper,
+        carMapper: CarMapper
     ): AuthRepository = RepositoryImpl(
-        auth, database, storage, dataSourceDatabase, dataSourceAuth, dataSourceStorage, userMapper
+        auth,
+        database,
+        storage,
+        dataSourceDatabase,
+        dataSourceAuth,
+        dataSourceStorage,
+        userMapper,
+        carMapper
     ) // Proporciona la implementación de AuthRepository.
 
     @Provides
@@ -156,6 +170,11 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideUploadToCarImageUseCase(repository: AuthRepository): UploadToCarImageUseCase =
+        UploadToCarImageUseCase(repository)
+
+    @Provides
+    @Singleton
     fun provideSaveUserToDatabaseUseCase(repository: AuthRepository): SaveUserToDatabaseUseCase =
         SaveUserToDatabaseUseCase(repository)
 
@@ -168,6 +187,26 @@ object AppModule {
     @Singleton
     fun provideGetAllCarsFromDatabaseUseCase(repository: AuthRepository): GetAllCarsFromDatabaseUseCase =
         GetAllCarsFromDatabaseUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideSaveCarToDatabaseUseCase(repository: AuthRepository): SaveCarToDatabaseUseCase =
+        SaveCarToDatabaseUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteCarInDatabaseUseCase(repository: AuthRepository): DeleteCarInDatabaseUseCase =
+        DeleteCarInDatabaseUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateCarToDatabaseUseCase(repository: AuthRepository): UpdateCarToDatabaseUseCase =
+        UpdateCarToDatabaseUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCarUserInDatabaseUseCase(repository: AuthRepository): GetCarUserInDatabaseUseCase =
+        GetCarUserInDatabaseUseCase(repository)
 
     @Provides
     @Singleton

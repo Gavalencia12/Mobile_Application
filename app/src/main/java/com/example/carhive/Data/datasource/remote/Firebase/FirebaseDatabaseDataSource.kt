@@ -73,6 +73,92 @@ class FirebaseDatabaseDataSource @Inject constructor(
     }
 
 
+    suspend fun saveCarToDatabase(userId: String, car: CarEntity): Result<String> {
+        return try {
+            // Crea una referencia para el nuevo coche
+            val carRef = database.getReference("Car")
+                .child(userId)
+                .push()
+
+            // Guarda el coche en la base de datos con el ID generado
+            carRef.setValue(car).await()
+
+            // Devuelve el ID del coche recién creado
+            Result.success(carRef.key ?: throw Exception("Error generating car ID"))
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error saving car to database: ${e.message}", e))
+        }
+    }
+
+
+    suspend fun updateCarInDatabase(userId: String, carId: String, car: CarEntity): Result<Unit> {
+        return try {
+            database.getReference("Car")
+                .child(userId)
+                .child(carId) // Usar el ID del coche existente
+                .setValue(car)
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error updating car in database: ${e.message}", e))
+        }
+    }
+
+
+    suspend fun deleteCarInDatabase(userId: String, carId: String): Result<Unit>{
+        return try {
+            database.getReference("Car")
+                .child(userId)
+                .child(carId)
+                .removeValue()
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error deleting car from database: ${e.message}", e))
+        }
+    }
+
+    suspend fun getCarUserFromDatabase(userId: String): Result<List<CarEntity>> {
+        return try {
+            // Obtén la referencia del nodo del coche
+            val carSnapshot = database.getReference("Car")
+                .child(userId)
+                .get()
+                .await()
+
+            // Verifica si el snapshot existe y tiene datos
+            if (carSnapshot.exists()) {
+                // Convierte el snapshot a una lista de CarEntity
+                val carList = carSnapshot.children.mapNotNull { childSnapshot ->
+                    childSnapshot.getValue(CarEntity::class.java) // Mapea cada hijo a un CarEntity
+                }
+                Result.success(carList) // Retorna la lista de CarEntity
+            } else {
+                Result.success(emptyList()) // Retorna una lista vacía si no hay coches
+            }
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error fetching car from database", e))
+        }
+    }
+
+
+    /**
+     * Recupera el rol de un usuario específico desde la base de datos.
+     *
+     * Este método se utiliza para obtener el rol asignado a un usuario en la base de datos.
+     * El rol se almacena como un valor entero en la estructura de datos de Firebase.
+     *
+     * @param userId Identificador único del usuario cuyo rol se desea recuperar.
+     * @return Result<Int?> Éxito con el rol del usuario si existe,
+     *                      null si el usuario no tiene rol asignado,
+     *                      o failure con Exception si ocurre un error durante la recuperación.
+     *
+     * La operación se lleva a cabo en los siguientes pasos:
+     * 1. Obtiene la referencia específica al campo 'role' del usuario dentro de la
+     *    estructura de datos de Firebase.
+     * 2. Recupera el valor asociado a ese campo como un entero.
+     * 3. Retorna el resultado envuelto en un objeto Result, que indica éxito o fracaso.
+     */
     suspend fun getUserRole(userId: String): Result<Int?> {
         return try {
             val databaseRef = FirebaseDatabase.getInstance()

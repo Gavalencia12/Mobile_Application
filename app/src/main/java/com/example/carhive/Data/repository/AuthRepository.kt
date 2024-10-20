@@ -2,6 +2,7 @@ package com.example.carhive.Data.repository
 
 import android.net.Uri
 import com.example.carhive.Data.model.CarEntity
+import com.example.carhive.Domain.model.Car
 import com.example.carhive.Data.model.UserEntity
 import com.example.carhive.Domain.model.User
 
@@ -18,12 +19,27 @@ interface AuthRepository {
 
     suspend fun registerUser(email: String, password: String): Result<String>
     suspend fun uploadProfileImage(userId: String, uri: Uri): Result<String>
+    suspend fun uploadCardImage(
+        userId: String,
+        carId: String,
+        uris: List<Uri>
+    ): Result<List<String>>
+
     suspend fun saveUserToDatabase(userId: String, user: User): Result<Unit>
     suspend fun getAllCarsFromDatabase(): Result<List<CarEntity>>
     suspend fun getUserData(userId: String): Result<List<UserEntity>>
     suspend fun updateUserRole(userId: String, newRole: Int): Result<Unit>
     suspend fun updateTermsSeller(userId: String, termsSeller: Boolean): Result<Unit>
     suspend fun isVerifiedTheEmail(): Result<Unit>
+    suspend fun saveCarToDatabase(userId: String, car: Car): Result<String>
+    suspend fun updateCarToDatabase(
+        userId: String,
+        carId: String,
+        car: Car
+    ): Result<Unit>
+
+    suspend fun deleteCarInDatabase(userId: String, carId: String): Result<Unit>
+    suspend fun getCarUserFromDatabase(userId: String): Result<List<CarEntity>>
     suspend fun loginUser(email: String, password: String): Result<String?>
     suspend fun getCurrentUserId(): Result<String?>
     suspend fun getUserRole(userId: String): Result<Int?>

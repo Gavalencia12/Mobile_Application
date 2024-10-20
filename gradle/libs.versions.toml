@@ -22,10 +22,13 @@ runtimeLivedata = "1.7.3"
 constrainsversion = "2.1.4"
 fragmentversion = "1.6.1"
 navigationfragment = "2.7.3"
+roomKtx = "2.6.1"
+firebaseFirestoreKtx = "25.1.0"
 mpandroidchart = "3.1.0"
 
 
 gifdrawable = "1.2.25"
+material = "1.12.0"
 
 [libraries]
 
@@ -86,6 +89,9 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hilt-compile = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

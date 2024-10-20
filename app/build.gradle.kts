@@ -57,6 +57,10 @@ android {
     dataBinding{
         enable = true
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -72,6 +76,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     kapt("com.github.bumptech.glide:compiler:4.15.1")
 
+    implementation(libs.bumptech.glide)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.material)
+    annotationProcessor(libs.bumptech.glide.compiler)
+    implementation(libs.gifdrawable)
 
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)
@@ -79,6 +88,7 @@ dependencies {
 //    Dagger dependencies
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.room.ktx)
     kapt(libs.dagger.hilt.compile)
 
 //    Kotlin dependencies
@@ -96,6 +106,8 @@ dependencies {
     implementation(libs.coil.compose) // Coil.
     implementation(libs.androidx.navigation.compose) // Navigation.
     implementation(libs.androidx.lifecycle.viewmodel.compose) // ViewModel.
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 
 //    Firebase dependencies
     implementation(platform(libs.firebase.bom)) // Firebase Bom.
@@ -114,8 +126,6 @@ dependencies {
 //    Debugging dependencies
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
     kapt("com.github.bumptech.glide:compiler:4.15.1")
