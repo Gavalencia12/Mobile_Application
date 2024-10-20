@@ -2,29 +2,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!-- Botón de regreso -->
+    <Button
+        android:id="@+id/bureturn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="25dp"
+        android:background="@drawable/ic_arrow_back"/>
 
     <TextView
         android:id="@+id/textuser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Verificar Usuarios"
-        android:textSize="30dp"/>
+        android:textSize="25dp"
+        android:gravity="center"
+        android:fontFamily="@font/inter_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="35dp"/>
+
+    <!-- SearchView -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Buscar usuarios..."
+        android:iconifiedByDefault="false"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_below="@id/textuser"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_search"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
         android:layout_below="@+id/textuser"
         android:layout_marginTop="80dp"/>
-
-    <Button
-        android:id="@+id/bureturn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Regresar"
-        android:layout_below="@id/textuser"
-        android:layout_marginTop="20dp"/>
-
 
 </RelativeLayout>

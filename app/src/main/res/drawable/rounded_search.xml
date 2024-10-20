@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado presionado -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/gray" /> <!-- Color más oscuro al presionar -->
+            <corners android:radius="16dp" />
+            <padding android:left="4dp" android:top="4dp" android:right="4dp" android:bottom="4dp"/>
+            <shadowColor android:color="#000000" />
+            <shadowDx android:value="0" />
+            <shadowDy android:value="2" />
+            <shadowRadius android:value="4" />
+        </shape>
+    </item>
+
+    <!-- Estado normal -->
+    <item>
+        <shape>
+            <solid android:color="@color/gray_bg" /> <!-- Color normal -->
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+</selector>

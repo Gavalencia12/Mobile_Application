@@ -1,4 +1,4 @@
-plugins {
+    plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
@@ -71,6 +71,11 @@ dependencies {
     implementation(libs.fragment)
     implementation(libs.navigation)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.gifdrawable)
+    implementation("com.google.android.material:material:1.6.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
+
     implementation(libs.bumptech.glide)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.material)
@@ -121,6 +126,10 @@ dependencies {
 //    Debugging dependencies
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
+
 
 }
 
