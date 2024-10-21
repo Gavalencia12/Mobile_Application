@@ -82,11 +82,19 @@ class ProfileSellerFragment : Fragment() {
     private fun updateUserProfileUI(user: UserEntity) {
         // Actualizar los datos de verificación
         if (user.isverified) {
-            binding.tvVerified.text = "Estás Verificado"
+            binding.tvVerified.text = "You’ve been verified!"
+            binding.tvVerified2.text = "You’re eligible to become a seller."
+            binding.tvVerified3.visibility = View.GONE
             binding.ivIsVerified.visibility = View.VISIBLE
+            binding.cbTerms.visibility = View.VISIBLE
+            binding.btnSeller.visibility = View.VISIBLE
         } else {
-            binding.tvVerified.text = "No estás Verificado"
+            binding.tvVerified.text = "You’ve not been verified"
+            binding.tvVerified2.text = "Wait for the admin to verify you."
+            binding.tvVerified3.text = "For now, you can check out the terms and conditions for sellers:"
             binding.ivIsVerified.visibility = View.GONE
+            binding.cbTerms.visibility = View.GONE
+            binding.btnSeller.visibility = View.GONE
         }
 
         // Llamar para verificar si el botón debe estar habilitado

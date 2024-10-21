@@ -13,13 +13,13 @@
         <!-- Carrusel de imágenes con flechas laterales -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content">
 
             <!-- ViewPager para las imágenes -->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"/>
 
             <!-- Flecha izquierda -->
             <ImageButton
@@ -48,7 +48,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="1dp"
             android:layout_gravity="center"
             app:tabIndicatorColor="@android:color/black"
             app:tabSelectedTextColor="@android:color/black"
@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Toyota Sienta Black 24k"
+                android:fontFamily="@font/inter_extrabold"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
@@ -74,9 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$30,000"
+                android:fontFamily="@font/inter_bold"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -90,14 +91,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Black" />
+                android:text="Black"
+                android:fontFamily="@font/inter_bold"/>
 
             <TextView
                 android:id="@+id/carSpeed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="230 km/h" />
+                android:text="230 km/h"
+                android:fontFamily="@font/inter_bold"/>
         </LinearLayout>
 
         <TextView
@@ -105,6 +108,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="Description"
+            android:fontFamily="@font/inter_extrabold"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -113,13 +117,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            android:fontFamily="@font/inter_bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="50dp"
@@ -137,18 +143,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Marcelo Juanito"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/inter_extrabold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Zapopan, Jalisco" />
+                    android:text="Zapopan, Jalisco"
+                    android:fontFamily="@font/inter_semibold"/>
             </LinearLayout>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Message" />
+                android:text="Message"
+                />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

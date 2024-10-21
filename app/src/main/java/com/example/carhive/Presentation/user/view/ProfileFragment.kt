@@ -68,11 +68,11 @@ class ProfileFragment : Fragment() {
         listView.setOnItemClickListener { _, _, position, _ ->
             val option = viewModel.profileOptions[position]
             when (option) {
-                "Cerrar sesión" -> {
+                "Log out" -> {
                     viewModel.logout()
                     findNavController().navigate(R.id.action_userProfileFragment_to_loginFragment)
                 }
-                "Quieres ser un Vendedor?" -> {
+                "Do you want to become a seller?" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_profileSellerFragment)
                 }
                 // Otros casos...
@@ -88,7 +88,7 @@ class ProfileFragment : Fragment() {
         } else {
             binding.ivIsVerified.visibility = View.GONE
         }
-        Glide.with(this).load(user.imageUrl).into(binding.profileImage)
+        Glide.with(this).load(user.imageUrl).circleCrop().into(binding.profileImage)
     }
 
     override fun onDestroyView() {

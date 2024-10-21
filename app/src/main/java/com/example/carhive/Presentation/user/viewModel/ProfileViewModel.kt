@@ -45,14 +45,14 @@ class ProfileViewModel @Inject constructor(
 
     // Listas de opciones y sus íconos
     val profileOptions = listOf(
-        "Notificaciones",
-        "Modo pantalla",
-        "Idioma",
-        "Reportar un problema",
-        "Ayuda",
-        "Términos y condiciones",
-        "Quieres ser un Vendedor?",
-        "Cerrar sesión"
+        "Notifications",
+        "Theme",
+        "Languaje",
+        "Report a problem",
+        "Help",
+        "Terms & Conditions",
+        "Do you want to become a seller?",
+        "Log out"
     )
 
     val profileIcons = listOf(

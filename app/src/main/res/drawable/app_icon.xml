@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:top="100dp"
+        android:bottom="100dp"
+        android:left="100dp"
+        android:right="100dp">
+        <bitmap
+            android:src="@drawable/ic_car"
+            android:gravity="center"
+            android:scaleType="fitCenter"/>
+    </item>
+</layer-list>

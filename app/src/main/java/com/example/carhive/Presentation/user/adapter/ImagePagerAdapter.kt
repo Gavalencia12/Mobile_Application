@@ -23,6 +23,7 @@ class ImagePagerAdapter(private val imageUrls: List<String>) : RecyclerView.Adap
         val imageUrl = imageUrls[position]
         Glide.with(holder.itemView.context)
             .load(imageUrl)
+            .centerCrop()
             .into(holder.imageView)
     }
 

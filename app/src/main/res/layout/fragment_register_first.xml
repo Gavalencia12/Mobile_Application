@@ -65,6 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:fontFamily="@font/inter_bold"
                 android:text="Registration"
@@ -74,9 +75,11 @@
             <!-- Instrucciones -->
             <TextView
                 android:id="@+id/instruction"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:fontFamily="@font/inter_bold"
                 android:text="Please enter your information for continue"
@@ -153,7 +156,7 @@
                 android:layout_weight="1"
                 android:hint="Password"
                 android:layout_marginBottom="20dp"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/gray"
@@ -173,8 +176,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 android:layout_weight="1"
+                android:layout_marginBottom="20dp"
                 android:hint="Confirm password"
-                android:layout_marginBottom="25dp"
                 android:inputType="textPassword"
                 android:textSize="16sp"
                 android:fontFamily="@font/inter_semibold"
@@ -187,6 +190,19 @@
                 android:drawablePadding="15dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
+
+            <!-- Nota -->
+            <TextView
+                android:id="@+id/note"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="top|center_horizontal"
+                android:fontFamily="@font/inter_semibold"
+                android:text="* Min. 6 characters, with upper, lower, numbers, and special symbols."
+                android:textColor="@color/gray"
+                android:textSize="15sp"
+                android:visibility="gone"/>
 
             <!-- Enlace para iniciar sesión y botón para continuar -->
             <androidx.constraintlayout.widget.ConstraintLayout
