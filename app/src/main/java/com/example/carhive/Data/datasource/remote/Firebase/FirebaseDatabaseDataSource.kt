@@ -390,4 +390,37 @@ class FirebaseDatabaseDataSource @Inject constructor(
         }
     }
 
+    suspend fun getFavoriteReactionsForUserCars(userId: String): Result<Int> {
+        return try {
+            // Obtén la referencia a los carros del usuario
+            val carSnapshot = database.getReference("Car")
+                .child(userId)
+                .get()
+                .await()
+
+            // Verifica si el snapshot tiene datos
+            if (carSnapshot.exists()) {
+                // Itera sobre los carros del usuario
+                val carsWithFavoritesCount = carSnapshot.children.count { car ->
+                    val carId = car.key // Obtener el ID del carro
+                    val carFavoritesSnapshot = database.getReference("Favorites/CarFavorites")
+                        .child(carId!!)
+                        .get()
+                        .await()
+
+                    // Verificar si el carro tiene al menos un favorito (favoriteCount > 0)
+                    val favoriteCount = carFavoritesSnapshot.child("favoriteCount").getValue(Int::class.java) ?: 0
+                    favoriteCount > 0
+                }
+
+                Result.success(carsWithFavoritesCount) // Retornar el número de carros con al menos un favorito
+            } else {
+                Result.success(0) // Si no hay carros, retornar 0
+            }
+        } catch (e: Exception) {
+            Result.failure(RepositoryException("Error fetching favorite reactions count for user cars: ${e.message}", e))
+        }
+    }
+
 }
+
