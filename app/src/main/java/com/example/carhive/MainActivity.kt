@@ -167,6 +167,9 @@ class MainActivity : AppCompatActivity() {
     private fun hideAllBottomNavigation() {
         bottomNavigationViewUser.visibility = View.GONE
         bottomNavigationViewSeller.visibility = View.GONE
+        bottomNavigationViewUser.menu.findItem(R.id.home).isChecked = true
+        bottomNavigationViewSeller.menu.findItem(R.id.home).isChecked = true
+
     }
 
     // Handle the back button navigation

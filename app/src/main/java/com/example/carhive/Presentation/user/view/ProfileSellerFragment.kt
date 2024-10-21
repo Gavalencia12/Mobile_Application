@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.carhive.Data.model.UserEntity
+import com.example.carhive.MainActivity
 import com.example.carhive.Presentation.user.items.TermsAndConditionsDialogSeller
 import com.example.carhive.Presentation.user.viewModel.ProfileSellerViewModel
 import com.example.carhive.R
@@ -56,7 +57,7 @@ class ProfileSellerFragment : Fragment() {
             findNavController().navigate(R.id.action_userProfileFragment_to_userProfileFragment)
 
             // Actualizar la selección del BottomNavigationView
-//            (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.profile // Cambia el ID al correspondiente
+            (activity as MainActivity).bottomNavigationViewUser.selectedItemId = R.id.profile // Cambia el ID al correspondiente
         }
 
         // Listener para el CheckBox

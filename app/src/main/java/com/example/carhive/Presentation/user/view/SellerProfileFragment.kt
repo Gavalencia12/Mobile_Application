@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.example.carhive.Data.model.UserEntity
+import com.example.carhive.MainActivity
 import com.example.carhive.Presentation.user.adapter.ProfileOptionsAdapter
 import com.example.carhive.Presentation.user.viewModel.ProfileViewModel
 import com.example.carhive.R
@@ -57,26 +58,27 @@ class SellerProfileFragment : Fragment() {
         // Iniciar la obtención de los datos del usuario
         viewModel.fetchUserData()
 
-        binding.ibtnBack.setOnClickListener {
-            // Navegar al userHomeFragment
-            findNavController().navigate(R.id.action_userProfileFragment_to_userHomeFragment)
-        }
+//        binding.ibtnBack.setOnClickListener {
+//            // Navegar al userHomeFragment
+//            findNavController().navigate(R.id.action_userProfileFragment_to_userHomeFragment)
+//            (activity as MainActivity).bottomNavigationViewSeller.selectedItemId = R.id.home
+//        }
 
         // Configurar la lista de opciones del perfil
         val listView = binding.profileOptionsList
-        val adapter = ProfileOptionsAdapter(requireContext(), viewModel.profileOptions, viewModel.profileIcons)
+        val adapter = ProfileOptionsAdapter(requireContext(), viewModel.profileOptionsSeller, viewModel.profileIconsSeller)
         listView.adapter = adapter
 
         // Manejar los clics en las opciones del perfil
         listView.setOnItemClickListener { _, _, position, _ ->
-            val option = viewModel.profileOptions[position]
+            val option = viewModel.profileOptionsSeller[position]
             when (option) {
-                "Cerrar sesión" -> {
+                "Log out" -> {
                     viewModel.logout()
                     findNavController().navigate(R.id.action_userProfileFragment_to_loginFragment)
                 }
-                "Quieres ser un Vendedor?" -> {
-                    findNavController().navigate(R.id.action_userProfileFragment_to_profileSellerFragment)
+                "Terms & Conditions" -> {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_termsSellerFragment)
                 }
                 // Otros casos...
             }
@@ -91,7 +93,7 @@ class SellerProfileFragment : Fragment() {
         } else {
             binding.ivIsVerified.visibility = View.GONE
         }
-        Glide.with(this).load(user.imageUrl).into(binding.profileImage)
+        Glide.with(this).load(user.imageUrl).circleCrop().into(binding.profileImage)
     }
 
     override fun onDestroyView() {

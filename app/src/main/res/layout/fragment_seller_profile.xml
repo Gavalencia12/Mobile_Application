@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:paddingTop="40dp"
-    tools:context=".Presentation.user.view.ProfileFragment">
+    tools:context=".Presentation.seller.view.SellerProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,13 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/ibtnBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_arrow_back" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/ibtnBack"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_alignParentStart="true"-->
+<!--                    android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--                    android:src="@drawable/ic_arrow_back" />-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,7 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_edit" />
+                    android:src="@drawable/ic_edit"
+                    android:visibility="invisible"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -90,7 +91,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="Culiacán, Sinaloa"
                     android:textColor="#757575"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <ListView

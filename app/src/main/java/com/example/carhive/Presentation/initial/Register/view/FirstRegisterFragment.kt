@@ -296,17 +296,17 @@ class FirstRegisterFragment : Fragment() {
         )
 
         // Devuelve el color del texto de los campos de entrada a negro
-        binding.emailEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.emailEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
         binding.passwordEditText.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.black
+                R.color.gray
             )
         )
         binding.confirmPasswordEditText.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.black
+                R.color.gray
             )
         )
 
