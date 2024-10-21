@@ -41,6 +41,7 @@ class RepositoryImpl(
     private val dataSourceStorage: FirebaseStorageDataSource, // Fuente de datos para operaciones de almacenamiento, maneja la subida y recuperación de archivos.
     private val userMapper: UserMapper,                       // Mapper para convertir entre modelos de dominio (User) y datos (UserEntity).
     private val carMapper: CarMapper
+
 ) : AuthRepository {
 
     override suspend fun uploadProfileImage(userId: String, uri: Uri): Result<String> {
@@ -143,4 +144,9 @@ class RepositoryImpl(
     override suspend fun getUserFavoriteCars(userId: String): Result<List<CarEntity>> {
         return dataSource.getUserFavoriteCars(userId)
     }
+
+    override suspend fun getFavoriteReactionsForUserCars(userId: String): Result<Int> {
+        return dataSource.getFavoriteReactionsForUserCars(userId)
+    }
+
 }

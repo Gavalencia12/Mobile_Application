@@ -50,4 +50,5 @@ interface AuthRepository {
     suspend fun getUserFavorites(userId: String): Result<List<FavoriteCar>>
     suspend fun getCarFavoriteCountAndUsers(carId: String): Result<Pair<Int, List<FavoriteUser>>>
     suspend fun getUserFavoriteCars(userId: String): Result<List<CarEntity>>
+    suspend fun getFavoriteReactionsForUserCars(userId: String): Result<Int>
 }
