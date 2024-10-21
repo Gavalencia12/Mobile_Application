@@ -105,6 +105,15 @@
     </fragment>
 
     <fragment
+        android:id="@+id/termsUserFragment"
+        android:name="com.example.carhive.Presentation.user.items.TermsUserFragment"
+        tools:layout="@layout/fragment_seller_profile">
+        <action
+            android:id="@+id/action_userProfileFragment_to_sellerProfileFragment"
+            app:destination="@id/userProfileFragment"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.carhive.Presentation.user.view.FavoritesFragment"
         tools:layout="@layout/fragment_user_favorites">
@@ -135,6 +144,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_userHomeFragment"
             app:destination="@id/userHomeFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_termsFragment"
+            app:destination="@id/termsUserFragment" />
     </fragment>
 
     <fragment
@@ -167,6 +179,21 @@
         android:id="@+id/sellerProfileFragment"
         android:name="com.example.carhive.Presentation.seller.view.SellerProfileFragment"
         tools:layout="@layout/fragment_seller_profile">
+        <action
+        android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
+        app:destination="@id/sellerHomeFragment"/>
+        <action
+            android:id="@+id/action_userProfileFragment_to_termsSellerFragment"
+            app:destination="@id/termsSellerFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/termsSellerFragment"
+        android:name="com.example.carhive.Presentation.user.items.TermsSellerFragment"
+        tools:layout="@layout/fragment_seller_profile_terms">
+        <action
+            android:id="@+id/action_termsSellerFragment_to_sellerProfileFragment"
+            app:destination="@id/sellerProfileFragment" />
     </fragment>
 
     <fragment

@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/crud"
-        android:icon="@drawable/ic_cars"
+        android:icon="@drawable/ic_carblack"
         android:title="Inventory" />
 
     <item

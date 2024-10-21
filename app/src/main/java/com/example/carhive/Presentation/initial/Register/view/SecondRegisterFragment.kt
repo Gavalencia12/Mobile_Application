@@ -191,16 +191,16 @@ class SecondRegisterFragment : Fragment() {
 
         // Cambiar el color del botón del CheckBox a rojo
         binding.cbTerms.buttonTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.blue))
 
         // Cambiar el color del texto del CheckBox a negro
-        binding.cbTerms.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.cbTerms.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
 
         // Devuelve el color del texto a su estado normal si ha sido cambiado
         binding.phoneNumberEditText.setTextColor(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.black
+                R.color.gray
             )
         )
     }

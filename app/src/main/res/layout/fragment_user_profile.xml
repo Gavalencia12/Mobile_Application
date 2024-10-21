@@ -36,14 +36,15 @@
                     android:src="@drawable/ic_arrow_back"
                     android:padding="5dp"/>
 
-
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_edit"
-                    android:padding="5dp"/>
+                    android:padding="5dp"
+                    android:visibility="invisible"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -85,7 +86,8 @@
                     android:layout_centerHorizontal="true"
                     android:text="Culiacán, Sinaloa"
                     android:textColor="#757575"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <ListView

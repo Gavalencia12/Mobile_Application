@@ -24,6 +24,7 @@ class CarHomeAdapter(
         val carPrice: TextView = view.findViewById(R.id.carPrice)
         val carImage: ImageView = view.findViewById(R.id.carImage)
         val favoriteCheckBox: CheckBox = view.findViewById(R.id.favoriteCheckBox)
+        val btnMoreInfo: TextView = view.findViewById(R.id.btnMoreInfo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder {
@@ -60,6 +61,10 @@ class CarHomeAdapter(
 
         // Click listener para el coche
         holder.itemView.setOnClickListener {
+            onCarClick(car)
+        }
+
+        holder.btnMoreInfo.setOnClickListener{
             onCarClick(car)
         }
     }

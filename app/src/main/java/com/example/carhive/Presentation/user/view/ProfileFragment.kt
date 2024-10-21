@@ -54,8 +54,8 @@ class ProfileFragment : Fragment() {
         viewModel.fetchUserData()
 
         binding.ibtnBack.setOnClickListener {
-            // Navegar al userHomeFragment
             findNavController().navigate(R.id.action_userProfileFragment_to_userHomeFragment)
+            (activity as MainActivity).bottomNavigationViewUser.selectedItemId = R.id.home
         }
 
 
@@ -74,6 +74,9 @@ class ProfileFragment : Fragment() {
                 }
                 "Do you want to become a seller?" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_profileSellerFragment)
+                }
+                "Terms & Conditions" -> {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_termsFragment)
                 }
                 // Otros casos...
             }

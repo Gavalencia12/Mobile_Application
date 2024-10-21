@@ -32,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Car Model"
+                android:fontFamily="@font/inter_bold"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -40,7 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Car Brand"
-                android:textSize="16sp" />
+                android:fontFamily="@font/inter_bold"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/carPrice"
@@ -48,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="$ Price"
+                android:fontFamily="@font/inter_bold"
                 android:textSize="16sp"
                 android:textColor="@android:color/holo_green_dark" />
 
@@ -58,7 +61,7 @@
             android:id="@+id/deleteFavoriteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="end"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_exit"
             android:contentDescription="Eliminar de favoritos" />
