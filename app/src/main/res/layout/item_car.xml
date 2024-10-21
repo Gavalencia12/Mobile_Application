@@ -11,59 +11,90 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:weightSum="2">
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
             <ImageView
                 android:id="@+id/carImage"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="8dp"
-                android:scaleType="centerCrop" />
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="2">
+            android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/carModel"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Aveo White 2004"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/carModel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:text="Aveo White 2004"
+                    android:fontFamily="@font/inter_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/favoriteCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:gravity="end|center"
+                    android:button="@drawable/checkbox_heart_selector" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/carMarca"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="top"
                 android:text="Nissan"
+                android:fontFamily="@font/inter_bold"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/carPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:gravity="bottom"
                 android:text="$50,000"
+                android:fontFamily="@font/inter_bold"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <CheckBox
-                android:id="@+id/favoriteCheckBox"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/contactButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Favorito" />
-
+                android:layout_marginTop="20dp"
+                android:layout_gravity="bottom"
+                android:text="More info"
+                android:fontFamily="@font/inter_extrabold"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/ic_person_outline"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:paddingTop="15dp"/>
         </LinearLayout>
 
     </LinearLayout>

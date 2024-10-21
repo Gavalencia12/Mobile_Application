@@ -64,7 +64,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/white"
-                android:background="@drawable/btn_pulsado"
+                android:background="@drawable/btn_style"
                 android:enabled="false"/> <!-- Deshabilitado por defecto -->
 
             <Space

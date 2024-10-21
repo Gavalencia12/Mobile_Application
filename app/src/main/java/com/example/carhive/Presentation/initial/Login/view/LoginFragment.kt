@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.res.colorResource
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -39,7 +41,7 @@ class LoginFragment : Fragment() {
         // Configurar el evento de clic en el icono de la contraseña
         binding.passwordEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= (binding.passwordEditText.right - binding.passwordEditText.compoundDrawables[2].bounds.width())) {
+                if (event.rawX >= (binding.passwordEditText.right - binding.passwordEditText.compoundDrawables[2].bounds.width() - 40)) {
                     // Cambiar la visibilidad de la contraseña
                     togglePasswordVisibility()
                     return@setOnTouchListener true
@@ -73,8 +75,18 @@ class LoginFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loginError.collectLatest { error ->
                 error?.let {
-                    binding.instruction.text = it
-                    binding.instruction.visibility = View.VISIBLE
+                    binding.instruction.apply {
+                        text = it
+                        visibility = View.VISIBLE
+                        setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                        setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.ic_error, // Left drawable (ícono de error)
+                            0,
+                            0,
+                            0
+                        )
+                        compoundDrawablePadding = 2 // Space between the icon and the text
+                    }
                 }
             }
         }

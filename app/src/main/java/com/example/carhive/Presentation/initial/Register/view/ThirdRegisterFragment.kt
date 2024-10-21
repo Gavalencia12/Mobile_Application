@@ -45,6 +45,9 @@ class ThirdRegisterFragment : Fragment() {
                 imageUri = uri
                 binding.selectedImageView.visibility = View.VISIBLE
                 binding.selectedImageView.load(uri) // Carga la imagen seleccionada
+                binding.selectedImageView.load(uri) {
+                    transformations(coil.transform.CircleCropTransformation()) // Aplica recorte circular
+                }
             }
             // Habilitar el botón si hay una imagen seleccionada
             binding.finishRegistrationButton.isEnabled = uri != null

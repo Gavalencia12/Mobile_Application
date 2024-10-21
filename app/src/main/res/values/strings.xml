@@ -40,7 +40,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="failed_to_delete_images">failed to delete images\n</string>
-    <string name="terms_and_conditions"><u>terms and conditions</u></string>
+    <string name="terms_and_conditions"><u>Terms and Conditions</u></string>
     <string name="car_image">Car image</string>
     <string name="view_more">View more</string>
     <string name="edit">Edit</string>

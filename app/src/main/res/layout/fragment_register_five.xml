@@ -75,5 +75,5 @@
         android:text="Get started"
         android:fontFamily="@font/inter_bold"
         android:textColor="@color/white"
-        android:background="@drawable/btn_pulsado" />
+        android:background="@drawable/btn_style" />
 </LinearLayout>
