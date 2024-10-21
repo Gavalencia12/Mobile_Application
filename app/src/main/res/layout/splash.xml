@@ -1,0 +1,31 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue">
+
+    <!-- Hexágono grande (pentágono) -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/car"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="-110dp"
+        android:id="@+id/car_image"
+        android:gravity="center" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/hive"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="-110dp"
+        android:gravity="center"
+        android:id="@+id/hive_image" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

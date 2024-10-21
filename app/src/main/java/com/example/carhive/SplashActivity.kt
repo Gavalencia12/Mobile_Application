@@ -1,46 +1,72 @@
 package com.example.carhive
 
+import android.animation.*
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash_screen)
+        setContentView(R.layout.splash) // Tu layout splash.xml
 
-        val imageView: ImageView = findViewById(R.id.gifImageView)
+        // Referencias a los elementos
+        val carImage: ImageView = findViewById(R.id.car_image)
+        val hiveImage: ImageView = findViewById(R.id.hive_image)
 
-        // Preload del GIF para evitar retrasos en la carga
-        Glide.with(this)
-            .load(R.drawable.car_hive_logo) // Cambia este nombre si usas WebP
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .preload()
+        // Animación de escalado para el coche
+        val scaleXAnimatorCar = ObjectAnimator.ofFloat(carImage, View.SCALE_X, 0f, 1.2f, 1f)
+        val scaleYAnimatorCar = ObjectAnimator.ofFloat(carImage, View.SCALE_Y, 0f, 1.2f, 1f)
 
-        // Cargar el GIF en el ImageView con optimización de Glide
-        Glide.with(this)
-            .asDrawable() // Usa .asGif() si es un GIF; usa .asDrawable() si es WebP animado
-            .load(R.drawable.car_hive_logo) // Usa aquí el WebP animado si lo convertiste
-            .apply(
-                RequestOptions().format(DecodeFormat.PREFER_RGB_565) // Formato de baja memoria
-            )
-            .transition(withCrossFade()) // Desvanecimiento suave al cargar
-            .diskCacheStrategy(DiskCacheStrategy.ALL) // Cachea para mejorar rendimiento
-            .into(imageView)
+        // Añadir rotación a la imagen del coche
+        val rotationAnimatorCar = ObjectAnimator.ofFloat(carImage, View.ROTATION, 0f, 360f)
+        rotationAnimatorCar.duration = 500
 
-        // Manejar la transición al MainActivity después de 3 segundos
+        // Animación de aparición (Fade-in) para el coche
+        val fadeInAnimatorCar = ObjectAnimator.ofFloat(carImage, View.ALPHA, 0f, 1f)
+
+        // Crear animación de conjunto para la imagen del coche
+        val carAnimatorSet = AnimatorSet().apply {
+            playTogether(scaleXAnimatorCar, scaleYAnimatorCar, rotationAnimatorCar, fadeInAnimatorCar)
+            duration = 500
+        }
+
+        // Animación de escalado para la colmena (hive)
+        val scaleXAnimatorHive = ObjectAnimator.ofFloat(hiveImage, View.SCALE_X, 0f, 1.2f, 1f)
+        val scaleYAnimatorHive = ObjectAnimator.ofFloat(hiveImage, View.SCALE_Y, 0f, 1.2f, 1f)
+
+        // Añadir rotación a la imagen de la colmena
+        val rotationAnimatorHive = ObjectAnimator.ofFloat(hiveImage, View.ROTATION, 0f, 360f)
+        rotationAnimatorHive.duration = 500
+
+        // Animación de aparición (Fade-in) para la colmena
+        val fadeInAnimatorHive = ObjectAnimator.ofFloat(hiveImage, View.ALPHA, 0f, 1f)
+
+        // Crear animación de conjunto para la imagen de la colmena
+        val hiveAnimatorSet = AnimatorSet().apply {
+            playTogether(scaleXAnimatorHive, scaleYAnimatorHive, rotationAnimatorHive, fadeInAnimatorHive)
+            duration = 500
+        }
+
+        // Mostrar las imágenes y comenzar las animaciones
+        carImage.visibility = View.VISIBLE
+        hiveImage.visibility = View.VISIBLE
+
+        // Ejecutar las animaciones en secuencia
+        val animatorSet = AnimatorSet().apply {
+            playSequentially(carAnimatorSet, hiveAnimatorSet)
+        }
+        animatorSet.start()
+
+        // Transición al MainActivity después de la animación
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 3000) // 3 segundos de splash
+        }, 3000) // Duración total del splash
     }
 }
