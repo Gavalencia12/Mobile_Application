@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="46dp">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="20dp"
+        android:background="@color/white">
 
         <Button
             android:id="@+id/button_cancel"
@@ -88,7 +88,7 @@
         <EditText
             android:id="@+id/et_description"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="135dp"
             android:background="@drawable/edittext_description_background"
             android:paddingVertical="10dp"
             android:textColor="@color/black"
@@ -98,7 +98,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="14dp"
-            android:gravity="start" />
+            android:gravity="start"
+            android:maxLength="255"
+            android:maxLines="5"
+            android:overScrollMode="always"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"/>
 
         <TextView
             android:id="@+id/twDetails"
@@ -120,7 +125,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black"
-            android:text="Model"
+            android:text="Brand"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/twDetails"
             app:layout_constraintStart_toStartOf="parent"
@@ -145,19 +150,21 @@
             app:layout_constraintTop_toBottomOf="@id/twDetails" />
 
         <EditText
-            android:id="@+id/et_modelo"
+            android:id="@+id/et_addOn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_background"
             android:padding="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
-            android:hint="Model"
+            android:hint="Brand"
             app:layout_constraintTop_toBottomOf="@id/twmodel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/et_color"
             android:layout_marginEnd="10dp"
-            android:layout_marginVertical="16dp" />
+            android:layout_marginVertical="16dp"
+            android:maxLength="80"
+            android:lines="1" />
 
         <EditText
             android:id="@+id/et_color"
@@ -169,10 +176,12 @@
             android:textColorHint="@color/gray"
             android:hint="Color"
             app:layout_constraintTop_toBottomOf="@id/twColor"
-            app:layout_constraintStart_toEndOf="@id/et_modelo"
+            app:layout_constraintStart_toEndOf="@id/et_addOn"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="1dp"
-            android:layout_marginVertical="16dp" />
+            android:layout_marginVertical="16dp"
+            android:maxLength="80"
+            android:lines="1" />
 
         <TextView
             android:id="@+id/twspeed"
@@ -182,7 +191,7 @@
             android:textColor="@color/black"
             android:text="Speed"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/et_modelo"
+            app:layout_constraintTop_toBottomOf="@id/et_addOn"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingVertical="5dp"
             android:layout_marginTop="15dp"
@@ -219,7 +228,9 @@
             android:textColorHint="@color/gray"
             app:layout_constraintTop_toBottomOf="@id/twspeed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/et_price" />
+            app:layout_constraintEnd_toStartOf="@id/et_price"
+            android:maxLength="80"
+            android:lines="1" />
 
         <EditText
             android:id="@+id/et_price"
@@ -235,7 +246,9 @@
             app:layout_constraintStart_toEndOf="@id/et_speed"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="1dp"
-            android:layout_marginVertical="16dp"/>
+            android:layout_marginVertical="16dp"
+            android:maxLength="80"
+            android:lines="1" />
 
         <TextView
             android:id="@+id/twaddOn"
@@ -243,7 +256,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black"
-            android:text="Brand"
+            android:text="Model"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/et_speed"
             app:layout_constraintStart_toStartOf="parent"
@@ -252,20 +265,22 @@
             />
 
         <EditText
-            android:id="@+id/et_addOn"
+            android:id="@+id/et_modelo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_background"
             android:padding="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
-            android:hint="Brand"
+            android:hint="Model"
             app:layout_constraintTop_toBottomOf="@id/twaddOn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginVertical="15dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:maxLength="80"
+            android:lines="1" />
 
         <Button
             android:id="@+id/button_create"
@@ -274,7 +289,7 @@
             android:text="Create"
             android:background="@drawable/button_create"
             android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/et_addOn"
+            app:layout_constraintTop_toBottomOf="@id/et_modelo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="18dp" />

@@ -1,3 +1,5 @@
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import com.example.carhive.databinding.DialogConfirmDeleteBinding
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import android.graphics.Color // Usa esta importación para el color transparente.
 
 class ConfirmDeleteDialogFragment(private val carId: String, viewModel: CrudViewModel) : DialogFragment() {
 
@@ -70,5 +73,10 @@ class ConfirmDeleteDialogFragment(private val carId: String, viewModel: CrudView
         files.items.forEach { file ->
             file.delete().await() // Delete each file in the folder
         }
+    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        return dialog
     }
 }

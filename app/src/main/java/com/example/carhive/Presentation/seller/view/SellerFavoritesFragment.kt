@@ -45,8 +45,17 @@ class SellerFavoritesFragment : Fragment() {
 
         // Observar la lista de coches
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
-            viewModel.favoriteCounts.observe(viewLifecycleOwner) { favoriteCounts ->
-                carAdapter.updateCars(cars, favoriteCounts)
+            if (cars.isEmpty()) {
+                // Mostrar el mensaje cuando no hay coches
+                binding.recyclerViewCar.visibility = View.GONE
+                binding.emptyView.visibility = View.VISIBLE
+            } else {
+                // Ocultar el mensaje y mostrar el RecyclerView si hay coches
+                binding.recyclerViewCar.visibility = View.VISIBLE
+                binding.emptyView.visibility = View.GONE
+                viewModel.favoriteCounts.observe(viewLifecycleOwner) { favoriteCounts ->
+                    carAdapter.updateCars(cars, favoriteCounts)
+                }
             }
         }
 
@@ -56,6 +65,7 @@ class SellerFavoritesFragment : Fragment() {
 
         viewModel.fetchCarsForUser()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

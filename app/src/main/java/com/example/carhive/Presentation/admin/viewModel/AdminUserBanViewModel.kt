@@ -20,7 +20,7 @@ class AdminUserBanViewModel : ViewModel() {
     fun banUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                database.child(userId).child("isBanned").setValue(true).await()
+                database.child(userId).child("banned").setValue(true).await()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -30,7 +30,7 @@ class AdminUserBanViewModel : ViewModel() {
     fun unbanUser(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                database.child(userId).child("isBanned").setValue(false).await()
+                database.child(userId).child("banned").setValue(false).await()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

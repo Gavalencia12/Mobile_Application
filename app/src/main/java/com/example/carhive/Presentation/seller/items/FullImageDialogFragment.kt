@@ -1,6 +1,9 @@
 package com.example.carhive.Presentation.seller.view
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +19,8 @@ class FullImageDialogFragment(private val imageUrl: String) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) // Create the dialog
         dialog.setCanceledOnTouchOutside(true) // Allow dialog to be dismissed when touched outside
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         return dialog // Return the created dialog
     }
 
@@ -25,6 +30,8 @@ class FullImageDialogFragment(private val imageUrl: String) : DialogFragment() {
     ): View? {
         // Inflate the layout for the dialog
         val view = inflater.inflate(R.layout.dialog_full_image, container, false)
+
+        view.setPadding(50, 50, 50, 50)
 
         val imageView: ImageView = view.findViewById(R.id.fullImageView) // Reference to the ImageView
 

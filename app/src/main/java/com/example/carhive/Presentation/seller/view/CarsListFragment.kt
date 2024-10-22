@@ -71,6 +71,14 @@ class CarsListFragment : Fragment() {
             }
             // Update the adapter with the filtered list of cars
             adapter.updateCars(filteredCars)
+
+            if (filteredCars.isEmpty()) {
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyView.visibility = View.VISIBLE
+            } else {
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.emptyView.visibility = View.GONE
+            }
         }
 
         // Fetch all cars for the current user from the ViewModel

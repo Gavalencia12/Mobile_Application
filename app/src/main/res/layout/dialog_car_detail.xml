@@ -1,80 +1,96 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp">
+
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/carModelDetailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Model"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_marginTop="8dp" />
+        <TextView
+            android:id="@+id/carModelDetailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Model"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="8dp" />
 
-    <TextView
-        android:id="@+id/carColorDetailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Color"
-        android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/carColorDetailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color"
+            android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/carSpeedDetailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Speed"
-        android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/carSpeedDetailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed"
+            android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/carPriceDetailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price"
-        android:layout_marginTop="4dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/carAddOnDetailTextView"
-        android:text="Add On"
-        android:layout_marginTop="4dp"/>
+        <TextView
+            android:id="@+id/carPriceDetailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:layout_marginTop="4dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/carDescriptionDetailTextView"
-        android:text="Description"
-        android:layout_marginTop="4dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/carAddOnDetailTextView"
+            android:text="Add On"
+            android:layout_marginTop="4dp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/carDescriptionDetailTextView"
+            android:text="Description"
+            android:layout_marginTop="4dp"/>
 
-    <!-- Indicaciones para deslizar -->
-    <TextView
-        android:id="@+id/imageSwipeIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Swipe to see more images"
-        android:textStyle="italic"
-        android:layout_marginTop="8dp" />
+        <!-- Indicaciones para deslizar -->
+        <TextView
+            android:id="@+id/imageSwipeIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Swipe to see more images"
+            android:textStyle="italic"
+            android:layout_marginTop="8dp" />
 
-    <!-- ViewPager para el álbum de imágenes -->
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/carImagesViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"/>
+        <!-- CardView para el ViewPager -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="16dp"> <!-- Usa app: en lugar de android: -->
 
-    <TextView
-        android:id="@+id/imageCountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_marginTop="4dp" />
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/carImagesViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/closeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Close"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/imageCountTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/closeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Close"
+            android:textColor="@drawable/btn_edit_txt_color"
+            android:background="@drawable/btn_close_delete"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

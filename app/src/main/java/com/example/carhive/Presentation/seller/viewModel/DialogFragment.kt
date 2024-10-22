@@ -1,6 +1,8 @@
 package com.example.carhive.Presentation.seller.view
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -69,6 +71,18 @@ class CarDetailDialogFragment(private val car: CarEntity) : DialogFragment() {
         // Set the custom view for the dialog
         builder.setView(view)
         builder.setTitle("Car Details")
-        return builder.create()
+        val dialog = builder.create()
+
+        // Crear el fondo con bordes redondeados programáticamente
+        val roundedBackground = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 50f // Ajusta el radio de los bordes redondeados
+            setColor(Color.WHITE) // Fondo blanco
+        }
+
+        // Aplicar el fondo redondeado al diálogo
+        dialog.window?.setBackgroundDrawable(roundedBackground)
+
+        return dialog
     }
 }

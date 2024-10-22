@@ -40,6 +40,33 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/position_user"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/noCarsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_not_car" />
+
+        <TextView
+            android:id="@+id/noCarsMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No cars available."
+            android:textSize="25sp"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
     <!-- RecyclerView para mostrar los autos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCar"

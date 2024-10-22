@@ -184,4 +184,11 @@ class CrudDialogFragment : DialogFragment() {
     override fun getTheme(): Int {
         return R.style.AppTheme_Dialog // You can customize the theme if necessary
     }
+
+    //function to the complete model
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent) // Fondo transparente
+    }
 }
