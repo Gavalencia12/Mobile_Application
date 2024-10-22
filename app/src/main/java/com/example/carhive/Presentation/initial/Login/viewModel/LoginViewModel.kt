@@ -27,6 +27,12 @@ class LoginViewModel @Inject constructor(
 
     // Función para manejar el clic en login y decidir a dónde navegar
     fun onLoginClick(email: String, password: String, navigateBasedOnRole: (String) -> Unit, navigateToVerifyEmail: () -> Unit) {
+        // Verificar si el email y la contraseña están vacíos
+        if (email.isBlank() || password.isBlank()) {
+            _loginError.value = "Email and password cannot be empty."
+            return
+        }
+
         viewModelScope.launch {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -61,11 +67,12 @@ class LoginViewModel @Inject constructor(
         // Asumiendo que guardas el estado "banned" en la base de datos bajo el nodo "users"
         firebaseDatabase.reference.child("Users").child(userId).get()
             .addOnSuccessListener { snapshot ->
+                // Verificamos si el campo "banned" existe y si es true
                 val isBanned = snapshot.child("banned").getValue(Boolean::class.java) ?: false
-                callback(isBanned)
+                callback(isBanned) // Devolvemos true o false en función del valor encontrado
             }
             .addOnFailureListener {
-                callback(false) // Si falla, asumimos que no está baneado
+                callback(false) // Si falla la lectura, asumimos que no está baneado
             }
     }
 
