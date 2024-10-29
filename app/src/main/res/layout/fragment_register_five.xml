@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_extrabold"
         android:gravity="center"
-        android:text="Welcome to CarHive"
+        android:text="@string/welcome_to_carhive"
         android:textColor="@color/dark_blue"
         android:textSize="24sp" />
 
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="image"
+        android:contentDescription="@string/image"
         android:src="@drawable/ic_register5" />
 
     <View
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_extrabold"
         android:gravity="center"
-        android:text="You are already part of us!"
+        android:text="@string/you_are_already_part_of_us"
         android:textColor="@color/dark_blue"
         android:textSize="20sp" />
 
@@ -57,7 +57,7 @@
         android:id="@+id/welcomeSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thanks for joining us! Your next car is just a few clicks away."
+        android:text="@string/thanks_for_joining_us_your_next_car_is_just_a_few_clicks_away"
         android:fontFamily="@font/inter_semibold"
         android:textSize="16sp"
         android:textColor="@color/dark_gray"
@@ -72,8 +72,6 @@
         android:id="@+id/getStartedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Get started"
-        android:fontFamily="@font/inter_bold"
-        android:textColor="@color/white"
-        android:background="@drawable/btn_style" />
+        android:text="@string/get_started"
+        style="@style/ButtonTheme"/>
 </LinearLayout>

@@ -19,7 +19,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="250dp"/>
 
             <!-- Flecha izquierda -->
             <ImageButton
@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_arrow_back"
+                android:contentDescription="@string/image"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp" />
@@ -35,10 +36,11 @@
             <!-- Flecha derecha -->
             <ImageButton
                 android:id="@+id/arrowRight"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_next"
+                android:src="@drawable/ic_arrow_forward"
+                android:contentDescription="@string/image"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp" />
@@ -65,7 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Toyota Sienta Black 24k"
+                android:text=""
                 android:fontFamily="@font/inter_extrabold"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
@@ -74,7 +76,7 @@
                 android:id="@+id/carPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$30,000"
+                android:text=""
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
@@ -91,7 +93,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Black"
+                android:text=""
                 android:fontFamily="@font/inter_bold"/>
 
             <TextView
@@ -99,7 +101,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="230 km/h"
+                android:text=""
                 android:fontFamily="@font/inter_bold"/>
         </LinearLayout>
 
@@ -107,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Description"
+            android:text=""
             android:fontFamily="@font/inter_extrabold"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -117,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            android:text=""
             android:fontFamily="@font/inter_bold"/>
 
         <LinearLayout

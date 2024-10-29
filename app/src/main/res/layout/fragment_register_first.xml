@@ -26,8 +26,7 @@
             android:layout_marginStart="30dp"
             android:layout_gravity="start"
             android:background="@drawable/ic_arrow_back"
-            android:backgroundTint="@color/white"
-            android:visibility="visible"/>
+            android:backgroundTint="@color/white"/>
 
         <!-- Imagen de registro -->
         <ImageView
@@ -36,7 +35,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="30dp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="image"
+            android:contentDescription="@string/image"
             android:src="@drawable/ic_register1" />
 
     </androidx.cardview.widget.CardView>
@@ -68,7 +67,7 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:fontFamily="@font/inter_bold"
-                android:text="Registration"
+                android:text="@string/registration"
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
@@ -82,7 +81,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:fontFamily="@font/inter_bold"
-                android:text="Please enter your information for continue"
+                android:text="@string/please_enter_your_information_for_continue"
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
 
@@ -90,106 +89,66 @@
             <EditText
                 android:id="@+id/firstNameEditText"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="10dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="20dp"
-                android:hint="First name"
+                android:hint="@string/first_name"
                 android:inputType="textPersonName"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:layout_gravity="center"
-                android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp" />
+                style="@style/EditTextStyle"/>
 
             <!-- Campos de entrada para el apellido -->
             <EditText
                 android:id="@+id/lastNameEditText"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="10dp"
                 android:layout_weight="1"
-                android:hint="Last name"
+                android:hint="@string/last_name"
                 android:layout_marginBottom="20dp"
                 android:inputType="textPersonName"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:layout_gravity="center"
-                android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                style="@style/EditTextStyle"/>
 
 
             <!-- Campos de entrada para el correo electrónico -->
             <EditText
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="10dp"
                 android:layout_weight="1"
-                android:hint="Email address"
+                android:hint="@string/email_address"
                 android:layout_marginBottom="20dp"
                 android:inputType="textEmailAddress"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:layout_gravity="center"
-                android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                style="@style/EditTextStyle"/>
 
 
             <!-- Campos de entrada para la contraseña -->
             <EditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="10dp"
                 android:layout_weight="1"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:layout_marginBottom="20dp"
-                android:inputType="text"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:layout_gravity="center"
-                android:background="@drawable/rounded_edit_text"
+                android:inputType="textPassword"
                 android:drawableStart="@drawable/ic_passw"
                 android:drawableEnd="@drawable/ic_visibility_off"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                style="@style/EditTextStyle"/>
 
 
             <!-- Campo de entrada para confirmar la contraseña -->
             <EditText
                 android:id="@+id/confirmPasswordEditText"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="10dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="20dp"
-                android:hint="Confirm password"
+                android:hint="@string/confirm_password"
                 android:inputType="textPassword"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:layout_gravity="center"
-                android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_passw"
                 android:drawableEnd="@drawable/ic_visibility_off"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                style="@style/EditTextStyle"/>
 
             <!-- Nota -->
             <TextView
@@ -199,7 +158,7 @@
                 android:layout_weight="1"
                 android:gravity="top|center_horizontal"
                 android:fontFamily="@font/inter_semibold"
-                android:text="* Min. 6 characters, with upper, lower, numbers, and special symbols."
+                android:text="@string/min_6_characters_with_upper_lower_numbers_and_special_symbols"
                 android:textColor="@color/gray"
                 android:textSize="15sp"
                 android:visibility="gone"/>
@@ -218,7 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Already have an account? Log in"
+                    android:text="@string/already_have_an_account_log_in"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/dark_blue"
                     android:clickable="true"
@@ -230,7 +189,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:fontFamily="@font/inter_extrabold"
-                    android:text="Next"
+                    android:text="@string/next"
                     android:textColor="@color/dark_blue"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@+id/nextButton"/>

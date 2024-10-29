@@ -23,8 +23,8 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:clickable="true"
-            android:drawableStart="@drawable/ic_arrow_back"
-            android:drawableTint="@color/dark_blue"
+            app:drawableStartCompat="@drawable/ic_arrow_back"
+            app:drawableTint="@color/dark_blue"
             android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"
-            android:text="Verification"
+            android:text="@string/verification"
             android:textColor="@color/dark_blue"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +53,7 @@
         android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
-        android:contentDescription="image"
+        android:contentDescription="@string/image"
         android:src="@drawable/ic_register3" />
 
     <!-- Texto de selección de imagen -->
@@ -65,7 +65,7 @@
         android:layout_weight="1"
         android:fontFamily="@font/inter_bold"
         android:gravity="center"
-        android:text="Select Profile Image"
+        android:text="@string/select_profile_image"
         android:textColor="@color/dark_blue"
         android:textSize="24sp" />
 
@@ -80,8 +80,7 @@
         android:drawableStart="@drawable/ic_add_photo"
         android:drawablePadding="15dp"
         android:fontFamily="@font/inter_bold"
-        android:gravity="center"
-        android:text="Choose Image"
+        android:text="@string/choose_image"
         android:textColor="@color/blue"
         android:textSize="16sp" />
 
@@ -92,10 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/btn_style"
         android:enabled="false"
-        android:fontFamily="@font/inter_bold"
-        android:text="Finish Registration"
-        android:textColor="@color/white" /> <!-- Habilitar en el código según la lógica -->
+        android:text="@string/finish_registration"
+        style="@style/ButtonTheme"/> <!-- Habilitar en el código según la lógica -->
 
 </LinearLayout>

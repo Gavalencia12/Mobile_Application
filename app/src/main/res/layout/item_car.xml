@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="bottom"
-                    android:text="Aveo White 2004"
+                    android:text=""
                     android:fontFamily="@font/inter_bold"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:text="Nissan"
+                android:text=""
                 android:fontFamily="@font/inter_bold"
                 android:textSize="16sp" />
 
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
-                android:text="$50,000"
+                android:text=""
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="bottom"
-                android:text="More info"
+                android:text="@string/contact"
                 android:fontFamily="@font/inter_extrabold"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
