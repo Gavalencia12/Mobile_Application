@@ -1,12 +1,17 @@
 package com.example.carhive.Presentation.seller.view
 
 import SelectedImagesAdapter
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,28 +21,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.Presentation.seller.viewModel.CrudViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.DialogCarOptionsBinding
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CrudDialogFragment : DialogFragment() {
 
-    // Get the ViewModel for managing UI-related data
     private val viewModel: CrudViewModel by activityViewModels()
     private var _binding: DialogCarOptionsBinding? = null
-    private val binding get() = _binding!! // Getter for binding to avoid null checks
+    private val binding get() = _binding!!
 
-    // Launcher for image picking
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
-    // List to store selected image URIs
     private val selectedImages = mutableListOf<Uri>()
-    // Adapter for displaying selected images in a RecyclerView
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
 
-    private val maxImages = 5 // Maximum number of images allowed
+    private val maxImages = 5
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the dialog layout
         _binding = DialogCarOptionsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -45,150 +47,213 @@ class CrudDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize RecyclerView and adapter for displaying selected images
-        selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position ->
-            removeImage(position) // Handle image removal
-        }
+        setupImageRecyclerView()
+        setupImagePicker()
+        setupSpinners()
 
-        binding.rvSelectedImages.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = selectedImagesAdapter // Set the adapter for the RecyclerView
-        }
-
-        // Initialize the image picker activity result launcher
-        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == android.app.Activity.RESULT_OK) {
-                val clipData = result.data?.clipData
-                if (clipData != null) {
-                    // Allow multiple image selections, with a limit
-                    val newImagesCount = clipData.itemCount
-                    if (selectedImages.size + newImagesCount <= maxImages) {
-                        for (i in 0 until newImagesCount) {
-                            val imageUri = clipData.getItemAt(i).uri
-                            // Persist URI permission for the selected image
-                            requireContext().contentResolver.takePersistableUriPermission(
-                                imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            )
-                            selectedImages.add(imageUri) // Add the selected image URI
-                        }
-                    } else {
-                        showMaxImagesError() // Show error if limit exceeded
-                    }
-                } else {
-                    // Handle single image selection
-                    result.data?.data?.let { uri ->
-                        requireContext().contentResolver.takePersistableUriPermission(
-                            uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        )
-                        if (selectedImages.size < maxImages) {
-                            selectedImages.add(uri) // Add the selected image URI
-                        } else {
-                            showMaxImagesError() // Show error if limit exceeded
-                        }
-                    }
-                }
-                selectedImagesAdapter.notifyDataSetChanged() // Notify the adapter of changes
-                updateImageCounter() // Update the image counter display
-            }
-        }
-
-        // Button to select images
-        binding.buttonSelectImages.setOnClickListener {
-            if (selectedImages.size < maxImages) {
-                openImagePicker() // Open the image picker
-            } else {
-                showMaxImagesError() // Show error if limit exceeded
-            }
-        }
-
-        // Button to create the car with selected images
+        // Handles the Create button click, validating input and triggering car listing creation
         binding.buttonCreate.setOnClickListener {
-            // Get input data from fields
-            val modelo = binding.etModelo.text.toString()
-            val color = binding.etColor.text.toString()
-            val speed = binding.etSpeed.text.toString()
-            val addOn = binding.etAddOn.text.toString()
-            val description = binding.etDescription.text.toString()
-            val price = binding.etPrice.text.toString()
-
-            // Validate that all fields are filled
-            if (modelo.isEmpty() || color.isEmpty() || speed.isEmpty() || addOn.isEmpty() ||
-                description.isEmpty() || price.isEmpty()) {
-                Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show() // Show error message
-            } else if (selectedImages.size != 5) {
-                // Show message if the number of selected images is not exactly 5
-                Toast.makeText(requireContext(), "You must select exactly 5 images", Toast.LENGTH_SHORT).show()
-            } else {
-                // If everything is correct, perform the action
-                viewModel.addCarToDatabase(
-                    modelo = modelo,
-                    color = color,
-                    speed = speed,
-                    addOn = addOn,
-                    description = description,
-                    price = price,
-                    images = selectedImages
-                )
-
-                dismiss() // Close the dialog
+            if (isFormValid()) {
+                createCarListing()
             }
         }
 
-        // Cancel button to close the dialog
-        binding.buttonCancel.setOnClickListener {
-            dismiss() // Close the dialog
-        }
+        // Handles the Cancel button click
+        binding.buttonCancel.setOnClickListener { dismiss() }
 
-        // Update the image counter on startup
         updateImageCounter()
     }
 
-    // Function to open the image picker
+    /**
+     * Initializes RecyclerView for displaying selected images
+     */
+    private fun setupImageRecyclerView() {
+        selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position -> removeImage(position) }
+        binding.rvSelectedImages.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = selectedImagesAdapter
+        }
+    }
+
+    /**
+     * Registers image picker launcher and handles selected images from the picker
+     */
+    private fun setupImagePicker() {
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == android.app.Activity.RESULT_OK) {
+                handleImageSelection(result.data)
+            }
+        }
+
+        binding.buttonSelectImages.setOnClickListener {
+            if (selectedImages.size < maxImages) openImagePicker() else showMaxImagesError()
+        }
+    }
+
+    /**
+     * Opens the image picker to allow user selection of multiple images
+     */
     private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "image/*" // Allow image selection
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Allow multiple images
-            addCategory(Intent.CATEGORY_OPENABLE) // Make the intent openable
+            type = "image/*"
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            addCategory(Intent.CATEGORY_OPENABLE)
         }
-        imagePickerLauncher.launch(intent) // Launch the image picker
+        imagePickerLauncher.launch(intent)
     }
 
-    // Function to remove a selected image
-    private fun removeImage(position: Int) {
-        if (position in selectedImages.indices) { // Check if position is valid
-            selectedImages.removeAt(position) // Remove image from the list
-            selectedImagesAdapter.notifyItemRemoved(position) // Notify the adapter of the removal
-            selectedImagesAdapter.notifyItemRangeChanged(position, selectedImages.size) // Update the range of items
-            updateImageCounter() // Update the image counter
+    /**
+     * Processes selected images and updates RecyclerView adapter
+     */
+    private fun handleImageSelection(data: Intent?) {
+        data?.let {
+            val clipData = it.clipData
+            if (clipData != null) {
+                for (i in 0 until clipData.itemCount) {
+                    addImageUri(clipData.getItemAt(i).uri)
+                }
+            } else {
+                it.data?.let { uri -> addImageUri(uri) }
+            }
+            selectedImagesAdapter.notifyDataSetChanged()
+            updateImageCounter()
+        }
+    }
+
+    /**
+     * Adds an image URI to the selected images list, handling max image limit
+     */
+    private fun addImageUri(uri: Uri) {
+        if (selectedImages.size < maxImages) {
+            requireContext().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            selectedImages.add(uri)
         } else {
-            Toast.makeText(requireContext(), "Invalid position for removal.", Toast.LENGTH_SHORT).show()
+            showMaxImagesError()
         }
     }
 
-    // Show error if the maximum number of images is exceeded
-    private fun showMaxImagesError() {
-        Toast.makeText(requireContext(), "You can only select a maximum of $maxImages images", Toast.LENGTH_SHORT).show()
+    /**
+     * Removes image from selected images list at the given position
+     */
+    private fun removeImage(position: Int) {
+        if (position in selectedImages.indices) {
+            selectedImages.removeAt(position)
+            selectedImagesAdapter.notifyItemRemoved(position)
+            selectedImagesAdapter.notifyItemRangeChanged(position, selectedImages.size)
+            updateImageCounter()
+        }
     }
 
-    // Function to update the count of selected images
+    /**
+     * Validates the input fields and selected images to ensure all required data is provided
+     */
+    private fun isFormValid(): Boolean {
+        val requiredFields = listOf(
+            binding.etModelo.text.toString(),
+            binding.etColor.text.toString(),
+            binding.etMileage.text.toString(),
+            binding.spinnerBrand.selectedItem.toString(),
+            binding.etDescription.text.toString(),
+            binding.etPrice.text.toString(),
+            binding.spinnerYear.selectedItem.toString(),
+            binding.etEngineCapacity.text.toString(),
+            binding.spinnerLocation.selectedItem.toString(),
+            binding.etVin.text.toString()
+        )
+
+        return when {
+            requiredFields.any { it.isEmpty() } -> {
+                Toast.makeText(requireContext(), R.string.error_fill_all_fields, Toast.LENGTH_SHORT).show()
+                false
+            }
+            selectedImages.size != maxImages -> {
+                Toast.makeText(requireContext(), R.string.error_select_5_images, Toast.LENGTH_SHORT).show()
+                false
+            }
+            else -> true
+        }
+    }
+
+    /**
+     * Initiates the process of creating a new car listing, displaying a progress dialog
+     */
+    private fun createCarListing() {
+        val progressDialog = ProgressDialog(requireContext()).apply {
+            setMessage(getString(R.string.creating_listing))
+            setCancelable(false)
+            show()
+        }
+
+        // Directly passing individual fields to addCarToDatabase function
+        viewModel.addCarToDatabase(
+            modelo = binding.etModelo.text.toString(),
+            color = binding.etColor.text.toString(),
+            mileage = binding.etMileage.text.toString(),
+            brand = binding.spinnerBrand.selectedItem.toString(),
+            description = binding.etDescription.text.toString(),
+            price = binding.etPrice.text.toString(),
+            year = binding.spinnerYear.selectedItem.toString(),
+            transmission = binding.spinnerTransmission.selectedItem.toString(),
+            fuelType = binding.spinnerFuelType.selectedItem.toString(),
+            doors = binding.etDoors.text.toString().toIntOrNull() ?: 0,
+            engineCapacity = binding.etEngineCapacity.text.toString(),
+            location = binding.spinnerLocation.selectedItem.toString(),
+            condition = binding.spinnerCondition.selectedItem.toString(),
+            images = selectedImages,
+            features = binding.etFeatures.text.toString().split(",").map { it.trim() }.filter { it.isNotEmpty() },
+            vin = binding.etVin.text.toString(),
+            previousOwners = binding.etPreviousOwners.text.toString().toIntOrNull() ?: 0,
+            listingDate = getCurrentFormattedDate(),
+            lastUpdated = getCurrentFormattedDate()
+        )
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            progressDialog.dismiss()
+            dismiss()
+            Toast.makeText(requireContext(), R.string.success_listing_created, Toast.LENGTH_SHORT).show()
+        }, 3000)
+    }
+
+    private fun getCurrentFormattedDate(): String {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
+        return dateFormat.format(System.currentTimeMillis())
+    }
+
+    private fun showMaxImagesError() {
+        Toast.makeText(requireContext(), getString(R.string.error_max_images, maxImages), Toast.LENGTH_SHORT).show()
+    }
+
     private fun updateImageCounter() {
-        binding.tvImageCount.text = "${selectedImages.size}/$maxImages images selected"
+        binding.tvImageCount.text = getString(R.string.image_counter, selectedImages.size, maxImages)
+    }
+
+    private fun setupSpinners() {
+        setupSpinner(binding.spinnerTransmission, listOf("Manual", "Automatic"))
+        setupSpinner(binding.spinnerFuelType, listOf("Gasoline", "Diesel", "Electric", "Hybrid"))
+        setupSpinner(binding.spinnerCondition, listOf("New", "Used", "Pre-owned"))
+        setupSpinner(binding.spinnerLocation, listOf("Armería", "Colima", "Comala", "Coquimatlán", "Cuauhtémoc", "Ixtlahuacán", "Manzanillo", "Minatitlán", "Tecomán", "Villa de Álvarez"))
+
+        val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        setupSpinner(binding.spinnerYear, (1970..currentYear).map { it.toString() })
+        setupSpinner(binding.spinnerBrand, listOf("Toyota", "Honda", "Ford", "Chevrolet", "Nissan", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Hyundai"))
+    }
+
+    private fun setupSpinner(spinner: Spinner, options: List<String>) {
+        spinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Clean up binding to prevent memory leaks
+        _binding = null
     }
 
-    // Function to customize the dialog theme
-    override fun getTheme(): Int {
-        return R.style.AppTheme_Dialog // You can customize the theme if necessary
-    }
-
-    //function to the complete model
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent) // Fondo transparente
+        dialog?.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.99).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 }

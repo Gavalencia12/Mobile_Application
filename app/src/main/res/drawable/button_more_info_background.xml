@@ -1,0 +1,20 @@
+<!-- res/drawable/button_more_info_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo azul para el botón -->
+    <solid android:color="@color/blue" />
+
+    <!-- Borde alrededor del botón -->
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/white" /> <!-- Cambia el color si deseas otro -->
+
+    <!-- Esquinas redondeadas -->
+    <corners android:radius="16dp" />
+
+    <!-- Padding interno del botón -->
+    <padding
+        android:left="20dp"
+        android:right="20dp"
+        android:top="10dp"
+        android:bottom="10dp" />
+</shape>

@@ -9,7 +9,8 @@
     android:layout_marginEnd="10dp"
     tools:context=".Presentation.user.view.UserHomeFragment">
 
-    <ImageView
+    <!-- Logo de la aplicación -->
+        <ImageView
         android:id="@+id/logo"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
@@ -20,6 +21,24 @@
         app:layout_constraintBottom_toTopOf="@+id/user_text"/>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What is your ubication on Colima?"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        android:id="@+id/TwUbication"
+
+        />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/TwUbication"
+        android:id="@+id/ubication"/>
+
+
+    <!-- Texto de encabezado de usuario -->
+    <TextView
         android:id="@+id/user_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +47,23 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Botón de filtros -->
+    <Button
+        android:id="@+id/filtrers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Filtrer"
+        android:fontFamily="@font/inter_bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_more_info_background"
+        app:layout_constraintTop_toBottomOf="@id/user_text" />
 
     <!-- Placeholder en caso de que no haya datos -->
     <TextView
@@ -38,21 +73,95 @@
         android:text="No hay coches disponibles"
         android:visibility="gone"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/user_text"
+        app:layout_constraintTop_toBottomOf="@+id/filtrers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+    <!-- RecyclerView para la lista de coches -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/user_text"
+        app:layout_constraintTop_toBottomOf="@id/filtrers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_car" />
 
+    <!-- LinearLayout para opciones de navegación -->
+    <LinearLayout
+        android:id="@+id/linear_nav_options"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/nav_options_background"
+        app:layout_constraintTop_toBottomOf="@+id/user_text"
+        app:layout_constraintStart_toEndOf="@id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Contenido de la navegación -->
+        <TextView
+            android:id="@+id/nav_option_models"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Models"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/nav_option_brands"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brands"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/nav_option_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/nav_option_mileage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mileage"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/nav_option_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/nav_option_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Year"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

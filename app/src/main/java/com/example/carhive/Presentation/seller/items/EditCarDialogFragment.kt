@@ -6,12 +6,12 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.viewModelScope
@@ -26,232 +26,306 @@ import kotlinx.coroutines.tasks.await
 
 class EditCarDialogFragment : DialogFragment() {
 
+    // View binding to access UI elements
     private var _binding: DialogCarOptionsBinding? = null
-    private val binding get() = _binding!! // Getter for binding to avoid null checks
+    private val binding get() = _binding!!
 
-    private lateinit var viewModel: CrudViewModel // ViewModel for managing UI-related data
-    private lateinit var car: CarEntity // Car entity to be edited
-    private val selectedImages = mutableListOf<Uri>() // Store selected images
-    private val existingImageUrls = mutableListOf<String>() // Store URLs of existing images
-    private lateinit var selectedImagesAdapter: SelectedImagesAdapter // Adapter for selected images
+    // Variables for ViewModel, car to be edited, and lists for images
+    private lateinit var viewModel: CrudViewModel
+    private lateinit var car: CarEntity
+    private val selectedImages = mutableListOf<Uri>()
+    private val existingImageUrls = mutableListOf<String>()
+    private lateinit var selectedImagesAdapter: SelectedImagesAdapter
 
-    // Launcher for image picking
-    private val imagePickerLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == android.app.Activity.RESULT_OK) {
-                result.data?.let { data ->
-                    val clipData = data.clipData
-                    if (clipData != null) {
-                        // Handle multiple image selection
-                        for (i in 0 until clipData.itemCount) {
-                            val uri = clipData.getItemAt(i).uri
-                            requireContext().contentResolver.takePersistableUriPermission(
-                                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            )
-                            selectedImages.add(uri) // Add selected image URI to the list
-                        }
-                    } else {
-                        // Handle single image selection
-                        data.data?.let { uri ->
-                            requireContext().contentResolver.takePersistableUriPermission(
-                                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            )
-                            selectedImages.add(uri) // Add selected image URI to the list
-                        }
+    // Activity result launcher for selecting multiple images
+    private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            result.data?.let { data ->
+                val clipData = data.clipData
+                if (clipData != null) {
+                    for (i in 0 until clipData.itemCount) {
+                        addImageUri(clipData.getItemAt(i).uri)
                     }
-                    selectedImagesAdapter.notifyDataSetChanged() // Notify the adapter of data changes
-                    updateImageCounter() // Update the image counter display
+                } else {
+                    data.data?.let { uri -> addImageUri(uri) }
                 }
+                selectedImagesAdapter.notifyDataSetChanged()
+                updateImageCounter()
             }
         }
+    }
 
-    // Companion object for creating a new instance of the fragment with parameters
     companion object {
-        fun newInstance(car: CarEntity, viewModel: CrudViewModel): EditCarDialogFragment {
-            val fragment = EditCarDialogFragment()
-            fragment.car = car // Set the car to be edited
-            fragment.viewModel = viewModel // Set the ViewModel
-            return fragment
+        // Factory method to create an instance with a car and view model
+        fun newInstance(car: CarEntity, viewModel: CrudViewModel) = EditCarDialogFragment().apply {
+            this.car = car
+            this.viewModel = viewModel
         }
     }
 
-    // Create a dialog with a custom theme
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(requireContext(), R.style.DialogTheme_FullScreen)
-    }
+    // Set dialog theme to fullscreen
+    override fun onCreateDialog(savedInstanceState: Bundle?) = Dialog(requireContext(), R.style.DialogTheme_FullScreen)
 
-    // Inflate the dialog layout
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = DialogCarOptionsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    // Inflate layout and initialize binding
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        DialogCarOptionsBinding.inflate(inflater, container, false).also {
+            _binding = it
+        }.root
 
-    // Called after the view has been created, set up UI and listeners
+    // Setup UI components and listeners
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI() // Initialize UI components
-        setupListeners() // Set up button listeners
+        setupUI()
+        setupListeners()
     }
 
-    // Function to set up UI components with existing car data
+    // Populate UI elements with car details and initialize image adapter
     private fun setupUI() {
-        // Populate fields with existing car details
-        binding.etModelo.setText(car.modelo)
-        binding.etColor.setText(car.color)
-        binding.etSpeed.setText(car.speed)
-        binding.etAddOn.setText(car.addOn)
-        binding.etDescription.setText(car.description)
-        binding.etPrice.setText(car.price)
+        binding.apply {
+            // Check if editing an existing car or creating a new one
+            if (::car.isInitialized) {
+                dialogTitle.text = getString(R.string.edit_car_title) // Set title to "Edit Car"
+                buttonCreate.text = getString(R.string.update_button)  // Set button text to "Update"
+            } else {
+                dialogTitle.text = getString(R.string.new_product_title) // Default title "New Product"
+                buttonCreate.text = getString(R.string.create_button)  // Default button "Create"
+            }
 
-        // Add existing images to the list
-        car.imageUrls?.forEach { imageUrl ->
-            existingImageUrls.add(imageUrl)
-            selectedImages.add(Uri.parse(imageUrl)) // Parse and add existing image URI
+            // Set car fields if updating an existing car
+            if (::car.isInitialized) {
+                etModelo.setText(car.modelo)
+                etColor.setText(car.color)
+                etDescription.setText(car.description)
+                etPrice.setText(car.price)
+                etMileage.setText(car.mileage)
+                etDoors.setText(car.doors.toString())
+                etEngineCapacity.setText(car.engineCapacity)
+                etFeatures.setText(car.features?.joinToString(", "))
+                etVin.setText(car.vin)
+                etPreviousOwners.setText(car.previousOwners.toString())
+            }
+
+            car.imageUrls?.forEach { imageUrl ->
+                existingImageUrls.add(imageUrl)
+                selectedImages.add(Uri.parse(imageUrl))
+            }
+
+            // Initialize adapter to display selected images
+            selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position -> removeImage(position) }
+            binding.rvSelectedImages.apply {
+                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                adapter = selectedImagesAdapter
+            }
+
+            // Set up dropdown options
+            setupSpinners()
+            updateImageCounter()
         }
-
-        // Initialize the adapter for displaying selected images
-        selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position ->
-            removeImage(position) // Handle image removal
-        }
-
-        binding.rvSelectedImages.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = selectedImagesAdapter // Set the adapter for the RecyclerView
-        }
-
-        updateImageCounter() // Update the image counter display
     }
 
-    // Function to set up button listeners
-    private fun setupListeners() {
-        binding.buttonSelectImages.setOnClickListener {
-            openImagePicker() // Open the image picker
+    // Initialize spinners with options and set selected values
+    private fun setupSpinners() {
+        val transmissionOptions = resources.getStringArray(R.array.transmission_options).toList()
+        val fuelTypeOptions = resources.getStringArray(R.array.fuel_type_options).toList()
+        val conditionOptions = resources.getStringArray(R.array.condition_options).toList()
+        val locationOptions = resources.getStringArray(R.array.location_options).toList()
+        val brandOptions = resources.getStringArray(R.array.brand_options).toList()
+        val yearOptions = (1970..java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)).map { it.toString() }
+
+        binding.apply {
+            setupSpinner(spinnerTransmission, transmissionOptions, car.transmission)
+            setupSpinner(spinnerFuelType, fuelTypeOptions, car.fuelType)
+            setupSpinner(spinnerCondition, conditionOptions, car.condition)
+            setupSpinner(spinnerLocation, locationOptions, car.location)
+            setupSpinner(spinnerBrand, brandOptions, car.brand)
+            setupSpinner(spinnerYear, yearOptions, car.year)
         }
+    }
+
+    // Helper function to configure a spinner with options
+    private fun setupSpinner(spinner: Spinner, options: List<String>, selectedOption: String?) {
+        spinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        selectedOption?.let { spinner.setSelection(options.indexOf(it)) }
+    }
+
+    // Set up button listeners
+    private fun setupListeners() {
+        binding.buttonSelectImages.setOnClickListener { openImagePicker() }
 
         binding.buttonCreate.setOnClickListener {
-            updateCar() // Update car details
+            updateCar()
         }
 
-        binding.buttonCancel.setOnClickListener {
-            dismiss() // Close the dialog
-        }
+        binding.buttonCancel.setOnClickListener { dismiss() }
     }
 
-    // Function to open the image picker for selecting images
+    // Open image picker to select images
     private fun openImagePicker() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "image/*" // Allow image selection
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Allow multiple images
-            addCategory(Intent.CATEGORY_OPENABLE) // Make the intent openable
-        }
-        imagePickerLauncher.launch(intent) // Launch the image picker
+        Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            type = "image/*"
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            addCategory(Intent.CATEGORY_OPENABLE)
+        }.also { imagePickerLauncher.launch(it) }
     }
 
-    // Function to remove a selected image
+    // Add selected image URI to the list
+    private fun addImageUri(uri: Uri) {
+        requireContext().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        selectedImages.add(uri)
+    }
+
+    // Remove image from the list at the given position
     private fun removeImage(position: Int) {
-        if (position in selectedImages.indices) { // Check if position is valid
-            selectedImages.removeAt(position) // Remove image from the list
-            selectedImagesAdapter.notifyItemRemoved(position) // Notify the adapter of the removal
-            selectedImagesAdapter.notifyItemRangeChanged(position, selectedImages.size) // Update the range of items
-            updateImageCounter() // Update the image counter
-        } else {
-            Log.e("EditCarDialogFragment", "Attempted to remove image at invalid position: $position") // Log error
+        if (position in selectedImages.indices) {
+            val uriToRemove = selectedImages[position]
+            selectedImages.removeAt(position)
+            val urlToRemove = uriToRemove.toString()
+            existingImageUrls.remove(urlToRemove)
+            selectedImagesAdapter.notifyItemRemoved(position)
+            selectedImagesAdapter.notifyItemRangeChanged(position, selectedImages.size)
+            updateImageCounter()
         }
     }
 
-    // Function to update the count of selected images
+    // Update displayed image count
     private fun updateImageCounter() {
-        val maxImages = 5 // Maximum number of images allowed
-        binding.tvImageCount.text = "${selectedImages.size} / $maxImages images selected" // Display count
+        binding.tvImageCount.text = getString(R.string.image_count_text, selectedImages.size, 5)
     }
 
-    // Function to update car details
+    // Collect input data and update the car record
     private fun updateCar() {
-        // Retrieve input values from fields
-        val modelo = binding.etModelo.text.toString()
-        val color = binding.etColor.text.toString()
-        val speed = binding.etSpeed.text.toString()
-        val addOn = binding.etAddOn.text.toString()
-        val description = binding.etDescription.text.toString()
-        val price = binding.etPrice.text.toString()
+        with(binding) {
+            val modelo = etModelo.text.toString()
+            val color = etColor.text.toString()
+            val mileage = etMileage.text.toString()
+            val brand = spinnerBrand.selectedItem.toString()
+            val description = etDescription.text.toString()
+            val price = etPrice.text.toString()
+            val year = spinnerYear.selectedItem.toString()
+            val transmission = spinnerTransmission.selectedItem.toString()
+            val fuelType = spinnerFuelType.selectedItem.toString()
+            val doors = etDoors.text.toString().toIntOrNull() ?: 0
+            val engineCapacity = etEngineCapacity.text.toString()
+            val location = spinnerLocation.selectedItem.toString()
+            val condition = spinnerCondition.selectedItem.toString()
+            val features = etFeatures.text.toString().split(",").map { it.trim() }
+            val vin = etVin.text.toString()
+            val previousOwners = etPreviousOwners.text.toString().toIntOrNull() ?: 0
 
-        // Check that all fields are filled
-        if (modelo.isNotEmpty() && color.isNotEmpty() && speed.isNotEmpty() && addOn.isNotEmpty() &&
-            description.isNotEmpty() && price.isNotEmpty()) {
-
-            // Check that at least one image is selected
-            if (selectedImages.isEmpty()) {
-                Toast.makeText(requireContext(), "Please select at least one image.", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            // Check that the number of selected images is within limits
-            if (selectedImages.size > 5) {
-                Toast.makeText(requireContext(), "You can only select up to 5 images.", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            if (selectedImages.size < 5) {
-                Toast.makeText(requireContext(), "You have to select 5 images.", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            // Separate new images from existing ones
-            val newImages = selectedImages.filter { uri -> !existingImageUrls.contains(uri.toString()) }
-            val imagesToKeep = selectedImages.filter { uri -> existingImageUrls.contains(uri.toString()) }
-
-            // Show progress dialog while uploading images
-            val progressDialog = ProgressDialog(requireContext())
-            progressDialog.setMessage("Uploading images, please wait...")
-            progressDialog.setCancelable(false)
-            progressDialog.show()
-
-            // Coroutine for uploading images and updating the car
-            viewModel.viewModelScope.launch {
-                try {
-                    val userId = viewModel.getCurrentUserId() // Get the current user ID
-
-                    val uploadedImageUrls = mutableListOf<String>() // List to store uploaded image URLs
-                    newImages.forEach { uri ->
-                        // Create a reference for the image in Firebase Storage
-                        val imageRef = FirebaseStorage.getInstance().reference.child("cars/${uri.lastPathSegment}")
-                        val uploadTask = imageRef.putFile(uri) // Upload the image
-                        // Get the download URL after the upload is complete
-                        val downloadUrl = uploadTask.await().storage.downloadUrl.await()
-                        uploadedImageUrls.add(downloadUrl.toString()) // Add the URL to the list
-                    }
-
-                    // Update car details in the database
-                    viewModel.updateCar(
-                        userId = userId,
-                        carId = car.id,
-                        modelo = modelo,
-                        color = color,
-                        speed = speed,
-                        addOn = addOn,
-                        description = description,
-                        price = price,
-                        newImages = newImages,
-                        existingImages = imagesToKeep
-                    )
-
-                    progressDialog.dismiss() // Dismiss the progress dialog
-                    Toast.makeText(requireContext(), "Changes saved successfully.", Toast.LENGTH_SHORT).show() // Show success message
-                    dismiss() // Close the dialog
-
-                } catch (e: Exception) {
-                    progressDialog.dismiss() // Dismiss the dialog on error
-                    Toast.makeText(requireContext(), "Error uploading images or saving changes. Please try again.", Toast.LENGTH_LONG).show() // Show error message
+            if (validateFields(modelo, color, mileage, brand, description, price, year, engineCapacity, location, vin)) {
+                if (selectedImages.size != 5) {
+                    Toast.makeText(requireContext(), R.string.select_five_images, Toast.LENGTH_SHORT).show()
+                    return
                 }
+
+                viewModel.viewModelScope.launch {
+                    uploadImagesAndSaveCar(
+                        modelo, color, mileage, brand, description, price, year, transmission, fuelType,
+                        doors, engineCapacity, location, condition, features, vin, previousOwners
+                    )
+                }
+            } else {
+                Toast.makeText(requireContext(), R.string.complete_all_fields, Toast.LENGTH_SHORT).show()
             }
-        } else {
-            Toast.makeText(requireContext(), "Please complete all fields.", Toast.LENGTH_SHORT).show() // Warn if fields are incomplete
         }
     }
 
-    // Clean up and release binding references
+    // Check if all fields are filled
+    private fun validateFields(vararg fields: String) = fields.all { it.isNotEmpty() }
+
+    // Upload images and save car details to Firebase
+    private suspend fun uploadImagesAndSaveCar(
+        modelo: String,
+        color: String,
+        mileage: String,
+        brand: String,
+        description: String,
+        price: String,
+        year: String,
+        transmission: String,
+        fuelType: String,
+        doors: Int,
+        engineCapacity: String,
+        location: String,
+        condition: String,
+        features: List<String>,
+        vin: String,
+        previousOwners: Int
+    ) {
+        val progressDialog = ProgressDialog(requireContext()).apply {
+            setMessage(getString(R.string.uploading_images))
+            isCancelable = false
+            show()
+        }
+
+        try {
+            val userId = viewModel.getCurrentUserId()
+            val imagesToDelete = existingImageUrls.filterNot { imageUrl ->
+                selectedImages.any { Uri.parse(imageUrl) == it }
+            }
+            imagesToDelete.forEach { imageUrl ->
+                FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete().await()
+            }
+
+            val uploadedImageUrls = mutableListOf<String>()
+            val newImages = selectedImages.filter { !existingImageUrls.contains(it.toString()) }
+
+            for (uri in newImages) {
+                val imageRef = FirebaseStorage.getInstance().reference.child("cars/${uri.lastPathSegment}")
+                val downloadUrl = imageRef.putFile(uri).await().storage.downloadUrl.await()
+                uploadedImageUrls.add(downloadUrl.toString())
+            }
+
+            val allImageUrls = selectedImages.map { uri ->
+                if (existingImageUrls.contains(uri.toString())) uri.toString() else uploadedImageUrls.find { it.endsWith(uri.lastPathSegment!!) } ?: ""
+            }.filter { it.isNotEmpty() }
+
+            viewModel.updateCar(
+                userId = userId,
+                carId = car.id,
+                modelo = modelo,
+                color = color,
+                mileage = mileage,
+                brand = brand,
+                description = description,
+                price = price,
+                year = year,
+                transmission = transmission,
+                fuelType = fuelType,
+                doors = doors,
+                engineCapacity = engineCapacity,
+                location = location,
+                condition = condition,
+                features = features,
+                vin = vin,
+                previousOwners = previousOwners,
+                views = car.views,
+                listingDate = car.listingDate,
+                lastUpdated = car.lastUpdated,
+                existingImages = allImageUrls,
+                newImages = uploadedImageUrls
+            )
+
+            progressDialog.dismiss()
+            Toast.makeText(requireContext(), R.string.changes_saved, Toast.LENGTH_SHORT).show()
+            dismiss()
+        } catch (e: Exception) {
+            progressDialog.dismiss()
+            Toast.makeText(requireContext(), R.string.error_saving_changes, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // Clear binding when the view is destroyed
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Release binding reference
+        _binding = null
+    }
+
+    // Set dialog width to almost full screen when starting
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout((resources.displayMetrics.widthPixels * 0.99).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

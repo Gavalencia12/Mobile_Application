@@ -7,10 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
-import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
-import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
-import com.example.carhive.Domain.usecase.favorites.AddCarToFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.GetUserFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +25,7 @@ class FavoritesViewModel @Inject constructor(
     private val _favoriteCars = MutableLiveData<List<CarEntity>>()
     val favoriteCars: LiveData<List<CarEntity>> get() = _favoriteCars
 
-    // Función para obtener los coches favoritos del usuario actual
+    // Function to fetch the current user's favorite cars with full details
     fun fetchFavoriteCars() {
         viewModelScope.launch {
             val currentUser = getCurrentUserIdUseCase()
@@ -48,7 +45,30 @@ class FavoritesViewModel @Inject constructor(
                         val carList = carResult.getOrNull()
                         val car = carList?.find { it.id == carId }
                         if (car != null) {
-                            favoriteCarsList.add(car)
+                            // Ensure all required fields are populated for each CarEntity
+                            val detailedCar = CarEntity(
+                                id = car.id,
+                                modelo = car.modelo,
+                                color = car.color,
+                                mileage = car.mileage,
+                                brand = car.brand,
+                                description = car.description,
+                                price = car.price,
+                                year = car.year,
+                                sold = car.sold,
+                                imageUrls = car.imageUrls,
+                                ownerId = car.ownerId,
+                                transmission = car.transmission,
+                                fuelType = car.fuelType,
+                                doors = car.doors,
+                                engineCapacity = car.engineCapacity,
+                                location = car.location,
+                                condition = car.condition,
+                                features = car.features,
+                                vin = car.vin,
+                                previousOwners = car.previousOwners,
+                            )
+                            favoriteCarsList.add(detailedCar)
                         }
                     }
                 }
@@ -59,7 +79,7 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    // Eliminar un coche de favoritos
+    // Removes a car from the favorites list and refreshes the list
     fun removeFavoriteCar(car: CarEntity) {
         viewModelScope.launch {
             val currentUser = getCurrentUserIdUseCase()
@@ -67,8 +87,7 @@ class FavoritesViewModel @Inject constructor(
 
             val result = removeCarFromFavoritesUseCase(userId, car.id)
             if (result.isSuccess) {
-                // Refresca la lista de coches favoritos después de eliminar uno
-                fetchFavoriteCars()
+                fetchFavoriteCars() // Refresh the list of favorite cars after removal
                 Log.d("FavoritesViewModel", "Car removed from favorites successfully")
             } else {
                 Log.e("FavoritesViewModel", "Error removing car from favorites: ${result.exceptionOrNull()}")
