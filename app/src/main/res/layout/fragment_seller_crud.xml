@@ -66,7 +66,16 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_addCar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_padding"
         android:clipToPadding="false" />
+
+    <!-- Espacio inferior de 50dp -->
+    <View
+        android:id="@+id/bottom_padding"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

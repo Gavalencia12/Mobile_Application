@@ -72,6 +72,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp" />
 
+        <!-- Campos principales del auto -->
+        <TextView
+            android:id="@+id/twDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:text="Details of car"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/button_select_images"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="5dp"/>
+
         <TextView
             android:id="@+id/twDescription"
             android:layout_width="match_parent"
@@ -80,7 +95,7 @@
             android:textColor="@color/black"
             android:text="Description"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/button_select_images"
+            app:layout_constraintTop_toBottomOf="@id/twDetails"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:paddingVertical="5dp"/>
@@ -106,159 +121,14 @@
             android:inputType="textMultiLine"/>
 
         <TextView
-            android:id="@+id/twDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:text="Details of car"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/et_description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="5dp"/>
-
-        <TextView
-            android:id="@+id/twmodel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Brand"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/twDetails"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
-
-
-        <TextView
-            android:id="@+id/twColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:paddingVertical="5dp"
-            android:text="Color"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.59"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/twDetails" />
-
-        <EditText
-            android:id="@+id/et_addOn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_background"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:hint="Brand"
-            app:layout_constraintTop_toBottomOf="@id/twmodel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/et_color"
-            android:layout_marginEnd="10dp"
-            android:layout_marginVertical="16dp"
-            android:maxLength="80"
-            android:lines="1" />
-
-        <EditText
-            android:id="@+id/et_color"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_background"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:hint="Color"
-            app:layout_constraintTop_toBottomOf="@id/twColor"
-            app:layout_constraintStart_toEndOf="@id/et_addOn"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="1dp"
-            android:layout_marginVertical="16dp"
-            android:maxLength="80"
-            android:lines="1" />
-
-        <TextView
-            android:id="@+id/twspeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Speed"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/et_addOn"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
-
-
-        <TextView
-            android:id="@+id/twprice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:paddingVertical="5dp"
-            android:text="Price"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.59"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_color" />
-
-        <EditText
-            android:id="@+id/et_speed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Speed (km/h)"
-            android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            app:layout_constraintTop_toBottomOf="@id/twspeed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/et_price"
-            android:maxLength="80"
-            android:lines="1" />
-
-        <EditText
-            android:id="@+id/et_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_background"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:hint="Price ($)"
-            android:inputType="numberDecimal"
-            app:layout_constraintTop_toBottomOf="@id/twprice"
-            app:layout_constraintStart_toEndOf="@id/et_speed"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="1dp"
-            android:layout_marginVertical="16dp"
-            android:maxLength="80"
-            android:lines="1" />
-
-        <TextView
-            android:id="@+id/twaddOn"
+            android:id="@+id/tw_model"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black"
             android:text="Model"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/et_speed"
+            app:layout_constraintTop_toBottomOf="@id/et_description"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingVertical="5dp"
             android:layout_marginTop="15dp"
@@ -273,14 +143,404 @@
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:hint="Model"
-            app:layout_constraintTop_toBottomOf="@id/twaddOn"
+            app:layout_constraintTop_toBottomOf="@id/tw_model"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginVertical="15dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="10dp"
             android:maxLength="80"
             android:lines="1" />
+
+        <TextView
+            android:id="@+id/tw_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Brand"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_modelo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <Spinner
+            android:id="@+id/spinnerBrand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tw_brand"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tw_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Price"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/spinnerBrand"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <EditText
+            android:id="@+id/et_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:hint="Price ($)"
+            android:inputType="numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/tw_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginVertical="15dp"
+            android:maxLength="80"
+            android:lines="1" />
+
+        <TextView
+            android:id="@+id/tw_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Year"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_price"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <Spinner
+            android:id="@+id/spinnerYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tw_year"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tw_transmission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Transmission"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/spinnerYear"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <Spinner
+            android:id="@+id/spinnerTransmission"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tw_transmission"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tw_doors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Doors"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/spinnerTransmission"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <EditText
+            android:id="@+id/et_doors"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Doors"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_doors"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_engine_capacity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Engine Capacity"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_doors"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <EditText
+            android:id="@+id/et_engineCapacity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Engine Capacity (cc)"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_engine_capacity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Color"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_engineCapacity"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:id="@+id/et_color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Color"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Speed"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_color"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:id="@+id/et_speed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Speed (km/h)"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_speed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_fuel_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Fuel Type"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_speed"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <Spinner
+            android:id="@+id/spinnerFuelType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tw_fuel_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tw_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Location"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/spinnerFuelType"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <Spinner
+            android:id="@+id/spinnerLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tw_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tw_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Condition"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/spinnerLocation"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <Spinner
+            android:id="@+id/spinnerCondition"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tw_condition"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tw_features"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Features"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/spinnerCondition"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:id="@+id/et_features"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Additional features (comma-separated)"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_features"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_vin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="VIN"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_features"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:id="@+id/et_vin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="VIN"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_vin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_previous_owners"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Previous Owners"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_vin"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:id="@+id/et_previousOwners"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Previous Owners"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_previous_owners"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_mileage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="Mileage"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/et_previousOwners"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="5dp"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:id="@+id/et_mileage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Mileage"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/tw_mileage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <Button
             android:id="@+id/button_create"
@@ -289,10 +549,11 @@
             android:text="Create"
             android:background="@drawable/button_create"
             android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/et_modelo"
+            app:layout_constraintTop_toBottomOf="@id/et_mileage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="18dp" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

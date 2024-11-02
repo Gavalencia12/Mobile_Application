@@ -37,7 +37,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/carMarca"
+                android:id="@+id/carBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Car Brand"

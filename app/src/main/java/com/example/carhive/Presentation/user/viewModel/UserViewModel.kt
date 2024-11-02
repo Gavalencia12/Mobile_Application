@@ -1,9 +1,10 @@
 package com.example.carhive.Presentation.user.viewModel
 
-import android.util.Log
+import android.app.Application
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.Data.model.UserEntity
@@ -12,6 +13,7 @@ import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.Domain.usecase.favorites.AddCarToFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
+import com.example.carhive.R
 import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,86 +21,188 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
+    application: Application,
     private val getAllCarsFromDatabaseUseCase: GetAllCarsFromDatabaseUseCase,
     private val addCarToFavoritesUseCase: AddCarToFavoritesUseCase,
     private val removeCarFromFavoritesUseCase: RemoveCarFromFavoritesUseCase,
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
     private val getUserDataUseCase: GetUserDataUseCase,
     private val firebaseDatabase: FirebaseDatabase
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
+    // Default list of car brands retrieved from string resources
+    val defaultBrands = application.resources.getStringArray(R.array.brand_options).toList()
+
+    // LiveData to hold the list of cars
     private val _carList = MutableLiveData<List<CarEntity>>()
     val carList: LiveData<List<CarEntity>> get() = _carList
 
+    // LiveData to hold user data
     private val _userData = MutableLiveData<UserEntity?>()
     val userData: LiveData<UserEntity?> get() = _userData
 
+    private var allCars: List<CarEntity> = emptyList()
+
+    // Selected filters
+    var selectedBrands: MutableSet<String> = mutableSetOf()
+    var selectedModel: String? = null
+    var yearRange: Pair<Int, Int>? = null
+    var priceRange: Pair<Int, Int?> = 0 to null
+    var mileageRange: Pair<Int, Int?> = 0 to null
+
+    // Standardized selected color (first letter capitalized)
+    var selectedColor: String? = null
+        set(value) {
+            field = value?.replaceFirstChar { it.uppercase() }
+        }
+
+    // Current location filter
+    private var selectedLocation: String? = null
+
+    // Unique car models and colors for filter options
+    private val _uniqueCarModels = MutableLiveData<List<String>>()
+    val uniqueCarModels: LiveData<List<String>> get() = _uniqueCarModels
+
+    private val _uniqueCarColors = MutableLiveData<List<String>>()
+    val uniqueCarColors: LiveData<List<String>> get() = _uniqueCarColors
+
+    /**
+     * Fetches the list of cars and updates unique model and color lists for filters.
+     */
     fun fetchCars() {
         viewModelScope.launch {
             val result = getAllCarsFromDatabaseUseCase()
             if (result.isSuccess) {
-                _carList.value = result.getOrNull() ?: emptyList()
+                allCars = result.getOrNull() ?: emptyList()
+                _carList.value = allCars
+                loadUniqueCarModels()
+                loadUniqueCarColors()
             } else {
-                Log.e("UserViewModel", "Error fetching cars: ${result.exceptionOrNull()}")
+                showToast(R.string.error_fetching_cars)
             }
         }
     }
 
-    // Verificar si un coche está en favoritos
+    // Load unique car models from the list of cars
+    private fun loadUniqueCarModels() {
+        val models = allCars.map { it.modelo }.distinct()
+        _uniqueCarModels.value = models
+    }
+
+    // Load unique car colors from the list of cars, capitalized
+    private fun loadUniqueCarColors() {
+        val colors = allCars.map { it.color.replaceFirstChar { it.uppercase() } }.distinct()
+        _uniqueCarColors.value = colors
+    }
+
+    /**
+     * Applies filters to the list of cars based on selected criteria, including location.
+     */
+    fun applyFilters() {
+        val filteredCars = allCars.filter { car ->
+            val matchesBrand = selectedBrands.isEmpty() || selectedBrands.contains(car.brand)
+            val matchesModel = selectedModel == null || car.modelo == selectedModel
+            val matchesYear = yearRange?.let { (min, max) -> car.year.toIntOrNull()?.let { it in min..max } } ?: true
+            val matchesColor = selectedColor == null || car.color.equals(selectedColor, ignoreCase = true)
+            val matchesLocation = selectedLocation == null || car.location == selectedLocation
+
+            val carPrice = car.price.toIntOrNull() ?: 0
+            val matchesPrice = when {
+                priceRange.second != null -> carPrice in priceRange.first..priceRange.second!!
+                else -> carPrice >= priceRange.first
+            }
+
+            val carMileage = car.mileage.toIntOrNull() ?: 0
+            val matchesMileage = when {
+                mileageRange.second != null -> carMileage in mileageRange.first..mileageRange.second!!
+                else -> carMileage >= mileageRange.first
+            }
+
+            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation && matchesPrice && matchesMileage
+        }
+        _carList.value = filteredCars
+    }
+
+    /**
+     * Resets all filters and shows the complete list of cars.
+     */
+    fun clearFilters() {
+        selectedBrands.clear()
+        selectedModel = null
+        yearRange = null
+        selectedColor = null
+        priceRange = 0 to null
+        mileageRange = 0 to null
+        selectedLocation = null
+        _carList.value = allCars
+    }
+
+    /**
+     * Filters cars by location.
+     */
+    fun filterByLocation(location: String) {
+        selectedLocation = location
+        applyFilters() // Reapply filters with updated location
+    }
+
+    /**
+     * Clears the location filter.
+     */
+    fun clearLocationFilter() {
+        selectedLocation = null
+        applyFilters() // Reapply filters without location restriction
+    }
+
+    /**
+     * Checks if a car is marked as a favorite for the current user.
+     */
     fun isCarFavorite(carId: String, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             val currentUser = getCurrentUserIdUseCase()
             val userId = currentUser.getOrNull() ?: return@launch
 
-            val reference = firebaseDatabase.getReference("Favorites/UserFavorites")
+            firebaseDatabase.getReference("Favorites/UserFavorites")
                 .child(userId)
                 .child(carId)
-
-            reference.get().addOnSuccessListener { snapshot ->
-                callback(snapshot.exists()) // Retorna true si existe el coche en favoritos
-            }.addOnFailureListener {
-                Log.e("UserViewModel", "Error fetching favorite status: ${it.message}")
-                callback(false) // En caso de error, asume que no está en favoritos
-            }
+                .get()
+                .addOnSuccessListener { snapshot -> callback(snapshot.exists()) }
+                .addOnFailureListener {
+                    showToast(R.string.error_fetching_favorite_status)
+                    callback(false)
+                }
         }
     }
 
+    /**
+     * Toggles a car's favorite status for the current user.
+     */
     fun toggleFavorite(car: CarEntity, isFavorite: Boolean) {
         viewModelScope.launch {
             val currentUser = getCurrentUserIdUseCase()
             val userId = currentUser.getOrNull() ?: return@launch
 
-            // Obtener los datos del usuario actual
             val resultUser = getUserDataUseCase(userId)
             if (resultUser.isSuccess) {
-                val userList = resultUser.getOrNull() ?: emptyList()
-                if (userList.isNotEmpty()) {
-                    val user = userList.first()
-                    val fullName = "${user.firstName} ${user.lastName}" // Concatenar firstName y lastName
+                val user = resultUser.getOrNull()?.firstOrNull()
+                val fullName = "${user?.firstName} ${user?.lastName}"
 
-                    if (isFavorite) {
-                        // Si está seleccionado, agregar a favoritos
-                        val result = addCarToFavoritesUseCase(userId, fullName, car.id, car.id, car.ownerId)
-                        if (result.isSuccess) {
-                            Log.d("UserViewModel", "Car added to favorites successfully")
-                        } else {
-                            Log.e("UserViewModel", "Error adding car to favorites: ${result.exceptionOrNull()}")
-                        }
-                    } else {
-                        // Si no está seleccionado, eliminar de favoritos
-                        val result = removeCarFromFavoritesUseCase(userId, car.id)
-                        if (result.isSuccess) {
-                            Log.d("UserViewModel", "Car removed from favorites successfully")
-                        } else {
-                            Log.e("UserViewModel", "Error removing car from favorites: ${result.exceptionOrNull()}")
-                        }
-                    }
+                if (isFavorite) {
+                    val result = addCarToFavoritesUseCase(userId, fullName, car.id, car.id, car.ownerId)
+                    if (result.isSuccess) showToast(R.string.car_added_to_favorites)
+                    else showToast(R.string.error_adding_favorite)
                 } else {
-                    Log.e("UserViewModel", "User not found")
+                    val result = removeCarFromFavoritesUseCase(userId, car.id)
+                    if (result.isSuccess) showToast(R.string.car_removed_from_favorites)
+                    else showToast(R.string.error_removing_favorite)
                 }
             } else {
-                Log.e("UserViewModel", "Error fetching user data: ${resultUser.exceptionOrNull()}")
+                showToast(R.string.error_fetching_user_data)
             }
         }
+    }
+
+    // Show toast message with the specified string resource ID
+    private fun showToast(messageResId: Int) {
+        Toast.makeText(getApplication(), getApplication<Application>().getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 }

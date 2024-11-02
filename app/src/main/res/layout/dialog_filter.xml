@@ -1,0 +1,318 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Contenedor principal con ScrollView y opciones de navegación -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- LinearLayout para opciones de navegación -->
+        <LinearLayout
+            android:id="@+id/linear_nav_options"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/nav_options_background">
+
+            <!-- Navegación de cada opción -->
+            <TextView
+                android:id="@+id/nav_option_models"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Models"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_brands"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Brands"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_mileage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mileage"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Color"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Year"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <!-- ScrollView para secciones de filtros -->
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Sección de Modelos -->
+                <LinearLayout
+                    android:id="@+id/section_models"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select a Model"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoComplete_model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Choose a model"
+                        android:inputType="text"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <!-- Sección de Marcas -->
+                <LinearLayout
+                    android:id="@+id/section_brands"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select a Brand"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoComplete_brand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Search brand"
+                        android:inputType="text"
+                        android:paddingBottom="8dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_brands"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <!-- Sección de Precios -->
+                <LinearLayout
+                    android:id="@+id/section_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price Range"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <EditText
+                        android:id="@+id/editText_min_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Minimum Price"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="8dp" />
+
+                    <EditText
+                        android:id="@+id/editText_max_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Maximum Price"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <!-- Sección de Kilometraje -->
+                <LinearLayout
+                    android:id="@+id/section_mileage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mileage Range"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <EditText
+                        android:id="@+id/editText_min_mileage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Minimum Mileage"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="8dp" />
+
+                    <EditText
+                        android:id="@+id/editText_max_mileage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Maximum Mileage"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <!-- Sección de Colores -->
+                <LinearLayout
+                    android:id="@+id/section_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vehicle Color"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoComplete_color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Choose a color"
+                        android:inputType="text"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <!-- Sección de Año -->
+                <LinearLayout
+                    android:id="@+id/section_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vehicle Year"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/start_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="start year"
+                        android:inputType="text"
+                        android:paddingBottom="16dp" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/end_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="end year"
+                        android:inputType="text"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <!-- Botón de Aplicar Filtros -->
+                <Button
+                    android:id="@+id/btn_apply_filters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Apply Filters"
+                    android:textColor="@android:color/white"
+                    android:background="@color/blue"
+                    android:layout_marginTop="16dp" />
+
+                <Button
+                    android:id="@+id/btn_restore_filters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Restore Filters"
+                    android:textColor="@android:color/white"
+                    android:background="@color/blue"
+                    android:layout_marginTop="16dp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- Botón de cancelación en la parte inferior -->
+    <Button
+        android:id="@+id/cancel_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_more_info_background"
+        android:layout_margin="8dp"
+        android:textStyle="bold" />
+
+</LinearLayout>
