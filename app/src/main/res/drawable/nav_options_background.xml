@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color azul oscuro cuando el estado es seleccionado (activado) -->
+    <item android:drawable="@color/dark_blue" android:state_selected="true"/>
+    <!-- Color azul estándar cuando el estado no es seleccionado (desactivado) -->
+    <item android:drawable="@color/blue"/>
+</selector>

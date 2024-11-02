@@ -42,9 +42,88 @@
     <string name="failed_to_delete_images">failed to delete images\n</string>
     <string name="terms_and_conditions"><u>Terms and Conditions</u></string>
     <string name="car_image">Car image</string>
-    <string name="view_more">View more</string>
     <string name="edit">Edit</string>
     <string name="options">Options</string>
+    <string name="edit_car_title">Edit Car</string>
+    <string name="update_button">Update</string>
+    <string name="confirm_reset">Confirm Reset</string>
+    <string name="reset_filters_message">Are you sure you want to reset all filters?</string>
+    <string name="filters_reset_successfully">Filters reset successfully</string>
+    <string name="brands_selected">Brands selected: %1$s</string>
+    <string name="error_fetching_cars">Error fetching cars</string>
+    <string name="error_fetching_favorite_status">Error fetching favorite status</string>
+    <string name="car_added_to_favorites">Car added to favorites</string>
+    <string name="error_adding_favorite">Error adding car to favorites</string>
+    <string name="car_removed_from_favorites">Car removed from favorites</string>
+    <string name="error_removing_favorite">Error removing car from favorites</string>
+    <string name="error_fetching_user_data">Error fetching user data</string>
+    <string name="brand_selected">brand selected\n</string>
+    <string name="creating_listing">Creating car listing...</string>
+    <string name="error_fill_all_fields">Please fill in all fields</string>
+    <string name="error_select_5_images">You must select exactly 5 images</string>
+    <string name="success_listing_created">Car listing created successfully!</string>
+    <string name="error_max_images">You can only select a maximum of %1$d images</string>
+    <string name="image_counter">%1$d/%2$d images selected</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="select_five_images">You must select exactly 5 images.</string>
+    <string name="complete_all_fields">Please complete all fields.</string>
+    <string name="uploading_images">Uploading images, please wait...</string>
+    <string name="changes_saved">Changes saved successfully.</string>
+    <string name="error_saving_changes">Error uploading images or saving changes. Please try again.</string>
+    <string name="image_count_text">%1$d / %2$d images selected</string>
+    <string name="create_button">create\n</string>
+    <string name="new_product_title">New Car</string>
+    <string name="edit_button">Edit</string>
+    <string name="delete_button">Delete</string>
+    <string name="sold_icon_sold">Sold</string>
+    <string name="sold_icon_unsold">Unsold</string>
+    <string name="confirm_delete_dialog">Confirm Delete</string>
+    <string name="car_detail_dialog">Car Details</string>
+    <string name="edit_car_dialog">Edit Car</string>
+    <string name="car_brand">Brand</string>
+    <string name="sold_status_green">Green</string>
+    <string name="sold_status_gray">Gray</string>
+    <string name="car_favorites_count">Favorites: %d</string>
+    <string name="car_detail_dialog_title">Car Details</string>
+    <string name="error_loading_image">Error loading image</string>
+    <string name="placeholder_image_description">Loading image</string>
+    <string name="error_fetching_favorite_count">Error fetching favorite count for car</string>
+    <string name="user_not_authenticated">User not authenticated</string>
+    <string name="error_adding_car">Error adding car</string>
+    <string name="error_updating_car">Error updating car</string>
+    <string name="error_deleting_car">Error deleting car</string>
+    <string name="error_updating_sold_status">Error updating car sold status</string>
+    <string name="error_user_not_authenticated">Usuario no autenticado</string>
+    <string name="car_model">Model: %1$s</string>
+    <string name="car_color">Color: %1$s</string>
+    <string name="car_transmission">Transmission: %1$s</string>
+    <string name="car_fuel_type">Fuel Type: %1$s</string>
+    <string name="car_doors">Doors: %1$d</string>
+    <string name="car_engine_capacity">Engine Capacity: %1$s</string>
+    <string name="car_location">Location: %1$s</string>
+    <string name="car_condition">Condition: %1$s</string>
+    <string name="car_vin">VIN: %1$s</string>
+    <string name="car_previous_owners">Previous Owners: %1$d</string>
+    <string name="car_price">Price: $%1$s</string>
+    <string name="car_description">Description: %1$s</string>
+    <string name="image_count">%1$d/%2$d</string>
+    <string name="car_details_title">Car Details</string>
+    <string name="default_car_model">Toyota Sienta Black 24k</string>
+    <string name="default_car_price">$30,000</string>
+    <string name="default_car_color">Color: Black</string>
+    <string name="default_car_mileage">Mileage: 20,000 km</string>
+    <string name="default_car_transmission">Transmission: Automatic</string>
+    <string name="default_car_fuel_type">Fuel Type: Gasoline</string>
+    <string name="default_car_engine_capacity">Engine Capacity: 2.0L</string>
+    <string name="default_car_location">Location: Zapopan, Jalisco</string>
+    <string name="default_car_doors">Doors: 4</string>
+    <string name="default_car_year">Year: 2020</string>
+    <string name="default_car_vin">VIN: ABCD1234EFG56789</string>
+    <string name="default_car_previous_owners">Previous Owners: 1</string>
+    <string name="default_car_views">Views: 256</string>
+    <string name="description_label">Description</string>
+    <string name="default_car_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="default_car_condition">New</string>
     <string name="welcome_back_to">Welcome back to</string>
     <string name="nice_to_see_you_again">Nice to see you again!</string>
     <string name="please_enter_your_information_for_continue">Please enter your information for continue</string>
@@ -89,5 +168,45 @@
     <string name="become_a_seller">Become a Seller</string>
     <string name="contact">Contact</string>
 
-
+    <!-- Spinner Options -->
+    <string-array name="transmission_options">
+        <item>Manual</item>
+        <item>Automatic</item>
+    </string-array>
+    <string-array name="fuel_type_options">
+        <item>Gasoline</item>
+        <item>Diesel</item>
+        <item>Electric</item>
+        <item>Hybrid</item>
+    </string-array>
+    <string-array name="condition_options">
+        <item>New</item>
+        <item>Used</item>
+        <item>Pre-owned</item>
+    </string-array>
+    <string-array name="location_options">
+        <item>All</item>
+        <item>Armería</item>
+        <item>Colima</item>
+        <item>Comala</item>
+        <item>Coquimatlán</item>
+        <item>Cuauhtémoc</item>
+        <item>Ixtlahuacán</item>
+        <item>Manzanillo</item>
+        <item>Minatitlán</item>
+        <item>Tecomán</item>
+        <item>Villa de Álvarez</item>
+    </string-array>
+    <string-array name="brand_options">
+        <item>Toyota</item>
+        <item>Honda</item>
+        <item>Ford</item>
+        <item>Chevrolet</item>
+        <item>Nissan</item>
+        <item>Volkswagen</item>
+        <item>BMW</item>
+        <item>Mercedes-Benz</item>
+        <item>Audi</item>
+        <item>Hyundai</item>
+    </string-array>
 </resources>

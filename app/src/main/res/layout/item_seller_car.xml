@@ -100,7 +100,7 @@
 
                 <!-- Car Speed -->
                 <TextView
-                    android:id="@+id/carSpeedTextView"
+                    android:id="@+id/tv_carBrand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Brand"

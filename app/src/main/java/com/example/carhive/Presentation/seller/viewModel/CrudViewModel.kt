@@ -1,7 +1,8 @@
 package com.example.carhive.Presentation.seller.viewModel
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,7 @@ import com.example.carhive.Domain.usecase.favorites.GetCarFavoriteCountAndUsersU
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.example.carhive.R
 
 @HiltViewModel
 class CrudViewModel @Inject constructor(
@@ -25,36 +27,43 @@ class CrudViewModel @Inject constructor(
     private val uploadToCarImageUseCase: UploadToCarImageUseCase,
     private val updateCarSoldStatusUseCase: UpdateCarSoldStatusUseCase,
     private val getCarFavoriteCountAndUsersUseCase: GetCarFavoriteCountAndUsersUseCase,
+    private val context: Context
 ) : ViewModel() {
 
     // LiveData to hold the list of cars for the user
     private val _carList = MutableLiveData<List<CarEntity>>()
     val carList: LiveData<List<CarEntity>> get() = _carList
 
-    // LiveData to manage errors
+    // LiveData to hold error messages
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
+    // LiveData to hold the map of car favorite counts
     private val _favoriteCounts = MutableLiveData<Map<String, Int>>()
     val favoriteCounts: LiveData<Map<String, Int>> get() = _favoriteCounts
 
-    // Función para obtener el contador de favoritos de los coches
+    // Function to display a Toast message using a string resource ID
+    private fun showToast(messageResId: Int) {
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_LONG).show()
+    }
+
+    // Fetches the favorite count for each car using a list of car IDs
     fun fetchFavoriteCountsForCars(carIds: List<String>) {
         viewModelScope.launch {
             val favoriteCountMap = mutableMapOf<String, Int>()
             for (carId in carIds) {
                 val result = getCarFavoriteCountAndUsersUseCase(carId)
                 result.onSuccess { (count, _) ->
-                    favoriteCountMap[carId] = count // Almacena el contador de favoritos
-                }.onFailure { exception ->
-                    Log.e("CrudViewModel", "Error fetching favorite count for car: ${exception.message}")
+                    favoriteCountMap[carId] = count
+                }.onFailure {
+                    showToast(R.string.error_fetching_favorite_count)
                 }
             }
-            _favoriteCounts.value = favoriteCountMap // Actualiza el LiveData con los contadores
+            _favoriteCounts.value = favoriteCountMap
         }
     }
 
-    // Function to fetch cars for the current user from the database
+    // Fetches the list of cars owned by the current user
     fun fetchCarsForUser() {
         viewModelScope.launch {
             val currentUserResult = getCurrentUserIdUseCase()
@@ -64,143 +73,197 @@ class CrudViewModel @Inject constructor(
                 val result = getCarUserInDatabaseUseCase(it)
                 result.onSuccess { cars ->
                     _carList.value = cars
-                    // Obtener los contadores de favoritos para los coches del usuario
                     fetchFavoriteCountsForCars(cars.map { car -> car.id })
-                }.onFailure { exception ->
-                    Log.e("CrudViewModel", "Error fetching cars: ${exception.message}")
+                }.onFailure {
+                    showToast(R.string.error_fetching_cars)
                 }
             }
         }
     }
 
-    // Method to add a car to the database
+    // Adds a new car to the database
     fun addCarToDatabase(
         modelo: String,
         color: String,
-        speed: String,
-        addOn: String,
+        mileage: String,
+        brand: String,
         description: String,
         price: String,
+        year: String,
+        transmission: String,
+        fuelType: String,
+        doors: Int,
+        engineCapacity: String,
+        location: String,
+        condition: String,
+        features: List<String>?,
+        vin: String,
+        previousOwners: Int,
+        listingDate: String,
+        lastUpdated: String,
         images: List<Uri>
     ) {
         viewModelScope.launch {
+            // Gets the current user's ID
             val currentUser = getCurrentUserIdUseCase()
-            val userId = currentUser.getOrNull() ?: return@launch  // Abort if no user ID is available
+            val userId = currentUser.getOrNull() ?: return@launch
 
-            // Create a new Car object
+            // Formats the color input (capitalize the first letter, lowercase the rest)
+            val formattedColor = color.lowercase().replaceFirstChar { it.uppercase() }
+
+            // Creates a Car object with the provided details
             val car = Car(
                 modelo = modelo,
-                color = color,
-                speed = speed,
-                addOn = addOn,
+                color = formattedColor,
+                mileage = mileage,
+                brand = brand,
                 description = description,
                 price = price,
-                ownerId = userId
+                year = year,
+                sold = false,
+                imageUrls = null,
+                ownerId = userId,
+                transmission = transmission,
+                fuelType = fuelType,
+                doors = doors,
+                engineCapacity = engineCapacity,
+                location = location,
+                condition = condition,
+                features = features,
+                vin = vin,
+                previousOwners = previousOwners,
+                views = 0,
+                listingDate = listingDate,
+                lastUpdated = lastUpdated
             )
 
-            // Save the car in the database
+            // Attempts to save the car to the database
             val result = saveCarToDatabaseUseCase(userId, car)
             result.fold(
                 onSuccess = { carId ->
-                    // If car is successfully added, upload images associated with the car
+                    // Uploads car images if saving was successful
                     val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
                     val imageUrls = imageUploadResult.getOrNull()
 
-                    // If image upload is successful, update the car record with image URLs
                     if (imageUrls != null) {
                         val updatedCar = car.copy(imageUrls = imageUrls, id = carId)
                         updateCarInDatabase(userId, carId, updatedCar)
                     }
                 },
-                onFailure = { error ->
-                    _error.value = "Error adding car: ${error.message}"  // Handle error when adding car
+                onFailure = {
+                    showToast(R.string.error_adding_car)
                 }
             )
         }
     }
 
-    // Function to update a car in the database and refresh the list of cars
+    // Updates the car information in the database
     private fun updateCarInDatabase(userId: String, carId: String, updatedCar: Car) {
         viewModelScope.launch {
             val result = updateCarToDatabaseUseCase(userId, carId, updatedCar)
             result.fold(
                 onSuccess = {
-                    fetchCarsForUser()  // Refresh the list of cars after a successful update
+                    fetchCarsForUser()
                 },
-                onFailure = { error ->
-                    _error.value = "Error updating car: ${error.message}"  // Handle error when updating car
+                onFailure = {
+                    showToast(R.string.error_updating_car)
                 }
             )
         }
     }
 
-    // Method to delete a car from the database
+    // Deletes a car from the database
     fun deleteCar(userId: String, carId: String) {
         viewModelScope.launch {
             val result = deleteCarInDatabaseUseCase(userId, carId)
             result.fold(
                 onSuccess = {
-                    fetchCarsForUser()  // Refresh the list of cars after a successful deletion
+                    fetchCarsForUser()
                 },
-                onFailure = { error ->
-                    _error.value = "Error deleting car: ${error.message}"  // Handle error when deleting car
+                onFailure = {
+                    showToast(R.string.error_deleting_car)
                 }
             )
         }
     }
 
-    // Method to update car details and images in the database
+    // Updates a car with new details
     fun updateCar(
         userId: String,
         carId: String,
         modelo: String,
         color: String,
-        speed: String,
-        addOn: String,
+        mileage: String,
+        brand: String,
         description: String,
         price: String,
-        newImages: List<Uri>,
-        existingImages: List<Uri>
+        year: String,
+        transmission: String,
+        fuelType: String,
+        doors: Int,
+        engineCapacity: String,
+        location: String,
+        condition: String,
+        features: List<String>,
+        vin: String,
+        previousOwners: Int,
+        views: Int,
+        listingDate: String,
+        lastUpdated: String,
+        existingImages: List<String>,
+        newImages: List<String>
     ) {
         viewModelScope.launch {
-            // Create a Car object with updated details
+            // Formats the color input
+            val formattedColor = color.lowercase().replaceFirstChar { it.uppercase() }
+
+            // Creates a Car object with updated details
             val car = Car(
                 id = carId,
                 modelo = modelo,
-                color = color,
-                speed = speed,
-                addOn = addOn,
+                color = formattedColor,
+                mileage = mileage,
+                brand = brand,
                 description = description,
-                price = price
+                price = price,
+                year = year,
+                sold = false,
+                ownerId = userId,
+                transmission = transmission,
+                fuelType = fuelType,
+                doors = doors,
+                engineCapacity = engineCapacity,
+                location = location,
+                condition = condition,
+                features = features,
+                vin = vin,
+                previousOwners = previousOwners,
+                views = views,
+                listingDate = listingDate,
+                lastUpdated = lastUpdated
             )
 
-            // Upload any new images for the car
-            val imageUploadResult = uploadToCarImageUseCase(userId, carId, newImages)
-            val newImageUrls = imageUploadResult.getOrNull() ?: emptyList()
-
-            // Combine existing images with newly uploaded ones
-            val combinedImageUrls = existingImages.map { it.toString() } + newImageUrls
-
-            // Update the car record with the combined list of images
+            // Combines existing and new image URLs
+            val combinedImageUrls = existingImages + newImages
             val updatedCar = car.copy(imageUrls = combinedImageUrls)
             updateCarInDatabase(userId, carId, updatedCar)
         }
     }
 
-    // Method to update the sold status of a car
+    // Updates the sold status of a car
     fun updateCarSoldStatus(userId: String, carId: String, sold: Boolean) {
         viewModelScope.launch {
             val result = updateCarSoldStatusUseCase(userId, carId, sold)
-            result.onFailure { exception ->
-                _error.value = "Error updating car sold status: ${exception.message}"  // Handle error when updating sold status
+            result.onFailure {
+                showToast(R.string.error_updating_sold_status)
             }
         }
     }
 
-    // Suspend function to get the current user ID
+    // Gets the current user ID, throwing an error if the user is not authenticated
     suspend fun getCurrentUserId(): String {
         val currentUser = getCurrentUserIdUseCase()
         return currentUser.getOrNull()
-            ?: throw IllegalArgumentException("User not authenticated")  // Throw error if no user is authenticated
+            ?: throw IllegalArgumentException(context.getString(R.string.error_user_not_authenticated))
     }
 }
