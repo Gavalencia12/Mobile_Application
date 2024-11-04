@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CarHive</string>
+    <string name="logo">Logo</string>
     <string name="update_car">Actualizar Carro</string>
     <string name="create_car">Crear Carro</string>
     <string name="car_created_successfully">Car created successfully</string>
