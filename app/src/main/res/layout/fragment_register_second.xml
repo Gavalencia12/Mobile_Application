@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/blue"
-    tools:context=".Presentation.initial.Register.view.SecondRegisterFragment">
+    tools:context=".presentation.initial.Register.view.SecondRegisterFragment">
 
     <!-- CardView con imagen y enlace para regresar -->
     <androidx.cardview.widget.CardView

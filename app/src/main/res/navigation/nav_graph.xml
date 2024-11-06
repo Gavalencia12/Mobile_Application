@@ -5,7 +5,7 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.carhive.Presentation.initial.Login.view.LoginFragment"
+        android:name="com.example.carhive.presentation.initial.Login.view.LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_recoveryPasswordFragment"
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/recoveryPasswordFragment"
-        android:name="com.example.carhive.Presentation.initial.Login.view.RecoveryPasswordFragment"
+        android:name="com.example.carhive.presentation.initial.Login.view.RecoveryPasswordFragment"
         tools:layout="@layout/fragment_recovery_password">
         <action
             android:id="@+id/action_recoveryPasswordFragment_to_loginFragment"
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/firstRegisterFragment"
-        android:name="com.example.carhive.Presentation.initial.Register.view.FirstRegisterFragment"
+        android:name="com.example.carhive.presentation.initial.Register.view.FirstRegisterFragment"
         tools:layout="@layout/fragment_register_first">
         <action
             android:id="@+id/action_firstRegisterFragment_to_secondRegisterFragment"
@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/secondRegisterFragment"
-        android:name="com.example.carhive.Presentation.initial.Register.view.SecondRegisterFragment"
+        android:name="com.example.carhive.presentation.initial.Register.view.SecondRegisterFragment"
         tools:layout="@layout/fragment_register_second">
         <action
             android:id="@+id/action_secondRegisterFragment_to_thirdRegisterFragment"
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/thirdRegisterFragment"
-        android:name="com.example.carhive.Presentation.initial.Register.view.ThirdRegisterFragment"
+        android:name="com.example.carhive.presentation.initial.Register.view.ThirdRegisterFragment"
         tools:layout="@layout/fragment_register_third">
         <action
             android:id="@+id/action_thirdRegisterFragment_to_fortRegisterFragment"
@@ -77,7 +77,7 @@
 
     <fragment
         android:id="@+id/fortRegisterFragment"
-        android:name="com.example.carhive.Presentation.initial.Register.view.FortRegisterFragment"
+        android:name="com.example.carhive.presentation.initial.Register.view.FortRegisterFragment"
         tools:layout="@layout/fragment_register_fourth">
         <action
             android:id="@+id/action_fortRegisterFragment_to_fiveRegisterFragment"
@@ -86,7 +86,7 @@
 
     <fragment
         android:id="@+id/fiveRegisterFragment"
-        android:name="com.example.carhive.Presentation.initial.Register.view.FiveRegisterFragment"
+        android:name="com.example.carhive.presentation.initial.Register.view.FiveRegisterFragment"
         tools:layout="@layout/fragment_register_five">
         <action
             android:id="@+id/action_fiveRegisterFragment_to_userHomeFragment"
@@ -97,7 +97,7 @@
 
     <fragment
         android:id="@+id/userHomeFragment"
-        android:name="com.example.carhive.Presentation.user.view.UserHomeFragment"
+        android:name="com.example.carhive.presentation.user.view.UserHomeFragment"
         tools:layout="@layout/fragment_user_home">
         <action
             android:id="@+id/action_userHomeFragment_to_carDetailFragment"
@@ -106,7 +106,7 @@
 
     <fragment
         android:id="@+id/termsUserFragment"
-        android:name="com.example.carhive.Presentation.user.items.TermsUserFragment"
+        android:name="com.example.carhive.presentation.user.items.TermsUserFragment"
         tools:layout="@layout/fragment_seller_profile">
         <action
             android:id="@+id/action_userProfileFragment_to_sellerProfileFragment"
@@ -115,7 +115,7 @@
 
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.carhive.Presentation.user.view.FavoritesFragment"
+        android:name="com.example.carhive.presentation.user.view.FavoritesFragment"
         tools:layout="@layout/fragment_user_favorites">
         <action
             android:id="@+id/action_userHomeFragment_to_carDetailFragment"
@@ -124,16 +124,34 @@
 
     <fragment
         android:id="@+id/userHomeCarDetailFragment"
-        android:name="com.example.carhive.Presentation.user.items.CarDetailFragment"
+        android:name="com.example.carhive.presentation.user.view.CarDetailFragment"
         tools:layout="@layout/fragment_user_home_cardetails">
         <action
             android:id="@+id/action_userHomeFragment_to_carDetailFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_chat"
+            app:destination="@id/userChat" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userMessages"
+        android:name="com.example.carhive.presentation.user.view.UserMessagesFragment"
+        tools:layout="@layout/fragment_interested_users">
+        <action
+            android:id="@+id/action_userMessagesFragment_to_chatFragment"
+            app:destination="@id/userChat"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/userChat"
+        android:name="com.example.carhive.presentation.chat.view.ChatFragment"
+        tools:layout="@layout/fragment_chat">
     </fragment>
 
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.example.carhive.Presentation.user.view.ProfileFragment"
+        android:name="com.example.carhive.presentation.user.view.ProfileFragment"
         tools:layout="@layout/fragment_user_profile">
         <action
             android:id="@+id/action_userProfileFragment_to_loginFragment"
@@ -151,7 +169,7 @@
 
     <fragment
         android:id="@+id/userProfileSellerFragment"
-        android:name="com.example.carhive.Presentation.user.view.ProfileSellerFragment"
+        android:name="com.example.carhive.presentation.user.view.ProfileSellerFragment"
         tools:layout="@layout/fragment_user_profile_seller">
         <action
             android:id="@+id/action_userProfileFragment_to_userProfileFragment"
@@ -163,22 +181,46 @@
 
     <fragment
         android:id="@+id/sellerHomeFragment"
-        android:name="com.example.carhive.Presentation.seller.view.SellerHomeFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerHomeFragment"
         tools:layout="@layout/fragment_seller_home">
 
     </fragment>
 
     <fragment
+        android:id="@+id/sellerUsersChatsFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerCarUsersFragment"
+        tools:layout="@layout/fragment_seller_users_chats">
+        <action
+            android:id="@+id/action_carUsersFragment_to_chatFragment"
+            app:destination="@id/userChat"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/sellerInterestedUsersFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerInterestedUsersFragment"
+        tools:layout="@layout/fragment_interested_users">
+        <action
+            android:id="@+id/action_interestedUsersFragment_to_chatFragment"
+            app:destination="@id/userChat"/>
+        <action
+            android:id="@+id/action_interestedUsersFragment_to_interestedUsersFragment"
+            app:destination="@id/sellerUsersChatsFragment"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/sellerCrudFragment"
-        android:name="com.example.carhive.Presentation.seller.view.SellerCrudFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerCrudFragment"
         tools:layout="@layout/fragment_seller_crud">
 
     </fragment>
     <!--  Fragmento para el perfil del vendedor  -->
     <fragment
         android:id="@+id/sellerProfileFragment"
-        android:name="com.example.carhive.Presentation.seller.view.SellerProfileFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerProfileFragment"
         tools:layout="@layout/fragment_seller_profile">
+        <action
+            android:id="@+id/action_sellerProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"/>
         <action
         android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
         app:destination="@id/sellerHomeFragment"/>
@@ -189,7 +231,7 @@
 
     <fragment
         android:id="@+id/termsSellerFragment"
-        android:name="com.example.carhive.Presentation.user.items.TermsSellerFragment"
+        android:name="com.example.carhive.presentation.user.items.TermsSellerFragment"
         tools:layout="@layout/fragment_seller_profile_terms">
         <action
             android:id="@+id/action_termsSellerFragment_to_sellerProfileFragment"
@@ -198,14 +240,14 @@
 
     <fragment
         android:id="@+id/sellerFavoriteFragment"
-        android:name="com.example.carhive.Presentation.seller.view.SellerFavoritesFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerFavoritesFragment"
         tools:layout="@layout/fragment_seller_favorites">
 
     </fragment>
 
     <fragment
         android:id="@+id/adminHomeFragment"
-        android:name="com.example.carhive.Presentation.admin.view.AdminHomeFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminHomeFragment"
         tools:layout="@layout/fragment_admin_home">
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
@@ -223,7 +265,7 @@
 
     <fragment
         android:id="@+id/adminUserActiveFragment"
-        android:name="com.example.carhive.Presentation.admin.view.AdminUserActiveFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminUserActiveFragment"
         tools:layout="@layout/fragment_admin_activate_user">
         <action
             android:id="@+id/action_adminUserActiveFragment_to_adminHomeFragment"
@@ -232,7 +274,7 @@
 
     <fragment
         android:id="@+id/adminUserListFragment"
-        android:name="com.example.carhive.Presentation.admin.view.AdminUserListFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminUserListFragment"
         android:label="User List">
         <action
             android:id="@+id/action_adminUserListFragment_to_adminHomeFragment"
@@ -241,7 +283,7 @@
 
     <fragment
         android:id="@+id/adminUserBanFragment"
-        android:name="com.example.carhive.Presentation.admin.view.AdminUserBanFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminUserBanFragment"
         android:label="Banear Usuarios">
         <action
             android:id="@+id/action_adminUserBanFragment_to_adminHomeFragment"
@@ -250,7 +292,7 @@
 
     <fragment
         android:id="@+id/carsListFragment"
-        android:name="com.example.carhive.Presentation.seller.view.CarsListFragment"
+        android:name="com.example.carhive.presentation.seller.view.CarsListFragment"
         android:label="Cars List" >
     </fragment>
 

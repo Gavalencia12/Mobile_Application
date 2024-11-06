@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
-    tools:context=".Presentation.initial.Register.view.FiveRegisterFragment">
+    tools:context=".presentation.initial.Register.view.FiveRegisterFragment">
 
     <!-- Título de bienvenida -->
     <TextView

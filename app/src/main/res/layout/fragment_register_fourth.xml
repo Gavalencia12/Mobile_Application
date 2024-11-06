@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/blue"
-    tools:context=".Presentation.initial.Register.view.FortRegisterFragment">
+    tools:context=".presentation.initial.Register.view.FortRegisterFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

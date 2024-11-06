@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.carhive.Presentation.AuthViewModel
+import com.example.carhive.presentation.AuthViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,17 +63,19 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.userHomeFragment)
                     true
                 }
+                R.id.chats -> {
+                    navController.navigate(R.id.userMessages)
+                    true
+                }
                 R.id.favorites -> {
                     navController.navigate(R.id.favoritesFragment)
                     true
                 }
-                R.id.profile -> {
-                    navController.navigate(R.id.userProfileFragment)
+                R.id.notifications -> {
                     true
                 }
-                R.id.signOutButton -> {
-                    navController.navigate(R.id.loginFragment)
-                    FirebaseAuth.getInstance().signOut() // Sign out user when "Sign Out" is clicked
+                R.id.profile -> {
+                    navController.navigate(R.id.userProfileFragment)
                     true
                 }
                 else -> false
@@ -87,20 +89,21 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.sellerHomeFragment)
                     true
                 }
-                R.id.profile -> {
-                    navController.navigate(R.id.sellerProfileFragment)
+                R.id.chats -> {
+                    navController.navigate(R.id.sellerInterestedUsersFragment)
                     true
                 }
                 R.id.crud -> {
                     navController.navigate(R.id.sellerCrudFragment)
                     true
                 }
-                R.id.signOutButton -> {
-                    navController.navigate(R.id.loginFragment)
-                    FirebaseAuth.getInstance().signOut()
+                R.id.notifications -> {
                     true
                 }
-
+                R.id.profile -> {
+                    navController.navigate(R.id.sellerProfileFragment)
+                    true
+                }
                 else -> false
             }
         }
@@ -108,11 +111,11 @@ class MainActivity : AppCompatActivity() {
         // Adjust bottom navigation visibility based on the current destination (fragment)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.userHomeFragment, R.id.userProfileFragment, R.id.favoritesFragment, R.id.userHomeCarDetailFragment -> {
+                R.id.userHomeFragment, R.id.userProfileFragment, R.id.favoritesFragment, R.id.userHomeCarDetailFragment, R.id.userMessages -> {
                     hideAllBottomNavigation()
                     showUserBottomNavigation()
                 }
-                R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.sellerProfileFragment -> {
+                R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.sellerProfileFragment, R.id.sellerInterestedUsersFragment -> {
                     hideAllBottomNavigation() // Hide other navigations and show the seller navigation
                     showSellerBottomNavigation()
                 }
