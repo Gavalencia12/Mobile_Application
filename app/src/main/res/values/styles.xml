@@ -6,6 +6,7 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/white</item>
     </style>
+
     <!-- Estilo para hacer la imagen circular -->
     <style name="CircleImageView">
         <item name="cornerFamily">rounded</item>

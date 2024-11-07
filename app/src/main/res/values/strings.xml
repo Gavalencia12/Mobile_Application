@@ -247,6 +247,18 @@
     <string name="txt_review">Muy buen vendedor, acesible, guapo, comprometedor, sincero</string>
     <string name="example_number">25</string>
 
+    <!-- Admin Profile -->
+    <string name="exit">Exit</string>
+    <string name="information">Information</string>
+    <string name="cars">Cars</string>
+    <string name="user_history">User History</string>
+    <string name="bans">Bans</string>
+    <string name="security_filter">Security Filter</string>
+    <string name="new_profile_entries">New Profile Entries</string>
+    <string name="new_car_entries">New Car Entries</string>
+    <string name="general_report">General Report</string>
+
+
     <!-- Spinner Options -->
     <string-array name="transmission_options">
         <item>Manual</item>
