@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <!-- Contenedor de información principal -->
+    <!-- Container for main user information -->
     <LinearLayout
         android:id="@+id/basic_info_container"
         android:layout_width="match_parent"
@@ -18,17 +18,17 @@
         android:paddingStart="20dp"
         android:background="@drawable/rounded_corner_background">
 
-        <!-- Imagen de perfil redonda -->
+        <!-- Round profile image for the user -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/userImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginEnd="16dp"
-            android:contentDescription="Imagen de usuario"
+            android:contentDescription="@string/user_image_desc"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/CircleImageView" />
 
-        <!-- Contenedor de texto -->
+        <!-- Text container holding user details -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,68 +36,72 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+            <!-- Row for first name and last name -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginLeft="50dp">
-                <!-- Nombre y apellido -->
+
+                <!-- User's first name -->
                 <TextView
                     android:id="@+id/firstNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre"
+                    android:text="@string/first_name"
                     android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="16dp"
                     android:layout_gravity="center"/>
 
+                <!-- User's last name -->
                 <TextView
                     android:id="@+id/lastNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Apellido"
+                    android:text="@string/last_name"
                     android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="16dp"
                     android:layout_gravity="center"/>
             </LinearLayout>
 
-
-
-            <!-- Email -->
+            <!-- User's email address -->
             <TextView
                 android:id="@+id/emailText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email"
+                android:text="@string/email"
                 android:textSize="16sp"
+                android:textColor="@color/white"
                 android:layout_gravity="center"/>
 
-            <!-- Verificado -->
+            <!-- Verification status (e.g., Verified/Unverified) -->
             <TextView
                 android:id="@+id/verifiedText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Verificado"
+                android:text="@string/verified"
                 android:textSize="16sp"
+                android:textColor="@color/white"
                 android:layout_gravity="center"/>
 
-            <!-- Rol -->
+            <!-- User's role within the system (e.g., Admin, User) -->
             <TextView
                 android:id="@+id/rolText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rol"
+                android:text="@string/role"
                 android:textSize="16sp"
+                android:textColor="@color/white"
                 android:layout_gravity="center"/>
 
-            <!-- Botón -->
+            <!-- Verification button to confirm user verification -->
             <Button
                 android:id="@+id/verification"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="Verify"
+                android:text="@string/verify_button"
                 android:layout_marginTop="8dp"
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_btn"
@@ -106,3 +110,4 @@
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+

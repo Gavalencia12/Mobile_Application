@@ -257,6 +257,19 @@
     <string name="new_profile_entries">New Profile Entries</string>
     <string name="new_car_entries">New Car Entries</string>
     <string name="general_report">General Report</string>
+    <string name="user_bans">USER BANS</string>
+    <string name="search_hint">Search...</string>
+    <string name="search_description">Buscar</string>
+    <string name="verified_users_report">Verified Users Report</string>
+    <string name="switch_to_monthly_view">Switch to Monthly View</string>
+    <string name="verify_users">Verify Users</string>
+    <string name="verify_button">Verify</string>
+    <string name="email">Email</string>
+    <string name="verified">Verified</string>
+    <string name="role">Role</string>
+    <string name="unban_button">UNBAN</string>
+    <string name="ban_button">BAN</string>
+    <string name="user_image_desc">User Image</string>
 
 
     <!-- Spinner Options -->
