@@ -21,10 +21,10 @@
     <color name="red">#FFFF0000</color>
     <color name="pink">#FF026B</color>
     <color name="gray_aqua">#868D9D</color>
-    <color name="green">#25D025</color>
-    <color name="yellow">#FFC107</color>
-    <color name="accent">#FF6200EE</color>
-    <color name="background">#f0f0f0</color>
+    <color name="green">#25D025</color>"
+    <color name="yellow">#FFC107</color>"
+    <color name="accent">#FF6200EE</color>""
+    <color name="background">#f0f0f0</color>""
     <color name="gray_light">#F2F2F2</color>
     <color name="other_gray">#ABABAB</color>
     <color name="white_ghost">#FAFAFA</color>
