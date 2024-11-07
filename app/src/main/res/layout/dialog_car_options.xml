@@ -6,554 +6,426 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Main container layout using ConstraintLayout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:background="@color/white">
 
+        <!-- Cancel button to close the dialog -->
         <Button
             android:id="@+id/button_cancel"
             android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:background="@drawable/button_close"
-            android:drawableLeft="@drawable/ic_exit"
+            android:drawableStart="@drawable/ic_exit"
             android:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="MissingConstraints"
-            android:paddingBottom="15dp"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
+        <!-- Title of the dialog -->
         <TextView
+            style="@style/title_dialog"
             android:id="@+id/dialog_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New Product"
-            android:textSize="27sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
             android:layout_marginBottom="16dp"
-            android:gravity="left"
+            android:text="@string/new_product"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- RecyclerView for displaying selected images -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_selected_images"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/item_selected_image"
             app:layout_constraintTop_toBottomOf="@id/dialog_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
-            tools:listitem="@layout/item_selected_image"
-            android:orientation="horizontal"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Counter to display the number of selected images -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tv_image_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0/5 images selected"
-            android:textSize="14sp"
-            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:text="@string/count_image_selected"
+            android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@id/rv_selected_images"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Button to select images -->
         <Button
+            style="@style/button_selected"
             android:id="@+id/button_select_images"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Select Images"
-            android:backgroundTint="@color/accent"
-            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:text="@string/select_image"
             app:layout_constraintTop_toBottomOf="@id/tv_image_count"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Campos principales del auto -->
+        <!-- Section header for car details -->
         <TextView
+            style="@style/subtitle_dialog"
             android:id="@+id/twDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:text="Details of car"
-            android:textStyle="bold"
+            android:layout_marginVertical="10dp"
+            android:text="@string/details_car"
             app:layout_constraintTop_toBottomOf="@id/button_select_images"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="5dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for car description field -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/twDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:text="Description"
-            android:textStyle="bold"
+            android:layout_marginVertical="15dp"
+            android:text="@string/description"
             app:layout_constraintTop_toBottomOf="@id/twDetails"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingVertical="5dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Input field for car description -->
         <EditText
+            style="@style/editTextLarge"
             android:id="@+id/et_description"
-            android:layout_width="match_parent"
             android:layout_height="135dp"
-            android:background="@drawable/edittext_description_background"
-            android:paddingVertical="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:hint="Write a description about the car"
-            app:layout_constraintTop_toBottomOf="@id/twDescription"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="14dp"
-            android:gravity="start"
+            android:padding="10dp"
+            android:hint="@string/hint_description"
             android:maxLength="255"
             android:maxLines="5"
-            android:overScrollMode="always"
-            android:scrollbars="vertical"
-            android:inputType="textMultiLine"/>
+            android:autofillHints="textLongMessage"
+            app:layout_constraintTop_toBottomOf="@id/twDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for car model field -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_model"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Model"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/model"
             app:layout_constraintTop_toBottomOf="@id/et_description"
             app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Input field for car model -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_modelo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_background"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:hint="Model"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/model"
+            android:autofillHints="name"
+            android:inputType="text"
             app:layout_constraintTop_toBottomOf="@id/tw_model"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginVertical="15dp"
-            android:maxLength="80"
-            android:lines="1" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for car brand field -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_brand"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Brand"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/brand"
             app:layout_constraintTop_toBottomOf="@id/et_modelo"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Dropdown for selecting car brand -->
         <Spinner
+            style="@style/style_spinner"
             android:id="@+id/spinnerBrand"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tw_brand"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for car price field -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Price"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/price"
             app:layout_constraintTop_toBottomOf="@id/spinnerBrand"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for car price -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_background"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:hint="Price ($)"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/price_hint"
             android:inputType="numberDecimal"
+            android:autofillHints="number"
             app:layout_constraintTop_toBottomOf="@id/tw_price"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginVertical="15dp"
-            android:maxLength="80"
-            android:lines="1" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for car year field -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Year"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/year"
             app:layout_constraintTop_toBottomOf="@id/et_price"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Dropdown for selecting car year -->
         <Spinner
+            style="@style/style_spinner"
             android:id="@+id/spinnerYear"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tw_year"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for car transmission field -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_transmission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Transmission"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/transmission"
             app:layout_constraintTop_toBottomOf="@id/spinnerYear"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Dropdown for selecting car transmission -->
         <Spinner
+            style="@style/style_spinner"
             android:id="@+id/spinnerTransmission"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tw_transmission"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for number of car doors -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_doors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Doors"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/doors"
             app:layout_constraintTop_toBottomOf="@id/spinnerTransmission"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for number of car doors -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_doors"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Doors"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/doors"
             android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
+            android:autofillHints="number"
             app:layout_constraintTop_toBottomOf="@id/tw_doors"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for engine capacity -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_engine_capacity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Engine Capacity"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/engine_capacity"
             app:layout_constraintTop_toBottomOf="@id/et_doors"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for engine capacity -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_engineCapacity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Engine Capacity (cc)"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/engine_capacity_hint"
             android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
             app:layout_constraintTop_toBottomOf="@id/tw_engine_capacity"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for car color -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Color"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/color"
             app:layout_constraintTop_toBottomOf="@id/et_engineCapacity"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for car color -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_color"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Color"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/color"
             android:inputType="text"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
+            android:autofillHints="name"
             app:layout_constraintTop_toBottomOf="@id/tw_color"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for max speed -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Speed"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/speed"
             app:layout_constraintTop_toBottomOf="@id/et_color"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for max speed -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_speed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Speed (km/h)"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/speed_hint"
             android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
             app:layout_constraintTop_toBottomOf="@id/tw_speed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for fuel type -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_fuel_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Fuel Type"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/fuel_type"
             app:layout_constraintTop_toBottomOf="@id/et_speed"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Dropdown for fuel type -->
         <Spinner
+            style="@style/style_spinner"
             android:id="@+id/spinnerFuelType"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tw_fuel_type"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for location -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Location"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/location"
             app:layout_constraintTop_toBottomOf="@id/spinnerFuelType"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Dropdown for location -->
         <Spinner
+            style="@style/style_spinner"
             android:id="@+id/spinnerLocation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tw_location"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for condition -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Condition"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/condiction"
             app:layout_constraintTop_toBottomOf="@id/spinnerLocation"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Dropdown for condition -->
         <Spinner
+            style="@style/style_spinner"
             android:id="@+id/spinnerCondition"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tw_condition"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for additional features -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_features"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Features"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/additional_features"
             app:layout_constraintTop_toBottomOf="@id/spinnerCondition"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for additional features -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_features"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Additional features (comma-separated)"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/additional_features_hint"
             android:inputType="text"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
+            android:autofillHints="textLongMessage"
             app:layout_constraintTop_toBottomOf="@id/tw_features"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for VIN -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_vin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="VIN"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/vin"
             app:layout_constraintTop_toBottomOf="@id/et_features"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for VIN -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_vin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="VIN"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/vin"
             android:inputType="text"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
             app:layout_constraintTop_toBottomOf="@id/tw_vin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for previous owners -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_previous_owners"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Previous Owners"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/previous_owners"
             app:layout_constraintTop_toBottomOf="@id/et_vin"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for previous owners -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_previousOwners"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Previous Owners"
+            android:layout_marginVertical="15dp"
+            android:hint="@string/previous_owners"
             android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
+            android:autofillHints="name"
             app:layout_constraintTop_toBottomOf="@id/tw_previous_owners"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Label for mileage -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tw_mileage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:text="Mileage"
-            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="@string/mileage"
             app:layout_constraintTop_toBottomOf="@id/et_previousOwners"
-            app:layout_constraintStart_toStartOf="parent"
-            android:paddingVertical="5dp"
-            android:layout_marginTop="15dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- Input field for mileage -->
         <EditText
+            style="@style/inputModal"
             android:id="@+id/et_mileage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_background"
-            android:hint="Mileage"
+            android:hint="@string/mileage_hint"
             android:inputType="number"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
+            android:autofillHints="number"
             app:layout_constraintTop_toBottomOf="@id/tw_mileage"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginVertical="15dp" />
 
+        <!-- Button to submit form and create the car listing -->
         <Button
+            style="@style/button_selected"
             android:id="@+id/button_create"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Create"
-            android:background="@drawable/button_create"
-            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"
+            android:text="@string/create_button"
             app:layout_constraintTop_toBottomOf="@id/et_mileage"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="18dp" />
-
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

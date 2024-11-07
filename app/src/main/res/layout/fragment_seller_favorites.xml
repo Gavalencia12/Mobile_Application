@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Car Favorites"
+                android:text="@string/section_seller_favorite"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -62,7 +62,7 @@
             android:id="@+id/noCarsMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No cars available."
+            android:text="@string/status_section_cars_favorite"
             android:textSize="25sp"
             android:textColor="@android:color/black"/>
     </LinearLayout>

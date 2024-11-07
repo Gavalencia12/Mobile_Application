@@ -93,7 +93,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:text="@string/default_car_color"
                 android:fontFamily="@font/inter_bold"/>
 
@@ -102,7 +101,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:text="@string/default_car_mileage"
                 android:fontFamily="@font/inter_bold"/>
         </LinearLayout>
@@ -164,13 +162,6 @@
                 android:text="@string/default_car_year"
                 android:fontFamily="@font/inter_bold"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/carDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text=""
-            android:fontFamily="@font/inter_bold"/>
 
         <!-- Additional information (VIN, owners, views) -->
         <LinearLayout
