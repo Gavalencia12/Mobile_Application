@@ -3,7 +3,7 @@
     <!-- Estado presionado -->
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/other_blue" />
+            <solid android:color="@color/gray_aqua" />
             <corners android:radius="16dp" />
             <padding android:left="4dp" android:top="4dp" android:right="4dp" android:bottom="4dp"/>
             <shadowColor android:color="#000000" />
@@ -16,7 +16,7 @@
     <!-- Estado normal -->
     <item>
         <shape>
-            <solid android:color="@color/other_blue_dark" />
+            <solid android:color="@color/white" />
             <corners android:radius="16dp" />
         </shape>
     </item>

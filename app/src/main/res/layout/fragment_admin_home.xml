@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/blue">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="-24dp"
                 android:layout_toStartOf="@id/img"
-                android:src="@drawable/logo_bgw" />
+                android:src="@drawable/logo_bgb" />
 
             <ImageView
                 android:id="@+id/img"
@@ -63,11 +63,14 @@
                             android:id="@+id/signOutButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_btn"
+                            android:background="@drawable/rounded_btn_exit"
                             android:text="@string/exit"
-                            android:textColor="#000000"
+                            android:fontFamily="@font/inter_semibold"
+                            android:textColor="@color/white"
                             android:textSize="15sp"
-                            android:layout_marginStart="10dp"/>
+                            android:layout_marginStart="10dp"
+                            android:drawableStart="@drawable/ic_sign_out"/>
+
                     </LinearLayout>
 
                     <GridLayout
@@ -142,7 +145,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:background="@drawable/rounder_security"
+                        android:background="@drawable/rounder_information"
                         android:padding="16dp"
                         android:columnCount="2">
 
