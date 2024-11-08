@@ -219,6 +219,21 @@
         <action
             android:id="@+id/action_adminHomeFragment_to_adminUserActiveFragment"
             app:destination="@id/adminUserActiveFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminCarListFragment"
+            app:destination="@id/adminCarListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminCarListFragment"
+        android:name="com.example.carhive.Presentation.admin.view.AdminCarListFragment"
+        tools:layout="@layout/fragment_car_list">
+
+        <action
+            android:id="@+id/action_adminCarListFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+
+
     </fragment>
 
     <fragment
