@@ -44,6 +44,14 @@
                 android:text="@string/section_seller_inventory"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <AutoCompleteTextView
+                android:id="@+id/autoComplete_model_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Choose a model"
+                android:inputType="text"
+                android:paddingBottom="16dp"
+                android:layout_marginTop="100dp"/>
         </RelativeLayout>
     </LinearLayout>
 

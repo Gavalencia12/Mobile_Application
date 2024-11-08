@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CarHive</string>
+    <string name="logo">Logo</string>
     <string name="update_car">Actualizar Carro</string>
     <string name="create_car">Crear Carro</string>
     <string name="car_created_successfully">Car created successfully</string>
@@ -134,7 +135,6 @@
     <string name="login">Login</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="register_now">Register Now!</string>
-    <string name="logo">Logo</string>
     <string name="image">image</string>
     <string name="registration">Registration</string>
     <string name="first_name">First name</string>
@@ -271,6 +271,8 @@
     <string name="ban_button">BAN</string>
     <string name="user_image_desc">User Image</string>
 
+    <string name="error_empty_search_query">error empty search query</string>
+    <string name="no_results_found">no results found</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">
