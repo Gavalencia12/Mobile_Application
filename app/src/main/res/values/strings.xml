@@ -125,6 +125,8 @@
     <string name="description_label">Description</string>
     <string name="default_car_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="default_car_condition">New</string>
+    <string name="error_empty_search_query">error empty search query</string>
+    <string name="no_results_found">no results found</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

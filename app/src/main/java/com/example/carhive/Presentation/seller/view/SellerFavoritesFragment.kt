@@ -4,71 +4,81 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.carhive.Presentation.seller.viewModel.CarAdapter
 import com.example.carhive.Presentation.seller.viewModel.CarFavoritesAdapter
 import com.example.carhive.Presentation.seller.viewModel.CrudViewModel
 import com.example.carhive.databinding.FragmentSellerFavoritesBinding
 
 class SellerFavoritesFragment : Fragment() {
 
-    private var _binding: FragmentSellerFavoritesBinding? = null
-    private val binding get() = _binding!!
+    private var _binding: FragmentSellerFavoritesBinding? = null // ViewBinding reference for the fragment's layout
+    private val binding get() = _binding!! // Non-null binding reference
 
-    private val viewModel: CrudViewModel by activityViewModels()
-    private lateinit var carAdapter: CarFavoritesAdapter
+    private val viewModel: CrudViewModel by activityViewModels() // ViewModel for handling car data and business logic
+    private lateinit var carAdapter: CarFavoritesAdapter // Adapter for displaying car favorites in RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inflate the fragment layout using ViewBinding
         _binding = FragmentSellerFavoritesBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding.root // Return the root view of the binding
     }
 
+    // Function to set up the RecyclerView with the favorites adapter
     private fun setupRecyclerView() {
+        // Initialize the adapter with an empty list and empty map for favorite counts
         carAdapter = CarFavoritesAdapter(emptyList(), emptyMap(), requireActivity(), viewModel)
         binding.recyclerViewCar.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = carAdapter
+            layoutManager = LinearLayoutManager(context) // Set a linear layout manager for the RecyclerView
+            adapter = carAdapter // Set the adapter
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize the RecyclerView
         setupRecyclerView()
 
-        // Observar la lista de coches
+        // Set up model search with real-time suggestions in the AutoCompleteTextView
+        viewModel.setupModelSearch(
+            autoCompleteTextView = binding.autoCompleteModelSearch
+        )
+
+        // Observe the carList LiveData from the ViewModel to update the UI when data changes
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
             if (cars.isEmpty()) {
-                // Mostrar el mensaje cuando no hay coches
+                // Show the empty view if no cars are available
                 binding.recyclerViewCar.visibility = View.GONE
                 binding.emptyView.visibility = View.VISIBLE
             } else {
-                // Ocultar el mensaje y mostrar el RecyclerView si hay coches
+                // Show the RecyclerView and hide the empty view if cars are available
                 binding.recyclerViewCar.visibility = View.VISIBLE
                 binding.emptyView.visibility = View.GONE
+
+                // Observe the favoriteCounts LiveData to update favorite counts in the adapter
                 viewModel.favoriteCounts.observe(viewLifecycleOwner) { favoriteCounts ->
-                    carAdapter.updateCars(cars, favoriteCounts)
+                    carAdapter.updateCars(cars, favoriteCounts) // Update the adapter with cars and favorite counts
                 }
             }
         }
 
+        // Set up the back button to navigate to the previous screen
         binding.ibtnBack.setOnClickListener {
-            findNavController().popBackStack()  // Navigate back to the previous screen
+            findNavController().popBackStack()
         }
 
+        // Fetch cars for the current user when the fragment is created
         viewModel.fetchCarsForUser()
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Clear the binding reference to prevent memory leaks
     }
 }
