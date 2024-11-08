@@ -28,12 +28,13 @@ class UsersMessagesAdapter(
         private val nameTextView: TextView = itemView.findViewById(R.id.userNameTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.profileImageView)
         private val lastMessageTextView: TextView = itemView.findViewById(R.id.lastMessageTextView)
+        private val fileIconImageView: ImageView = itemView.findViewById(R.id.fileIconImageView)
 
         fun bind(item: Any) {
             when (item) {
                 is UserWithLastMessage -> {
                     nameTextView.text = item.user.firstName
-                    lastMessageTextView.text = item.lastMessage
+                    setFileIconAndMessage(item.fileType, item.isFile, item.lastMessage, item.fileName)
                     Glide.with(itemView.context)
                         .load(item.user.imageUrl)
                         .placeholder(R.drawable.ic_person)
@@ -42,7 +43,7 @@ class UsersMessagesAdapter(
                 }
                 is CarWithLastMessage -> {
                     nameTextView.text = item.car.modelo
-                    lastMessageTextView.text = item.car.color
+                    setFileIconAndMessage(item.fileType, item.isFile, item.lastMessage, item.fileName)
                     val imageUrl = item.car.imageUrls?.firstOrNull()
                     Glide.with(itemView.context)
                         .load(imageUrl)
@@ -52,6 +53,31 @@ class UsersMessagesAdapter(
                 }
             }
             itemView.setOnClickListener { onItemClicked(item) }
+        }
+
+        private fun setFileIconAndMessage(fileType: String?, isFile: Boolean, messageText: String, fileName: String?) {
+            if (isFile) {
+                fileIconImageView.visibility = View.VISIBLE
+                lastMessageTextView.text = fileName ?: messageText
+                when {
+                    fileType?.contains("application") == true -> {
+                        fileIconImageView.setImageResource(R.drawable.ic_video)
+                    }
+                    fileType?.contains("image") == true -> {
+                        fileIconImageView.setImageResource(R.drawable.ic_img)
+                    }
+                    fileType?.contains("video") == true -> {
+                        fileIconImageView.setImageResource(R.drawable.ic_video)
+                    }
+                    else -> {
+                        fileIconImageView.visibility = View.GONE
+                        lastMessageTextView.text = messageText
+                    }
+                }
+            } else {
+                fileIconImageView.visibility = View.GONE
+                lastMessageTextView.text = messageText
+            }
         }
     }
 
@@ -102,7 +128,6 @@ class UsersMessagesAdapter(
         otherItems.addAll(newOtherItems)
         notifyDataSetChanged()
     }
-
 
     inner class SectionHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val headerTextView: TextView = itemView.findViewById(R.id.sectionHeaderTextView)

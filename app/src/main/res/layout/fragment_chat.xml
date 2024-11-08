@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:paddingTop="40dp">
 
-    <!-- Header con botón de retroceso, imagen de perfil y detalles -->
+    <!-- Header con botón de retroceso, imagen de perfil, detalles y menú -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="1"> <!-- Añadido para expandir el espacio restante -->
 
             <TextView
                 android:id="@+id/tv_name"
@@ -54,6 +55,15 @@
                 android:textColor="@color/gray"
                 android:text="Modelo del coche"/>
         </LinearLayout>
+
+        <!-- Botón de menú desplegable -->
+        <ImageButton
+            android:id="@+id/menuButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_more_vert"
+            android:contentDescription="Menu Button"/>
     </LinearLayout>
 
     <!-- Lista de mensajes -->

@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.R
 import com.example.carhive.data.model.UserWithLastMessage
-import com.example.carhive.databinding.FragmentInterestedUsersBinding
 import com.example.carhive.presentation.chat.adapter.SimpleUsersMessagesAdapter
 import com.example.carhive.presentation.chat.view.BaseMessagesFragment
 import com.example.carhive.presentation.chat.viewModel.InterestedUsersViewModel
@@ -63,11 +62,16 @@ class SellerCarUsersFragment : BaseMessagesFragment() {
     // Observa los datos de usuarios interesados y actualiza el adaptador
     override fun observeViewModel() {
         viewModel.usersWithMessages.observe(viewLifecycleOwner) { usersWithMessages ->
-            simpleUsersAdapter.updateData(usersWithMessages.interestedUsers)
+            // Filtra la lista para incluir solo los usuarios cuyo carId coincida con el argumento carId
+            val filteredUsers = usersWithMessages.interestedUsers.filter { it.carId == carId }
+
+            // Actualiza el adaptador con la lista filtrada
+            simpleUsersAdapter.updateData(filteredUsers)
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
+
 }

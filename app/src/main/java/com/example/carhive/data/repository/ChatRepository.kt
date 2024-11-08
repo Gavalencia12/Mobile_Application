@@ -31,9 +31,14 @@ interface ChatRepository {
         fileUri: Uri,
         fileType: String,
         fileName: String,
-        fileHash: String
+        fileHash: String,
+        receiver: String
     ): Result<Unit>
 
     suspend fun cleanUpDatabase(context: Context)
+
+    suspend fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String)
+
+    suspend fun deleteMessageForUser(ownerId: String, carId: String, buyerId: String, messageId: String, userId: String)
 
 }

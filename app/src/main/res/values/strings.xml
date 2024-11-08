@@ -125,6 +125,7 @@
     <string name="description_label">Description</string>
     <string name="default_car_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="default_car_condition">New</string>
+    <string name="play_pause">Play or Pause</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

@@ -1,15 +1,18 @@
 package com.example.carhive.presentation.chat.viewModel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.Domain.model.Message
+import com.example.carhive.Domain.usecase.chats.DeleteMessageForUserUseCase
 import com.example.carhive.Domain.usecase.chats.GetMessagesUseCase
 import com.example.carhive.Domain.usecase.chats.GetUserInfoUseCase
 import com.example.carhive.Domain.usecase.chats.SendFileMessageUseCase
 import com.example.carhive.Domain.usecase.chats.SendMessageUseCase
+import com.example.carhive.Domain.usecase.chats.UpdateMessageStatusUseCase
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.data.model.UserEntity
@@ -17,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +30,9 @@ class ChatViewModel @Inject constructor(
     private val sendMessageUseCase: SendMessageUseCase,
     private val sendFileMessageUseCase: SendFileMessageUseCase,
     private val getUserDataUseCase: GetUserDataUseCase,
-    private val infoUseCase: GetUserInfoUseCase
+    private val infoUseCase: GetUserInfoUseCase,
+    private val deleteMessageForUserUseCase: DeleteMessageForUserUseCase,
+    private val updateMessageStatusUseCase: UpdateMessageStatusUseCase,
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
@@ -49,33 +55,94 @@ class ChatViewModel @Inject constructor(
     fun observeMessages(ownerId: String, carId: String, buyerId: String) {
         viewModelScope.launch {
             getMessagesUseCase(ownerId, carId, buyerId).collect { message ->
-                _messages.value += message
+                // Verifica que el usuario actual no esté en la lista deletedFor del mensaje
+                if (!message.deletedFor.contains(currentUserId)) {
+                    Log.i("angel", "Cargo el observe")
+                    _messages.value += message
+
+                    if (message.receiverId == currentUserId && message.status == "sent") {
+                        updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
+                    }
+                }
             }
         }
     }
 
     fun sendTextMessage(ownerId: String, carId: String, buyerId: String, content: String) {
+        val isSeller = currentUserId == ownerId
+        val receiver = if (isSeller) buyerId else ownerId
+
         val message = Message(
+            messageId = "",
             senderId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
+            receiverId = receiver,
             content = content,
-            timestamp = System.currentTimeMillis()
+            timestamp = System.currentTimeMillis(),
+            status = "sent",
+            carId = carId
         )
         viewModelScope.launch {
             val result = sendMessageUseCase(ownerId, carId, buyerId, message)
             if (result.isFailure) {
                 _error.value = result.exceptionOrNull()?.message
+                updateMessageStatus(ownerId, carId, buyerId, message.messageId, "failed")
             }
         }
     }
 
     fun sendFileMessage(ownerId: String, carId: String, buyerId: String, fileUri: Uri, fileType: String, fileName: String, fileHash: String) {
         viewModelScope.launch {
-            val result = sendFileMessageUseCase(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash)
+            val isSeller = currentUserId == ownerId
+            val receiver = if (isSeller) buyerId else ownerId
+            val result = sendFileMessageUseCase(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, receiver)
             if (result.isFailure) {
                 _error.value = result.exceptionOrNull()?.message
             }
         }
     }
+
+    // Llama a la función para cambiar el estado del mensaje
+    fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String) {
+        viewModelScope.launch {
+            updateMessageStatusUseCase(ownerId, carId, buyerId, messageId, status)
+        }
+    }
+
+    fun clearChatForUser(ownerId: String, carId: String, buyerId: String) {
+        viewModelScope.launch {
+            try {
+                Log.d("clearChatForUser", "Iniciando el vaciado del chat para el usuario: $currentUserId, $ownerId, $carId, $buyerId")
+
+                // Vacia temporalmente la lista local
+                _messages.value = emptyList()
+
+                // Marca los mensajes como eliminados para el usuario actual
+                getMessagesUseCase(ownerId, carId, buyerId).collect { message ->
+                    deleteMessageForUserUseCase(
+                        ownerId, carId, buyerId, message.messageId, currentUserId
+                    )
+                }
+
+                // Recarga los mensajes filtrados por el usuario actual
+                reloadMessages(ownerId, carId, buyerId)
+
+            } catch (e: Exception) {
+                Log.e("clearChatForUser", "Error al vaciar el chat: ${e.message}", e)
+                _error.value = "Error al vaciar el chat: ${e.message}"
+            }
+        }
+    }
+
+    private fun reloadMessages(ownerId: String, carId: String, buyerId: String) {
+        viewModelScope.launch {
+            getMessagesUseCase(ownerId, carId, buyerId).collect { message ->
+                if (!message.deletedFor.contains(currentUserId)) {
+                    _messages.value += message
+                }
+            }
+        }
+    }
+
 
     fun loadInfoHead(ownerId: String, carId: String, buyerId: String) {
         viewModelScope.launch {

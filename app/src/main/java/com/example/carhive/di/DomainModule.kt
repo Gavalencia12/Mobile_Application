@@ -9,11 +9,13 @@ import com.example.carhive.Domain.usecase.auth.IsVerifiedTheEmailUseCase
 import com.example.carhive.Domain.usecase.auth.LoginUseCase
 import com.example.carhive.Domain.usecase.auth.RegisterUseCase
 import com.example.carhive.Domain.usecase.chats.CleanUpDatabaseUseCase
+import com.example.carhive.Domain.usecase.chats.DeleteMessageForUserUseCase
 import com.example.carhive.Domain.usecase.chats.GetInterestedUsersUseCase
 import com.example.carhive.Domain.usecase.chats.GetMessagesUseCase
 import com.example.carhive.Domain.usecase.chats.GetUserInfoUseCase
 import com.example.carhive.Domain.usecase.chats.SendFileMessageUseCase
 import com.example.carhive.Domain.usecase.chats.SendMessageUseCase
+import com.example.carhive.Domain.usecase.chats.UpdateMessageStatusUseCase
 import com.example.carhive.Domain.usecase.database.DeleteCarInDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
@@ -247,6 +249,16 @@ object DomainModule {
         @Singleton
         fun provideCleanUpDatabaseUseCase(repository: ChatRepository): CleanUpDatabaseUseCase =
             CleanUpDatabaseUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideDeleteMessageForUserUseCase(repository: ChatRepository): DeleteMessageForUserUseCase =
+            DeleteMessageForUserUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideUpdateMessageStatusUseCase(repository: ChatRepository): UpdateMessageStatusUseCase =
+            UpdateMessageStatusUseCase(repository)
 
     //      <---------------------------------------- End ----------------------------------------->
 

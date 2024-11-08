@@ -49,7 +49,7 @@ abstract class BaseMessagesFragment : Fragment() {
 
     protected open fun observeViewModel() {
         viewModel.usersWithMessages.observe(viewLifecycleOwner) { usersWithMessages ->
-            val interestedUsers = usersWithMessages.interestedUsers.take(10)
+            val interestedUsers = usersWithMessages.interestedUsers.take(5)
             val cars = usersWithMessages.cars
             Log.i("angel", "$interestedUsers")
             Log.i("angel", "$cars")
@@ -57,7 +57,7 @@ abstract class BaseMessagesFragment : Fragment() {
         }
 
         viewModel.carsWithMessages.observe(viewLifecycleOwner) { carsWithMessages ->
-            val recentChats = carsWithMessages.take(10) // Los 10 chats más recientes
+            val recentChats = carsWithMessages.take(5) // Los 10 chats más recientes
             messagesAdapter.updateData(recentChats, carsWithMessages)
         }
 

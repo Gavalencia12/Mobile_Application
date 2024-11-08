@@ -1,26 +1,37 @@
 package com.example.carhive.presentation.chat.view
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.PopupMenu
 import android.widget.Toast
+import android.widget.VideoView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.carhive.databinding.FragmentChatBinding
+import com.example.carhive.databinding.DialogFilePreviewBinding
 import com.example.carhive.presentation.chat.adapter.ChatAdapter
 import com.example.carhive.presentation.chat.viewModel.ChatViewModel
 import com.example.carhive.Domain.usecase.chats.CleanUpDatabaseUseCase
+import com.example.carhive.R
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
@@ -39,6 +50,7 @@ class ChatFragment : Fragment() {
     private val ownerId by lazy { arguments?.getString("ownerId") ?: "" }
     private val carId by lazy { arguments?.getString("carId") ?: "" }
     private val buyerId by lazy { arguments?.getString("buyerId") ?: "" }
+    private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
@@ -50,7 +62,7 @@ class ChatFragment : Fragment() {
 
         // Llama a la función de limpieza de la base de datos
         lifecycleScope.launch {
-            cleanUpDatabaseUseCase(requireContext() )
+            cleanUpDatabaseUseCase(requireContext())
         }
 
         setupRecyclerView()
@@ -64,15 +76,50 @@ class ChatFragment : Fragment() {
 
         // Enviar mensaje de texto
         binding.buttonSend.setOnClickListener {
-            val message = binding.editTextMessage.text.toString()
-            chatViewModel.sendTextMessage(ownerId, carId, buyerId, message)
+            val originalMessage = binding.editTextMessage.text.toString().trimEnd()
+
+            // Evita el envío de mensajes vacíos
+            if (originalMessage.isBlank()) {
+                Toast.makeText(context, "No se puede enviar un mensaje vacío", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Procesa el mensaje eliminando saltos de línea innecesarios
+            val cleanedMessage = originalMessage.replace(Regex("\\n{2,}"), "\n")
+
+            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage)
             binding.editTextMessage.text.clear()
+        }
+
+        // Configuración para el campo de entrada de texto
+        binding.editTextMessage.setOnEditorActionListener { textView, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER) {
+                val currentText = textView.text.toString().trimEnd()
+
+                // Si el contenido después del salto de línea está vacío, elimina el salto de línea
+                if (currentText.endsWith("\n")) {
+                    textView.text = currentText.removeSuffix("\n")
+                }
+
+                true
+            } else {
+                false
+            }
         }
 
         // Adjuntar archivo
         binding.attachButton.setOnClickListener {
             openFileChooser()
         }
+
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.menuButton.setOnClickListener {
+            showPopupMenu(it)
+        }
+
     }
 
     private fun setupRecyclerView() {
@@ -84,20 +131,89 @@ class ChatFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             chatViewModel.messages.collect { messages ->
                 chatAdapter.updateMessages(messages)
                 binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
             }
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             chatViewModel.error.collect { error ->
                 error?.let {
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
+        // Observa los datos del usuario con el que estás hablando
+        chatViewModel.userData.observe(viewLifecycleOwner) { user ->
+            if (user != null) {
+                // Actualiza la interfaz de usuario con los datos del usuario con el que estás hablando
+                binding.tvName.text = user.firstName
+                binding.tvCarModel.text = user.email
+                Glide.with(requireContext())
+                    .load(user.imageUrl)
+                    .placeholder(R.drawable.ic_img)
+                    .error(R.drawable.ic_error)
+                    .into(binding.profileImage)
+            }
+        }
+
+        // Observa los datos del comprador, en caso de que seas el vendedor
+        chatViewModel.buyerData.observe(viewLifecycleOwner) { buyer ->
+            if (buyer != null) {
+                binding.tvName.text = buyer.firstName
+                binding.tvCarModel.text = buyer.email
+                Glide.with(requireContext())
+                    .load(buyer.imageUrl)
+                    .placeholder(R.drawable.ic_img)
+                    .error(R.drawable.ic_error)
+                    .into(binding.profileImage)
+            }
+        }
+    }
+
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.inflate(R.menu.chat_menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.option_info -> {
+                    // Acción para la opción "Info"
+                    true
+                }
+                R.id.option_report -> {
+                    // Acción para la opción "Silenciar"
+                    true
+                }
+                R.id.option_exit -> {
+                    // Acción para "Vaciar Chat"
+                    showConfirmDeleteChatDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+
+    private fun showConfirmDeleteChatDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Estás seguro de que deseas vaciar el chat? Esta acción no se puede deshacer.")
+
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+            chatViewModel.clearChatForUser(ownerId, carId, buyerId)
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.create().show()
     }
 
     private fun openFileChooser() {
@@ -115,12 +231,46 @@ class ChatFragment : Fragment() {
                 val fileType = requireContext().contentResolver.getType(uri) ?: "application/octet-stream"
                 val fileName = getFileNameFromUri(uri) ?: "file"
 
-                lifecycleScope.launch {
-                    val fileHash = calculateFileHash(uri)
-                    chatViewModel.sendFileMessage(ownerId, carId, buyerId, uri, fileType, fileName, fileHash)
-                }
+                // Mostrar vista previa y confirmación antes de enviar
+                showFilePreview(uri, fileType, fileName)
             }
         }
+    }
+
+    private fun showFilePreview(fileUri: Uri, fileType: String, fileName: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Vista previa del archivo")
+
+        val previewBinding = DialogFilePreviewBinding.inflate(LayoutInflater.from(requireContext()))
+        builder.setView(previewBinding.root)
+
+        when {
+            fileType.startsWith("image/") -> {
+                previewBinding.previewImageView.visibility = View.VISIBLE
+                previewBinding.previewImageView.setImageURI(fileUri)
+            }
+            fileType.startsWith("video/") -> {
+                previewBinding.previewVideoView.visibility = View.VISIBLE
+                previewBinding.previewVideoView.setVideoURI(fileUri)
+                previewBinding.previewVideoView.start()
+            }
+            else -> {
+                previewBinding.previewFileName.visibility = View.VISIBLE
+                previewBinding.previewFileName.text = fileName
+            }
+        }
+
+        builder.setPositiveButton("Enviar") { dialog, _ ->
+            lifecycleScope.launch {
+                val fileHash = calculateFileHash(fileUri)
+                chatViewModel.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash)
+                dialog.dismiss()
+            }
+        }
+
+        builder.setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+
+        builder.create().show()
     }
 
     private fun getFileNameFromUri(uri: Uri): String? {

@@ -11,8 +11,9 @@ class SendFileMessageUseCase(private val repository: ChatRepository) {
         fileUri: Uri,
         fileType: String,
         fileName: String,
-        fileHash: String
+        fileHash: String,
+        receiver: String
     ): Result<Unit> {
-        return repository.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash)
+        return repository.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, receiver)
     }
 }

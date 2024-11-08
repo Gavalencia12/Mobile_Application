@@ -147,6 +147,9 @@
         android:id="@+id/userChat"
         android:name="com.example.carhive.presentation.chat.view.ChatFragment"
         tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_chatFragmentt_to_chatFragment"
+            app:destination="@id/userChat"/>
     </fragment>
 
     <fragment

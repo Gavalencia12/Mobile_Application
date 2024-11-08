@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
@@ -24,8 +25,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ChatAdapter(
     private val messages: MutableList<Message>,
@@ -57,51 +56,80 @@ class ChatAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = messages[position]
+        val previousMessage = if (position > 0) messages[position - 1] else null
         if (holder is MessageViewHolder) {
-            holder.bind(message)
+            holder.bind(message, previousMessage)
+            // Actualiza el ícono del estado
+            holder.updateStatusIcon(message.status)
         }
     }
 
     override fun getItemCount(): Int = messages.size
 
     fun updateMessages(newMessages: List<Message>) {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
+
+        // Filtrar mensajes para excluir aquellos en los que el usuario actual esté en `deletedFor`
+        val filteredMessages = newMessages.filter { message ->
+            currentUserId !in message.deletedFor
+        }
+
         messages.clear()
-        messages.addAll(newMessages)
+        messages.addAll(filteredMessages)
         notifyDataSetChanged()
     }
 
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val messageTextView: TextView = itemView.findViewById(R.id.messageText)
         private val timeTextView: TextView = itemView.findViewById(R.id.messageTime)
-        private val fileImageView: ImageView = itemView.findViewById(R.id.fileImageView)
+        private val fileContainer: LinearLayout = itemView.findViewById(R.id.fileContainer)
+        private val fileNameTextView: TextView = itemView.findViewById(R.id.fileName)
+        private val fileInfoTextView: TextView = itemView.findViewById(R.id.fileInfo)
         private val retryButton: Button = itemView.findViewById(R.id.retryButton)
+        private val dateTextView: TextView = itemView.findViewById(R.id.dateHeader)
+        private val statusIcon: ImageView = itemView.findViewById(R.id.statusIcon)
+        private val fileImageView: ImageView = itemView.findViewById(R.id.fileImageView)
 
-        fun bind(message: Message) {
+        fun bind(message: Message, previousMessage: Message?) {
+            // Muestra la fecha si es el primer mensaje del día
+            if (previousMessage == null || message.getFormattedDate() != previousMessage.getFormattedDate()) {
+                dateTextView.visibility = View.VISIBLE
+                dateTextView.text = message.getFormattedDate()
+            } else {
+                dateTextView.visibility = View.GONE
+            }
+
+            // Configuración del contenido del mensaje
             messageTextView.visibility = View.GONE
-            fileImageView.visibility = View.GONE
+            fileContainer.visibility = View.GONE
             retryButton.visibility = View.GONE
 
             when {
                 message.fileType?.startsWith("image/") == true -> configureImageView(message)
                 message.fileType?.startsWith("video/") == true -> configureVideoView(message)
-                message.fileType == "application/pdf" -> configureFileView(R.drawable.ic_pdf, message)
+                message.fileType != null -> configureFileContainer(message) // Para archivos generales
                 message.content != null -> {
                     messageTextView.visibility = View.VISIBLE
                     messageTextView.text = message.content
                 }
-                else -> configureFileView(R.drawable.ic_generic_file, message)
             }
-            timeTextView.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(message.timestamp))
+
+            // Muestra la hora del mensaje
+            timeTextView.text = message.getFormattedTime()
         }
 
-        private fun configureFileView(iconRes: Int, message: Message) {
-            fileImageView.visibility = View.VISIBLE
-            fileImageView.setImageResource(iconRes)
+        private fun configureFileContainer(message: Message) {
+            fileContainer.visibility = View.VISIBLE
+            fileNameTextView.text = message.fileName
+            val friendlyType = getFriendlyFileType(message.fileType ?: "")
+//            fileInfoTextView.text = "${message.fileType} • $friendlyType"
+            fileInfoTextView.text = "${formatFileSize(message.fileSize)} • ${getFriendlyFileType(message.fileType ?: "")}"
+
 
             val context = itemView.context
             downloadAndSaveFile(context, message) { fileUri ->
                 if (fileUri != null) {
-                    fileImageView.setOnClickListener {
+                    fileContainer.setOnClickListener {
                         openFileWithApp(context, fileUri, message.fileType ?: "*/*")
                     }
                 } else {
@@ -110,7 +138,7 @@ class ChatAdapter(
             }
 
             retryButton.setOnClickListener {
-                downloadAndSaveFile(context, message) { /* Action handled in callback */ }
+                downloadAndSaveFile(context, message) { /* Acción manejada en el callback */ }
             }
         }
 
@@ -208,9 +236,38 @@ class ChatAdapter(
             }
         }
 
+        private fun getFriendlyFileType(mimeType: String): String {
+            return when {
+                mimeType.startsWith("application/pdf") -> "pdf"
+                mimeType.startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document") -> "docx"
+                mimeType.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") -> "xlsx"
+                mimeType.startsWith("text/plain") -> "txt"
+                mimeType.startsWith("text/x-java") -> "java"
+                else -> "archivo"
+            }
+        }
+
+        private fun formatFileSize(fileSizeInBytes: Long): String {
+            val kiloBytes = fileSizeInBytes / 1024
+            val megaBytes = kiloBytes / 1024
+            return when {
+                megaBytes > 0 -> "$megaBytes MB"
+                kiloBytes > 0 -> "$kiloBytes KB"
+                else -> "$fileSizeInBytes B"
+            }
+        }
+
         private fun showRetryButton() {
             retryButton.visibility = View.VISIBLE
             Toast.makeText(itemView.context, "Error al descargar el archivo. Intenta de nuevo.", Toast.LENGTH_SHORT).show()
+        }
+
+        fun updateStatusIcon(status: String) {
+            when (status) {
+                "sent" -> statusIcon.setImageResource(R.drawable.ic_sent)
+                "read" -> statusIcon.setImageResource(R.drawable.ic_read)
+                "failed" -> statusIcon.setImageResource(R.drawable.ic_failed)
+            }
         }
 
         private fun openMediaModal(position: Int) {

@@ -113,10 +113,12 @@ object DataModule {
     @Provides
     @Singleton
     fun provideChatRepository(
+        context: Context,
         messageMapper: MessageMapper,
         database: FirebaseDatabase,
         storage: FirebaseStorage
     ) : ChatRepository = ChatRepositoryImpl(
+        context,
         database,
         storage,
         messageMapper
