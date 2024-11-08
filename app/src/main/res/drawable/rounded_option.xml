@@ -16,7 +16,7 @@
     <!-- Estado normal -->
     <item>
         <shape>
-            <solid android:color="@color/gray_bg" /> <!-- Color normal -->
+            <solid android:color="@color/white" /> <!-- Color normal -->
             <corners android:radius="16dp" />
         </shape>
     </item>

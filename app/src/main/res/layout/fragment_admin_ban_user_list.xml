@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    >
+    android:layout_marginTop="10dp">
 
     <!-- Botón de regreso -->
     <Button
@@ -20,7 +19,7 @@
         android:id="@+id/textuser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="USER BANS"
+        android:text="@string/user_bans"
         android:textSize="25dp"
         android:gravity="center"
         android:fontFamily="@font/inter_bold"
@@ -36,7 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textuser"
-        android:orientation="horizontal"
         android:id="@+id/search"
         android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
@@ -48,17 +46,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Search..."
+            android:hint="@string/search_hint"
             android:padding="10dp"
             android:layout_marginStart="23dp"
             android:background="@drawable/rounded_search"
             android:textColor="@android:color/black" />
+
         <ImageView
             android:id="@+id/search_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_search"
-            android:contentDescription="Buscar"
+            android:contentDescription="@string/search_description"
             android:padding="10dp"/>
     </RelativeLayout>
 

@@ -10,6 +10,7 @@
     android:padding="16dp"
     android:elevation="8dp">
 
+    <!-- Principal content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,15 +20,14 @@
         android:layout_gravity="center"
         android:backgroundTint="@android:color/transparent">
 
+        <!-- Message dialog -->
         <TextView
+            style="@style/tw_section_dialog"
             android:id="@+id/tvConfirmMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Are you sure you want to delete this car?"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
+            android:text="@string/deletion_confirmation_message"
             android:gravity="center" />
 
+        <!-- Buttons content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,26 +36,19 @@
 
             <!-- Confirm Delete Button -->
             <Button
+                style="@style/button_dialog"
                 android:id="@+id/btnConfirm"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Confirm"
+                android:text="@string/confirm"
                 android:textColor="@drawable/btn_txt_color"
-                android:background="@drawable/btn_confirm_delete"
-                android:textStyle="bold"
-                android:layout_marginEnd="10dp" />
+                android:background="@drawable/btn_confirm_delete" />
 
             <!-- Cancel Button -->
             <Button
+                style="@style/button_dialog"
                 android:id="@+id/btnCancel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Close"
+                android:text="@string/deny"
                 android:textColor="@drawable/btn_edit_txt_color"
-                android:background="@drawable/btn_close_delete"
-                android:textStyle="bold" />
+                android:background="@drawable/btn_close_delete" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

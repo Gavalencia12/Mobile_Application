@@ -7,19 +7,19 @@
     android:paddingTop="40dp"
     android:background="@color/background">
 
-    <!-- Toolbar -->
+    <!-- Toolbar with seller's section and logo -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Contenido de la Toolbar -->
+        <!-- Left side of Toolbar: Logo -->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="start"
-            android:paddingHorizontal="15dp">
+            android:paddingHorizontal="15dp" >
 
             <ImageView
                 android:id="@+id/logo"
@@ -27,10 +27,14 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/logo_bgw"
                 android:contentDescription="@string/logo"
-                android:layout_marginStart="10dp"/>
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/user_text"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <!-- Right side of Toolbar: Seller label -->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,14 +46,14 @@
                 android:layout_width="65dp"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/kaushan_script"
-                android:text="Seller"
+                android:text="@string/seller"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- NestedScrollView para contenido desplazable -->
+    <!-- Scrollable content area -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
         android:layout_width="0dp"
@@ -60,12 +64,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Contenido principal -->
+        <!-- Main content layout inside scroll view -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Sección de bienvenida -->
+            <!-- Welcome section with a message and username -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/section_welcome"
                 android:layout_width="match_parent"
@@ -76,8 +80,8 @@
                     android:id="@+id/tv_welcome_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Welcome back!"
-                    android:paddingLeft="20dp"
+                    android:text="@string/welcome_seller"
+                    android:paddingHorizontal="20dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/dark_gray"
@@ -87,7 +91,8 @@
                     android:id="@+id/tv_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
+                    android:paddingHorizontal="20dp"
+                    android:text="@string/username"
                     android:textSize="28sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -96,7 +101,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Sección de Puntaje del vendedor -->
+            <!-- Seller rating section -->
             <LinearLayout
                 android:id="@+id/section_ratings"
                 android:layout_width="match_parent"
@@ -106,6 +111,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/section_welcome">
 
+                <!-- Card displaying seller's rating information -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_ratings"
                     android:layout_width="350dp"
@@ -119,38 +125,38 @@
                     app:cardCornerRadius="20dp"
                     app:cardElevation="5dp">
 
-                    <!-- Layout contenedor -->
+                    <!-- Vertical layout inside the rating card -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <!-- Título -->
+                        <!-- Rating title -->
                         <TextView
                             android:id="@+id/title_ratings"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="15dp"
-                            android:text="Seller Rating"
+                            android:text="@string/seller_rating"
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
-                        <!-- Layout horizontal para puntaje y imagen -->
+                        <!-- Horizontal layout for score and image -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <!-- Puntaje -->
+                            <!-- Score display -->
                             <TextView
                                 android:id="@+id/score"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingStart="20dp"
-                                android:text="5.0"
+                                android:paddingHorizontal="20dp"
+                                android:text="@string/example_number"
                                 android:textColor="@color/white"
                                 android:textSize="60sp"
                                 android:textStyle="bold" />
@@ -160,23 +166,21 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
-                            <!-- Imagen -->
+                            <!-- Rating icon -->
                             <ImageView
                                 android:id="@+id/icon_rating"
                                 android:layout_width="200dp"
                                 android:layout_height="150dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/phone_call" />
+                                android:src="@drawable/phone_call"
+                                android:contentDescription="@null"/>
 
                         </LinearLayout>
-
                     </LinearLayout>
-
                 </androidx.cardview.widget.CardView>
-
             </LinearLayout>
 
-            <!-- Sección de tarjetas -->
+            <!-- First row of information cards (all cars, sold cars) -->
             <LinearLayout
                 android:id="@+id/section_cards_1"
                 android:layout_width="match_parent"
@@ -185,25 +189,16 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/section_ratings">
 
-                <!-- Tarjeta 1: Todos los coches -->
+                <!-- Card 1: All cars -->
                 <androidx.cardview.widget.CardView
+                    style="@style/card_dashboard"
                     android:id="@+id/card_all_cars"
-                    android:layout_width="170dp"
-                    android:layout_height="160dp"
-                    android:background="@drawable/cards_data"
-                    android:paddingHorizontal="20dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="10dp"
-                    app:cardElevation="5dp"
-                    app:cardCornerRadius="20dp"
-                    android:layout_margin="5dp"
                     android:backgroundTint="@color/dark_blue">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingVertical="20dp"
-                        android:paddingHorizontal="15dp">
+                        android:padding="20dp">
 
                         <ImageView
                             android:id="@+id/icon_all_cars"
@@ -211,54 +206,39 @@
                             android:layout_height="60dp"
                             android:src="@drawable/ic_car"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:contentDescription="@null"/>
 
                         <TextView
+                            style="@style/subtitle_dialog"
                             android:id="@+id/tv_all_cars_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="All cars"
+                            android:text="@string/all_cars"
                             android:textColor="@color/white"
                             android:layout_marginTop="15dp"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/icon_all_cars"
                             app:layout_constraintStart_toStartOf="parent"/>
 
                         <TextView
+                            style="@style/title_dialog"
                             android:id="@+id/tv_all_cars_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="25sp"
                             android:textColor="@color/white"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/tv_all_cars_label"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.cardview.widget.CardView>
 
-                <!-- Tarjeta 2: Coches vendidos -->
+                <!-- Card 2: Sold cars -->
                 <androidx.cardview.widget.CardView
+                    style="@style/card_dashboard"
                     android:id="@+id/card_sold_cars"
-                    android:layout_width="170dp"
-                    android:layout_height="160dp"
-                    android:background="@drawable/cards_data"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="15dp"
-                    android:paddingBottom="10dp"
-                    app:cardElevation="5dp"
-                    app:cardCornerRadius="20dp"
-                    android:layout_margin="5dp"
                     android:backgroundTint="@color/other_blue_dark">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingVertical="20dp"
-                        android:paddingHorizontal="15dp">
+                        android:padding="20dp">
 
                         <ImageView
                             android:id="@+id/icon_sold_cars"
@@ -266,38 +246,31 @@
                             android:layout_height="60dp"
                             android:src="@drawable/ic_money"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:contentDescription="@null"/>
 
                         <TextView
+                            style="@style/subtitle_dialog"
                             android:id="@+id/tv_sold_cars_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sold Cars"
+                            android:text="@string/sold_cars"
                             android:textColor="@color/white"
                             android:layout_marginTop="15dp"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/icon_sold_cars"
                             app:layout_constraintStart_toStartOf="parent"/>
 
                         <TextView
+                            style="@style/title_dialog"
                             android:id="@+id/tv_sold_cars_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="25sp"
                             android:textColor="@color/white"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/tv_sold_cars_label"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.cardview.widget.CardView>
-
             </LinearLayout>
 
-            <!-- Segunda fila de tarjetas -->
+            <!-- Second row of information cards (unsold cars, favorite cars) -->
             <LinearLayout
                 android:id="@+id/section_cards_2"
                 android:layout_width="match_parent"
@@ -306,24 +279,16 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/section_cards_1">
 
-                <!-- Tarjeta 3: Coches no vendidos -->
+                <!-- Card 3: Unsold cars -->
                 <androidx.cardview.widget.CardView
+                    style="@style/card_dashboard"
                     android:id="@+id/card_unsold_cars"
-                    android:layout_width="170dp"
-                    android:layout_height="160dp"
-                    android:layout_margin="5dp"
-                    android:paddingHorizontal="20dp"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="10dp"
-                    app:cardElevation="5dp"
-                    app:cardCornerRadius="20dp"
                     android:backgroundTint="@color/other_blue_dark">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingVertical="20dp"
-                        android:paddingHorizontal="15dp">
+                        android:padding="20dp">
 
                         <ImageView
                             android:id="@+id/icon_unsold_cars"
@@ -331,53 +296,39 @@
                             android:layout_height="60dp"
                             android:src="@drawable/ic_car"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:contentDescription="@null"/>
 
                         <TextView
+                            style="@style/subtitle_dialog"
                             android:id="@+id/tv_unsold_cars_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Unsold Cars"
+                            android:text="@string/unsold_cars"
                             android:textColor="@color/white"
                             android:layout_marginTop="15dp"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/icon_unsold_cars"
                             app:layout_constraintStart_toStartOf="parent"/>
 
                         <TextView
+                            style="@style/title_dialog"
                             android:id="@+id/tv_unsold_cars_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="25sp"
                             android:textColor="@color/white"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/tv_unsold_cars_label"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.cardview.widget.CardView>
 
-                <!-- Tarjeta 4: Coches favoritos -->
+                <!-- Card 4: Favorite cars -->
                 <androidx.cardview.widget.CardView
+                    style="@style/card_dashboard"
                     android:id="@+id/card_favorite_cars"
-                    android:layout_width="170dp"
-                    android:layout_height="160dp"
-                    android:layout_margin="5dp"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="15dp"
-                    android:paddingBottom="10dp"
-                    app:cardElevation="5dp"
-                    app:cardCornerRadius="20dp"
-                    android:backgroundTint="@color/dark_blue">
+                    android:backgroundTint="@color/dark_blue" >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingVertical="20dp"
-                        android:paddingHorizontal="15dp">
+                        android:padding="20dp" >
 
                         <ImageView
                             android:id="@+id/icon_favorite_cars"
@@ -385,38 +336,31 @@
                             android:layout_height="60dp"
                             android:src="@drawable/ic_favourite"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:contentDescription="@null"/>
 
                         <TextView
+                            style="@style/subtitle_dialog"
                             android:id="@+id/tv_favorite_cars_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Favorite Cars"
+                            android:text="@string/favorites"
                             android:textColor="@color/white"
                             android:layout_marginTop="15dp"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/icon_favorite_cars"
                             app:layout_constraintStart_toStartOf="parent"/>
 
                         <TextView
+                            style="@style/title_dialog"
                             android:id="@+id/tv_favorite_cars_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="25sp"
                             android:textColor="@color/white"
-                            android:textStyle="bold"
                             app:layout_constraintTop_toBottomOf="@id/tv_favorite_cars_label"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.cardview.widget.CardView>
-
             </LinearLayout>
 
-            <!-- Sección de Reseñas del vendedor -->
+            <!-- Horizontal scroll view for seller reviews -->
             <HorizontalScrollView
                 android:id="@+id/section_reviews"
                 android:layout_width="match_parent"
@@ -430,79 +374,57 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <!-- Tarjeta de reseña -->
+                    <!-- Review card 1 -->
                     <androidx.cardview.widget.CardView
+                        style="@style/card_info"
                         android:id="@+id/card_review_1"
-                        android:layout_width="350dp"
-                        android:layout_height="150dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cards_data"
-                        android:backgroundTint="@color/blue_pressed"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="15dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="5dp">
+                        android:backgroundTint="@color/blue_pressed" >
 
-                        <!-- Contenedor principal -->
+                        <!-- Review content layout -->
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="10dp">
 
-                            <!-- Imagen  -->
                             <ImageView
                                 android:id="@+id/icon_review"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:src="@drawable/ic_review"
-                                android:layout_alignParentStart="true"/>
+                                android:layout_alignParentStart="true"
+                                android:contentDescription="@null"/>
 
-                            <!-- Título -->
                             <TextView
+                                style="@style/title_dialog"
                                 android:id="@+id/title_review"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Reviews"
+                                android:text="@string/review"
                                 android:textColor="@color/white"
-                                android:textSize="25sp"
-                                android:textStyle="bold"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="20dp" />
 
                             <!-- Texto de la reseña -->
                             <TextView
+                                style="@style/txt_footer"
                                 android:id="@+id/review"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Muy buen vendedor, acesible, guapo, comprometedor, sincero."
+                                android:text="@string/txt_review"
                                 android:textColor="@color/white"
-                                android:textSize="15sp"
                                 android:textStyle="normal"
                                 android:textAlignment="center"
                                 android:maxLines="3"
-                                android:ellipsize="end"
                                 android:layout_below="@id/title_review"
-                                android:layout_marginTop="20dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp" />
+                                android:layout_marginTop="20dp" />
 
                         </RelativeLayout>
-
                     </androidx.cardview.widget.CardView>
 
+                    <!-- Review card 2 -->
                     <androidx.cardview.widget.CardView
+                        style="@style/card_info"
                         android:id="@+id/card_review"
-                        android:layout_width="350dp"
-                        android:layout_height="150dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cards_data"
-                        android:backgroundTint="@color/blue_pressed"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="15dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="5dp">
+                        android:backgroundTint="@color/blue_pressed" >
 
-                        <!-- Contenedor principal -->
+                        <!-- Review content layout -->
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -514,51 +436,40 @@
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:src="@drawable/ic_review"
-                                android:layout_alignParentStart="true"/>
+                                android:layout_alignParentStart="true"
+                                android:contentDescription="@null"/>
 
                             <!-- Título -->
                             <TextView
+                                style="@style/title_dialog"
                                 android:id="@+id/title_review1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Reviews"
+                                android:text="@string/review"
                                 android:textColor="@color/white"
-                                android:textSize="25sp"
-                                android:textStyle="bold"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="20dp" />
 
                             <!-- Texto de la reseña -->
                             <TextView
+                                style="@style/txt_footer"
                                 android:id="@+id/review1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="BLALALALALALALALALA"
+                                android:text="@string/txt_review"
                                 android:textColor="@color/white"
                                 android:textSize="15sp"
                                 android:textStyle="normal"
                                 android:textAlignment="center"
                                 android:maxLines="3"
-                                android:ellipsize="end"
                                 android:layout_below="@id/title_review1"
-                                android:layout_marginTop="20dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp" />
+                                android:layout_marginTop="20dp" />
 
                         </RelativeLayout>
-
                     </androidx.cardview.widget.CardView>
-
-
                 </LinearLayout>
-
             </HorizontalScrollView>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.core.widget.NestedScrollView>
 
-    <!-- BottomNavigationView -->
+    <!-- Bottom navigation for seller options -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationSeller"
         android:layout_width="match_parent"
