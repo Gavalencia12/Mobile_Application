@@ -7,5 +7,6 @@
         <item>@font/inter_light</item>
         <item>@font/inter_semibold</item>
         <item>@font/kaushan_script</item>
+        <item>@font/roboto</item>
     </array>
 </resources>

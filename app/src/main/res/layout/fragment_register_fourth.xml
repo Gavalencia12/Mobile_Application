@@ -48,7 +48,7 @@
                 android:id="@+id/emailVerificationStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Esperando verificación de correo..."
+                android:text="@string/esperando_verificaci_n_de_correo"
                 android:visibility="visible" /> <!-- Estaba oculto por defecto -->
 
             <Space
@@ -60,12 +60,10 @@
                 android:id="@+id/continueButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Continuar"
+                android:text="@string/continuar"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/white"
-                android:background="@drawable/btn_style"
-                android:enabled="false"/> <!-- Deshabilitado por defecto -->
+                android:enabled="false"
+                style="@style/ButtonTheme"/> <!-- Deshabilitado por defecto -->
 
             <Space
                 android:layout_width="match_parent"
@@ -76,7 +74,7 @@
                 android:id="@+id/loginLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Didn't you receive the email? Resend"
+                android:text="@string/didn_t_you_receive_the_email_resend"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/dark_blue"
                 android:layout_marginBottom="60dp"
