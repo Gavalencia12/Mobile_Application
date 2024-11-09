@@ -108,4 +108,3 @@ class CarsListFragment : Fragment() {
         _binding = null // Clear the binding reference to prevent memory leaks
     }
 }
-
