@@ -12,8 +12,9 @@ class SendFileMessageUseCase(private val repository: ChatRepository) {
         fileType: String,
         fileName: String,
         fileHash: String,
-        receiver: String
+        receiver: String,
+        deletedFor: List<String> // Agregamos `deletedFor` como parámetro
     ): Result<Unit> {
-        return repository.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, receiver)
+        return repository.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, receiver, deletedFor)
     }
 }

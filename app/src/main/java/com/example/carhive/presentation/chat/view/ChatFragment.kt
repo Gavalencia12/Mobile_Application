@@ -31,6 +31,7 @@ import com.example.carhive.presentation.chat.adapter.ChatAdapter
 import com.example.carhive.presentation.chat.viewModel.ChatViewModel
 import com.example.carhive.Domain.usecase.chats.CleanUpDatabaseUseCase
 import com.example.carhive.R
+import com.example.carhive.presentation.chat.dialog.GlobalDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -120,6 +121,18 @@ class ChatFragment : Fragment() {
             showPopupMenu(it)
         }
 
+        chatViewModel.isUserBlocked(currentUserId, buyerId) { isBlocked ->
+            if (isBlocked) {
+                binding.blockedMessageTextView.visibility = View.VISIBLE
+                binding.messageInputLayout.visibility = View.GONE
+                binding.buttonSend.visibility = View.GONE
+            } else {
+                binding.blockedMessageTextView.visibility = View.GONE
+                binding.messageInputLayout.visibility = View.VISIBLE
+                binding.buttonSend.visibility = View.VISIBLE
+            }
+        }
+
     }
 
     private fun setupRecyclerView() {
@@ -131,14 +144,26 @@ class ChatFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launchWhenStarted {
+
+        chatViewModel.isUserBlocked.observe(viewLifecycleOwner) { isBlocked ->
+            if (isBlocked) {
+                binding.blockedMessageTextView.visibility = View.VISIBLE
+                binding.messageInputLayout.visibility = View.GONE
+                binding.buttonSend.visibility = View.GONE
+            } else {
+                binding.blockedMessageTextView.visibility = View.GONE
+                binding.messageInputLayout.visibility = View.VISIBLE
+                binding.buttonSend.visibility = View.VISIBLE
+            }
+        }
+        lifecycleScope.launch {
             chatViewModel.messages.collect { messages ->
                 chatAdapter.updateMessages(messages)
                 binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             chatViewModel.error.collect { error ->
                 error?.let {
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
@@ -178,42 +203,91 @@ class ChatFragment : Fragment() {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.inflate(R.menu.chat_menu)
 
-        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
-                R.id.option_info -> {
-                    // Acción para la opción "Info"
-                    true
+        // Configura el menú según el estado de bloqueo
+        chatViewModel.isUserBlocked(currentUserId, buyerId) { isBlocked ->
+            val blockItem = popupMenu.menu.findItem(R.id.option_block)
+            blockItem.title = if (isBlocked) "Desbloquear" else "Bloquear"
+
+            popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+                when (menuItem.itemId) {
+                    R.id.option_report -> {
+                        showReportDialog()
+                        true
+                    }
+                    R.id.option_block -> {
+                        if (isBlocked) {
+                            chatViewModel.unblockUser(currentUserId, buyerId)
+                            Toast.makeText(requireContext(), "Usuario desbloqueado", Toast.LENGTH_SHORT).show()
+                        } else {
+                            showBlockUserDialog()
+                        }
+                        true
+                    }
+                    R.id.option_exit -> {
+                        showConfirmDeleteChatDialog()
+                        true
+                    }
+                    else -> false
                 }
-                R.id.option_report -> {
-                    // Acción para la opción "Silenciar"
-                    true
-                }
-                R.id.option_exit -> {
-                    // Acción para "Vaciar Chat"
-                    showConfirmDeleteChatDialog()
-                    true
-                }
-                else -> false
             }
+            popupMenu.show()
         }
-        popupMenu.show()
+    }
+
+    private fun showReportDialog() {
+        val reportDialog = GlobalDialogFragment.newInstance(
+            title = "Reportar usuario",
+            message = "¿Estás seguro de que deseas reportar a este usuario? Esto enviará una muestra de los mensajes recientes para revisión.",
+            showCheckBox = true,
+            positiveButtonText = "Reportar",
+            negativeButtonText = "Cancelar",
+            dialogType = GlobalDialogFragment.DialogType.REPORT,
+            currentUserId = currentUserId,
+            ownerId = ownerId,
+            carId = carId,
+            buyerId = buyerId,
+            onActionCompleted = {
+                chatViewModel.setUserBlocked(true)
+            }
+        )
+        reportDialog.show(parentFragmentManager, "ReportDialog")
+    }
+
+    private fun showBlockUserDialog() {
+        val blockDialog = GlobalDialogFragment.newInstance(
+            title = "Bloquear usuario",
+            message = "¿Estás seguro de que deseas bloquear a este usuario? No podrás recibir más mensajes de ellos.",
+            positiveButtonText = "Bloquear",
+            negativeButtonText = "Cancelar",
+            dialogType = GlobalDialogFragment.DialogType.BLOCK,
+            currentUserId = currentUserId,
+            ownerId = ownerId,
+            carId = carId,
+            buyerId = buyerId,
+            onActionCompleted = {
+                chatViewModel.setUserBlocked(true)
+                chatViewModel.clearChatForUser(ownerId, carId, buyerId)
+            }
+        )
+        blockDialog.show(parentFragmentManager, "BlockDialog")
     }
 
     private fun showConfirmDeleteChatDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Confirmación")
-        builder.setMessage("¿Estás seguro de que deseas vaciar el chat? Esta acción no se puede deshacer.")
-
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
-            chatViewModel.clearChatForUser(ownerId, carId, buyerId)
-            dialog.dismiss()
-        }
-
-        builder.setNegativeButton("Cancelar") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        builder.create().show()
+        val deleteDialog = GlobalDialogFragment.newInstance(
+            title = "Confirmación",
+            message = "¿Estás seguro de que deseas vaciar el chat? Esta acción no se puede deshacer.",
+            positiveButtonText = "Aceptar",
+            negativeButtonText = "Cancelar",
+            dialogType = GlobalDialogFragment.DialogType.DELETE_CHAT,
+            currentUserId = currentUserId,
+            ownerId = ownerId,
+            carId = carId,
+            buyerId = buyerId,
+            onActionCompleted = {
+                chatViewModel.clearChatForUser(ownerId, carId, buyerId)
+            }
+        )
+        deleteDialog.show(parentFragmentManager, "DeleteChatDialog")
     }
 
     private fun openFileChooser() {

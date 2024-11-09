@@ -67,15 +67,8 @@ class ChatAdapter(
     override fun getItemCount(): Int = messages.size
 
     fun updateMessages(newMessages: List<Message>) {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
-
-        // Filtrar mensajes para excluir aquellos en los que el usuario actual esté en `deletedFor`
-        val filteredMessages = newMessages.filter { message ->
-            currentUserId !in message.deletedFor
-        }
-
         messages.clear()
-        messages.addAll(filteredMessages)
+        messages.addAll(newMessages)
         notifyDataSetChanged()
     }
 
@@ -121,8 +114,6 @@ class ChatAdapter(
         private fun configureFileContainer(message: Message) {
             fileContainer.visibility = View.VISIBLE
             fileNameTextView.text = message.fileName
-            val friendlyType = getFriendlyFileType(message.fileType ?: "")
-//            fileInfoTextView.text = "${message.fileType} • $friendlyType"
             fileInfoTextView.text = "${formatFileSize(message.fileSize)} • ${getFriendlyFileType(message.fileType ?: "")}"
 
 

@@ -13,7 +13,7 @@ data class MessageEntity(
     val fileSize: Long = 0L,
     val hash: String? = null,
     val status: String = "sent",         // Estado: "sent", "delivered", "read", "failed"
-    val deletedFor: List<String> = listOf() // Lista de usuarios que han eliminado el mensaje para ellos
+    val deletedFor: MutableList<String> = mutableListOf() // Lista de usuarios que han eliminado el mensaje para ellos
 )
 
 data class UserWithLastMessage(

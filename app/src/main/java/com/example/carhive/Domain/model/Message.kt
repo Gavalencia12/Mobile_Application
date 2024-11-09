@@ -20,7 +20,7 @@ data class Message(
     val fileSize: Long = 0L,
     val hash: String? = null,
     val status: String = "sent",
-    val deletedFor: List<String> = listOf()
+    val deletedFor: MutableList<String> = mutableListOf()
 ): Parcelable {
     fun getFormattedTime(): String {
         val date = Date(timestamp)

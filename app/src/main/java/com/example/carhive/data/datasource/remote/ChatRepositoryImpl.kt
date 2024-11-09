@@ -89,7 +89,6 @@ class ChatRepositoryImpl @Inject constructor(
 
             val messageEntity = messageMapper.mapToEntity(message.copy(
                 messageId = messageRef.key ?: "",
-//                status = "sent" // Marca como enviado
             ))
             messageRef.setValue(messageEntity).await()
             Result.success(Unit)
@@ -107,7 +106,8 @@ class ChatRepositoryImpl @Inject constructor(
         fileType: String,
         fileName: String,
         fileHash: String,
-        receiver: String
+        receiver: String,
+        deletedFor: List<String> // Agregamos `deletedFor` como parámetro
     ): Result<Unit> {
         return try {
             val fileSize = context.contentResolver.openFileDescriptor(fileUri, "r")?.statSize ?: 0L
@@ -132,7 +132,7 @@ class ChatRepositoryImpl @Inject constructor(
 
                 // Guarda los detalles del archivo en "Files" con el nombre original
                 val fileData = mapOf(
-                    "name" to fileName,  // Guarda el nombre original del archivo
+                    "name" to fileName,
                     "timestamp" to System.currentTimeMillis(),
                     "type" to fileType,
                     "size" to fileSize,
@@ -157,11 +157,11 @@ class ChatRepositoryImpl @Inject constructor(
                 .child(carId)
                 .child("messages")
                 .child(buyerId)
-                .push()  // Esto genera un ID único para el mensaje
+                .push()
 
-            // Crear y enviar el mensaje con el hash del archivo
+            // Crear y enviar el mensaje con `deletedFor`
             val message = Message(
-                messageId = messageRef.key ?: "", // Aquí obtén el ID único de Firebase
+                messageId = messageRef.key ?: "",
                 senderId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
                 fileUrl = downloadUri.toString(),
                 fileType = fileType,
@@ -170,16 +170,18 @@ class ChatRepositoryImpl @Inject constructor(
                 hash = fileHash,
                 timestamp = System.currentTimeMillis(),
                 receiverId = receiver,
-                carId = carId
+                carId = carId,
+                deletedFor = deletedFor.toMutableList() // Asigna `deletedFor`
             )
 
-            // Finalmente, guarda el mensaje en Firebase
+            // Guardar el mensaje en Firebase
             messageRef.setValue(message).await()
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(Exception("Error sending file message: ${e.message}", e))
         }
     }
+
 
 
     override suspend fun getUserInfo(userId: String, carId: String): Result<CarEntity?> {
@@ -296,8 +298,6 @@ class ChatRepositoryImpl @Inject constructor(
         Log.d("getInterestedUsers", "Total items found: ${resultList.size}")
         return resultList
     }
-
-
 
     override suspend fun cleanUpDatabase(context: Context) {
         val fileDao = DatabaseModule.getDatabase(context).downloadedFileDao()

@@ -34,10 +34,10 @@
 
         <!-- Nombre y modelo del coche -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1"> <!-- Añadido para expandir el espacio restante -->
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tv_name"
@@ -74,8 +74,21 @@
         android:layout_weight="1"
         android:padding="8dp"/>
 
+    <!-- Texto para indicar que el usuario está bloqueado -->
+    <TextView
+        android:id="@+id/blockedMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Has bloqueado a este usuario. Desbloquéalo para reanudar la conversación."
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
     <!-- Input para enviar mensaje con attachButton -->
     <LinearLayout
+        android:id="@+id/messageInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

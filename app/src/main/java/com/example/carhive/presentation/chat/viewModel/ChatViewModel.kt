@@ -17,11 +17,13 @@ import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.data.model.UserEntity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,6 +52,9 @@ class ChatViewModel @Inject constructor(
     private val _carDetails = MutableLiveData<CarEntity?>()
     val carDetails: LiveData<CarEntity?> get() = _carDetails
 
+    private val _isUserBlocked = MutableLiveData<Boolean>()
+    val isUserBlocked: LiveData<Boolean> get() = _isUserBlocked
+
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
 
     fun observeMessages(ownerId: String, carId: String, buyerId: String) {
@@ -57,7 +62,7 @@ class ChatViewModel @Inject constructor(
             getMessagesUseCase(ownerId, carId, buyerId).collect { message ->
                 // Verifica que el usuario actual no esté en la lista deletedFor del mensaje
                 if (!message.deletedFor.contains(currentUserId)) {
-                    Log.i("angel", "Cargo el observe")
+                    Log.i("angel", "Mensaje observado")
                     _messages.value += message
 
                     if (message.receiverId == currentUserId && message.status == "sent") {
@@ -72,20 +77,32 @@ class ChatViewModel @Inject constructor(
         val isSeller = currentUserId == ownerId
         val receiver = if (isSeller) buyerId else ownerId
 
-        val message = Message(
-            messageId = "",
-            senderId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
-            receiverId = receiver,
-            content = content,
-            timestamp = System.currentTimeMillis(),
-            status = "sent",
-            carId = carId
-        )
         viewModelScope.launch {
-            val result = sendMessageUseCase(ownerId, carId, buyerId, message)
-            if (result.isFailure) {
-                _error.value = result.exceptionOrNull()?.message
-                updateMessageStatus(ownerId, carId, buyerId, message.messageId, "failed")
+            isUserBlocked(receiver, currentUserId) { isBlocked ->
+                val message = Message(
+                    messageId = "",
+                    senderId = currentUserId,
+                    receiverId = receiver,
+                    content = content,
+                    timestamp = System.currentTimeMillis(),
+                    status = "sent",
+                    carId = carId,
+                    deletedFor = mutableListOf() // Inicializa deletedFor vacío
+                )
+
+                if (isBlocked) {
+                    // Si está bloqueado, agrega el ID del receptor a deletedFor
+                    message.deletedFor.add(receiver)
+                }
+
+                // Luego intenta enviar el mensaje dentro de la coroutine
+                viewModelScope.launch {
+                    val result = sendMessageUseCase(ownerId, carId, buyerId, message)
+                    if (result.isFailure) {
+                        _error.value = result.exceptionOrNull()?.message
+                        updateMessageStatus(ownerId, carId, buyerId, message.messageId, "failed")
+                    }
+                }
             }
         }
     }
@@ -94,15 +111,29 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             val isSeller = currentUserId == ownerId
             val receiver = if (isSeller) buyerId else ownerId
-            val result = sendFileMessageUseCase(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, receiver)
-            if (result.isFailure) {
-                _error.value = result.exceptionOrNull()?.message
+
+            isUserBlocked(receiver, currentUserId) { isBlocked ->
+                // Inicializa la lista `deletedFor`
+                val deletedFor = mutableListOf<String>()
+
+                // Si el receptor bloqueó al remitente, añade el ID a `deletedFor`
+                if (isBlocked) {
+                    deletedFor.add(receiver)
+                }
+
+                // Llama al caso de uso para enviar el archivo con la lista `deletedFor`
+                viewModelScope.launch {
+                    val result = sendFileMessageUseCase(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, receiver, deletedFor)
+                    if (result.isFailure) {
+                        _error.value = result.exceptionOrNull()?.message
+                    }
+                }
             }
         }
     }
 
     // Llama a la función para cambiar el estado del mensaje
-    fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String) {
+    private fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String) {
         viewModelScope.launch {
             updateMessageStatusUseCase(ownerId, carId, buyerId, messageId, status)
         }
@@ -143,6 +174,76 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    fun reportUser(currentUserId: String, ownerId: String, buyerId: String, carId: String) {
+        viewModelScope.launch {
+            try {
+                // Enviar un reporte en el nodo "Reports" de Firebase
+                val reportRef = FirebaseDatabase.getInstance().getReference("Reports")
+                    .child("UserReports").push()
+
+                val reportData = mapOf(
+                    "reporterId" to currentUserId,
+                    "reportedUserId" to buyerId,
+                    "carId" to carId,
+                    "ownerId" to ownerId,
+                    "timestamp" to System.currentTimeMillis(),
+                    "sampleMessages" to _messages.value.takeLast(5) // Adjuntar últimos 5 mensajes
+                )
+
+                reportRef.setValue(reportData)
+            } catch (e: Exception) {
+                _error.value = "Error al reportar usuario: ${e.message}"
+            }
+        }
+    }
+
+    fun blockUser(currentUserId: String, ownerId: String, buyerId: String, carId: String) {
+        viewModelScope.launch {
+            try {
+                val blockRef = FirebaseDatabase.getInstance().getReference("BlockedUsers")
+                    .child(currentUserId).child(buyerId)
+                val blockData = mapOf(
+                    "blockedUserId" to buyerId,
+                    "carId" to carId,
+                    "timestamp" to System.currentTimeMillis()
+                )
+                blockRef.setValue(blockData).await()
+
+                // Utiliza setUserBlocked para actualizar el estado de bloqueo
+                setUserBlocked(true)
+
+            } catch (e: Exception) {
+                _error.value = "Error al bloquear usuario: ${e.message}"
+            }
+        }
+    }
+
+    fun unblockUser(currentUserId: String, blockedUserId: String) {
+        viewModelScope.launch {
+            try {
+                val blockRef = FirebaseDatabase.getInstance().getReference("BlockedUsers")
+                    .child(currentUserId).child(blockedUserId)
+                blockRef.removeValue().await()
+
+                // Utiliza setUserBlocked para actualizar el estado de bloqueo
+                setUserBlocked(false)
+            } catch (e: Exception) {
+                _error.value = "Error al desbloquear usuario: ${e.message}"
+            }
+        }
+    }
+
+    fun setUserBlocked(isBlocked: Boolean) {
+        _isUserBlocked.postValue(isBlocked)
+    }
+
+    fun isUserBlocked(currentUserId: String, otherUserId: String, callback: (Boolean) -> Unit) {
+        val blockRef = FirebaseDatabase.getInstance().getReference("BlockedUsers")
+            .child(currentUserId).child(otherUserId)
+        blockRef.get().addOnSuccessListener { snapshot ->
+            callback(snapshot.exists())
+        }
+    }
 
     fun loadInfoHead(ownerId: String, carId: String, buyerId: String) {
         viewModelScope.launch {
