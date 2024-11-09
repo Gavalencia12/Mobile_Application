@@ -21,9 +21,14 @@ class SellerCarUsersFragment : BaseMessagesFragment() {
     private var ownerId: String? = null
     private lateinit var simpleUsersAdapter: SimpleUsersMessagesAdapter
 
+    /**
+     * Initializes the fragment view and retrieves car and owner IDs from arguments.
+     * Sets up the recycler view and loads initial data.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Retrieve car and owner IDs from arguments
         carId = arguments?.getString("carId")
         ownerId = arguments?.getString("ownerId")
 
@@ -31,6 +36,9 @@ class SellerCarUsersFragment : BaseMessagesFragment() {
         loadData()
     }
 
+    /**
+     * Configures the recycler view with a custom adapter for displaying users interested in a specific car.
+     */
     private fun setupSimpleRecyclerView() {
         simpleUsersAdapter = SimpleUsersMessagesAdapter(mutableListOf()) { item ->
             navigateToChat(item)
@@ -42,12 +50,18 @@ class SellerCarUsersFragment : BaseMessagesFragment() {
         }
     }
 
+    /**
+     * Loads interested users for a specific car if carId and ownerId are not null.
+     */
     override fun loadData() {
         if (ownerId != null && carId != null) {
             viewModel.loadInterestedUsersForCar(ownerId!!, carId!!)
         }
     }
 
+    /**
+     * Defines navigation behavior to the chat screen when a user item is selected.
+     */
     override val navigateToChat: (Any) -> Unit = { item ->
         if (item is UserWithLastMessage) {
             val bundle = Bundle().apply {
@@ -59,13 +73,15 @@ class SellerCarUsersFragment : BaseMessagesFragment() {
         }
     }
 
-    // Observa los datos de usuarios interesados y actualiza el adaptador
+    /**
+     * Observes data from the ViewModel and updates the adapter with filtered users for the specific car.
+     */
     override fun observeViewModel() {
         viewModel.usersWithMessages.observe(viewLifecycleOwner) { usersWithMessages ->
-            // Filtra la lista para incluir solo los usuarios cuyo carId coincida con el argumento carId
+            // Filter users specific to the carId
             val filteredUsers = usersWithMessages.interestedUsers.filter { it.carId == carId }
 
-            // Actualiza el adaptador con la lista filtrada
+            // Update adapter with filtered user list
             simpleUsersAdapter.updateData(filteredUsers)
         }
 
@@ -73,5 +89,4 @@ class SellerCarUsersFragment : BaseMessagesFragment() {
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
-
 }

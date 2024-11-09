@@ -16,7 +16,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.PopupMenu
 import android.widget.Toast
-import android.widget.VideoView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -53,15 +52,21 @@ class ChatFragment : Fragment() {
     private val buyerId by lazy { arguments?.getString("buyerId") ?: "" }
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
 
+    /**
+     * Inflates the layout for the chat fragment using view binding.
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    /**
+     * Initializes the RecyclerView, observes ViewModel data, and sets up click listeners.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Llama a la función de limpieza de la base de datos
+        // Cleans up the database when the view is created
         lifecycleScope.launch {
             cleanUpDatabaseUseCase(requireContext())
         }
@@ -69,54 +74,47 @@ class ChatFragment : Fragment() {
         setupRecyclerView()
         observeViewModel()
 
+        // Start observing messages and load user information
         chatViewModel.observeMessages(ownerId, carId, buyerId)
-
         chatViewModel.loadInfoHead(ownerId, carId, buyerId)
 
         requestStoragePermission()
 
-        // Enviar mensaje de texto
         binding.buttonSend.setOnClickListener {
             val originalMessage = binding.editTextMessage.text.toString().trimEnd()
-
-            // Evita el envío de mensajes vacíos
             if (originalMessage.isBlank()) {
-                Toast.makeText(context, "No se puede enviar un mensaje vacío", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Cannot send an empty message", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            // Procesa el mensaje eliminando saltos de línea innecesarios
             val cleanedMessage = originalMessage.replace(Regex("\\n{2,}"), "\n")
-
             chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage)
             binding.editTextMessage.text.clear()
         }
 
-        // Configuración para el campo de entrada de texto
+        // Set up editor action listener for sending message on 'Done' action
         binding.editTextMessage.setOnEditorActionListener { textView, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 val currentText = textView.text.toString().trimEnd()
-
-                // Si el contenido después del salto de línea está vacío, elimina el salto de línea
                 if (currentText.endsWith("\n")) {
                     textView.text = currentText.removeSuffix("\n")
                 }
-
                 true
             } else {
                 false
             }
         }
 
-        // Adjuntar archivo
+        // Set up file attachment button to open file chooser
         binding.attachButton.setOnClickListener {
             openFileChooser()
         }
 
+        // Navigation button
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
+        // Menu button for additional chat options
         binding.menuButton.setOnClickListener {
             showPopupMenu(it)
         }
@@ -132,9 +130,11 @@ class ChatFragment : Fragment() {
                 binding.buttonSend.visibility = View.VISIBLE
             }
         }
-
     }
 
+    /**
+     * Sets up the RecyclerView for displaying chat messages.
+     */
     private fun setupRecyclerView() {
         chatAdapter = ChatAdapter(mutableListOf(), childFragmentManager, viewLifecycleOwner.lifecycleScope)
         binding.recyclerViewMessages.apply {
@@ -143,8 +143,10 @@ class ChatFragment : Fragment() {
         }
     }
 
+    /**
+     * Observes data from the ViewModel to update the UI.
+     */
     private fun observeViewModel() {
-
         chatViewModel.isUserBlocked.observe(viewLifecycleOwner) { isBlocked ->
             if (isBlocked) {
                 binding.blockedMessageTextView.visibility = View.VISIBLE
@@ -171,27 +173,24 @@ class ChatFragment : Fragment() {
             }
         }
 
-        // Observa los datos del usuario con el que estás hablando
         chatViewModel.userData.observe(viewLifecycleOwner) { user ->
-            if (user != null) {
-                // Actualiza la interfaz de usuario con los datos del usuario con el que estás hablando
-                binding.tvName.text = user.firstName
-                binding.tvCarModel.text = user.email
+            user?.let {
+                binding.tvName.text = it.firstName
+                binding.tvCarModel.text = it.email
                 Glide.with(requireContext())
-                    .load(user.imageUrl)
+                    .load(it.imageUrl)
                     .placeholder(R.drawable.ic_img)
                     .error(R.drawable.ic_error)
                     .into(binding.profileImage)
             }
         }
 
-        // Observa los datos del comprador, en caso de que seas el vendedor
         chatViewModel.buyerData.observe(viewLifecycleOwner) { buyer ->
-            if (buyer != null) {
-                binding.tvName.text = buyer.firstName
-                binding.tvCarModel.text = buyer.email
+            buyer?.let {
+                binding.tvName.text = it.firstName
+                binding.tvCarModel.text = it.email
                 Glide.with(requireContext())
-                    .load(buyer.imageUrl)
+                    .load(it.imageUrl)
                     .placeholder(R.drawable.ic_img)
                     .error(R.drawable.ic_error)
                     .into(binding.profileImage)
@@ -199,14 +198,16 @@ class ChatFragment : Fragment() {
         }
     }
 
+    /**
+     * Shows the options menu with actions to report, block, or delete the chat.
+     */
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.inflate(R.menu.chat_menu)
 
-        // Configura el menú según el estado de bloqueo
         chatViewModel.isUserBlocked(currentUserId, buyerId) { isBlocked ->
             val blockItem = popupMenu.menu.findItem(R.id.option_block)
-            blockItem.title = if (isBlocked) "Desbloquear" else "Bloquear"
+            blockItem.title = if (isBlocked) "Unblock" else "Block"
 
             popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
                 when (menuItem.itemId) {
@@ -217,7 +218,7 @@ class ChatFragment : Fragment() {
                     R.id.option_block -> {
                         if (isBlocked) {
                             chatViewModel.unblockUser(currentUserId, buyerId)
-                            Toast.makeText(requireContext(), "Usuario desbloqueado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "User unblocked", Toast.LENGTH_SHORT).show()
                         } else {
                             showBlockUserDialog()
                         }
@@ -236,11 +237,11 @@ class ChatFragment : Fragment() {
 
     private fun showReportDialog() {
         val reportDialog = GlobalDialogFragment.newInstance(
-            title = "Reportar usuario",
-            message = "¿Estás seguro de que deseas reportar a este usuario? Esto enviará una muestra de los mensajes recientes para revisión.",
+            title = "Report User",
+            message = "Are you sure you want to report this user? This will send a sample of recent messages for review.",
             showCheckBox = true,
-            positiveButtonText = "Reportar",
-            negativeButtonText = "Cancelar",
+            positiveButtonText = "Report",
+            negativeButtonText = "Cancel",
             dialogType = GlobalDialogFragment.DialogType.REPORT,
             currentUserId = currentUserId,
             ownerId = ownerId,
@@ -255,10 +256,10 @@ class ChatFragment : Fragment() {
 
     private fun showBlockUserDialog() {
         val blockDialog = GlobalDialogFragment.newInstance(
-            title = "Bloquear usuario",
-            message = "¿Estás seguro de que deseas bloquear a este usuario? No podrás recibir más mensajes de ellos.",
-            positiveButtonText = "Bloquear",
-            negativeButtonText = "Cancelar",
+            title = "Block User",
+            message = "Are you sure you want to block this user? You will not receive further messages from them.",
+            positiveButtonText = "Block",
+            negativeButtonText = "Cancel",
             dialogType = GlobalDialogFragment.DialogType.BLOCK,
             currentUserId = currentUserId,
             ownerId = ownerId,
@@ -274,10 +275,10 @@ class ChatFragment : Fragment() {
 
     private fun showConfirmDeleteChatDialog() {
         val deleteDialog = GlobalDialogFragment.newInstance(
-            title = "Confirmación",
-            message = "¿Estás seguro de que deseas vaciar el chat? Esta acción no se puede deshacer.",
-            positiveButtonText = "Aceptar",
-            negativeButtonText = "Cancelar",
+            title = "Confirmation",
+            message = "Are you sure you want to clear the chat? This action cannot be undone.",
+            positiveButtonText = "Accept",
+            negativeButtonText = "Cancel",
             dialogType = GlobalDialogFragment.DialogType.DELETE_CHAT,
             currentUserId = currentUserId,
             ownerId = ownerId,
@@ -304,8 +305,6 @@ class ChatFragment : Fragment() {
             data?.data?.let { uri ->
                 val fileType = requireContext().contentResolver.getType(uri) ?: "application/octet-stream"
                 val fileName = getFileNameFromUri(uri) ?: "file"
-
-                // Mostrar vista previa y confirmación antes de enviar
                 showFilePreview(uri, fileType, fileName)
             }
         }
@@ -313,7 +312,7 @@ class ChatFragment : Fragment() {
 
     private fun showFilePreview(fileUri: Uri, fileType: String, fileName: String) {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Vista previa del archivo")
+        builder.setTitle("File Preview")
 
         val previewBinding = DialogFilePreviewBinding.inflate(LayoutInflater.from(requireContext()))
         builder.setView(previewBinding.root)
@@ -334,7 +333,7 @@ class ChatFragment : Fragment() {
             }
         }
 
-        builder.setPositiveButton("Enviar") { dialog, _ ->
+        builder.setPositiveButton("Send") { dialog, _ ->
             lifecycleScope.launch {
                 val fileHash = calculateFileHash(fileUri)
                 chatViewModel.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash)
@@ -342,7 +341,7 @@ class ChatFragment : Fragment() {
             }
         }
 
-        builder.setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
 
         builder.create().show()
     }
@@ -384,9 +383,9 @@ class ChatFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(requireContext(), "Permiso de almacenamiento concedido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Storage permission granted", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Permiso de almacenamiento denegado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Storage permission denied", Toast.LENGTH_SHORT).show()
             }
         }
     }

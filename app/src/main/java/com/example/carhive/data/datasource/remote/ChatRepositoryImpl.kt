@@ -4,8 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.carhive.Domain.model.Message
 import com.example.carhive.data.exception.RepositoryException
 import com.example.carhive.data.mapper.MessageMapper
@@ -23,19 +21,19 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.storage.FirebaseStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.security.MessageDigest
 import javax.inject.Inject
 
+/**
+ * Implementation of ChatRepository that provides methods for handling chat messages,
+ * including sending, receiving, and managing message files.
+ */
 class ChatRepositoryImpl @Inject constructor(
     private val context: Context,
     private val database: FirebaseDatabase,
@@ -43,6 +41,13 @@ class ChatRepositoryImpl @Inject constructor(
     private val messageMapper: MessageMapper
 ) : ChatRepository {
 
+    /**
+     * Retrieves messages for a specific chat group in real-time.
+     * @param ownerId The ID of the owner (seller).
+     * @param carId The ID of the car associated with the chat.
+     * @param buyerId The ID of the buyer.
+     * @return A Flow emitting Message objects as they are added to the chat.
+     */
     override fun getMessages(ownerId: String, carId: String, buyerId: String): Flow<Message> =
         callbackFlow {
             val messagesRef = database.reference
@@ -71,7 +76,13 @@ class ChatRepositoryImpl @Inject constructor(
             awaitClose { messagesRef.removeEventListener(listener) }
         }
 
-
+    /**
+     * Sends a message to a specific chat group.
+     * @param ownerId The ID of the owner (seller).
+     * @param carId The ID of the car associated with the chat.
+     * @param buyerId The ID of the buyer.
+     * @param message The Message object to be sent.
+     */
     override suspend fun sendMessage(
         ownerId: String,
         carId: String,
@@ -93,11 +104,24 @@ class ChatRepositoryImpl @Inject constructor(
             messageRef.setValue(messageEntity).await()
             Result.success(Unit)
         } catch (e: Exception) {
-            updateMessageStatus(ownerId, carId, buyerId, message.messageId, "failed") // Marca como no enviado si falla
+            // Mark as "failed" if sending fails
+            updateMessageStatus(ownerId, carId, buyerId, message.messageId, "failed")
             Result.failure(Exception("Error sending message: ${e.message}", e))
         }
     }
 
+    /**
+     * Sends a file message, uploading the file to Firebase Storage and saving its metadata.
+     * @param ownerId The ID of the owner (seller).
+     * @param carId The ID of the car associated with the chat.
+     * @param buyerId The ID of the buyer.
+     * @param fileUri The URI of the file to send.
+     * @param fileType The type of the file (e.g., image, video).
+     * @param fileName The name of the file.
+     * @param fileHash The unique hash of the file.
+     * @param receiver The ID of the message receiver.
+     * @param deletedFor List of users for whom the message is deleted.
+     */
     override suspend fun sendFileMessage(
         ownerId: String,
         carId: String,
@@ -107,30 +131,30 @@ class ChatRepositoryImpl @Inject constructor(
         fileName: String,
         fileHash: String,
         receiver: String,
-        deletedFor: List<String> // Agregamos `deletedFor` como parámetro
+        deletedFor: List<String>
     ): Result<Unit> {
         return try {
             val fileSize = context.contentResolver.openFileDescriptor(fileUri, "r")?.statSize ?: 0L
 
-            // Define la subcarpeta de almacenamiento según el tipo de archivo
+            // Define the storage folder based on file type
             val folder = when {
                 fileType.startsWith("image/") -> "images"
                 fileType.startsWith("video/") -> "videos"
                 else -> "documents"
             }
 
-            // Revisa si el archivo con el hash ya existe en el nodo global de "Files"
+            // Check if the file with the same hash already exists
             val fileRef = database.reference.child("ChatGroups").child("Files").child(folder).child(fileHash)
             val fileSnapshot = fileRef.get().await()
 
             val downloadUri: Uri
             if (!fileSnapshot.exists()) {
-                // Si el archivo no existe en "Files", sube el archivo a Firebase Storage con el nombre original
+                // Upload file to Firebase Storage if it doesn't exist
                 val storageReference = storage.reference.child("chat_files/$buyerId/$folder/$fileName")
                 val uploadTask = storageReference.putFile(fileUri).await()
                 downloadUri = uploadTask.storage.downloadUrl.await()
 
-                // Guarda los detalles del archivo en "Files" con el nombre original
+                // Save file metadata in Firebase Database
                 val fileData = mapOf(
                     "name" to fileName,
                     "timestamp" to System.currentTimeMillis(),
@@ -141,7 +165,7 @@ class ChatRepositoryImpl @Inject constructor(
                 )
                 fileRef.setValue(fileData).await()
             } else {
-                // Si ya existe, obtiene la URL de descarga existente y actualiza la lista de usuarios si es necesario
+                // Use existing file URL and update user list if necessary
                 downloadUri = Uri.parse(fileSnapshot.child("url").value as String)
                 val existingUsers = fileSnapshot.child("users").value as MutableList<String>
                 if (!existingUsers.contains(buyerId)) {
@@ -150,7 +174,7 @@ class ChatRepositoryImpl @Inject constructor(
                 }
             }
 
-            // Crear una referencia para el mensaje en el grupo de chat correspondiente
+            // Create message reference in the chat group
             val messageRef = database.reference
                 .child("ChatGroups")
                 .child(ownerId)
@@ -159,7 +183,7 @@ class ChatRepositoryImpl @Inject constructor(
                 .child(buyerId)
                 .push()
 
-            // Crear y enviar el mensaje con `deletedFor`
+            // Create and send the message with `deletedFor`
             val message = Message(
                 messageId = messageRef.key ?: "",
                 senderId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
@@ -171,10 +195,10 @@ class ChatRepositoryImpl @Inject constructor(
                 timestamp = System.currentTimeMillis(),
                 receiverId = receiver,
                 carId = carId,
-                deletedFor = deletedFor.toMutableList() // Asigna `deletedFor`
+                deletedFor = deletedFor.toMutableList()
             )
 
-            // Guardar el mensaje en Firebase
+            // Save the message in Firebase Database
             messageRef.setValue(message).await()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -182,8 +206,11 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
-
-
+    /**
+     * Retrieves information about a specific car.
+     * @param userId The ID of the car owner.
+     * @param carId The ID of the car.
+     */
     override suspend fun getUserInfo(userId: String, carId: String): Result<CarEntity?> {
         return try {
             val carSnapshot = database.getReference("Car")
@@ -194,18 +221,23 @@ class ChatRepositoryImpl @Inject constructor(
 
             if (carSnapshot.exists()) {
                 val car = carSnapshot.getValue(CarEntity::class.java)
-                Log.d("getUserInfo", "Car found: ${car?.id}")
                 Result.success(car)
             } else {
-                Log.d("getUserInfo", "Car not found for userId: $userId, carId: $carId")
                 Result.success(null)
             }
         } catch (e: Exception) {
-            Log.e("getUserInfo", "Error fetching car details: ${e.message}")
             Result.failure(RepositoryException("Error fetching car details from database", e))
         }
     }
 
+    /**
+     * Fetches users who are interested in a specific car or chat direction.
+     * @param ownerId ID of the car owner.
+     * @param userId ID of the user.
+     * @param direction Specifies the direction ("sent" or "received").
+     * @param type Type of interest.
+     * @return A list of CarWithLastMessage or UserWithLastMessage based on the interest type.
+     */
     override suspend fun getInterestedUsers(
         ownerId: String?,
         userId: String?,
@@ -214,13 +246,8 @@ class ChatRepositoryImpl @Inject constructor(
     ): List<Any> {
         val resultList = mutableListOf<Any>()
 
-        // Caso para el Usuario (Comprador)
         if (direction == "sent" && userId != null) {
-            Log.d("getInterestedUsers", "Direction: sent - Checking chats for userId: $userId")
-
             val chatGroupsSnapshot = database.reference.child("ChatGroups").get().await()
-            Log.d("getInterestedUsers", "Total sellers in ChatGroups: ${chatGroupsSnapshot.childrenCount}")
-
             chatGroupsSnapshot.children.forEach { sellerSnapshot ->
                 val sellerId = sellerSnapshot.key
                 sellerSnapshot.children.forEach { carSnapshot ->
@@ -239,15 +266,12 @@ class ChatRepositoryImpl @Inject constructor(
                                     )
                                 )
                             }
-                        }.onFailure { e ->
-                            Log.e("getInterestedUsers", "Error fetching car for carId: $carId, error: ${e.message}")
                         }
                     }
                 }
             }
         }
 
-        // Caso para el Vendedor
         if (direction == "received" && ownerId != null) {
             val carsSnapshot = database.reference.child("ChatGroups").child(ownerId).get().await()
             carsSnapshot.children.forEach { carSnapshot ->
@@ -257,20 +281,16 @@ class ChatRepositoryImpl @Inject constructor(
                 messagesSnapshot.children.forEach { userSnapshot ->
                     val userWithMessage = userSnapshot.key
 
-                    // Obtén el último mensaje
+                    // Get the last message details
                     val lastMessageSnapshot = userSnapshot.children.lastOrNull()
                     val lastMessageContent = lastMessageSnapshot?.child("content")?.value as? String
                     val lastMessageFileName = lastMessageSnapshot?.child("fileName")?.value as? String
                     val lastMessageFileType = lastMessageSnapshot?.child("fileType")?.value as? String
                     val lastMessageTimestamp = lastMessageSnapshot?.child("timestamp")?.value as? Long ?: 0L
 
-                    // Determina si es un archivo y el texto a mostrar
                     val isFile = !lastMessageFileName.isNullOrEmpty()
                     val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
 
-                    Log.d("getInterestedUsers", "Last message from user $userWithMessage: $lastMessageDisplay at $lastMessageTimestamp")
-
-                    // Obtiene información del usuario y añade a la lista
                     val userEntityResult = database.reference.child("Users").child(userWithMessage ?: "").get().await()
                         .getValue(UserEntity::class.java)?.apply {
                             if (userWithMessage != null) {
@@ -287,7 +307,7 @@ class ChatRepositoryImpl @Inject constructor(
                                 carId = carId.toString(),
                                 isFile = isFile,
                                 fileName = if (isFile) lastMessageFileName else null,
-                                fileType = lastMessageFileType // Incluye fileType en el modelo
+                                fileType = lastMessageFileType
                             )
                         )
                     }
@@ -295,16 +315,18 @@ class ChatRepositoryImpl @Inject constructor(
             }
         }
 
-        Log.d("getInterestedUsers", "Total items found: ${resultList.size}")
         return resultList
     }
 
+    /**
+     * Cleans up the local database by removing files that no longer exist in the file storage.
+     * @param context The application context.
+     */
     override suspend fun cleanUpDatabase(context: Context) {
         val fileDao = DatabaseModule.getDatabase(context).downloadedFileDao()
 
         withContext(Dispatchers.IO) {
             val filesInDb = fileDao.getAllFiles()
-
             val contentResolver = context.contentResolver
 
             filesInDb.forEach { file ->
@@ -322,7 +344,7 @@ class ChatRepositoryImpl @Inject constructor(
 
                 var fileExists = false
 
-                // Usa una consulta a MediaStore en Android 10+
+                // Check for file existence in MediaStore on Android 10+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
                     val selection = "${MediaStore.MediaColumns.DISPLAY_NAME} = ?"
@@ -331,30 +353,32 @@ class ChatRepositoryImpl @Inject constructor(
                     contentResolver.query(uri, projection, selection, selectionArgs, null).use { cursor ->
                         if (cursor != null && cursor.moveToFirst()) {
                             fileExists = true
-                            Log.d("FileCleanup", "Archivo encontrado en MediaStore: ${file.fileName}")
                         }
                     }
                 } else {
-                    // Verificación directa en almacenamiento para versiones antiguas
+                    // Direct file existence check for older versions
                     fileExists = File(uri.path ?: "").exists()
-                    Log.d("FileCleanup", "Verificación directa: ${uri.path}")
                 }
 
                 if (!fileExists) {
-                    // Si el archivo no se encuentra, elimínalo de la base de datos
+                    // If file does not exist, remove it from the database
                     fileDao.deleteFileByHash(file.fileHash)
-                    Log.d("FileCleanup", "Eliminado de la base de datos porque no se encontró el archivo: ${file.fileName}")
-                } else {
-                    Log.d("FileCleanup", "Archivo válido en almacenamiento y base de datos: ${file.fileName}")
                 }
             }
         }
     }
 
+    /**
+     * Updates the status of a specific message in the chat.
+     * @param ownerId ID of the car owner.
+     * @param carId ID of the car associated with the chat.
+     * @param buyerId ID of the buyer.
+     * @param messageId ID of the message.
+     * @param status New status to set for the message.
+     */
     override suspend fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String) {
-
         val messageRef = database.reference.child("ChatGroups")
-            .child(ownerId) // Reemplaza con los IDs correctos según la estructura
+            .child(ownerId)
             .child(carId)
             .child("messages")
             .child(buyerId)
@@ -363,8 +387,15 @@ class ChatRepositoryImpl @Inject constructor(
         messageRef.child("status").setValue(status).await()
     }
 
+    /**
+     * Deletes a message for a specific user by adding them to the `deletedFor` list.
+     * @param ownerId ID of the car owner.
+     * @param carId ID of the car associated with the chat.
+     * @param buyerId ID of the buyer.
+     * @param messageId ID of the message.
+     * @param userId ID of the user for whom the message is deleted.
+     */
     override suspend fun deleteMessageForUser(ownerId: String, carId: String, buyerId: String, messageId: String, userId: String) {
-        // Construye la referencia completa al mensaje dentro de la estructura de "ChatGroups"
         val messageRef = database.reference
             .child("ChatGroups")
             .child(ownerId)
@@ -373,18 +404,12 @@ class ChatRepositoryImpl @Inject constructor(
             .child(buyerId)
             .child(messageId)
 
-        // Define un indicador de tipo genérico para obtener la lista "deletedFor" como MutableList<String>
         val genericTypeIndicator = object : GenericTypeIndicator<MutableList<String>>() {}
-
-        // Obtiene la lista "deletedFor" del mensaje o inicializa una lista vacía si no existe
         val deletedForList = messageRef.child("deletedFor").get().await().getValue(genericTypeIndicator) ?: mutableListOf()
 
-        // Si el userId no está ya en la lista "deletedFor", lo agrega y actualiza el valor en Firebase
         if (!deletedForList.contains(userId)) {
             deletedForList.add(userId)
             messageRef.child("deletedFor").setValue(deletedForList).await()
         }
-        Log.i("angel", "Llego al final del caso de uso")
     }
-
 }

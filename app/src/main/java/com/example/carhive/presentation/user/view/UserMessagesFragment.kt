@@ -13,9 +13,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class UserMessagesFragment : BaseMessagesFragment() {
 
+    // ViewModel for accessing and managing the interested users data
     override val viewModel: InterestedUsersViewModel by viewModels()
     val buyerId = FirebaseAuth.getInstance().currentUser?.uid
 
+    /**
+     * Defines the navigation action to open a chat for a specific car when an item is clicked.
+     * Prepares a bundle with necessary car and user identifiers.
+     */
     override val navigateToChat: (Any) -> Unit = { item ->
         if (item is CarWithLastMessage) {
             val bundle = Bundle().apply {
@@ -27,6 +32,10 @@ class UserMessagesFragment : BaseMessagesFragment() {
         }
     }
 
+    /**
+     * Loads messages for cars the current user (buyer) has shown interest in.
+     * The ViewModel fetches the cars along with the latest message from each chat.
+     */
     override fun loadData() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserId != null) {

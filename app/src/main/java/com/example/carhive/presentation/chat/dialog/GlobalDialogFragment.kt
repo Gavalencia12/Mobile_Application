@@ -9,6 +9,12 @@ import com.example.carhive.databinding.DialogGlobalBinding
 import com.example.carhive.presentation.chat.viewModel.ChatViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
+/**
+ * A BottomSheetDialogFragment used for global dialog actions in chat (e.g., reporting, blocking).
+ * Displays a customizable dialog with title, message, checkboxes, and buttons for different actions.
+ *
+ * @param onActionCompleted Optional lambda that runs when an action completes.
+ */
 class GlobalDialogFragment(
     private val onActionCompleted: (() -> Unit)? = null
 ) : BottomSheetDialogFragment() {
@@ -17,6 +23,9 @@ class GlobalDialogFragment(
     private val binding get() = _binding!!
     private val chatViewModel: ChatViewModel by activityViewModels()
 
+    /**
+     * Inflates the dialog layout using DataBinding.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,10 +34,13 @@ class GlobalDialogFragment(
         return binding.root
     }
 
+    /**
+     * Sets up dialog view components, such as the title, message, checkboxes, and button actions.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Extrae los argumentos
+        // Extracts arguments passed to the dialog
         val title = arguments?.getString(ARG_TITLE) ?: ""
         val message = arguments?.getString(ARG_MESSAGE) ?: ""
         val showCheckBox = arguments?.getBoolean(ARG_SHOW_CHECKBOX) ?: false
@@ -36,22 +48,30 @@ class GlobalDialogFragment(
         val negativeButtonText = arguments?.getString(ARG_NEGATIVE_BUTTON_TEXT) ?: "Cancelar"
         val dialogType = arguments?.getSerializable(ARG_DIALOG_TYPE) as? DialogType
 
+        // Sets up dialog UI elements
         binding.dialogTitle.text = title
         binding.dialogMessage.text = message
         binding.checkboxBlockChat.visibility = if (showCheckBox) View.VISIBLE else View.GONE
         binding.buttonPositive.text = positiveButtonText
         binding.buttonNegative.text = negativeButtonText
 
+        // Positive button click listener to handle dialog actions based on DialogType
         binding.buttonPositive.setOnClickListener {
             handlePositiveButtonClick(dialogType)
             dismiss()
         }
 
+        // Negative button click listener to simply dismiss the dialog
         binding.buttonNegative.setOnClickListener {
             dismiss()
         }
     }
 
+    /**
+     * Handles the positive button click action based on the DialogType.
+     *
+     * @param dialogType The type of dialog action to perform (e.g., REPORT, BLOCK, DELETE_CHAT).
+     */
     private fun handlePositiveButtonClick(dialogType: DialogType?) {
         when (dialogType) {
             DialogType.REPORT -> {
@@ -87,11 +107,17 @@ class GlobalDialogFragment(
         }
     }
 
+    /**
+     * Clears the binding reference when the view is destroyed.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    /**
+     * Enum class representing the types of dialog actions that can be performed.
+     */
     enum class DialogType { REPORT, BLOCK, DELETE_CHAT }
 
     companion object {
@@ -106,6 +132,23 @@ class GlobalDialogFragment(
         private const val ARG_CAR_ID = "car_id"
         private const val ARG_BUYER_ID = "buyer_id"
 
+        /**
+         * Creates a new instance of GlobalDialogFragment with the specified parameters.
+         *
+         * @param title The title of the dialog.
+         * @param message The message to display in the dialog.
+         * @param showCheckBox Whether to show a checkbox in the dialog.
+         * @param positiveButtonText Text for the positive button.
+         * @param negativeButtonText Text for the negative button.
+         * @param dialogType The type of action (DialogType) the dialog will handle.
+         * @param currentUserId The ID of the current user.
+         * @param ownerId The ID of the car owner.
+         * @param carId The ID of the car associated with the dialog action.
+         * @param buyerId The ID of the buyer associated with the dialog action.
+         * @param onActionCompleted Optional callback that runs when an action completes.
+         *
+         * @return A new instance of GlobalDialogFragment.
+         */
         fun newInstance(
             title: String,
             message: String,

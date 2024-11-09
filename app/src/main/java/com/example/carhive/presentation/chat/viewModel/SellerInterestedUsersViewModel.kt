@@ -28,20 +28,24 @@ class InterestedUsersViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
+    /**
+     * Loads users who have shown interest in the seller's cars.
+     * Collects data on users with the last message exchanged and relevant car information.
+     */
     fun loadInterestedUsersForSeller(sellerId: String) {
         viewModelScope.launch {
             try {
                 val interestedUsersSet = mutableSetOf<UserWithLastMessage>()
                 val carIds = mutableListOf<CarWithLastMessage>()
 
-                // Obtiene los coches del vendedor
+                // Retrieve the seller's cars
                 val carsResult = getCarUserInDatabaseUseCase(sellerId)
                 if (carsResult.isSuccess) {
                     val carsInMessages = carsResult.getOrDefault(emptyList())
                     carIds.addAll(carsInMessages.map { carEntity ->
                         CarWithLastMessage(
                             car = carEntity,
-                            lastMessage = "Último mensaje aquí",
+                            lastMessage = "Last message here",
                             lastMessageTimestamp = System.currentTimeMillis(),
                             isFile = false,
                             fileName = null
@@ -49,7 +53,7 @@ class InterestedUsersViewModel @Inject constructor(
                     })
                 }
 
-                // Itera sobre cada coche del vendedor para obtener los usuarios interesados
+                // Retrieve interested users for each car and construct display data
                 carIds.forEach { carWithMessage ->
                     val carId = carWithMessage.car.id
                     val usersInMessages = getInterestedUsersUseCase(sellerId, carId, "received", "users")
@@ -62,7 +66,7 @@ class InterestedUsersViewModel @Inject constructor(
                                 fileType?.contains("video") == true -> true
                                 else -> false
                             }
-                            val displayMessage = if (isFile) userWithLastMessage.fileName ?: "Archivo adjunto" else userWithLastMessage.lastMessage
+                            val displayMessage = if (isFile) userWithLastMessage.fileName ?: "Attached file" else userWithLastMessage.lastMessage
                             userWithLastMessage.copy(isFile = isFile, lastMessage = displayMessage.toString())
                         }
 
@@ -79,12 +83,15 @@ class InterestedUsersViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Loads cars that the specified user has interacted with, displaying the last message.
+     */
     fun loadCarsWithUserMessages(userId: String) {
         viewModelScope.launch {
             try {
                 val cars = getInterestedUsersUseCase(userId, "", "sent", "cars")
                     .filterIsInstance<CarWithLastMessage>()
-                    .sortedByDescending { it.lastMessageTimestamp } // Ordenar por timestamp
+                    .sortedByDescending { it.lastMessageTimestamp } // Orders by timestamp
 
                 _carsWithMessages.value = cars
             } catch (e: Exception) {
@@ -93,6 +100,9 @@ class InterestedUsersViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Loads users who have shown interest in a specific car owned by a given seller.
+     */
     fun loadInterestedUsersForCar(ownerId: String, carId: String) {
         viewModelScope.launch {
             try {
@@ -111,7 +121,7 @@ class InterestedUsersViewModel @Inject constructor(
                             fileType?.contains("video") == true -> true
                             else -> false
                         }
-                        val displayMessage = if (isFile) userWithLastMessage.fileName ?: "Archivo adjunto" else userWithLastMessage.lastMessage
+                        val displayMessage = if (isFile) userWithLastMessage.fileName ?: "Attached file" else userWithLastMessage.lastMessage
                         userWithLastMessage.copy(isFile = isFile, lastMessage = displayMessage.toString())
                     }
 

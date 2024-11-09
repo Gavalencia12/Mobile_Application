@@ -1,43 +1,12 @@
-/**
- * Fuente de datos que maneja las operaciones con Firebase Realtime Database.
- *
- * Esta clase proporciona métodos para interactuar con Firebase Realtime Database, permitiendo
- * realizar las siguientes operaciones:
- * - Almacenar información de usuarios en la base de datos.
- * - Recuperar datos específicos de usuarios.
- * - Manejar la estructura de datos de usuarios en Firebase.
- *
- * La estructura de datos en Firebase sigue el siguiente patrón:
- * ```
- * /Users
- *    ├── userId1
- *    │   ├── firstName
- *    │   ├── lastName
- *    │   ├── email
- *    │   ├── role
- *    │   └── ...
- *    └── userId2
- *        └── ...
- * ```
- */
 package com.example.carhive.data.datasource.remote.Firebase
 
-import android.system.Os.close
 import android.util.Log
-import com.example.carhive.Domain.model.Message
 import com.example.carhive.data.exception.RepositoryException
-import com.example.carhive.data.mapper.MessageMapper
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.data.model.FavoriteCar
 import com.example.carhive.data.model.FavoriteUser
-import com.example.carhive.data.model.MessageEntity
 import com.example.carhive.data.model.UserEntity
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -45,40 +14,53 @@ class FirebaseDatabaseDataSource @Inject constructor(
     private val database: FirebaseDatabase // Instancia de Firebase Realtime Database
 ) {
 
+    /**
+     * Saves a user to the database.
+     *
+     * @param userId The unique ID of the user.
+     * @param user The UserEntity object containing the user's details.
+     * @return A Result object indicating success or failure.
+     */
     suspend fun saveUserToDatabase(userId: String, user: UserEntity): Result<Unit> {
         return try {
-            database.getReference("Users") // Referencia al nodo principal de usuarios
-                .child(userId)             // Crea/accede al nodo específico del usuario
-                .setValue(user)            // Establece los datos del usuario
-                .await()                   // Espera a que la operación se complete
-            Result.success(Unit) // Retorna éxito si la operación se realizó correctamente
+            database.getReference("Users")         // Reference to the main "Users" node
+                .child(userId)                     // Create or access the specific user node
+                .setValue(user)                    // Set the user data
+                .await()                           // Wait for the operation to complete
+            Result.success(Unit)                   // Return success if the operation completed successfully
         } catch (e: Exception) {
-            // Captura cualquier excepción y devuelve un resultado de error
+            // Catch any exceptions and return a failure result with an error message
             Result.failure(RepositoryException("Error saving user to database: ${e.message}", e))
         }
     }
 
+    /**
+     * Retrieves all cars from the database.
+     *
+     * @return A Result object containing a list of CarEntity objects or an error if the operation fails.
+     */
     suspend fun getAllCarsFromDatabase(): Result<List<CarEntity>> {
         return try {
-            // Obtén la referencia del nodo de todos los coches
+            // Obtain the reference to the "Car" node in the database
             val carSnapshot = database.getReference("Car")
                 .get()
                 .await()
 
-            // Verifica si el snapshot existe y tiene datos
+            // Check if the snapshot exists and contains data
             if (carSnapshot.exists()) {
-                // Convierte el snapshot a una lista de CarEntity
+                // Convert the snapshot to a list of CarEntity objects
                 val carList = carSnapshot.children.flatMap { userSnapshot ->
-                    // Mapea cada coche dentro del nodo de cada usuario
+                    // Map each car within each user's node
                     userSnapshot.children.mapNotNull { carSnapshot ->
                         carSnapshot.getValue(CarEntity::class.java)
                     }
                 }
-                Result.success(carList) // Retorna la lista de CarEntity
+                Result.success(carList)            // Return the list of CarEntity objects
             } else {
-                Result.success(emptyList()) // Retorna una lista vacía si no hay coches
+                Result.success(emptyList())        // Return an empty list if no cars are found
             }
         } catch (e: Exception) {
+            // Catch any exceptions and return a failure result with an error message
             Result.failure(RepositoryException("Error fetching cars from database", e))
         }
     }

@@ -16,8 +16,13 @@ class SellerInterestedUsersFragment : BaseMessagesFragment() {
 
     override val viewModel: InterestedUsersViewModel by viewModels()
 
+    // The owner's ID, retrieved from FirebaseAuth
     private val ownerId = FirebaseAuth.getInstance().currentUser?.uid
 
+    /**
+     * Defines navigation behavior based on the selected item type (User or Car).
+     * Navigates to either the chat or interested users screen.
+     */
     override val navigateToChat: (Any) -> Unit = { item ->
         if (item is UserWithLastMessage) {
             val bundle = Bundle().apply {
@@ -36,10 +41,13 @@ class SellerInterestedUsersFragment : BaseMessagesFragment() {
         }
     }
 
+    /**
+     * Loads the interested users for the currently authenticated seller.
+     */
     override fun loadData() {
         val sellerId = FirebaseAuth.getInstance().currentUser?.uid
-        if (sellerId != null) {
-            viewModel.loadInterestedUsersForSeller(sellerId)
+        sellerId?.let {
+            viewModel.loadInterestedUsersForSeller(it)
         }
     }
 }

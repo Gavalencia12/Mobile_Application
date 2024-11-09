@@ -4,9 +4,18 @@ import com.example.carhive.data.model.MessageEntity
 import com.example.carhive.Domain.model.Message
 import javax.inject.Inject
 
-// MessageMapper.kt
+/**
+ * Mapper class to convert between MessageEntity and Message objects.
+ * This helps in separating data layer entities from domain layer models.
+ */
 class MessageMapper @Inject constructor() {
 
+    /**
+     * Maps a MessageEntity object (data layer) to a Message object (domain layer).
+     *
+     * @param entity The MessageEntity instance to map.
+     * @return A Message instance with properties copied from the MessageEntity.
+     */
     fun mapToDomain(entity: MessageEntity): Message {
         return Message(
             messageId = entity.messageId,
@@ -25,6 +34,12 @@ class MessageMapper @Inject constructor() {
         )
     }
 
+    /**
+     * Maps a Message object (domain layer) to a MessageEntity object (data layer).
+     *
+     * @param domain The Message instance to map.
+     * @return A MessageEntity instance with properties copied from the Message.
+     */
     fun mapToEntity(domain: Message): MessageEntity {
         return MessageEntity(
             messageId = domain.messageId,
@@ -43,4 +58,3 @@ class MessageMapper @Inject constructor() {
         )
     }
 }
-
