@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,38 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <!-- Image carousel with left and right arrows -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <!-- ViewPager for images -->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"/>
-
             <!-- Left arrow -->
             <ImageButton
                 android:id="@+id/arrowLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_back"
                 android:contentDescription="@string/image"
+                android:src="@drawable/ic_arrow_back"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp" />
-
             <!-- Right arrow -->
             <ImageButton
                 android:id="@+id/arrowRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_forward"
                 android:contentDescription="@string/image"
+                android:src="@drawable/ic_arrow_forward"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp" />
@@ -61,7 +58,6 @@
             android:layout_height="wrap_content"
             android:background="@color/blue"
             android:padding="16dp">
-
             <TextView
                 android:id="@+id/carModel"
                 android:layout_width="0dp"
@@ -71,7 +67,6 @@
                 android:fontFamily="@font/inter_extrabold"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
-
             <TextView
                 android:id="@+id/carPrice"
                 android:layout_width="wrap_content"
@@ -82,26 +77,27 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+        <!-- Car additional details (color, mileage, etc.) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
-
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
             <TextView
                 android:id="@+id/carColor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/default_car_color"
+                android:text=""
                 android:fontFamily="@font/inter_bold"/>
-
             <TextView
                 android:id="@+id/carMileage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/default_car_mileage"
+                android:text=""
                 android:fontFamily="@font/inter_bold"/>
         </LinearLayout>
 
@@ -110,56 +106,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
-
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
             <TextView
                 android:id="@+id/carTransmission"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_transmission"
-                android:fontFamily="@font/inter_bold"/>
-
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/carFuelType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_fuel_type"
-                android:fontFamily="@font/inter_bold"/>
-
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/carEngineCapacity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_engine_capacity"
-                android:fontFamily="@font/inter_bold"/>
-
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/carLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_location"
-                android:fontFamily="@font/inter_bold"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text=""
-            android:fontFamily="@font/inter_extrabold"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/carDoors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_doors"
-                android:fontFamily="@font/inter_bold"/>
-
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/carYear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_year"
+                android:text=""
                 android:fontFamily="@font/inter_bold"/>
         </LinearLayout>
 
@@ -169,30 +159,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
             <TextView
                 android:id="@+id/carVin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_vin"
-                android:fontFamily="@font/inter_bold"/>
-
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/carPreviousOwners"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_previous_owners"
-                android:fontFamily="@font/inter_bold"/>
-
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/carCondition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_condition"
+                android:text=""
                 android:fontFamily="@font/inter_bold"/>
-
         </LinearLayout>
-
         <!-- Description section -->
         <TextView
             android:layout_width="match_parent"
@@ -202,14 +189,57 @@
             android:fontFamily="@font/inter_extrabold"
             android:textSize="16sp"
             android:textStyle="bold" />
-
         <TextView
             android:id="@+id/carDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/default_car_description"
+            android:text=""
             android:fontFamily="@font/inter_bold"/>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="26dp">
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/image"
+                android:src="@drawable/ic_profile" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:fontFamily="@font/inter_extrabold" />
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:fontFamily="@font/inter_semibold"/>
+            </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/message"
+                android:drawableEnd="@drawable/ic_message"
+                android:drawablePadding="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_gravity="center_vertical"
+                style="@style/ButtonTheme"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -17,22 +17,22 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
-        <!-- Botón para regresar -->
+        <!-- Button for going back to the previous screen -->
         <Button
             android:id="@+id/btnPrevious"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="30dp"
             android:layout_gravity="start"
             android:background="@drawable/ic_arrow_back"
             android:backgroundTint="@color/white"/>
 
-        <!-- Imagen de registro -->
+        <!-- ImageView for the logo -->
         <ImageView
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:layout_marginBottom="30dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/image"
@@ -40,7 +40,7 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!-- CardView del formulario de registro -->
+    <!-- CardView for the registration form -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -58,7 +58,7 @@
             android:padding="24dp"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Título -->
+            <!-- Title for the registration form -->
             <TextView
                 android:id="@+id/tv_rgt_title"
                 android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
-            <!-- Instrucciones -->
+            <!-- Instruction for the registration form -->
             <TextView
                 android:id="@+id/instruction"
                 android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
 
-            <!-- Campos de entrada para el nombre -->
+            <!-- Input field for first name of the user -->
             <EditText
                 android:id="@+id/firstNameEditText"
                 android:layout_width="match_parent"
@@ -93,64 +93,66 @@
                 android:layout_weight="1"
                 android:layout_marginBottom="20dp"
                 android:hint="@string/first_name"
+                android:autofillHints="givenName"
                 android:inputType="textPersonName"
                 android:drawableStart="@drawable/ic_person"
                 style="@style/EditTextStyle"/>
 
-            <!-- Campos de entrada para el apellido -->
+            <!-- Input field for last name of the user -->
             <EditText
                 android:id="@+id/lastNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_weight="1"
                 android:hint="@string/last_name"
+                android:autofillHints="familyName"
                 android:layout_marginBottom="20dp"
                 android:inputType="textPersonName"
                 android:drawableStart="@drawable/ic_person"
                 style="@style/EditTextStyle"/>
 
-
-            <!-- Campos de entrada para el correo electrónico -->
+            <!-- Input field for email address of the user -->
             <EditText
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_weight="1"
                 android:hint="@string/email_address"
+                android:autofillHints="emailAddress"
                 android:layout_marginBottom="20dp"
                 android:inputType="textEmailAddress"
                 android:drawableStart="@drawable/ic_email"
                 style="@style/EditTextStyle"/>
 
-
-            <!-- Campos de entrada para la contraseña -->
+            <!-- Input field for password of the user -->
             <EditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_weight="1"
                 android:hint="@string/password"
+                android:autofillHints="password"
                 android:layout_marginBottom="20dp"
                 android:inputType="textPassword"
                 android:drawableStart="@drawable/ic_passw"
                 android:drawableEnd="@drawable/ic_visibility_off"
                 style="@style/EditTextStyle"/>
 
-
-            <!-- Campo de entrada para confirmar la contraseña -->
+            <!-- Input field for confirm password of the user -->
             <EditText
                 android:id="@+id/confirmPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="20dp"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword"
+                android:inputType="textPassword|textVisiblePassword"
                 android:drawableStart="@drawable/ic_passw"
                 android:drawableEnd="@drawable/ic_visibility_off"
-                style="@style/EditTextStyle"/>
+                style="@style/EditTextStyle"
+                android:hint="@string/confirm_password"
+                android:autofillHints="password"/>
 
-            <!-- Nota -->
+            <!-- Error message for password confirmation -->
             <TextView
                 android:id="@+id/note"
                 android:layout_width="match_parent"
@@ -163,7 +165,6 @@
                 android:textSize="15sp"
                 android:visibility="gone"/>
 
-            <!-- Enlace para iniciar sesión y botón para continuar -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,7 +172,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent">
-                <!-- Enlace para iniciar sesión -->
+                <!-- Link to log in -->
                 <TextView
                     android:id="@+id/loginLink"
                     android:layout_width="wrap_content"
@@ -193,7 +194,7 @@
                     android:textColor="@color/dark_blue"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@+id/nextButton"/>
-
+                <!-- Button for going to the next screen -->
                 <Button
                     android:id="@+id/nextButton"
                     android:layout_width="30dp"

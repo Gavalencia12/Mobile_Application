@@ -3,14 +3,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Contenedor principal con ScrollView y opciones de navegación -->
+    <!-- Main container with ScrollView and navigation options -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <!-- LinearLayout para opciones de navegación -->
+        <!-- Navegation options LinearLayout -->
         <LinearLayout
             android:id="@+id/linear_nav_options"
             android:layout_width="wrap_content"
@@ -23,7 +23,17 @@
                 android:id="@+id/nav_option_brands"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Brands"
+                android:text="@string/brands"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/condition"
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -33,7 +43,7 @@
                 android:id="@+id/nav_option_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Price"
+                android:text="@string/price"
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -43,7 +53,7 @@
                 android:id="@+id/nav_option_mileage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mileage"
+                android:text="@string/mileage"
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -53,7 +63,7 @@
                 android:id="@+id/nav_option_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Color"
+                android:text="@string/color"
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -63,14 +73,14 @@
                 android:id="@+id/nav_option_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Year"
+                android:text="@string/year"
                 android:padding="12dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
-        <!-- ScrollView para secciones de filtros -->
+        <!-- Filter sections ScrollView -->
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="0dp"
@@ -83,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Sección de Marcas -->
+                <!-- Brand selection -->
                 <LinearLayout
                     android:id="@+id/section_brands"
                     android:layout_width="match_parent"
@@ -94,7 +104,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select a Brand"
+                        android:text="@string/select_a_brand"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:paddingBottom="8dp"
@@ -104,18 +114,40 @@
                         android:id="@+id/autoComplete_brand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Search brand"
+                        android:hint="@string/search_brand"
                         android:inputType="text"
                         android:paddingBottom="8dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView_brands"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
+                        android:layout_height="273dp"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
 
-                <!-- Sección de Precios -->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/section_condition"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_marginBottom="24dp">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/car_condition_filter"-->
+<!--                        android:textSize="18sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:paddingBottom="8dp"-->
+<!--                        android:textColor="@color/blue" />-->
+
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/recyclerView_condition"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:paddingBottom="16dp" />-->
+<!--                </LinearLayout>-->
+
+                <!-- Price range selection -->
                 <LinearLayout
                     android:id="@+id/section_price"
                     android:layout_width="match_parent"
@@ -126,7 +158,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Price Range"
+                        android:text="@string/price_range"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:paddingBottom="8dp"
@@ -136,7 +168,7 @@
                         android:id="@+id/editText_min_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Minimum Price"
+                        android:hint="@string/minimum_price"
                         android:inputType="numberDecimal"
                         android:paddingBottom="8dp" />
 
@@ -144,12 +176,12 @@
                         android:id="@+id/editText_max_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Maximum Price"
+                        android:hint="@string/maximum_price"
                         android:inputType="numberDecimal"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
 
-                <!-- Sección de Kilometraje -->
+                <!-- Mileage range selection -->
                 <LinearLayout
                     android:id="@+id/section_mileage"
                     android:layout_width="match_parent"
@@ -160,7 +192,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mileage Range"
+                        android:text="@string/mileage_range"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:paddingBottom="8dp"
@@ -170,7 +202,7 @@
                         android:id="@+id/editText_min_mileage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Minimum Mileage"
+                        android:hint="@string/minimum_mileage"
                         android:inputType="numberDecimal"
                         android:paddingBottom="8dp" />
 
@@ -178,12 +210,12 @@
                         android:id="@+id/editText_max_mileage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Maximum Mileage"
+                        android:hint="@string/maximum_mileage"
                         android:inputType="numberDecimal"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
 
-                <!-- Sección de Colores -->
+                <!-- Color selection -->
                 <LinearLayout
                     android:id="@+id/section_color"
                     android:layout_width="match_parent"
@@ -194,7 +226,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Vehicle Color"
+                        android:text="@string/vehicle_color"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:paddingBottom="8dp"
@@ -204,12 +236,97 @@
                         android:id="@+id/autoComplete_color"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Choose a color"
+                        android:hint="@string/choose_a_color"
                         android:inputType="text"
-                        android:paddingBottom="16dp" />
+                        android:paddingBottom="16dp"
+                        android:visibility="gone"/>
+
+
+
+                    <!-- Color Grid -->
+                    <GridLayout
+                        android:id="@+id/color_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="3"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <!-- Color Buttons -->
+                        <Button
+                            android:id="@+id/red_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/red"
+                            android:tag="Red"/>
+
+                        <Button
+                            android:id="@+id/orange_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/orange"
+                            android:tag="Orange"/>
+
+                        <Button
+                            android:id="@+id/yellow_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/yellow"
+                            android:tag="Yellow"/>
+
+                        <Button
+                            android:id="@+id/green_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/green"
+                            android:tag="Green"/>
+
+                        <Button
+                            android:id="@+id/blue_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/blue"
+                            android:tag="Blue"/>
+
+                        <Button
+                            android:id="@+id/purple_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/purple"
+                            android:tag="Purple"/>
+
+                        <Button
+                            android:id="@+id/pink_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/pink"
+                            android:tag="Pink"/>
+
+                        <Button
+                            android:id="@+id/white_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:tag="White"/>
+
+                        <Button
+                            android:id="@+id/gray_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/gray"
+                            android:tag="Gray"/>
+
+                        <Button
+                            android:id="@+id/black_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/black"
+                            android:tag="Black"/>
+
+                    </GridLayout>
                 </LinearLayout>
 
-                <!-- Sección de Año -->
+                <!-- Year range selection -->
                 <LinearLayout
                     android:id="@+id/section_year"
                     android:layout_width="match_parent"
@@ -220,7 +337,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Vehicle Year"
+                        android:text="@string/vehicle_year"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:paddingBottom="8dp"
@@ -230,49 +347,54 @@
                         android:id="@+id/start_year"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="start year"
-                        android:inputType="text"
+                        android:hint="@string/start_year"
+                        android:inputType="number"
                         android:paddingBottom="16dp" />
 
                     <AutoCompleteTextView
                         android:id="@+id/end_year"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="end year"
-                        android:inputType="text"
+                        android:hint="@string/end_year"
+                        android:inputType="number"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
 
-                <!-- Botón de Aplicar Filtros -->
+                <!-- Apply and Restore Filters buttons -->
                 <Button
                     android:id="@+id/btn_apply_filters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Apply Filters"
+                    android:text="@string/apply_filters"
                     android:textColor="@android:color/white"
-                    android:background="@color/blue"
+                    android:background="@drawable/btn_style"
                     android:layout_marginTop="16dp" />
 
                 <Button
                     android:id="@+id/btn_restore_filters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Restore Filters"
+                    android:text="@string/restore_filters"
                     android:textColor="@android:color/white"
-                    android:background="@color/blue"
+                    android:background="@drawable/btn_style"
                     android:layout_marginTop="16dp" />
 
-
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
 
-    <!-- Botón de cancelación en la parte inferior -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/bottom_shadow" />
+
+    <!-- Cancel button -->
     <Button
         android:id="@+id/cancel_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textColor="@android:color/white"
         android:background="@drawable/button_more_info_background"
         android:layout_margin="8dp"

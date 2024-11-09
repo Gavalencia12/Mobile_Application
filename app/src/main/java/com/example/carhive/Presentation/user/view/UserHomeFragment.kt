@@ -58,7 +58,7 @@ class UserHomeFragment : Fragment() {
         )
 
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = carAdapter
         }
 
@@ -288,12 +288,27 @@ class UserHomeFragment : Fragment() {
     // Sets up color filter with an AutoCompleteTextView populated with unique colors
     private fun setupColorFilter(view: View) {
         val autoCompleteColor: AutoCompleteTextView = view.findViewById(R.id.autoComplete_color)
-        viewModel.uniqueCarColors.observe(viewLifecycleOwner) { colors ->
-            autoCompleteColor.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, colors))
-        }
+        val colorGrid = view.findViewById<GridLayout>(R.id.color_grid)
+        val colorButtons = listOf(
+            Pair(R.id.red_button, "Red"),
+            Pair(R.id.orange_button, "Orange"),
+            Pair(R.id.yellow_button, "Yellow"),
+            Pair(R.id.green_button, "Green"),
+            Pair(R.id.blue_button, "Blue"),
+            Pair(R.id.purple_button, "Purple"),
+            Pair(R.id.pink_button, "Pink"),
+            Pair(R.id.white_button, "White"),
+            Pair(R.id.gray_button, "Gray"),
+            Pair(R.id.black_button, "Black")
+        )
 
-        autoCompleteColor.setOnItemClickListener { parent, _, position, _ ->
-            viewModel.selectedColor = parent.getItemAtPosition(position) as String
+        // Click listener for each color button
+        colorButtons.forEach { (buttonId, color) ->
+            view.findViewById<Button>(buttonId).setOnClickListener {
+                // Update the selected color in the ViewModel
+                viewModel.selectedColor = color
+                Toast.makeText(requireContext(), "Color selected: $color", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

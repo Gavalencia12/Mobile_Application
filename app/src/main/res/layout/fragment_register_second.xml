@@ -9,7 +9,6 @@
     android:background="@color/blue"
     tools:context=".Presentation.initial.Register.view.SecondRegisterFragment">
 
-    <!-- CardView con imagen y enlace para regresar -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvImagen"
         android:layout_height="wrap_content"
@@ -18,32 +17,32 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
-        <!-- Enlace para regresar -->
+        <!-- Link to go back -->
         <TextView
             android:id="@+id/goBackLink"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="30dp"
             android:layout_gravity="start"
-            app:drawableStartCompat="@drawable/ic_arrow_back"
-            app:drawableTint="@color/white"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            app:drawableStartCompat="@drawable/ic_arrow_back"
+            app:drawableTint="@color/white" />
 
-        <!-- Imagen de registro -->
+        <!-- Register image -->
         <ImageView
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:layout_marginBottom="30dp"
             android:contentDescription="@string/image"
             android:src="@drawable/ic_register2" />
 
     </androidx.cardview.widget.CardView>
 
-    <!-- CardView del formulario de datos personales -->
+    <!-- Personal information form -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -61,7 +60,7 @@
             android:padding="24dp"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Título -->
+            <!-- Title -->
             <TextView
                 android:id="@+id/tv_rgt_title"
                 android:layout_width="match_parent"
@@ -73,7 +72,7 @@
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
-            <!-- Instrucciones -->
+            <!-- Instruction -->
             <TextView
                 android:id="@+id/instruction"
                 android:layout_width="wrap_content"
@@ -86,39 +85,42 @@
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
 
-            <!-- Campo de entrada para la CURP -->
+            <!-- Input field for CURP -->
             <EditText
                 android:id="@+id/curpEditText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="30dp"
+                android:autofillHints="username"
                 android:hint="@string/curp"
                 android:maxLength="18"
                 android:inputType="textCapCharacters"
                 android:drawableStart="@drawable/ic_person"
                 style="@style/EditTextStyle"/>
 
-            <!-- Campo de entrada para el número de teléfono -->
+            <!-- Input field for phone number -->
             <EditText
                 android:id="@+id/phoneNumberEditText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="30dp"
+                android:autofillHints="phone"
                 android:hint="@string/phone_number"
                 android:inputType="phone"
                 android:drawableStart="@drawable/ic_phone"
                 style="@style/EditTextStyle"/>
 
 
-            <!-- Campo de entrada para el número de identificación del votante -->
+            <!-- Input field for voter ID -->
             <EditText
                 android:id="@+id/voterIDEditText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="30dp"
+                android:autofillHints="username"
                 android:hint="@string/voter_id"
                 android:maxLength="18"
                 android:inputType="textCapCharacters"
@@ -130,7 +132,7 @@
                 android:weightSum="3"
                 app:layout_constraintTop_toBottomOf="@+id/ivIsVerified"
                 android:orientation="horizontal">
-                <!-- Checkbox para aceptar términos y condiciones -->
+                <!-- Terms and conditions checkbox -->
                 <CheckBox
                     android:id="@+id/cbTerms"
                     android:layout_width="wrap_content"
@@ -159,7 +161,6 @@
             </LinearLayout>
 
 
-            <!-- Botón "Next" y texto al final del formulario -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +177,7 @@
                     android:text="@string/next"
                     android:textColor="@color/dark_blue"
                     android:textSize="20sp" />
-
+                <!-- Button for going to the next screen -->
                 <Button
                     android:id="@+id/nextButton"
                     android:layout_width="30dp"
