@@ -153,6 +153,9 @@ class CarDetailDialogFragment : DialogFragment() {
             
             Su coche con ID: $carId no ha sido aprobado. Por favor, revise sus datos y vuelva a intentarlo.
             
+            Sus datos a revisar son:
+            -
+            
             Saludos,
             El equipo de CarHive
             """.trimIndent()

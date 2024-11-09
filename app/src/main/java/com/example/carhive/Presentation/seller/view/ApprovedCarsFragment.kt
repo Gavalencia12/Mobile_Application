@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,13 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.Presentation.seller.viewModel.CarAdapter
 import com.example.carhive.Presentation.seller.viewModel.CrudViewModel
-import com.example.carhive.databinding.FragmentSellerCrudBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.carhive.databinding.FragmentApprovedCarsBinding
 
-@AndroidEntryPoint
-class SellerCrudFragment : Fragment() {
+class ApprovedCarsFragment : Fragment() {
 
-    private var _binding: FragmentSellerCrudBinding? = null // ViewBinding for the fragment
+    private var _binding: FragmentApprovedCarsBinding? = null // ViewBinding for the fragment
     private val binding get() = _binding!! // Getter for the binding object
 
     private val viewModel: CrudViewModel by activityViewModels() // Shared ViewModel for CRUD operations
@@ -28,7 +25,7 @@ class SellerCrudFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSellerCrudBinding.inflate(inflater, container, false) // Inflate the binding layout
+        _binding = FragmentApprovedCarsBinding.inflate(inflater, container, false) // Inflate the binding layout
         return binding.root // Return the root view of the binding
     }
 
@@ -49,8 +46,9 @@ class SellerCrudFragment : Fragment() {
 
         // Observe changes in the car list from the ViewModel
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
-            carAdapter.updateCars(cars) // Update the adapter when data changes
-
+            // Filter cars with `approved` set to false
+            val unapprovedCars = cars.filter { car -> car.approved == false }
+            carAdapter.updateCars(unapprovedCars) // Update the adapter with filtered data
         }
 
         // Observe error messages from the ViewModel
@@ -64,11 +62,6 @@ class SellerCrudFragment : Fragment() {
         // Configure AutoCompleteTextView for real-time search
         val searchAutoCompleteTextView = binding.autoCompleteModelSearch
         viewModel.setupModelSearch(searchAutoCompleteTextView)
-
-        // Set up the button to show the car options dialog
-        binding.btnAddCar.setOnClickListener {
-            showCarOptionsDialog() // Call the function to show the dialog
-        }
 
         binding.ibtnBack.setOnClickListener {
             findNavController().popBackStack()  // Navigate back to the previous screen

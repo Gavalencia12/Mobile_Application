@@ -10,10 +10,23 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp">
 
+    <TextView
+        android:id="@+id/approvedText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/review"
+        android:textAlignment="center"
+        style="@style/subtitle_dialog"
+        android:visibility="gone"
+        />
+
+
     <!-- ScrollView to enable vertical scrolling for the content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+       >
 
         <!-- Main container layout with horizontal orientation for car details and actions -->
         <LinearLayout

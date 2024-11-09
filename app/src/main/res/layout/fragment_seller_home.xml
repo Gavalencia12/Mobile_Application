@@ -360,25 +360,80 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/section_cards_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/section_cards_2">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_approved_cars"
+                    style="@style/card_info"
+                    android:backgroundTint="@color/dark_blue">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:id="@+id/icon_approved_cars"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_car"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_approved_cars_label"
+                            style="@style/subtitle_dialog"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/review"
+                            android:textColor="@color/white"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_approved_cars" />
+
+                        <TextView
+                            android:text="0"
+                            android:id="@+id/tv_approved_cars_count"
+                            style="@style/title_dialog"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_approved_cars_label" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+
             <!-- Horizontal scroll view for seller reviews -->
             <HorizontalScrollView
                 android:id="@+id/section_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/section_cards_2"
+                app:layout_constraintTop_toBottomOf="@id/section_cards_3"
                 android:overScrollMode="never"
                 android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <!-- Review card 1 -->
                     <androidx.cardview.widget.CardView
                         style="@style/card_info"
                         android:id="@+id/card_review_1"
-                        android:backgroundTint="@color/blue_pressed" >
+                        android:backgroundTint="@color/blue_pressed"
+                        >
 
                         <!-- Review content layout -->
                         <RelativeLayout

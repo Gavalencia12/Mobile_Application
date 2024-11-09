@@ -73,7 +73,7 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             val result = getAllCarsFromDatabaseUseCase()
             if (result.isSuccess) {
-                allCars = result.getOrNull()?.filter { !it.sold } ?: emptyList()
+                allCars = result.getOrNull()?.filter { !it.sold && it.approved } ?: emptyList()
                 _carList.value = allCars
                 loadUniqueCarModels()
                 loadUniqueCarColors()

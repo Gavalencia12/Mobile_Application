@@ -1,6 +1,8 @@
 package com.example.carhive.Presentation.admin.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +52,23 @@ class AdminCarListFragment : Fragment() {
         binding.bureturn.setOnClickListener {
             findNavController().navigate(R.id.action_adminCarListFragment_to_adminHomeFragment)
         }
+
+        binding.searchInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterCars(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+    private fun filterCars(query: String) {
+        val filteredList = viewModel.carList.value?.filter { car ->
+            car.modelo.contains(query, ignoreCase = true) ||
+                    car.brand.contains(query, ignoreCase = true)
+        } ?: emptyList()
+
+        carAdapter.updateList(filteredList)
     }
 
     override fun onDestroyView() {

@@ -52,7 +52,10 @@ class SellerFavoritesFragment : Fragment() {
 
         // Observe the carList LiveData from the ViewModel to update the UI when data changes
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
-            if (cars.isEmpty()) {
+            val approvedCars = cars.filter { it.approved }
+
+
+            if (approvedCars.isEmpty()) {
                 // Show the empty view if no cars are available
                 binding.recyclerViewCar.visibility = View.GONE
                 binding.emptyView.visibility = View.VISIBLE
@@ -63,7 +66,7 @@ class SellerFavoritesFragment : Fragment() {
 
                 // Observe the favoriteCounts LiveData to update favorite counts in the adapter
                 viewModel.favoriteCounts.observe(viewLifecycleOwner) { favoriteCounts ->
-                    carAdapter.updateCars(cars, favoriteCounts) // Update the adapter with cars and favorite counts
+                    carAdapter.updateCars(approvedCars, favoriteCounts) // Update the adapter with cars and favorite counts
                 }
             }
         }

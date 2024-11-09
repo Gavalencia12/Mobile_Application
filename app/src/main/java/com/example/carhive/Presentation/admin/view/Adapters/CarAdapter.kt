@@ -1,6 +1,5 @@
 package com.example.carhive.Presentation.admin.view.Adapters
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +10,19 @@ import com.bumptech.glide.Glide
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.R
 import com.google.firebase.database.FirebaseDatabase
-import com.example.carhive.Presentation.user.items.CarDetailFragment
 import com.google.firebase.database.DatabaseReference
 
 
 class CarAdapter(
-    private val carList: List<CarEntity>,
+    private var carList: List<CarEntity>,
     private val onCarClick: (CarEntity) -> Unit
 ) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
 
     private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users")
-
+    fun updateList(newList: List<CarEntity>) {
+        carList = newList
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_admin_car, parent, false)
         return CarViewHolder(view)
