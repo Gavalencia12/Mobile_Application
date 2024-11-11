@@ -30,11 +30,11 @@
         <TextView android:id="@+id/car_year" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
 
         <!-- Precio -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Precio:" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Price:" android:textStyle="bold" />
         <TextView android:id="@+id/car_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
 
         <!-- Color -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Price:" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Color:" android:textStyle="bold" />
         <TextView android:id="@+id/car_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
 
         <!-- Kilometraje -->
