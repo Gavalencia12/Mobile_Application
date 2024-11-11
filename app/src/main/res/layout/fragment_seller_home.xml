@@ -392,7 +392,7 @@
                             android:id="@+id/tv_approved_cars_label"
                             style="@style/subtitle_dialog"
                             android:layout_marginTop="15dp"
-                            android:text="@string/review"
+                            android:text="@string/Awaiting_Review"
                             android:textColor="@color/white"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/icon_approved_cars" />

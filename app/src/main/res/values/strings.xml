@@ -244,6 +244,7 @@
     <string name="unsold_cars">Unsold cars</string>
     <string name="favorite_cars">Favorite Cars</string>
     <string name="review">Review</string>
+    <string name="Awaiting_Review">Awaiting Review</string>
     <string name="txt_review">Muy buen vendedor, acesible, guapo, comprometedor, sincero</string>
     <string name="example_number">25</string>
 
