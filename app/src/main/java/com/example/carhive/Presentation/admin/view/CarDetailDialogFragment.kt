@@ -8,8 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.carhive.Data.model.CarEntity
 import com.example.carhive.R
@@ -80,11 +83,36 @@ class CarDetailDialogFragment : DialogFragment() {
 
             val imageUrls = bundle.getStringArrayList("car_imageUrls")
             if (!imageUrls.isNullOrEmpty()) {
-                Glide.with(requireContext())
-                    .load(imageUrls[0])
-                    .into(view.findViewById(R.id.car_image))
+                val viewPager = view.findViewById<ViewPager2>(R.id.car_image_viewpager)
+                viewPager.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                        val imageView = ImageView(parent.context).apply {
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            )
+                            scaleType = ImageView.ScaleType.CENTER_CROP
+                        }
+                        return object : RecyclerView.ViewHolder(imageView) {}
+                    }
+
+                    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+                        val imageView = holder.itemView as ImageView
+                        Glide.with(requireContext())
+                            .load(imageUrls[position])
+                            .into(imageView)
+
+                        imageView.setOnClickListener {
+                            val fullScreenDialog = FullScreenImageDialogFragment.newInstance(imageUrls, position)
+                            fullScreenDialog.show(parentFragmentManager, "FullScreenImageDialog")
+                        }
+                    }
+
+                    override fun getItemCount(): Int = imageUrls.size
+                }
             }
         }
+
         val closeButton = view.findViewById<Button>(R.id.close_button)
         closeButton.setOnClickListener {
             dismiss()
@@ -106,7 +134,6 @@ class CarDetailDialogFragment : DialogFragment() {
 
             if (ownerId != null) {
                 val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
-                // Obtener el correo electrónico, firstName y lastName del propietario
                 db.child("email").get().addOnSuccessListener { emailSnapshot ->
                     val ownerEmail = emailSnapshot.value as? String
                     db.child("firstName").get().addOnSuccessListener { firstNameSnapshot ->
@@ -132,8 +159,6 @@ class CarDetailDialogFragment : DialogFragment() {
             }
             updateCarApprovalStatus(false)
         }
-
-
     }
 
     private fun sendEmail(ownerEmail: String, carId: String?, fullName: String) {
@@ -143,22 +168,19 @@ class CarDetailDialogFragment : DialogFragment() {
         }
 
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:") // Solo apps de email deben manejar este Intent
+            data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(ownerEmail))
             putExtra(Intent.EXTRA_SUBJECT, "Notificación de desaprobación de su coche")
             putExtra(
                 Intent.EXTRA_TEXT,
                 """
-            Estimado usuario $fullName, 
-            
-            Su coche con ID: $carId no ha sido aprobado. Por favor, revise sus datos y vuelva a intentarlo.
-            
-            Sus datos a revisar son:
-            -
-            
-            Saludos,
-            El equipo de CarHive
-            """.trimIndent()
+                Estimado usuario $fullName,
+                
+                Su coche con ID: $carId no ha sido aprobado. Por favor, revise sus datos y vuelva a intentarlo.
+                
+                Saludos,
+                El equipo de CarHive
+                """.trimIndent()
             )
         }
         try {
@@ -167,9 +189,6 @@ class CarDetailDialogFragment : DialogFragment() {
             Log.e("CarDetailDialogFragment", "No se pudo enviar el correo electrónico.", ex)
         }
     }
-
-
-
 
     private fun updateCarApprovalStatus(isApproved: Boolean) {
         val ownerId = arguments?.getString("owner_id")
@@ -180,23 +199,13 @@ class CarDetailDialogFragment : DialogFragment() {
         }
 
         val db = FirebaseDatabase.getInstance().getReference("Car").child(ownerId).child(carId)
-
         db.child("approved").setValue(isApproved)
-            .addOnSuccessListener {
-            }
-            .addOnFailureListener { exception ->
-            }
+            .addOnSuccessListener { }
+            .addOnFailureListener { exception -> }
     }
-
-
-
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            (resources.displayMetrics.widthPixels * 1).toInt(),
-            (resources.displayMetrics.heightPixels * 1).toInt()
-        )
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
-
 }

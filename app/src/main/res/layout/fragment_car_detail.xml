@@ -9,11 +9,10 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Imagen principal del coche -->
-        <ImageView
-            android:id="@+id/car_image"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/car_image_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:layout_marginBottom="16dp" />
 
