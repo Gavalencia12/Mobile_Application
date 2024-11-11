@@ -46,6 +46,9 @@ class SellerHomeViewModel @Inject constructor(
     private val _unsoldCarsCount = MutableLiveData<Int>()
     val unsoldCarsCount: LiveData<Int> get() = _unsoldCarsCount
 
+    private val _unapprovedCarsCount = MutableLiveData<Int>()
+    val unapprovedCarsCount: LiveData<Int> get() = _unapprovedCarsCount
+
     // Obtener los datos del usuario usando el ID recuperado desde el caso de uso
     fun fetchUserData() {
         viewModelScope.launch {
@@ -88,16 +91,20 @@ class SellerHomeViewModel @Inject constructor(
         }
     }
 
-    // Actualizar los conteos de total, vendidos y no vendidos
+    // Actualizar los conteos de total, vendidos y no vendidos, solo para los carros aprobados
     private fun updateCarCounts(cars: List<CarEntity>) {
-        val total = cars.size // Número total de carros
-        val soldCount = cars.count { it.sold } // Contar los carros vendidos
-        val unsoldCount = total - soldCount // Contar los carros no vendidos
+        val unapprovedCars = cars.filter { !it.approved } // Filtrar autos no aprobados
+        val approvedCars = cars.filter { it.approved } // Filtrar los autos aprobados
+        val totalApproved = approvedCars.size // Número total de autos aprobados
+        val soldCount = approvedCars.count { it.sold } // Contar los autos vendidos entre los aprobados
+        val unsoldCount = totalApproved - soldCount // Contar los autos no vendidos entre los aprobados
 
-        // Actualizar los LiveData con los conteos
-        _totalCarsCount.value = total
+        // Actualizar los LiveData con los conteos para autos aprobados
+        _totalCarsCount.value = totalApproved
         _soldCarsCount.value = soldCount
         _unsoldCarsCount.value = unsoldCount
+        _unapprovedCarsCount.value = unapprovedCars.size // Actualizar el contador de no aprobados
+
     }
 
     // Obtener el número de carros con al menos un favorito

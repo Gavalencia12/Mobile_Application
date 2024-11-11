@@ -1,0 +1,39 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/car_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/car_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Car Model" />
+
+    <TextView
+        android:id="@+id/car_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Car Brand" />
+
+    <TextView
+        android:id="@+id/car_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price" />
+
+    <TextView
+        android:id="@+id/car_fistname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FirstName" />
+</LinearLayout>

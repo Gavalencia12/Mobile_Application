@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/car_image_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Modelo -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Model:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_model" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Marca -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Brand:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_brand" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Año -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Year:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_year" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Precio -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Price:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Color -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Color:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Kilometraje -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mileage:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_mileage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Transmisión -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Transmission:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_transmission" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Tipo de combustible -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fuel Type:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_fuelType" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Número de puertas -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Doors:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_doors" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Capacidad del motor -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Engine Capacity:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_engineCapacity" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Ubicación -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Location:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_location" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Condición -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Condition:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_condition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- VIN -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="VIN:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_vin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Propietarios anteriores -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Previous Owners:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_previousOwners" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Vistas -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Views:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_views" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Fecha de listado -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Listing Date:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_listingDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Última actualización -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Last Update:" android:textStyle="bold" />
+        <TextView android:id="@+id/car_lastUpdated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
+
+        <!-- Botón de cerrar el diálogo -->
+        <Button
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="close"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp" />
+
+        <!-- Botón para abrir la página web -->
+        <Button
+            android:id="@+id/open_website_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open REPUVE"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" />
+
+        <!-- Botón de Aprobado -->
+        <Button
+            android:id="@+id/approved_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approved"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" />
+
+        <!-- Botón de Desaprobado -->
+        <Button
+            android:id="@+id/desapproved_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disapproved"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</ScrollView>

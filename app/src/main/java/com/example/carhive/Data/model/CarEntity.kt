@@ -16,6 +16,8 @@ data class CarEntity(
     var sold: Boolean = false,                     // Sales status (true if sold)
     var imageUrls: List<String>? = mutableListOf(),// List of image URLs for the car
     var ownerId: String = "",                      // Owner's unique identifier
+    var approved: Boolean = false,
+
 
     // Additional fields
     var transmission: String = "",                 // Transmission type: manual or automatic
