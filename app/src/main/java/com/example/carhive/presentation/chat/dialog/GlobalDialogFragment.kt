@@ -55,6 +55,8 @@ class GlobalDialogFragment(
         binding.buttonPositive.text = positiveButtonText
         binding.buttonNegative.text = negativeButtonText
 
+        binding.editTextReportComment.visibility = if (dialogType == DialogType.REPORT) View.VISIBLE else View.GONE
+
         // Positive button click listener to handle dialog actions based on DialogType
         binding.buttonPositive.setOnClickListener {
             handlePositiveButtonClick(dialogType)
@@ -73,13 +75,15 @@ class GlobalDialogFragment(
      * @param dialogType The type of dialog action to perform (e.g., REPORT, BLOCK, DELETE_CHAT).
      */
     private fun handlePositiveButtonClick(dialogType: DialogType?) {
+        val comment = binding.editTextReportComment.text.toString().takeIf { it.isNotBlank() }
         when (dialogType) {
             DialogType.REPORT -> {
                 chatViewModel.reportUser(
                     currentUserId = arguments?.getString(ARG_CURRENT_USER_ID) ?: "",
                     ownerId = arguments?.getString(ARG_OWNER_ID) ?: "",
                     buyerId = arguments?.getString(ARG_BUYER_ID) ?: "",
-                    carId = arguments?.getString(ARG_CAR_ID) ?: ""
+                    carId = arguments?.getString(ARG_CAR_ID) ?: "",
+                    comment = comment
                 )
                 if (binding.checkboxBlockChat.isChecked) {
                     chatViewModel.blockUser(
@@ -90,6 +94,8 @@ class GlobalDialogFragment(
                     )
                     onActionCompleted?.invoke()
                 }
+                onActionCompleted
+
             }
             DialogType.BLOCK -> {
                 chatViewModel.blockUser(

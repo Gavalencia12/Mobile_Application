@@ -1,6 +1,7 @@
 package com.example.carhive.presentation.chat.viewModel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,9 @@ import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -28,6 +32,7 @@ class ChatViewModel @Inject constructor(
     private val infoUseCase: GetUserInfoUseCase,
     private val deleteMessageForUserUseCase: DeleteMessageForUserUseCase,
     private val updateMessageStatusUseCase: UpdateMessageStatusUseCase,
+    private val getAllMessagesOnceUseCase: GetAllMessagesOnceUseCase
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
@@ -56,9 +61,16 @@ class ChatViewModel @Inject constructor(
      */
     fun observeMessages(ownerId: String, carId: String, buyerId: String) {
         viewModelScope.launch {
-            getMessagesUseCase(ownerId, carId, buyerId).collect { message ->
+            getMessagesUseCase(ownerId, carId, buyerId).collectLatest { message ->
                 if (!message.deletedFor.contains(currentUserId)) {
-                    _messages.value += message
+                    // Reemplaza el mensaje en la lista si ya existe, o agrégalo si no está
+                    _messages.value = _messages.value.map {
+                        if (it.messageId == message.messageId) message else it
+                    }.toMutableList().apply {
+                        if (none { it.messageId == message.messageId }) add(message)
+                    }
+
+                    // Actualiza el estado del mensaje a "read" si es necesario
                     if (message.receiverId == currentUserId && message.status == "sent") {
                         updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
                     }
@@ -76,7 +88,7 @@ class ChatViewModel @Inject constructor(
         val receiver = if (isSeller) buyerId else ownerId
 
         viewModelScope.launch {
-            isUserBlocked(receiver, currentUserId) { isBlocked ->
+            isUserBlocked(receiver, currentUserId, carId) { isBlocked ->
                 val message = Message(
                     messageId = "",
                     senderId = currentUserId,
@@ -111,7 +123,7 @@ class ChatViewModel @Inject constructor(
             val isSeller = currentUserId == ownerId
             val receiver = if (isSeller) buyerId else ownerId
 
-            isUserBlocked(receiver, currentUserId) { isBlocked ->
+            isUserBlocked(receiver, currentUserId, carId) { isBlocked ->
                 val deletedFor = mutableListOf<String>()
                 if (isBlocked) {
                     deletedFor.add(receiver)
@@ -142,26 +154,15 @@ class ChatViewModel @Inject constructor(
     fun clearChatForUser(ownerId: String, carId: String, buyerId: String) {
         viewModelScope.launch {
             try {
-                _messages.value = emptyList()
-                getMessagesUseCase(ownerId, carId, buyerId).collect { message ->
+                val messages = getAllMessagesOnceUseCase(ownerId, carId, buyerId)
+
+                messages.forEach { message ->
                     deleteMessageForUserUseCase(ownerId, carId, buyerId, message.messageId, currentUserId)
                 }
-                reloadMessages(ownerId, carId, buyerId)
-            } catch (e: Exception) {
-                _error.value = "Error clearing chat: ${e.message}"
-            }
-        }
-    }
+                _messages.value = emptyList()
 
-    /**
-     * Reloads messages while filtering out those marked as deleted for the current user.
-     */
-    private fun reloadMessages(ownerId: String, carId: String, buyerId: String) {
-        viewModelScope.launch {
-            getMessagesUseCase(ownerId, carId, buyerId).collect { message ->
-                if (!message.deletedFor.contains(currentUserId)) {
-                    _messages.value += message
-                }
+            } catch (e: Exception) {
+                _error.value = "Error clean chat: ${e.message}"
             }
         }
     }
@@ -169,24 +170,50 @@ class ChatViewModel @Inject constructor(
     /**
      * Reports a user by adding a record in Firebase with sample messages.
      */
-    fun reportUser(currentUserId: String, ownerId: String, buyerId: String, carId: String) {
+    fun reportUser(currentUserId: String, ownerId: String, buyerId: String, carId: String, comment: String?) {
         viewModelScope.launch {
             try {
+                Log.d("reportUser", "Iniciando el proceso de reporte")
+
+                // Obtenemos la referencia de Firebase para los reportes
                 val reportRef = FirebaseDatabase.getInstance().getReference("Reports")
                     .child("UserReports").push()
+                Log.d("reportUser", "Referencia de reporte obtenida: $reportRef")
 
+                // Usamos getAllMessagesOnceUseCase para obtener todos los mensajes de una vez
+                val allMessages = getAllMessagesOnceUseCase(ownerId, carId, buyerId)
+                Log.d("reportUser", "Total de mensajes obtenidos: ${allMessages.size}")
+
+                // Tomamos los últimos 5 mensajes
+                val sampleMessages = allMessages.takeLast(5)
+                Log.d("reportUser", "Últimos 5 mensajes obtenidos para el reporte: $sampleMessages")
+
+                // Datos del reporte
                 val reportData = mapOf(
                     "reporterId" to currentUserId,
                     "reportedUserId" to buyerId,
                     "carId" to carId,
                     "ownerId" to ownerId,
                     "timestamp" to System.currentTimeMillis(),
-                    "sampleMessages" to _messages.value.takeLast(5) // Attaches last 5 messages
+                    "sampleMessages" to sampleMessages, // Adjuntamos los últimos 5 mensajes
+                    "revised" to false,
+                    "comment" to comment
                 )
 
+                // Mostramos los datos que vamos a enviar a Firebase
+                Log.d("reportUser", "Datos del reporte que se enviarán: $reportData")
+
+                // Enviamos el reporte a Firebase
                 reportRef.setValue(reportData)
+                    .addOnSuccessListener {
+                        Log.d("reportUser", "Reporte enviado exitosamente")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("reportUser", "Error al enviar el reporte: ${e.message}")
+                    }
             } catch (e: Exception) {
                 _error.value = "Error reporting user: ${e.message}"
+                Log.e("reportUser", "Excepción durante el reporte: ${e.message}")
             }
         }
     }
@@ -195,12 +222,14 @@ class ChatViewModel @Inject constructor(
      * Blocks a user by adding them to the blocked list in Firebase.
      */
     fun blockUser(currentUserId: String, ownerId: String, buyerId: String, carId: String) {
+        val isSeller = currentUserId == ownerId
+        val blockedUserId = if (isSeller) buyerId else ownerId
         viewModelScope.launch {
             try {
                 val blockRef = FirebaseDatabase.getInstance().getReference("BlockedUsers")
-                    .child(currentUserId).child(buyerId)
+                    .child(currentUserId).child(blockedUserId)
                 val blockData = mapOf(
-                    "blockedUserId" to buyerId,
+                    "blockedUserId" to blockedUserId,
                     "carId" to carId,
                     "timestamp" to System.currentTimeMillis()
                 )
@@ -238,11 +267,22 @@ class ChatViewModel @Inject constructor(
     /**
      * Checks if a user is blocked by querying the Firebase database and invokes the provided callback.
      */
-    fun isUserBlocked(currentUserId: String, otherUserId: String, callback: (Boolean) -> Unit) {
+    fun isUserBlocked(currentUserId: String, otherUserId: String, carId: String, callback: (Boolean) -> Unit) {
         val blockRef = FirebaseDatabase.getInstance().getReference("BlockedUsers")
             .child(currentUserId).child(otherUserId)
+
         blockRef.get().addOnSuccessListener { snapshot ->
-            callback(snapshot.exists())
+            if (snapshot.exists()) {
+                val blockedCarId = snapshot.child("carId").getValue(String::class.java)
+                // Verifica si el carId en la base de datos coincide con el carId proporcionado
+                callback(blockedCarId == carId)
+            } else {
+                // Si el nodo de usuario bloqueado no existe, significa que el usuario no está bloqueado
+                callback(false)
+            }
+        }.addOnFailureListener {
+            // Manejo de errores, en caso de fallo en la consulta
+            callback(false)
         }
     }
 

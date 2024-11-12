@@ -76,6 +76,25 @@ class ChatRepositoryImpl @Inject constructor(
             awaitClose { messagesRef.removeEventListener(listener) }
         }
 
+    override suspend fun getAllMessagesOnce(ownerId: String, carId: String, buyerId: String): List<Message> {
+        val messages = mutableListOf<Message>()
+        val snapshot = database.reference
+            .child("ChatGroups")
+            .child(ownerId)
+            .child(carId)
+            .child("messages")
+            .child(buyerId)
+            .get()
+            .await()
+
+        for (child in snapshot.children) {
+            val messageEntity = child.getValue(MessageEntity::class.java)
+            messageEntity?.let { messages.add(messageMapper.mapToDomain(it)) }
+        }
+        return messages
+    }
+
+
     /**
      * Sends a message to a specific chat group.
      * @param ownerId The ID of the owner (seller).

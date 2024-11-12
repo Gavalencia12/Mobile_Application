@@ -258,10 +258,6 @@ class ChatAdapter(
                 return
             }
 
-            val isPrivateDirectory = file.filePath.startsWith(context.filesDir.absolutePath) ||
-                    file.filePath.startsWith(context.cacheDir.absolutePath) ||
-                    file.filePath.startsWith(context.getExternalFilesDir(null)?.absolutePath ?: "")
-
             val uriBase: Uri = MediaStore.Files.getContentUri("external")
             var fileUri: Uri? = null
 

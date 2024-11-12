@@ -118,8 +118,9 @@ class ChatFragment : Fragment() {
         binding.menuButton.setOnClickListener {
             showPopupMenu(it)
         }
-
-        chatViewModel.isUserBlocked(currentUserId, buyerId) { isBlocked ->
+        val isSeller = currentUserId == ownerId
+        val blockedUserId = if (isSeller) buyerId else ownerId
+        chatViewModel.isUserBlocked(currentUserId, blockedUserId, carId) { isBlocked ->
             if (isBlocked) {
                 binding.blockedMessageTextView.visibility = View.VISIBLE
                 binding.messageInputLayout.visibility = View.GONE
@@ -204,8 +205,10 @@ class ChatFragment : Fragment() {
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.inflate(R.menu.chat_menu)
+        val isSeller = currentUserId == ownerId
+        val blockedUserId = if (isSeller) buyerId else ownerId
 
-        chatViewModel.isUserBlocked(currentUserId, buyerId) { isBlocked ->
+        chatViewModel.isUserBlocked(currentUserId, blockedUserId, carId) { isBlocked ->
             val blockItem = popupMenu.menu.findItem(R.id.option_block)
             blockItem.title = if (isBlocked) "Unblock" else "Block"
 
@@ -217,7 +220,7 @@ class ChatFragment : Fragment() {
                     }
                     R.id.option_block -> {
                         if (isBlocked) {
-                            chatViewModel.unblockUser(currentUserId, buyerId)
+                            chatViewModel.unblockUser(currentUserId, blockedUserId)
                             Toast.makeText(requireContext(), "User unblocked", Toast.LENGTH_SHORT).show()
                         } else {
                             showBlockUserDialog()
@@ -249,6 +252,7 @@ class ChatFragment : Fragment() {
             buyerId = buyerId,
             onActionCompleted = {
                 chatViewModel.setUserBlocked(true)
+                chatViewModel.clearChatForUser(ownerId, carId, buyerId)
             }
         )
         reportDialog.show(parentFragmentManager, "ReportDialog")
@@ -267,7 +271,6 @@ class ChatFragment : Fragment() {
             buyerId = buyerId,
             onActionCompleted = {
                 chatViewModel.setUserBlocked(true)
-                chatViewModel.clearChatForUser(ownerId, carId, buyerId)
             }
         )
         blockDialog.show(parentFragmentManager, "BlockDialog")
@@ -285,7 +288,9 @@ class ChatFragment : Fragment() {
             carId = carId,
             buyerId = buyerId,
             onActionCompleted = {
-                chatViewModel.clearChatForUser(ownerId, carId, buyerId)
+                lifecycleScope.launch {
+                    chatViewModel.clearChatForUser(ownerId, carId, buyerId)
+                }
             }
         )
         deleteDialog.show(parentFragmentManager, "DeleteChatDialog")

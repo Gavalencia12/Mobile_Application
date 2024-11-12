@@ -16,6 +16,8 @@ interface ChatRepository {
         message: Message
     ): Result<Unit>
 
+    suspend fun getAllMessagesOnce(ownerId: String, carId: String, buyerId: String): List<Message>
+
     suspend fun getUserInfo(userId: String, carId: String): Result<CarEntity?>
     suspend fun getInterestedUsers(
         ownerId: String?,
