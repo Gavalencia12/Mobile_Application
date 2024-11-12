@@ -277,10 +277,11 @@
     <string name="start_year">Start year</string>
     <string name="end_year">End year</string>
     <string name="apply_filters">Apply Filters</string>
-    <string name="restore_filters">Restore Filters</string>
+    <string name="clear_filters">Clear Filters</string>
     <string name="Search_your_car">Search your car</string>
     <string name="condition">Condition</string>
     <string name="car_condition_filter">Car Condition</string>
+    <string name="near_to_you">Near to you!</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

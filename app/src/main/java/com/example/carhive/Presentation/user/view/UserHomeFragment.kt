@@ -287,8 +287,8 @@ class UserHomeFragment : Fragment() {
 
     // Sets up color filter with an AutoCompleteTextView populated with unique colors
     private fun setupColorFilter(view: View) {
-        val autoCompleteColor: AutoCompleteTextView = view.findViewById(R.id.autoComplete_color)
-        val colorGrid = view.findViewById<GridLayout>(R.id.color_grid)
+//        val autoCompleteColor: AutoCompleteTextView = view.findViewById(R.id.autoComplete_color)
+//        val colorGrid = view.findViewById<GridLayout>(R.id.color_grid)
         val colorButtons = listOf(
             Pair(R.id.red_button, "Red"),
             Pair(R.id.orange_button, "Orange"),

@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <!-- Navegation options LinearLayout -->
@@ -78,6 +80,30 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Apply and Restore Filters buttons -->
+            <Button
+                android:id="@+id/btn_apply_filters"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:text="@string/apply_filters"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_more_info_background"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/btn_restore_filters"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:text="@string/clear_filters"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_more_info_background"
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
 
         <!-- Filter sections ScrollView -->
@@ -86,7 +112,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="16dp">
+            android:padding="16dp"
+            tools:ignore="NestedWeights">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -125,27 +152,27 @@
                         android:paddingBottom="16dp" />
                 </LinearLayout>
 
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/section_condition"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:layout_marginBottom="24dp">-->
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="@string/car_condition_filter"-->
-<!--                        android:textSize="18sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:paddingBottom="8dp"-->
-<!--                        android:textColor="@color/blue" />-->
+                <LinearLayout
+                    android:id="@+id/section_condition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/car_condition_filter"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
 
-<!--                    <androidx.recyclerview.widget.RecyclerView-->
-<!--                        android:id="@+id/recyclerView_condition"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:paddingBottom="16dp" />-->
-<!--                </LinearLayout>-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_condition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
 
                 <!-- Price range selection -->
                 <LinearLayout
@@ -168,6 +195,7 @@
                         android:id="@+id/editText_min_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:autofillHints=""
                         android:hint="@string/minimum_price"
                         android:inputType="numberDecimal"
                         android:paddingBottom="8dp" />
@@ -176,6 +204,7 @@
                         android:id="@+id/editText_max_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:autofillHints=""
                         android:hint="@string/maximum_price"
                         android:inputType="numberDecimal"
                         android:paddingBottom="16dp" />
@@ -202,6 +231,7 @@
                         android:id="@+id/editText_min_mileage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:autofillHints=""
                         android:hint="@string/minimum_mileage"
                         android:inputType="numberDecimal"
                         android:paddingBottom="8dp" />
@@ -210,6 +240,7 @@
                         android:id="@+id/editText_max_mileage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:autofillHints=""
                         android:hint="@string/maximum_mileage"
                         android:inputType="numberDecimal"
                         android:paddingBottom="16dp" />
@@ -222,7 +253,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginBottom="24dp">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -231,18 +261,6 @@
                         android:textStyle="bold"
                         android:paddingBottom="8dp"
                         android:textColor="@color/blue" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autoComplete_color"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/choose_a_color"
-                        android:inputType="text"
-                        android:paddingBottom="16dp"
-                        android:visibility="gone"/>
-
-
-
                     <!-- Color Grid -->
                     <GridLayout
                         android:id="@+id/color_grid"
@@ -251,78 +269,152 @@
                         android:columnCount="3"
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp">
-
                         <!-- Color Buttons -->
-                        <Button
-                            android:id="@+id/red_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/red"
-                            android:tag="Red"/>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_margin="10dp">
+                            <Button
+                                android:id="@+id/red_button"
 
-                        <Button
-                            android:id="@+id/orange_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/orange"
-                            android:tag="Orange"/>
-
-                        <Button
-                            android:id="@+id/yellow_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/yellow"
-                            android:tag="Yellow"/>
-
-                        <Button
-                            android:id="@+id/green_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/green"
-                            android:tag="Green"/>
-
-                        <Button
-                            android:id="@+id/blue_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/blue"
-                            android:tag="Blue"/>
-
-                        <Button
-                            android:id="@+id/purple_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/purple"
-                            android:tag="Purple"/>
-
-                        <Button
-                            android:id="@+id/pink_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/pink"
-                            android:tag="Pink"/>
-
-                        <Button
-                            android:id="@+id/white_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/white"
-                            android:tag="White"/>
-
-                        <Button
-                            android:id="@+id/gray_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/gray"
-                            android:tag="Gray"/>
-
-                        <Button
-                            android:id="@+id/black_button"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:backgroundTint="@color/black"
-                            android:tag="Black"/>
-
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/red"
+                                android:tag="Red"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_margin="10dp">
+                            <Button
+                                android:id="@+id/orange_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/orange"
+                                android:tag="Orange"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_margin="10dp">
+                            <Button
+                                android:id="@+id/yellow_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/yellow"
+                                android:tag="Yellow"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/green_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/green"
+                                android:tag="Green"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/blue_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/blue"
+                                android:tag="Blue"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/purple_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/purple"
+                                android:tag="Purple"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/pink_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/pink"
+                                android:tag="Pink"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/white_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/gray_bg"
+                                android:tag="White"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/gray_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/gray"
+                                android:tag="Gray"/>
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp">
+                            <Button
+                                android:id="@+id/black_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/black"
+                                android:tag="Black"/>
+                        </FrameLayout>
                     </GridLayout>
                 </LinearLayout>
 
@@ -359,25 +451,6 @@
                         android:inputType="number"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
-
-                <!-- Apply and Restore Filters buttons -->
-                <Button
-                    android:id="@+id/btn_apply_filters"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/apply_filters"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/btn_style"
-                    android:layout_marginTop="16dp" />
-
-                <Button
-                    android:id="@+id/btn_restore_filters"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/restore_filters"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/btn_style"
-                    android:layout_marginTop="16dp" />
 
             </LinearLayout>
 
