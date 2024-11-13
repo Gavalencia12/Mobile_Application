@@ -69,12 +69,12 @@ class SellerHomeFragment : Fragment() {
         viewModel.unsoldCarsCount.observe(viewLifecycleOwner) { count ->
             binding.tvUnsoldCarsCount.text = count.toString()
         }
-        // Observa el contador de carros con al menos una reacción de favoritos
+        // Observe the number of favorite cars and update the TextView accordingly
         viewModel.favoriteReactionsCount.observe(viewLifecycleOwner) { count ->
             binding.tvFavoriteCarsCount.text = count.toString() // Actualiza el TextView con el contador
         }
 
-        // Llama a la función para obtener el contador al crear la vista
+        // Call the function to fetch favorite reactions for user cars
         viewModel.fetchFavoriteReactionsForUserCars()
 
 
