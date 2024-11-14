@@ -55,6 +55,11 @@ class SellerHomeFragment : Fragment() {
             }
         }
 
+        viewModel.unapprovedCarsCount.observe(viewLifecycleOwner) { count ->
+            binding.tvApprovedCarsCount.text = count.toString()
+        }
+
+
         // Observe the total number of cars and update the TextView accordingly
         viewModel.totalCarsCount.observe(viewLifecycleOwner) { count ->
             binding.tvAllCarsCount.text = count.toString()
@@ -114,6 +119,10 @@ class SellerHomeFragment : Fragment() {
             )
 
         }
+        binding.cardApprovedCars.setOnClickListener {
+            findNavController().navigate(R.id.approvedCarsFragment)
+        }
+
     }
 
     // Function to set the user's full name in the username TextView in the UI
