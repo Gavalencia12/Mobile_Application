@@ -40,6 +40,7 @@ class UsersMessagesAdapter(
         private val imageView: ImageView = itemView.findViewById(R.id.profileImageView)
         private val lastMessageTextView: TextView = itemView.findViewById(R.id.lastMessageTextView)
         private val fileIconImageView: ImageView = itemView.findViewById(R.id.fileIconImageView)
+        private val unreadCountTextView: TextView = itemView.findViewById(R.id.unreadCountTextView)
 
         /**
          * Binds a user or car item to the ViewHolder.
@@ -57,6 +58,12 @@ class UsersMessagesAdapter(
                         .placeholder(R.drawable.ic_person)
                         .error(R.drawable.ic_error)
                         .into(imageView)
+                    if (item.unreadCount > 0) {
+                        unreadCountTextView.visibility = View.VISIBLE
+                        unreadCountTextView.text = item.unreadCount.toString()
+                    } else {
+                        unreadCountTextView.visibility = View.GONE
+                    }
                 }
                 is CarWithLastMessage -> {
                     nameTextView.text = "${item.car.modelo} - ${item.owner.firstName}"
@@ -67,6 +74,12 @@ class UsersMessagesAdapter(
                         .placeholder(R.drawable.ic_img)
                         .error(R.drawable.ic_error)
                         .into(imageView)
+                    if (item.unreadCount > 0) {
+                        unreadCountTextView.visibility = View.VISIBLE
+                        unreadCountTextView.text = item.unreadCount.toString()
+                    } else {
+                        unreadCountTextView.visibility = View.GONE
+                    }
                 }
             }
             itemView.setOnClickListener { onItemClicked(item) }
@@ -86,7 +99,7 @@ class UsersMessagesAdapter(
                 lastMessageTextView.text = fileName ?: messageText
                 when {
                     fileType?.contains("application") == true -> {
-                        fileIconImageView.setImageResource(R.drawable.ic_video)
+                        fileIconImageView.setImageResource(R.drawable.ic_generic_file)
                     }
                     fileType?.contains("image") == true -> {
                         fileIconImageView.setImageResource(R.drawable.ic_img)

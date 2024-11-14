@@ -280,6 +280,14 @@ class ChatRepositoryImpl @Inject constructor(
                         val carId = carSnapshot.key
 
                         val messagesSnapshot = carSnapshot.child("messages").child(ownerId.toString())
+
+                        // Contador de mensajes no leídos
+                        val unreadCount = messagesSnapshot.children.count { messageSnapshot ->
+                            val messageStatus = messageSnapshot.child("status").value as? String
+                            val receiverId = messageSnapshot.child("receiverId").value as? String
+                            messageStatus == "sent" && receiverId == ownerId
+                        }
+
                         messagesSnapshot.children.lastOrNull()?.let { messaSnapshot ->
                             val lastMessageContent = messaSnapshot.child("content").value as? String
                             val lastMessageFileName = messaSnapshot.child("fileName").value as? String
@@ -303,7 +311,8 @@ class ChatRepositoryImpl @Inject constructor(
                                                 lastMessageTimestamp = lastMessageTimestamp,
                                                 isFile = isFile,
                                                 fileName = if (isFile) lastMessageFileName else null,
-                                                fileType = lastMessageFileType
+                                                fileType = lastMessageFileType,
+                                                unreadCount = unreadCount // Asignar el contador de no leídos
                                             )
                                         )
                                     }
@@ -326,6 +335,11 @@ class ChatRepositoryImpl @Inject constructor(
                 messagesSnapshot.children.forEach { userSnapshot ->
                     val userWithMessage = userSnapshot.key
                     val lastMessageSnapshot = userSnapshot.children.lastOrNull()
+                    val unreadCount = userSnapshot.children.count { messageSnapshot ->
+                        val messageStatus = messageSnapshot.child("status").value as? String
+                        val receiverId = messageSnapshot.child("receiverId").value as? String
+                        messageStatus == "sent" && receiverId == ownerId
+                    }
 
                     if (lastMessageSnapshot != null) {
                         val lastMessageContent = lastMessageSnapshot.child("content").value as? String
@@ -352,7 +366,8 @@ class ChatRepositoryImpl @Inject constructor(
                                     carId = carId.toString(),
                                     isFile = isFile,
                                     fileName = if (isFile) lastMessageFileName else null,
-                                    fileType = lastMessageFileType
+                                    fileType = lastMessageFileType,
+                                    unreadCount = unreadCount
                                 )
                             )
                         }
@@ -360,7 +375,6 @@ class ChatRepositoryImpl @Inject constructor(
                 }
             }
         }
-
         return resultList
     }
 

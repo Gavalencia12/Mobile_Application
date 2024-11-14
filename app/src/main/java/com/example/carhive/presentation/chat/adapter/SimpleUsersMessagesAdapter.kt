@@ -29,6 +29,8 @@ class SimpleUsersMessagesAdapter(
         private val nameTextView: TextView = itemView.findViewById(R.id.userNameTextView)
         private val imageView: ImageView = itemView.findViewById(R.id.profileImageView)
         private val lastMessageTextView: TextView = itemView.findViewById(R.id.lastMessageTextView)
+        private val fileIconImageView: ImageView = itemView.findViewById(R.id.fileIconImageView)
+        private val unreadCountTextView: TextView = itemView.findViewById(R.id.unreadCountTextView)
 
         /**
          * Binds a UserWithLastMessage item to the ViewHolder.
@@ -38,15 +40,48 @@ class SimpleUsersMessagesAdapter(
          */
         fun bind(item: UserWithLastMessage) {
             nameTextView.text = item.user.firstName
-            lastMessageTextView.text = item.lastMessage
+            setFileIconAndMessage(item.fileType, item.isFile, item.lastMessage, item.fileName)
             Glide.with(itemView.context)
                 .load(item.user.imageUrl)
                 .placeholder(R.drawable.ic_person)
                 .error(R.drawable.ic_error)
                 .into(imageView)
+            if (item.unreadCount > 0) {
+                unreadCountTextView.visibility = View.VISIBLE
+                unreadCountTextView.text = item.unreadCount.toString()
+            } else {
+                unreadCountTextView.visibility = View.GONE
+            }
 
             itemView.setOnClickListener { onItemClicked(item) }
         }
+        private fun setFileIconAndMessage(fileType: String?, isFile: Boolean, messageText: String, fileName: String?) {
+            if (isFile) {
+                fileIconImageView.visibility = View.VISIBLE
+                lastMessageTextView.text = fileName ?: messageText
+                when {
+                    fileType?.contains("application") == true -> {
+                        fileIconImageView.setImageResource(R.drawable.ic_generic_file)
+                    }
+                    fileType?.contains("image") == true -> {
+                        fileIconImageView.setImageResource(R.drawable.ic_img)
+                        lastMessageTextView.text = "Image"
+                    }
+                    fileType?.contains("video") == true -> {
+                        fileIconImageView.setImageResource(R.drawable.ic_video)
+                        lastMessageTextView.text = "Video"
+                    }
+                    else -> {
+                        fileIconImageView.visibility = View.GONE
+                        lastMessageTextView.text = messageText
+                    }
+                }
+            } else {
+                fileIconImageView.visibility = View.GONE
+                lastMessageTextView.text = messageText
+            }
+        }
+
     }
 
     /**

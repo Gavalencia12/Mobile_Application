@@ -1,12 +1,10 @@
 package com.example.carhive.presentation.chat.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.Domain.usecase.chats.GetInterestedUsersUseCase
-import com.example.carhive.Domain.usecase.chats.GetUserInfoUseCase
 import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
 import com.example.carhive.data.model.UserWithLastMessage
 import com.example.carhive.data.model.CarWithLastMessage
@@ -121,7 +119,8 @@ class InterestedUsersViewModel @Inject constructor(
                             lastMessageTimestamp = messagesResult.lastMessageTimestamp,
                             isFile = messagesResult.isFile,
                             fileName = messagesResult.fileName,
-                            fileType = messagesResult.fileType
+                            fileType = messagesResult.fileType,
+                            unreadCount = messagesResult.unreadCount
                         )
                         carsWithMessages.add(updatedCarWithMessage)
                     } else {

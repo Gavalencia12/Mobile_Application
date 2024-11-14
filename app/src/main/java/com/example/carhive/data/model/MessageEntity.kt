@@ -51,7 +51,8 @@ data class UserWithLastMessage(
     val carId: String,
     val isFile: Boolean = false,
     val fileName: String? = null,
-    val fileType: String? = null
+    val fileType: String? = null,
+    var unreadCount: Int = 0
 )
 
 /**
@@ -72,7 +73,8 @@ data class CarWithLastMessage(
     val lastMessageTimestamp: Long,
     val isFile: Boolean = false,
     val fileName: String? = null,
-    val fileType: String? = null
+    val fileType: String? = null,
+    var unreadCount: Int = 0
 )
 
 /**
