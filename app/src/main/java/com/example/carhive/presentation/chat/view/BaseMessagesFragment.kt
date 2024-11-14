@@ -69,8 +69,6 @@ abstract class BaseMessagesFragment : Fragment() {
         viewModel.usersWithMessages.observe(viewLifecycleOwner) { usersWithMessages ->
             val interestedUsers = usersWithMessages.interestedUsers.take(5)
             val cars = usersWithMessages.cars
-            Log.i("angel", "$interestedUsers")
-            Log.i("angel", "$cars")
             messagesAdapter.updateData(interestedUsers, cars)
         }
 

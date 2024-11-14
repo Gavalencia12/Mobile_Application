@@ -17,21 +17,20 @@ package com.example.carhive.data.model
  * @property status Status of the message ("sent", "delivered", "read", "failed").
  * @property deletedFor List of user IDs for whom the message has been deleted.
  */
-
 data class MessageEntity(
-    val messageId: String = "",          // Unique ID of the message
-    val senderId: String = "",           // ID of the sender
-    val receiverId: String = "",         // ID of the receiver
-    val carId: String = "",              // ID of the associated car
-    val content: String? = null,         // Text content of the message
-    val timestamp: Long = 0L,            // Timestamp when the message was sent
-    val fileUrl: String? = null,         // URL of the attached file
-    val fileType: String? = null,        // Type of the file (e.g., image, video)
-    val fileName: String? = null,        // Name of the attached file
-    val fileSize: Long = 0L,             // Size of the attached file in bytes
-    val hash: String? = null,            // Unique hash for the file
-    val status: String = "sent",         // Message status: "sent", "delivered", "read", "failed"
-    val deletedFor: MutableList<String> = mutableListOf() // List of users who deleted the message for themselves
+    val messageId: String = "",
+    val senderId: String = "",
+    val receiverId: String = "",
+    val carId: String = "",
+    val content: String? = null,
+    val timestamp: Long = 0L,
+    val fileUrl: String? = null,
+    val fileType: String? = null,
+    val fileName: String? = null,
+    val fileSize: Long = 0L,
+    val hash: String? = null,
+    val status: String = "sent",
+    val deletedFor: MutableList<String> = mutableListOf()
 )
 
 /**
@@ -49,16 +48,17 @@ data class UserWithLastMessage(
     val user: UserEntity,
     val lastMessage: String,
     val lastMessageTimestamp: Long,
-    val carId: String,                   // ID of the associated car
-    val isFile: Boolean = false,         // Indicates if the last message is a file
-    val fileName: String? = null,        // Name of the file if it is a file message
-    val fileType: String? = null         // Type of file (application, image, video, etc.)
+    val carId: String,
+    val isFile: Boolean = false,
+    val fileName: String? = null,
+    val fileType: String? = null
 )
 
 /**
  * Represents a car with its last message in the chat system.
  *
  * @property car The car entity.
+ * @property owner The owner of the car.
  * @property lastMessage The content of the last message associated with the car.
  * @property lastMessageTimestamp Timestamp of the last message related to the car.
  * @property isFile Indicates if the last message is a file.
@@ -67,11 +67,12 @@ data class UserWithLastMessage(
  */
 data class CarWithLastMessage(
     val car: CarEntity,
+    val owner: UserEntity,
     val lastMessage: String,
     val lastMessageTimestamp: Long,
-    val isFile: Boolean = false,         // Indicates if the last message is a file
-    val fileName: String? = null,        // Name of the file if it is a file message
-    val fileType: String? = null         // Type of file (application, image, video, etc.)
+    val isFile: Boolean = false,
+    val fileName: String? = null,
+    val fileType: String? = null
 )
 
 /**

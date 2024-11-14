@@ -1,5 +1,6 @@
 package com.example.carhive.presentation.chat.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +59,7 @@ class UsersMessagesAdapter(
                         .into(imageView)
                 }
                 is CarWithLastMessage -> {
-                    nameTextView.text = item.car.modelo
+                    nameTextView.text = "${item.car.modelo} - ${item.owner.firstName}"
                     setFileIconAndMessage(item.fileType, item.isFile, item.lastMessage, item.fileName)
                     val imageUrl = item.car.imageUrls?.firstOrNull()
                     Glide.with(itemView.context)
@@ -89,9 +90,11 @@ class UsersMessagesAdapter(
                     }
                     fileType?.contains("image") == true -> {
                         fileIconImageView.setImageResource(R.drawable.ic_img)
+                        lastMessageTextView.text = "Image"
                     }
                     fileType?.contains("video") == true -> {
                         fileIconImageView.setImageResource(R.drawable.ic_video)
+                        lastMessageTextView.text = "Video"
                     }
                     else -> {
                         fileIconImageView.visibility = View.GONE
@@ -167,12 +170,25 @@ class UsersMessagesAdapter(
      * @param newOtherItems The updated list of other items.
      */
     fun updateData(newRecentItems: List<Any>, newOtherItems: List<Any>) {
+        // Filtra elementos con mensajes válidos
         recentItems.clear()
-        recentItems.addAll(newRecentItems)
+        recentItems.addAll(newRecentItems.filter {
+            (it is UserWithLastMessage && it.lastMessage.isNotEmpty()) ||
+                    (it is CarWithLastMessage && it.lastMessage.isNotEmpty())
+        })
+
         otherItems.clear()
-        otherItems.addAll(newOtherItems)
+        otherItems.addAll(newOtherItems.filter {
+            (it is UserWithLastMessage && it.lastMessage.isNotEmpty()) ||
+                    (it is CarWithLastMessage && it.lastMessage.isNotEmpty())
+        })
+
+        Log.d("UsersMessagesAdapter", "recentItems: $recentItems")
+        Log.d("UsersMessagesAdapter", "otherItems: $otherItems")
+
         notifyDataSetChanged()
     }
+
 
     /**
      * ViewHolder for displaying section headers ("Recent Chats" and "Other Chats").

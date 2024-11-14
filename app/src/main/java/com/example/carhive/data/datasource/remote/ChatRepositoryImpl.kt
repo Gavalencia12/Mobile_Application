@@ -76,6 +76,13 @@ class ChatRepositoryImpl @Inject constructor(
             awaitClose { messagesRef.removeEventListener(listener) }
         }
 
+    /**
+     * Retrieves all messages for a specific chat group in a single query.
+     * @param ownerId The ID of the owner (seller).
+     * @param carId The ID of the car associated with the chat.
+     * @param buyerId The ID of the buyer.
+     * @return A list of Message objects representing all messages in the chat.
+     */
     override suspend fun getAllMessagesOnce(ownerId: String, carId: String, buyerId: String): List<Message> {
         val messages = mutableListOf<Message>()
         val snapshot = database.reference
@@ -93,7 +100,6 @@ class ChatRepositoryImpl @Inject constructor(
         }
         return messages
     }
-
 
     /**
      * Sends a message to a specific chat group.
@@ -266,28 +272,48 @@ class ChatRepositoryImpl @Inject constructor(
         val resultList = mutableListOf<Any>()
 
         if (direction == "sent" && userId != null) {
-            val chatGroupsSnapshot = database.reference.child("ChatGroups").get().await()
-            chatGroupsSnapshot.children.forEach { sellerSnapshot ->
-                val sellerId = sellerSnapshot.key
-                sellerSnapshot.children.forEach { carSnapshot ->
-                    val carId = carSnapshot.key
-                    val messagesSnapshot = carSnapshot.child("messages")
+            try {
+                val chatGroupsSnapshot = database.reference.child("ChatGroups").get().await()
+                chatGroupsSnapshot.children.forEach { sellerSnapshot ->
+                    val sellerId = sellerSnapshot.key
+                    sellerSnapshot.children.forEach { carSnapshot ->
+                        val carId = carSnapshot.key
 
-                    if (messagesSnapshot.hasChild(userId)) {
-                        val carEntityResult = getUserInfo(sellerId ?: "", carId ?: "")
-                        carEntityResult.onSuccess { carEntity ->
-                            if (carEntity != null) {
-                                resultList.add(
-                                    CarWithLastMessage(
-                                        car = carEntity,
-                                        lastMessage = "Último mensaje aquí",
-                                        lastMessageTimestamp = 0L
-                                    )
-                                )
+                        val messagesSnapshot = carSnapshot.child("messages").child(ownerId.toString())
+                        messagesSnapshot.children.lastOrNull()?.let { messaSnapshot ->
+                            val lastMessageContent = messaSnapshot.child("content").value as? String
+                            val lastMessageFileName = messaSnapshot.child("fileName").value as? String
+                            val lastMessageFileType = messaSnapshot.child("fileType").value as? String
+                            val lastMessageTimestamp = messaSnapshot.child("timestamp").value as? Long ?: 0L
+                            val isFile = !lastMessageFileName.isNullOrEmpty()
+                            val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
+
+                            val carEntityResult = getUserInfo(sellerId ?: "", carId ?: "")
+                            carEntityResult.onSuccess { carEntity ->
+                                if (carEntity != null) {
+                                    val ownerResult = database.reference.child("Users").child(sellerId ?: "").get().await()
+                                    val owner = ownerResult.getValue(UserEntity::class.java)
+
+                                    if (owner != null && !resultList.any { it is CarWithLastMessage && it.car.id == carEntity.id }) {
+                                        resultList.add(
+                                            CarWithLastMessage(
+                                                car = carEntity,
+                                                owner = owner,
+                                                lastMessage = lastMessageDisplay,
+                                                lastMessageTimestamp = lastMessageTimestamp,
+                                                isFile = isFile,
+                                                fileName = if (isFile) lastMessageFileName else null,
+                                                fileType = lastMessageFileType
+                                            )
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
                 }
+            } catch (e: Exception) {
+                // Error handling
             }
         }
 
@@ -299,36 +325,37 @@ class ChatRepositoryImpl @Inject constructor(
 
                 messagesSnapshot.children.forEach { userSnapshot ->
                     val userWithMessage = userSnapshot.key
-
-                    // Get the last message details
                     val lastMessageSnapshot = userSnapshot.children.lastOrNull()
-                    val lastMessageContent = lastMessageSnapshot?.child("content")?.value as? String
-                    val lastMessageFileName = lastMessageSnapshot?.child("fileName")?.value as? String
-                    val lastMessageFileType = lastMessageSnapshot?.child("fileType")?.value as? String
-                    val lastMessageTimestamp = lastMessageSnapshot?.child("timestamp")?.value as? Long ?: 0L
 
-                    val isFile = !lastMessageFileName.isNullOrEmpty()
-                    val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
+                    if (lastMessageSnapshot != null) {
+                        val lastMessageContent = lastMessageSnapshot.child("content").value as? String
+                        val lastMessageFileName = lastMessageSnapshot.child("fileName").value as? String
+                        val lastMessageFileType = lastMessageSnapshot.child("fileType").value as? String
+                        val lastMessageTimestamp = lastMessageSnapshot.child("timestamp").value as? Long ?: 0L
 
-                    val userEntityResult = database.reference.child("Users").child(userWithMessage ?: "").get().await()
-                        .getValue(UserEntity::class.java)?.apply {
-                            if (userWithMessage != null) {
-                                id = userWithMessage
+                        val isFile = !lastMessageFileName.isNullOrEmpty()
+                        val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
+
+                        val userEntityResult = database.reference.child("Users").child(userWithMessage ?: "").get().await()
+                            .getValue(UserEntity::class.java)?.apply {
+                                if (userWithMessage != null) {
+                                    id = userWithMessage
+                                }
                             }
-                        }
 
-                    if (userEntityResult != null) {
-                        resultList.add(
-                            UserWithLastMessage(
-                                user = userEntityResult,
-                                lastMessage = lastMessageDisplay,
-                                lastMessageTimestamp = lastMessageTimestamp,
-                                carId = carId.toString(),
-                                isFile = isFile,
-                                fileName = if (isFile) lastMessageFileName else null,
-                                fileType = lastMessageFileType
+                        if (userEntityResult != null) {
+                            resultList.add(
+                                UserWithLastMessage(
+                                    user = userEntityResult,
+                                    lastMessage = lastMessageDisplay,
+                                    lastMessageTimestamp = lastMessageTimestamp,
+                                    carId = carId.toString(),
+                                    isFile = isFile,
+                                    fileName = if (isFile) lastMessageFileName else null,
+                                    fileType = lastMessageFileType
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
@@ -363,7 +390,6 @@ class ChatRepositoryImpl @Inject constructor(
 
                 var fileExists = false
 
-                // Check for file existence in MediaStore on Android 10+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
                     val selection = "${MediaStore.MediaColumns.DISPLAY_NAME} = ?"
@@ -375,12 +401,10 @@ class ChatRepositoryImpl @Inject constructor(
                         }
                     }
                 } else {
-                    // Direct file existence check for older versions
                     fileExists = File(uri.path ?: "").exists()
                 }
 
                 if (!fileExists) {
-                    // If file does not exist, remove it from the database
                     fileDao.deleteFileByHash(file.fileHash)
                 }
             }
