@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     tools:context=".presentation.user.view.ProfileFragment">
 
     <ScrollView
@@ -31,6 +31,7 @@
                     android:id="@+id/ibtnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/image"
                     android:layout_alignParentStart="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_arrow_back"
@@ -40,6 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/image"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_edit"
                     android:padding="5dp"
@@ -57,6 +59,7 @@
                     android:id="@+id/profile_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:contentDescription="@string/image"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_profile" />
 
@@ -66,7 +69,9 @@
                     android:layout_height="24dp"
                     android:layout_alignEnd="@id/profile_image"
                     android:layout_alignBottom="@id/profile_image"
-                    android:src="@drawable/ic_verified" />
+                    android:src="@drawable/ic_verified"
+                    android:contentDescription="@string/image"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/profile_name"
@@ -84,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/profile_name"
                     android:layout_centerHorizontal="true"
-                    android:text="Culiacán, Sinaloa"
+                    android:text=""
                     android:textColor="#757575"
                     android:textSize="14sp"
                     android:visibility="gone"/>
@@ -93,7 +98,8 @@
             <ListView
                 android:id="@+id/profile_options_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:ignore="NestedScrolling">
             </ListView>
 
         </LinearLayout>

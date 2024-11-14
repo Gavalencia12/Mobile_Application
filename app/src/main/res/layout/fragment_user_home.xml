@@ -15,6 +15,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:src="@drawable/logo_bgw"
+        android:contentDescription="@string/logo"
         android:layout_marginStart="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +43,7 @@
         android:id="@+id/user_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home"
+        android:text="@string/home"
         android:fontFamily="@font/inter_bold"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,12 +51,23 @@
         app:layout_constraintTop_toBottomOf="@+id/logo"
         android:layout_marginTop="20dp"/>
 
+    <AutoCompleteTextView
+        android:id="@+id/autoComplete_model_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Choose a model"
+        android:inputType="text"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/user_text"
+        android:layout_marginTop="20dp"/>
+
+
     <!-- Botón de filtros -->
     <Button
         android:id="@+id/filtrers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:text="Filtrer"
@@ -63,14 +75,14 @@
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:background="@drawable/button_more_info_background"
-        app:layout_constraintTop_toBottomOf="@id/user_text" />
+        app:layout_constraintTop_toBottomOf="@id/autoComplete_model_search" />
 
     <!-- Placeholder en caso de que no haya datos -->
     <TextView
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No hay coches disponibles"
+        android:text="@string/there_are_no_cars_available"
         android:visibility="gone"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@+id/filtrers"

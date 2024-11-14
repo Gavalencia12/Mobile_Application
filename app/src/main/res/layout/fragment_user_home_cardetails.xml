@@ -18,7 +18,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="250dp"/>
 
             <!-- Left arrow -->
             <ImageButton
@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_arrow_back"
+                android:contentDescription="@string/image"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp" />
@@ -34,10 +35,11 @@
             <!-- Right arrow -->
             <ImageButton
                 android:id="@+id/arrowRight"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_arrow_next"
+                android:src="@drawable/ic_arrow_forward"
+                android:contentDescription="@string/image"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp" />
@@ -65,7 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/default_car_model"
+                android:text=""
                 android:fontFamily="@font/inter_extrabold"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
@@ -74,13 +76,12 @@
                 android:id="@+id/carPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_car_price"
+                android:text=""
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- Car additional details (color, mileage, etc.) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,6 +139,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/default_car_location"
                 android:fontFamily="@font/inter_bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text=""
+            android:fontFamily="@font/inter_extrabold"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/carDoors"

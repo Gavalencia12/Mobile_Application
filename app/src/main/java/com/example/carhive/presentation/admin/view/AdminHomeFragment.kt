@@ -52,6 +52,9 @@ class AdminHomeFragment : Fragment() {
 //        binding.btnProfile.setOnClickListener {
 //            findNavController().navigate(R.id.action_adminHomeFragment_to_userProfileFragment)
 //        }
+        binding.btnNewCar.setOnClickListener {
+            findNavController().navigate(R.id.action_adminHomeFragment_to_adminCarListFragment)
+        }
     }
 
     override fun onDestroyView() {

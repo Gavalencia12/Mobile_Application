@@ -10,9 +10,10 @@
         android:background="#153CE5" />
 
     <!-- ImageView para el GIF -->
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ch_splash"/>
 </RelativeLayout>

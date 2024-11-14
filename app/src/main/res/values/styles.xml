@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="DialogTheme_FullScreen" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/white</item>
     </style>
+
     <!-- Estilo para hacer la imagen circular -->
     <style name="CircleImageView">
         <item name="cornerFamily">rounded</item>
@@ -13,12 +14,155 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:background">@drawable/rounded_edit_text</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:drawablePadding">15sp</item>
+    </style>
+
+    <style name="ButtonTheme">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/btn_style</item>
     </style>
 
     <style name="DialogButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/blue</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="inputModal">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:maxLength">80</item>
+        <item name="android:lines">1</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="editTextLarge">
+        <item name="android:background">@drawable/edittext_description_background</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:gravity">start</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:overScrollMode">always</item>
+    </style>
+
+    <style name="button_selected">
+        <item name="android:background">@drawable/button_create</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="style_spinner">
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="subtitle_dialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="title_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="tw_section_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="txt_footer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="button_dialog">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="card_dashboard">
+        <item name="android:layout_width">170dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardElevation">5dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="card_info">
+        <item name="android:layout_width">350dp</item>
+        <item name="android:layout_height">170dp</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">5dp</item>
+    </style>
+    
+    <style name="format_title_terms_condictions">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/inter_extrabold</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginVertical" tools:ignore="NewApi">8dp</item>
+    </style>
+
+    <style name="format_subtitle_terms_condictions">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:layout_marginVertical" tools:ignore="NewApi">8dp</item>
+    </style>
+
+    <style name="format_content_terms_condictions">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginVertical" tools:ignore="NewApi">8dp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:justificationMode" tools:ignore="NewApi">inter_word</item>
     </style>
 
 </resources>

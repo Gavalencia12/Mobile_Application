@@ -26,8 +26,8 @@
             android:layout_marginTop="35dp"
             android:layout_marginStart="30dp"
             android:layout_gravity="start"
-            android:drawableStart="@drawable/ic_arrow_back"
-            android:drawableTint="@color/white"
+            app:drawableStartCompat="@drawable/ic_arrow_back"
+            app:drawableTint="@color/white"
             android:clickable="true"
             android:focusable="true"/>
 
@@ -38,7 +38,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="30dp"
-            android:contentDescription="image"
+            android:contentDescription="@string/image"
             android:src="@drawable/ic_register2" />
 
     </androidx.cardview.widget.CardView>
@@ -69,7 +69,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:fontFamily="@font/inter_bold"
-                android:text="Personal information"
+                android:text="@string/personal_information"
                 android:textColor="@color/dark_blue"
                 android:textSize="24sp" />
 
@@ -82,7 +82,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:fontFamily="@font/inter_bold"
-                android:text="Please enter your information for continue"
+                android:text="@string/please_enter_your_information_for_continue"
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
 
@@ -93,19 +93,11 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="30dp"
-                android:hint="CURP"
+                android:hint="@string/curp"
                 android:maxLength="18"
                 android:inputType="textCapCharacters"
-                android:layout_gravity="center"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                style="@style/EditTextStyle"/>
 
             <!-- Campo de entrada para el número de teléfono -->
             <EditText
@@ -114,18 +106,10 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="30dp"
-                android:hint="Phone number"
+                android:hint="@string/phone_number"
                 android:inputType="phone"
-                android:layout_gravity="center"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_phone"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                style="@style/EditTextStyle"/>
 
 
             <!-- Campo de entrada para el número de identificación del votante -->
@@ -135,19 +119,11 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="30dp"
-                android:hint="Voter ID"
+                android:hint="@string/voter_id"
                 android:maxLength="18"
                 android:inputType="textCapCharacters"
-                android:layout_gravity="center"
-                android:textSize="16sp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/gray"
-                android:textColorHint="@color/gray"
-                android:background="@drawable/rounded_edit_text"
                 android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="15dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
+                style="@style/EditTextStyle"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -160,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="I accept the "
+                    android:text="@string/i_accept_the"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/dark_blue"
                     android:gravity="end|center_vertical"
@@ -197,7 +173,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:fontFamily="@font/inter_extrabold"
-                    android:text="Next"
+                    android:text="@string/next"
                     android:textColor="@color/dark_blue"
                     android:textSize="20sp" />
 

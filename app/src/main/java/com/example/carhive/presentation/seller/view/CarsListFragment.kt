@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,61 +17,64 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CarsListFragment : Fragment() {
 
-    // Binding for the fragment's layout
-    private var _binding: FragmentCarsListBinding? = null
-    private val binding get() = _binding!!
+    private var _binding: FragmentCarsListBinding? = null // ViewBinding reference for the fragment's layout
+    private val binding get() = _binding!! // Non-null binding reference
 
-    // ViewModel to manage car data logic
-    private val viewModel: CrudViewModel by viewModels()
+    private val viewModel: CrudViewModel by viewModels() // ViewModel for handling car data and business logic
 
-    // Variables to determine which cars to display (sold/unsold/all)
-    private var showSoldCars: Int? = null
-    private var sectionTitle: String? = null
+    private var showSoldCars: Int? = null // Variable to indicate if sold cars should be shown
+    private var sectionTitle: String? = null // Variable to hold the section title
 
-    // Inflate the fragment's view and bind it to the FragmentCarsListBinding object
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inflate the fragment layout using ViewBinding
         _binding = FragmentCarsListBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding.root // Return the root view of the binding
     }
 
-    // This method is called after the view has been created. It handles UI setup and observers.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve arguments for filtering cars and setting the section title
+        // Get the arguments passed to this fragment (if any) to determine if sold cars should be shown and the section title
         showSoldCars = arguments?.getInt(ARG_SHOW_SOLD_CARS, -1)
         sectionTitle = arguments?.getString(ARG_SECTION_TITLE, "Car seller")
 
-        // Update the section title TextView with the provided sectionTitle
-        val sectionTextView: TextView = binding.section
-        sectionTextView.text = sectionTitle
-
-        // Handle the back button click to navigate back
+        // Set the section title in the UI
+        binding.section.text = sectionTitle
+        // Set up the back button to navigate to the previous screen
         binding.ibtnBack.setOnClickListener {
-            findNavController().popBackStack()  // Navigate back to the previous screen
+            findNavController().popBackStack()
         }
 
-        // Set up the RecyclerView with a LinearLayoutManager for vertical scrolling
+        // Set up the RecyclerView with a linear layout manager and initialize the adapter with an empty list
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // Initialize the RecyclerView's adapter with an empty list and assign it to the RecyclerView
         val adapter = CarAdapter(emptyList(), requireActivity(), viewModel)
         binding.recyclerView.adapter = adapter
 
-        // Observe the list of cars in the ViewModel and filter them based on their sold status
+        // Determine if only sold or unsold cars should be shown based on the showSoldCars argument
+        val isSold = showSoldCars == 1
+
+        // Call the `setupModelSearch` function to set up real-time search functionality for models
+        viewModel.setupModelSearch(
+            autoCompleteTextView = binding.autoCompleteModelSearch,
+        )
+
+        // Observe the carList LiveData from the ViewModel to update the UI when data changes
         viewModel.carList.observe(viewLifecycleOwner) { carList ->
+            val approvedCars = carList.filter { it.approved }
+
+            // Filter the list based on the showSoldCars flag: show sold cars, unsold cars, or all cars
             val filteredCars = when (showSoldCars) {
-                1 -> carList.filter { it.sold }     // Show only sold cars
-                0 -> carList.filter { !it.sold }    // Show only unsold cars
-                -1 -> carList // Show all cars if -1 is passed
-                else -> carList // Default case, show all cars
+                1 -> approvedCars.filter { it.sold }
+                0 -> approvedCars.filter { !it.sold }
+                else -> approvedCars
             }
-            // Update the adapter with the filtered list of cars
+            // Update the adapter with the filtered list
             adapter.updateCars(filteredCars)
 
+            // Show an empty view if there are no cars to display, otherwise show the RecyclerView
             if (filteredCars.isEmpty()) {
                 binding.recyclerView.visibility = View.GONE
                 binding.emptyView.visibility = View.VISIBLE
@@ -81,16 +84,15 @@ class CarsListFragment : Fragment() {
             }
         }
 
-        // Fetch all cars for the current user from the ViewModel
+        // Fetch cars for the current user from the ViewModel when the fragment is created
         viewModel.fetchCarsForUser()
     }
 
-    // Companion object to pass arguments when creating a new instance of this fragment
     companion object {
-        private const val ARG_SHOW_SOLD_CARS = "showSoldCars"
-        private const val ARG_SECTION_TITLE = "sectionTitle"
+        private const val ARG_SHOW_SOLD_CARS = "showSoldCars" // Constant for the sold cars argument
+        private const val ARG_SECTION_TITLE = "sectionTitle" // Constant for the section title argument
 
-        // Method to create a new instance of CarsListFragment with specified arguments
+        // Static function to create a new instance of CarsListFragment with arguments for showing sold cars and setting the section title
         fun newInstance(showSoldCars: Int, sectionTitle: String): CarsListFragment {
             return CarsListFragment().apply {
                 arguments = Bundle().apply {
@@ -101,9 +103,8 @@ class CarsListFragment : Fragment() {
         }
     }
 
-    // Clean up the binding when the view is destroyed to avoid memory leaks
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Clear the binding reference to prevent memory leaks
     }
 }

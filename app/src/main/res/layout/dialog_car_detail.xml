@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -5,134 +6,144 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
 
-    <LinearLayout
+    <!-- ScrollView added to make content scrollable -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
-        <!-- Campos de detalles del carro -->
-        <TextView
-            android:id="@+id/carModelDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Model"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/carColorDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Color"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carTransmissionDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Transmission"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carFuelTypeDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fuel Type"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carDoorsDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Doors"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carEngineCapacityDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Engine Capacity"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carLocationDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carConditionDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Condition"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carVinDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VIN"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carPreviousOwnersDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Previous Owners"
-            android:layout_marginTop="4dp" />
-
-        <!-- Campos faltantes añadidos -->
-        <TextView
-            android:id="@+id/carPriceDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/carDescriptionDetailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:layout_marginTop="4dp" />
-
-        <!-- Contador de imágenes y ViewPager -->
-        <TextView
-            android:id="@+id/imageSwipeIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Swipe to see more images"
-            android:textStyle="italic"
-            android:layout_marginTop="8dp" />
-
-        <androidx.cardview.widget.CardView
+        <!-- Main content layout with vertical orientation and padding -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            app:cardCornerRadius="16dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/carImagesViewPager"
+            <!-- Car Model Detail -->
+            <TextView
+                android:id="@+id/carModelDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/model" />
+
+            <!-- Car Color Detail -->
+            <TextView
+                android:id="@+id/carColorDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/color" />
+
+            <!-- Car Transmission Detail -->
+            <TextView
+                android:id="@+id/carTransmissionDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/transmission" />
+
+            <!-- Car Fuel Type Detail -->
+            <TextView
+                android:id="@+id/carFuelTypeDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/fuel_type" />
+
+            <!-- Car Doors Detail -->
+            <TextView
+                android:id="@+id/carDoorsDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/doors" />
+
+            <!-- Car Engine Capacity Detail -->
+            <TextView
+                android:id="@+id/carEngineCapacityDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/engine_capacity" />
+
+            <!-- Car Location Detail -->
+            <TextView
+                android:id="@+id/carLocationDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/location" />
+
+            <!-- Car Condition Detail -->
+            <TextView
+                android:id="@+id/carConditionDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/condiction" />
+
+            <!-- Car VIN Detail -->
+            <TextView
+                android:id="@+id/carVinDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/vin" />
+
+            <!-- Car Previous Owners Detail -->
+            <TextView
+                android:id="@+id/carPreviousOwnersDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/previous_owners" />
+
+            <!-- Car Price Detail -->
+            <TextView
+                android:id="@+id/carPriceDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/price" />
+
+            <!-- Car Description Detail -->
+            <TextView
+                android:id="@+id/carDescriptionDetailTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="5dp"
+                android:text="@string/description" />
+
+            <!-- Container for ViewPager to display car images -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </androidx.cardview.widget.CardView>
+                android:layout_height="200dp"
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="16dp">
 
-        <TextView
-            android:id="@+id/imageCountTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_marginTop="4dp" />
+                <!-- ViewPager for swiping through car images -->
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/carImagesViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.cardview.widget.CardView>
 
-        <!-- Botón de cierre -->
-        <Button
-            android:id="@+id/closeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Close"
-            android:layout_marginTop="16dp" />
-    </LinearLayout>
+            <!-- Indicator for image swipe gesture -->
+            <TextView
+                android:id="@+id/imageSwipeIndicator"
+                style="@style/txt_footer"
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:text="@string/swipe_images"
+                android:textAlignment="center"
+                android:textStyle="italic" />
+
+            <!-- Button to close the dialog positioned in the top right corner -->
+            <Button
+                android:id="@+id/closeButton"
+                style="@style/button_selected"
+                android:layout_margin="8dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/red_dark"
+                android:elevation="8dp"
+                android:text="@string/close"
+                android:textColor="@color/white" />
+
+            <!-- Text to display the count of images -->
+            <TextView
+                android:id="@+id/imageCountTextView"
+                style="@style/tw_section_dialog"
+                android:layout_marginVertical="6dp"
+                android:text="" />
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.cardview.widget.CardView>

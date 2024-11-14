@@ -85,6 +85,15 @@ class CarAdapter(
             editButton.setOnClickListener {
                 EditCarDialogFragment.newInstance(car, viewModel).show(activity.supportFragmentManager, activity.getString(R.string.edit_car_dialog))
             }
+            if (car.approved) {
+                holder.itemView.findViewById<TextView>(R.id.approvedText).visibility = View.GONE
+                holder.itemView.findViewById<ImageView>(R.id.soldIcon).visibility = View.VISIBLE
+                holder.itemView.findViewById<Button>(R.id.deleteButton).visibility = View.VISIBLE
+            } else {
+                holder.itemView.findViewById<TextView>(R.id.approvedText).visibility = View.VISIBLE
+                holder.itemView.findViewById<ImageView>(R.id.soldIcon).visibility = View.GONE
+                holder.itemView.findViewById<Button>(R.id.deleteButton).visibility = View.GONE
+            }
         }
     }
 

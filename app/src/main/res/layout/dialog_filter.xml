@@ -19,17 +19,6 @@
             android:padding="16dp"
             android:background="@drawable/nav_options_background">
 
-            <!-- Navegación de cada opción -->
-            <TextView
-                android:id="@+id/nav_option_models"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Models"
-                android:padding="12dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white" />
-
             <TextView
                 android:id="@+id/nav_option_brands"
                 android:layout_width="wrap_content"
@@ -94,32 +83,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Sección de Modelos -->
-                <LinearLayout
-                    android:id="@+id/section_models"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="24dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Select a Model"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:paddingBottom="8dp"
-                        android:textColor="@color/blue" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autoComplete_model"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Choose a model"
-                        android:inputType="text"
-                        android:paddingBottom="16dp" />
-                </LinearLayout>
-
                 <!-- Sección de Marcas -->
                 <LinearLayout
                     android:id="@+id/section_brands"
@@ -148,7 +111,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView_brands"
                         android:layout_width="match_parent"
-                        android:layout_height="400dp"
+                        android:layout_height="300dp"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
 

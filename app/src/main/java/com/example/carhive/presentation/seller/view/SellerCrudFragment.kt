@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -43,26 +44,26 @@ class SellerCrudFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up the RecyclerView with its adapter and ViewModel
-        carAdapter = CarAdapter(emptyList(), requireActivity(), viewModel) // Initialize the adapter again
-        binding.recyclerViewCar.apply {
-            layoutManager = LinearLayoutManager(context) // Set layout manager
-            adapter = carAdapter // Set the adapter
-        }
+        // Set up the RecyclerView
+        setupRecyclerView()
 
         // Observe changes in the car list from the ViewModel
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
             carAdapter.updateCars(cars) // Update the adapter when data changes
+
         }
 
         // Observe error messages from the ViewModel
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            // Show a Toast message for any error
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         }
 
         // Fetch cars for the current user from the ViewModel
         viewModel.fetchCarsForUser()
+
+        // Configure AutoCompleteTextView for real-time search
+        val searchAutoCompleteTextView = binding.autoCompleteModelSearch
+        viewModel.setupModelSearch(searchAutoCompleteTextView)
 
         // Set up the button to show the car options dialog
         binding.btnAddCar.setOnClickListener {

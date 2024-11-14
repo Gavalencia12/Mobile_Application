@@ -17,7 +17,7 @@
         android:id="@+id/textuser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Verified Users Report"
+        android:text="@string/verified_users_report"
         android:textSize="25dp"
         android:gravity="center"
         android:fontFamily="@font/inter_bold"
@@ -31,7 +31,7 @@
         android:id="@+id/btToggleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Switch to Monthly View"
+        android:text="@string/switch_to_monthly_view"
         android:layout_gravity="top|end"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="16dp" />
@@ -41,6 +41,5 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="160dp" />
-
 
 </FrameLayout>

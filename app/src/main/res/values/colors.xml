@@ -27,6 +27,9 @@
     <color name="background">#f0f0f0</color>""
     <color name="gray_light">#F2F2F2</color>
     <color name="other_gray">#ABABAB</color>
+    <color name="white_ghost">#FAFAFA</color>
+    <color name="gray_dirt">#5E4B4D61</color>
+    <color name="red_dark">#B71C1C</color>
     <color name="brand_selected_background">#D3D3D3</color> <!-- Light gray for selected background -->
     <color name="brand_default_background">#FFFFFF</color> <!-- White for default background -->
     <color name="brand_selected_text">#0000FF</color> <!-- Blue for selected text -->

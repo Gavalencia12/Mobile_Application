@@ -38,6 +38,10 @@ class SellerHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set up the BottomNavigationView with the NavController for navigation
+        val navController = findNavController()
+        NavigationUI.setupWithNavController(binding.bottomNavigationSeller, navController)
+
         // Observe user data and update UI when the data is available
         viewModel.userData.observe(viewLifecycleOwner) { result ->
             result.onSuccess { user ->
@@ -50,6 +54,11 @@ class SellerHomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error fetching user data", Toast.LENGTH_SHORT).show()
             }
         }
+
+        viewModel.unapprovedCarsCount.observe(viewLifecycleOwner) { count ->
+            binding.tvApprovedCarsCount.text = count.toString()
+        }
+
 
         // Observe the total number of cars and update the TextView accordingly
         viewModel.totalCarsCount.observe(viewLifecycleOwner) { count ->
@@ -110,13 +119,10 @@ class SellerHomeFragment : Fragment() {
             )
 
         }
-//        binding.cardGroupsChats.setOnClickListener{
-//            findNavController().navigate(
-//                R.id.sellerPostsFragment,
-//                CarsListFragment.newInstance(0, "Groups").arguments
-//            )
-//
-//        }
+        binding.cardApprovedCars.setOnClickListener {
+            findNavController().navigate(R.id.approvedCarsFragment)
+        }
+
     }
 
     // Function to set the user's full name in the username TextView in the UI
