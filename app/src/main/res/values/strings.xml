@@ -160,6 +160,7 @@
     <string name="no_results_found">no results found</string>
     <string name="back">Back</string>
     <string name="become_seller">Become a Seller</string>
+    <string name="all">All</string>
 
 
     <!--Terms and condictions -->
@@ -288,6 +289,7 @@
     <string name="error_updating_car_view">error updated</string>
     <string name="error_updating_view_count">error_updating\n</string>
     <string name="error_fetching_view_status">error fetchig viewers</string>
+    <string name="return_text">return</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

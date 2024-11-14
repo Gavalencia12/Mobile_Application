@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carhive.Data.model.CarEntity
@@ -77,11 +78,50 @@ class UserHomeFragment : Fragment() {
             adapter = recommendedCarAdapter
         }
 
+        // Variable to track if we are in "all cars" view or "default" view
+        var isShowingAllCars = false
+
+        // Set up the allCars button to toggle between views
+        binding.allCars.setOnClickListener {
+            if (isShowingAllCars) {
+                // Revertir a la vista por defecto
+                binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                binding.recyclerViewRecomendations.visibility = View.VISIBLE
+                binding.recommendedTitle.visibility = View.VISIBLE
+                binding.userText.visibility = View.VISIBLE
+                binding.recyclerView.setPadding(0, 0, 0, 0) // Sin padding en la vista por defecto
+                binding.allCars.text = getString(R.string.all)
+
+                // Obtener los autos recomendados y cercanos según sea necesario
+                viewModel.fetchCars()
+                carAdapter.notifyDataSetChanged()
+
+                isShowingAllCars = false
+            } else {
+                // Cambiar a diseño de cuadrícula de dos columnas y mostrar todos los autos
+                binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+                binding.recyclerViewRecomendations.visibility = View.GONE
+                binding.recommendedTitle.visibility = View.GONE
+                binding.userText.visibility = View.GONE
+                binding.recyclerView.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.bottom_padding)) // Agregar padding en la parte inferior
+                binding.recyclerView.clipToPadding = false // Permitir padding en el RecyclerView
+                binding.allCars.text = getString(R.string.return_text)
+
+                // Obtener todos los autos sin filtros
+                viewModel.fetchCars()
+                carAdapter.notifyDataSetChanged()
+
+                isShowingAllCars = true
+            }
+        }
+
+
         // Observe car list changes
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
             carAdapter.updateCars(cars)
         }
 
+        // Observe recommended car list changes
         viewModel.recommendedCarList.observe(viewLifecycleOwner) { recommendedCars ->
             recommendedCarAdapter.updateCars(recommendedCars)
         }
@@ -370,6 +410,8 @@ class UserHomeFragment : Fragment() {
         }
         findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

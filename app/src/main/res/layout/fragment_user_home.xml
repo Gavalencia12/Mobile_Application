@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +14,6 @@
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     tools:context=".Presentation.user.view.UserHomeFragment">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,14 +39,7 @@
         <Space
             android:layout_width="10dp"
             android:layout_height="match_parent"/>
-        <ImageButton
-            android:id="@+id/deleteFavoriteButton"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_cars"
-            android:contentDescription="@string/image"
-            app:tint="@color/blue" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -98,7 +96,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/llTitle"
-        app:layout_constraintBottom_toTopOf="@id/recommendedTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_brand"
@@ -106,16 +103,42 @@
         android:orientation="horizontal"
         android:overScrollMode="never"/>
 
-    <TextView
-        android:id="@id/recommendedTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/recommended"
-        android:fontFamily="@font/inter_bold"
-        android:textSize="20sp"
-        android:layout_marginStart="8dp"
+        android:id="@+id/txt_section_home"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_brands"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView_brands"/>
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/recommendedTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/recommended"
+            android:fontFamily="@font/inter_bold"
+            android:textSize="20sp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/allCars"
+            style="@style/Button_section_view_all"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:drawableStart="@drawable/ic_cars"
+            android:contentDescription="@string/image"
+            android:drawableTint="@color/blue"
+            android:textColor="@color/blue"
+            android:text="@string/all"
+            android:textSize="18sp"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="end"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
     <!-- Placeholder for empty view -->
     <TextView
@@ -125,28 +148,30 @@
         android:text="@string/there_are_no_cars_available"
         android:visibility="gone"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/llTitle"
+        app:layout_constraintTop_toBottomOf="@id/txt_section_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
     <!-- RecyclerView for recommended cars -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRecomendations"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        app:layout_constraintTop_toBottomOf="@id/recommendedTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_car"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
-        android:overScrollMode="never"/>
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_section_home"
+        tools:listitem="@layout/item_car" />
 
     <TextView
-        android:id="@id/user_text"
+        android:id="@+id/user_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/near_to_you"
@@ -245,3 +270,4 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

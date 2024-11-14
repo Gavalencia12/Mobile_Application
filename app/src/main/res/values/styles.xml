@@ -41,6 +41,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Button_section_view_all">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 
     <style name="inputModal">
         <item name="android:layout_width">0dp</item>
