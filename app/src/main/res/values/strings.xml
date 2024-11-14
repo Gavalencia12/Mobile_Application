@@ -282,6 +282,11 @@
     <string name="condition">Condition</string>
     <string name="car_condition_filter">Car Condition</string>
     <string name="near_to_you">Near to you!</string>
+    <string name="car_views">Views</string>
+    <string name="car_view_updated">view updated</string>
+    <string name="error_updating_car_view">error updated</string>
+    <string name="error_updating_view_count">error_updating\n</string>
+    <string name="error_fetching_view_status">error fetchig viewers</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

@@ -31,17 +31,17 @@ import java.util.Locale
 @AndroidEntryPoint
 class UserHomeFragment : Fragment() {
 
-    private var _binding: FragmentUserHomeBinding? = null // ViewBinding reference for fragment layout
-    private val binding get() = _binding!! // Non-null binding reference
-    private val viewModel: UserViewModel by viewModels() // ViewModel to handle UI-related data
-    private lateinit var carAdapter: CarHomeAdapter // Adapter for displaying cars
-    private lateinit var brandAdapter: BrandAdapter // Adapter for displaying brands
+    private var _binding: FragmentUserHomeBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: UserViewModel by viewModels()
+    private lateinit var carAdapter: CarHomeAdapter
+    private lateinit var recommendedCarAdapter: CarHomeAdapter
+    private lateinit var brandAdapter: BrandAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout using ViewBinding
         _binding = FragmentUserHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,73 +49,82 @@ class UserHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up the RecyclerView adapter for car listings
+        // Initialize car and recommended car adapters with click listeners
         carAdapter = CarHomeAdapter(
-            emptyList(),
+            carList = emptyList(),
+            viewModel = viewModel,
             onFavoriteChecked = { car, isFavorite -> viewModel.toggleFavorite(car, isFavorite) },
             isCarFavorite = { carId, callback -> viewModel.isCarFavorite(carId, callback) },
             onCarClick = { car -> navigateToCarDetail(car) }
         )
 
+        recommendedCarAdapter = CarHomeAdapter(
+            carList = emptyList(),
+            viewModel = viewModel,
+            onFavoriteChecked = { car, isFavorite -> viewModel.toggleFavorite(car, isFavorite) },
+            isCarFavorite = { carId, callback -> viewModel.isCarFavorite(carId, callback) },
+            onCarClick = { car -> navigateToCarDetail(car) }
+        )
+
+        // Set up recyclers with horizontal layouts for car lists
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = carAdapter
         }
 
-        // Observe changes in the car list to update the RecyclerView
+        binding.recyclerViewRecomendations.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recommendedCarAdapter
+        }
+
+        // Observe car list changes
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
             carAdapter.updateCars(cars)
         }
-        viewModel.fetchCars() // Fetch initial list of cars
 
-        // Set up location filter
+        viewModel.recommendedCarList.observe(viewLifecycleOwner) { recommendedCars ->
+            recommendedCarAdapter.updateCars(recommendedCars)
+        }
+
+        // Load cars and set up filter controls
+        viewModel.fetchCars()
         setupLocationFilter()
-
-        // Set up asynchronous model search
         setupModelSearch()
-
-        // Show filter dialog when filters button is clicked
         binding.filtrers.setOnClickListener { showFilterDialog() }
     }
 
-    // Configures the AutoCompleteTextView for asynchronous model search
+    // Setup for model search with autocomplete
     private fun setupModelSearch() {
         val autoCompleteModelSearch: AutoCompleteTextView = binding.autoCompleteModelSearch
-
-        // Set unique car models in the adapter for the AutoCompleteTextView
         viewModel.uniqueCarModels.observe(viewLifecycleOwner) { models ->
             autoCompleteModelSearch.setAdapter(
                 ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, models)
             )
         }
 
-        var searchJob: Job? = null // Variable to manage search delay
-
-        // Add a TextWatcher to apply asynchronous filtering
+        // Apply filters with delay on text change
+        var searchJob: Job? = null
         autoCompleteModelSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                searchJob?.cancel() // Cancel any pending search
-
+                searchJob?.cancel()
                 val query = s.toString()
                 if (query.isEmpty()) {
-                    viewModel.selectedModel = null  // Clear model filter
-                    viewModel.fetchCars()           // Show all cars
+                    viewModel.selectedModel = null
+                    viewModel.fetchCars()
                 } else {
-                    // Delay search to avoid unnecessary calls
                     searchJob = viewLifecycleOwner.lifecycleScope.launch {
-                        delay(300) // Delay of 300 ms before executing search
+                        delay(300)
                         viewModel.selectedModel = query
-                        viewModel.applyFilters() // Apply filter if text is present
+                        viewModel.applyFilters()
                     }
                 }
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
 
-    // Shows the filter dialog and configures filter options
+    // Display the filter dialog for filtering options
     private fun showFilterDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_filter, null)
         val dialog = AlertDialog.Builder(requireContext())
@@ -128,18 +137,16 @@ class UserHomeFragment : Fragment() {
         setupPriceMileageFilter(dialogView)
         setupSectionNavigation(dialogView)
 
-        // Apply filters and close the dialog
+        // Apply or reset filters based on dialog actions
         dialogView.findViewById<Button>(R.id.btn_apply_filters).setOnClickListener {
             applyFilters(dialogView)
             dialog.dismiss()
         }
 
-        // Reset filters to the initial state and close the dialog
         dialogView.findViewById<Button>(R.id.btn_restore_filters).setOnClickListener {
             showResetConfirmationDialog(dialog)
         }
 
-        // Cancel and close the dialog
         dialogView.findViewById<Button>(R.id.cancel_action).setOnClickListener {
             dialog.dismiss()
         }
@@ -147,7 +154,7 @@ class UserHomeFragment : Fragment() {
         dialog.show()
     }
 
-    // Method to apply filters from the dialog
+    // Apply selected filters to the car list
     private fun applyFilters(view: View) {
         val startYearInput = view.findViewById<AutoCompleteTextView>(R.id.start_year).text.toString()
         val endYearInput = view.findViewById<AutoCompleteTextView>(R.id.end_year).text.toString()
@@ -171,10 +178,10 @@ class UserHomeFragment : Fragment() {
             view.findViewById<EditText>(R.id.editText_max_mileage).text.toString().replace(",", "").toIntOrNull()
         )
 
-        viewModel.applyFilters() // Apply all selected filters
+        viewModel.applyFilters()
     }
 
-    // Shows a confirmation dialog to reset filters
+    // Show confirmation dialog to reset filters
     private fun showResetConfirmationDialog(dialog: AlertDialog) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.confirm_reset)
@@ -189,54 +196,7 @@ class UserHomeFragment : Fragment() {
             .show()
     }
 
-    // Sets up location filter in the Spinner
-    private fun setupLocationFilter() {
-        val locationOptions = resources.getStringArray(R.array.location_options)
-        val locationAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, locationOptions)
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.ubication.adapter = locationAdapter
-
-        // Select "All" location by default
-        binding.ubication.setSelection(0)
-
-        // Apply location filter based on selected option
-        binding.ubication.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedLocation = locationOptions[position]
-                if (selectedLocation == "All") {
-                    viewModel.clearLocationFilter()
-                } else {
-                    viewModel.filterByLocation(selectedLocation)
-                }
-            }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-    }
-
-    // Navigates to the car detail screen with selected car information
-    private fun navigateToCarDetail(car: CarEntity) {
-        val bundle = Bundle().apply {
-            putString("carModel", car.modelo)
-            putString("carPrice", car.price)
-            putString("carColor", car.color)
-            putString("carDescription", car.description)
-            putString("carTransmission", car.transmission)
-            putString("carFuelType", car.fuelType)
-            putInt("carDoors", car.doors)
-            putString("carEngineCapacity", car.engineCapacity)
-            putString("carLocation", car.location)
-            putString("carCondition", car.condition)
-            putString("carVin", car.vin)
-            putInt("carPreviousOwners", car.previousOwners)
-            putInt("carViews", car.views)
-            putString("carMileage", car.mileage)
-            putString("carYear", car.year)
-            putStringArrayList("carImageUrls", car.imageUrls?.let { ArrayList(it) })
-        }
-        findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
-    }
-
-    // Sets up year filter options in the dialog
+    // Initialize year filter options
     private fun setupYearFilter(view: View) {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         val years = (1970..currentYear).map { it.toString() }
@@ -253,7 +213,7 @@ class UserHomeFragment : Fragment() {
         }
     }
 
-    // Sets up brand autocomplete filter in the dialog
+    // Set up brand filter with autocomplete and filtered options
     private fun setupBrandAutoCompleteFilter(view: View) {
         val autoCompleteBrand: AutoCompleteTextView = view.findViewById(R.id.autoComplete_brand)
         val recyclerViewBrands: RecyclerView = view.findViewById(R.id.recyclerView_brands)
@@ -285,10 +245,8 @@ class UserHomeFragment : Fragment() {
         }
     }
 
-    // Sets up color filter with an AutoCompleteTextView populated with unique colors
+    // Set up color filter buttons
     private fun setupColorFilter(view: View) {
-//        val autoCompleteColor: AutoCompleteTextView = view.findViewById(R.id.autoComplete_color)
-//        val colorGrid = view.findViewById<GridLayout>(R.id.color_grid)
         val colorButtons = listOf(
             Pair(R.id.red_button, "Red"),
             Pair(R.id.orange_button, "Orange"),
@@ -302,17 +260,27 @@ class UserHomeFragment : Fragment() {
             Pair(R.id.black_button, "Black")
         )
 
-        // Click listener for each color button
         colorButtons.forEach { (buttonId, color) ->
-            view.findViewById<Button>(buttonId).setOnClickListener {
-                // Update the selected color in the ViewModel
-                viewModel.selectedColor = color
-                Toast.makeText(requireContext(), "Color selected: $color", Toast.LENGTH_SHORT).show()
+            val button = view.findViewById<Button>(buttonId)
+
+            button.setBackgroundResource(R.drawable.selected_circle)
+            button.isSelected = viewModel.selectedColors.contains(color)
+
+            button.setOnClickListener {
+                if (viewModel.selectedColors.contains(color)) {
+                    viewModel.selectedColors.remove(color)
+                    button.isSelected = false
+                    Toast.makeText(requireContext(), "Color deselected: $color", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.selectedColors.add(color)
+                    button.isSelected = true
+                    Toast.makeText(requireContext(), "Color selected: $color", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    // Sets up price and mileage filters with formatted EditTexts
+    // Set up input filters with thousand separator formatting
     private fun setupPriceMileageFilter(view: View) {
         val minPrice: EditText = view.findViewById(R.id.editText_min_price)
         val maxPrice: EditText = view.findViewById(R.id.editText_max_price)
@@ -322,7 +290,7 @@ class UserHomeFragment : Fragment() {
         listOf(minPrice, maxPrice, minMileage, maxMileage).forEach { addThousandSeparator(it) }
     }
 
-    // Adds thousand separators to EditText inputs
+    // Adds thousand separators for price and mileage inputs
     private fun addThousandSeparator(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             private var current = ""
@@ -342,7 +310,7 @@ class UserHomeFragment : Fragment() {
         })
     }
 
-    // Sets up section navigation within the filter dialog
+    // Sets up navigation between filter sections
     private fun setupSectionNavigation(view: View) {
         val scrollView: ScrollView = view.findViewById(R.id.scrollView)
         val sectionsMap = mapOf(
@@ -360,8 +328,51 @@ class UserHomeFragment : Fragment() {
         }
     }
 
+    // Initialize location filter options in the dropdown
+    private fun setupLocationFilter() {
+        val locationOptions = resources.getStringArray(R.array.location_options)
+        val locationAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, locationOptions)
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.ubication.adapter = locationAdapter
+        binding.ubication.setSelection(0)
+        binding.ubication.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedLocation = locationOptions[position]
+                if (selectedLocation == "All") {
+                    viewModel.clearLocationFilter()
+                } else {
+                    viewModel.filterByLocation(selectedLocation)
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }
+
+    // Navigate to car detail screen with car details
+    private fun navigateToCarDetail(car: CarEntity) {
+        val bundle = Bundle().apply {
+            putString("carModel", car.modelo)
+            putString("carPrice", car.price)
+            putString("carColor", car.color)
+            putString("carDescription", car.description)
+            putString("carTransmission", car.transmission)
+            putString("carFuelType", car.fuelType)
+            putInt("carDoors", car.doors)
+            putString("carEngineCapacity", car.engineCapacity)
+            putString("carLocation", car.location)
+            putString("carCondition", car.condition)
+            putString("carVin", car.vin)
+            putInt("carPreviousOwners", car.previousOwners)
+            putInt("carViews", car.views)
+            putString("carMileage", car.mileage)
+            putString("carYear", car.year)
+            putStringArrayList("carImageUrls", car.imageUrls?.let { ArrayList(it) })
+        }
+        findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Clear binding reference to prevent memory leaks
+        _binding = null
     }
 }
