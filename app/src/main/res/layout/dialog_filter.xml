@@ -93,8 +93,7 @@
                 android:layout_height="80dp"
                 android:text="@string/apply_filters"
                 android:textColor="@android:color/white"
-                android:background="@drawable/button_more_info_background"
-                android:layout_marginTop="16dp" />
+                android:background="@drawable/button_more_info_background"/>
 
             <Button
                 android:id="@+id/btn_restore_filters"
@@ -277,7 +276,6 @@
                             android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/red_button"
-
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:background="@drawable/selected_circle"

@@ -80,16 +80,19 @@
         </FrameLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/brandTitle"
-        android:layout_width="wrap_content"
+    <!-- RecyclerView for recommended cars -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@id/recyclerView_brands"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text=""
-        android:fontFamily="@font/inter_bold"
-        android:textSize="20sp"
-        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/llTitle"
+        app:layout_constraintBottom_toTopOf="@id/recommendedTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llTitle"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_brand"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        android:overScrollMode="never"/>
 
     <TextView
         android:id="@id/recommendedTitle"
@@ -98,9 +101,9 @@
         android:text="@string/recommended"
         android:fontFamily="@font/inter_bold"
         android:textSize="20sp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llTitle"/>
+        app:layout_constraintTop_toBottomOf="@id/recyclerView_brands"/>
 
     <!-- Placeholder for empty view -->
     <TextView
@@ -114,20 +117,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"/>
 
-    <!-- RecyclerView for cars -->
+    <!-- RecyclerView for recommended cars -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRecomendations"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@id/recommendedTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_car"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        android:overScrollMode="never"/>
 
     <TextView
         android:id="@id/user_text"
@@ -136,21 +140,24 @@
         android:text="@string/near_to_you"
         android:fontFamily="@font/inter_bold"
         android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerViewRecomendations"/>
 
-    <!-- RecyclerView for cars -->
+    <!-- RecyclerView for nearby cars -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@id/user_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_car"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        android:overScrollMode="never"/>
 
     <!-- LinearLayout for navigation options -->
     <LinearLayout

@@ -17,121 +17,66 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/termsContent0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_and_conditions"
-                android:fontFamily="@font/inter_extrabold"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:paddingBottom="16dp" />
+                style="@style/format_title_terms_condictions"
+                android:id="@id/termsContent0"
+                android:text="@string/terms_and_conditions"/>
 
             <TextView
-                android:id="@+id/termsContent1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/acceptance_Terms"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@id/termsContent1"
+                android:text="@string/acceptance_Terms" />
 
             <TextView
-                android:id="@+id/termsContent12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:text="@string/agree_terms_condictions"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:justificationMode="inter_word"/>
+                style="@style/format_content_terms_condictions"
+                android:id="@id/termsContent12"
+                android:text="@string/agree_terms_condictions"/>
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/use_application"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/use_application" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_use"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_use"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_age"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_age"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_illegal"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="16dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_illegal"/>
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/security_registration"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/security_registration"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_personal_information"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_personal_information"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent33"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_confidentiality"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_confidentiality"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent34"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_negligence"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="16dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_negligence"/>
 
             <Button
+                style="@style/button_selected"
                 android:id="@+id/closeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/back"
-                android:layout_gravity="center"
                 android:background="@drawable/btn_style"
-                android:textColor="@android:color/white"
-                android:layout_marginBottom="55dp"/>
+                android:layout_marginVertical="55dp"/>
 
         </LinearLayout>
     </ScrollView>

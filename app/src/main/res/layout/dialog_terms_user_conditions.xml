@@ -17,121 +17,66 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/termsContent0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Terms and conditions"
-                android:fontFamily="@font/inter_extrabold"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:paddingBottom="16dp" />
+                style="@style/format_title_terms_condictions"
+                android:id="@id/termsContent0"
+                android:text="@string/terms_and_conditions"/>
 
             <TextView
-                android:id="@+id/termsContent1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1. Acceptance of Terms"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@id/termsContent1"
+                android:text="@string/acceptance_Terms" />
 
             <TextView
-                android:id="@+id/termsContent12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:text="By using the Carhive app, you agree to comply with the terms and conditions described below. If you do not agree with any of the terms, you must not use the app."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:justificationMode="inter_word"/>
+                style="@style/format_content_terms_condictions"
+                android:id="@id/termsContent12"
+                android:text="@string/agree_terms_condictions"/>
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2. Use of the Application"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/use_application" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- Carhive is a platform that facilitates the buying and selling of new and used vehicles between users and sellers. We are not responsible for the quality, safety, or legality of the vehicles posted."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_use"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- Users must be at least 18 years old to create an account and use the app."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_age"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- The use of the app for illegal or fraudulent activities is strictly prohibited."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="16dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_illegal"/>
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3. Registration and Security"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/security_registration"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- To use Carhive, you must register and provide true, accurate, and up-to-date personal information."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_personal_information"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent33"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- You are responsible for maintaining the confidentiality of your account and password, as well as all activities that occur under your account."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_confidentiality"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent34"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- Carhive will not be liable for unauthorized access to your account due to your own negligence."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="16dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_negligence"/>
 
             <Button
+                style="@style/button_selected"
                 android:id="@+id/closeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Close"
-                android:layout_gravity="center"
+                android:text="@string/back"
                 android:background="@drawable/btn_style"
-                android:textColor="@android:color/white"
-                android:layout_marginBottom="55dp"/>
+                android:layout_marginVertical="55dp"/>
 
         </LinearLayout>
     </ScrollView>
