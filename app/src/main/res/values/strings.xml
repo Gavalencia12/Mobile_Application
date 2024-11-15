@@ -290,6 +290,7 @@
     <string name="error_updating_view_count">error_updating\n</string>
     <string name="error_fetching_view_status">error fetchig viewers</string>
     <string name="return_text">return</string>
+    <string name="more">More</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">
