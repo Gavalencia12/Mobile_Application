@@ -274,6 +274,7 @@
 
     <string name="error_empty_search_query">error empty search query</string>
     <string name="no_results_found">no results found</string>
+    <string name="play_pause">Play or Pause</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

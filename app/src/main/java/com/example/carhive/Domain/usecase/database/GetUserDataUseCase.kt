@@ -1,8 +1,7 @@
 package com.example.carhive.Domain.usecase.database
 
-import com.example.carhive.Data.model.UserEntity
-import com.example.carhive.Data.repository.AuthRepository
-import com.example.carhive.Domain.model.User
+import com.example.carhive.data.model.UserEntity
+import com.example.carhive.data.repository.AuthRepository
 
 class GetUserDataUseCase(private val repository: AuthRepository) {
     suspend operator fun invoke(userId:String) : Result<List<UserEntity>>{

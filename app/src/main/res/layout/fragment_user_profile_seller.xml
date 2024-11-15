@@ -7,7 +7,7 @@
     android:layout_marginTop="45dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    tools:context=".Presentation.user.view.ProfileSellerFragment">
+    tools:context=".presentation.user.view.ProfileSellerFragment">
 
     <ImageButton
         android:id="@+id/ibtnBack"

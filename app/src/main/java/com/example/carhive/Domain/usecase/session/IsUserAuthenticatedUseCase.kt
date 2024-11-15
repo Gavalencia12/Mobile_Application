@@ -1,6 +1,6 @@
 package com.example.carhive.Domain.usecase.session
 
-import com.example.carhive.Data.repository.SessionRepository
+import com.example.carhive.data.repository.SessionRepository
 
 class IsUserAuthenticatedUseCase(private val repository: SessionRepository
 ) {

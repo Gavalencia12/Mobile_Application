@@ -1,0 +1,5 @@
+<!-- bg_file_message.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#075E54" /> <!-- Color de fondo similar a WhatsApp -->
+    <corners android:radius="8dp" />
+</shape>
