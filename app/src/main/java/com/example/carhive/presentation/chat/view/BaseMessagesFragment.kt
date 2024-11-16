@@ -77,6 +77,12 @@ abstract class BaseMessagesFragment : Fragment() {
             messagesAdapter.updateData(recentChats, carsWithMessages)
         }
 
+        viewModel.supportUserData.observe(viewLifecycleOwner) { supportData ->
+            val buyers = supportData.buyers.take(5)
+            val sellers = supportData.sellers.take(5)
+            messagesAdapter.updateData(buyers, sellers)
+        }
+
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             errorMessage?.let {
                 // Display error message, such as with a Toast

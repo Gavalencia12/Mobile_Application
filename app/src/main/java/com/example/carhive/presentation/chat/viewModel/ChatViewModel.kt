@@ -171,49 +171,31 @@ class ChatViewModel @Inject constructor(
      * Reports a user by adding a record in Firebase with sample messages.
      */
     fun reportUser(currentUserId: String, ownerId: String, buyerId: String, carId: String, comment: String?) {
+        val isSeller = currentUserId == ownerId
+        val receiver = if (isSeller) buyerId else ownerId
         viewModelScope.launch {
             try {
-                Log.d("reportUser", "Iniciando el proceso de reporte")
-
-                // Obtenemos la referencia de Firebase para los reportes
                 val reportRef = FirebaseDatabase.getInstance().getReference("Reports")
                     .child("UserReports").push()
-                Log.d("reportUser", "Referencia de reporte obtenida: $reportRef")
 
-                // Usamos getAllMessagesOnceUseCase para obtener todos los mensajes de una vez
                 val allMessages = getAllMessagesOnceUseCase(ownerId, carId, buyerId)
-                Log.d("reportUser", "Total de mensajes obtenidos: ${allMessages.size}")
 
-                // Tomamos los últimos 5 mensajes
                 val sampleMessages = allMessages.takeLast(5)
-                Log.d("reportUser", "Últimos 5 mensajes obtenidos para el reporte: $sampleMessages")
 
-                // Datos del reporte
                 val reportData = mapOf(
                     "reporterId" to currentUserId,
-                    "reportedUserId" to buyerId,
+                    "reportedUserId" to receiver,
                     "carId" to carId,
                     "ownerId" to ownerId,
                     "timestamp" to System.currentTimeMillis(),
-                    "sampleMessages" to sampleMessages, // Adjuntamos los últimos 5 mensajes
+                    "sampleMessages" to sampleMessages,
                     "revised" to false,
                     "comment" to comment
                 )
 
-                // Mostramos los datos que vamos a enviar a Firebase
-                Log.d("reportUser", "Datos del reporte que se enviarán: $reportData")
-
-                // Enviamos el reporte a Firebase
                 reportRef.setValue(reportData)
-                    .addOnSuccessListener {
-                        Log.d("reportUser", "Reporte enviado exitosamente")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("reportUser", "Error al enviar el reporte: ${e.message}")
-                    }
             } catch (e: Exception) {
                 _error.value = "Error reporting user: ${e.message}"
-                Log.e("reportUser", "Excepción durante el reporte: ${e.message}")
             }
         }
     }

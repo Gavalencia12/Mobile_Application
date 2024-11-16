@@ -66,6 +66,34 @@
             android:contentDescription="Menu Button"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/initialOptionsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/option1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_200"
+            android:text="¿Por qué mi límite es $0?"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/option2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_200"
+            android:text="¿Cómo activo mi tarjeta?"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"/>
+
+    </LinearLayout>
+
     <!-- Lista de mensajes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMessages"

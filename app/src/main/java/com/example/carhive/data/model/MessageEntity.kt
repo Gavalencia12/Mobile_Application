@@ -87,3 +87,9 @@ data class SellerInterestedData(
     val interestedUsers: List<UserWithLastMessage>,
     val cars: List<CarWithLastMessage>
 )
+
+data class SupportUserData(
+    val buyers: List<UserWithLastMessage>,
+    val sellers: List<UserWithLastMessage>
+)
+

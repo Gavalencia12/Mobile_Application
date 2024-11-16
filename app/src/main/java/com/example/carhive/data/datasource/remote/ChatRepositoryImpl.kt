@@ -10,6 +10,7 @@ import com.example.carhive.data.mapper.MessageMapper
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.data.model.CarWithLastMessage
 import com.example.carhive.data.model.MessageEntity
+import com.example.carhive.data.model.SupportUserData
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.data.model.UserWithLastMessage
 import com.example.carhive.data.repository.ChatRepository
@@ -469,4 +470,115 @@ class ChatRepositoryImpl @Inject constructor(
             messageRef.child("deletedFor").setValue(deletedForList).await()
         }
     }
+
+    override suspend fun getSupportUsers(
+        ownerId: String
+    ): SupportUserData {
+        val buyersList = mutableListOf<UserWithLastMessage>()
+        val sellersList = mutableListOf<UserWithLastMessage>()
+
+        try {
+            // Referencia al nodo "TechnicalSupport"
+            val technicalSupportSnapshot = database.reference
+                .child("ChatGroups")
+                .child("TechnicalSupport")
+                .get()
+                .await()
+
+            // Procesar datos de "buyers"
+            technicalSupportSnapshot.child("buyer").child("messages").children.forEach { buyerSnapshot ->
+                val userId = buyerSnapshot.key
+                val lastMessageSnapshot = buyerSnapshot.children.lastOrNull()
+                val unreadCount = buyerSnapshot.child(ownerId).children.count { messageSnapshot ->
+                    val messageStatus = messageSnapshot.child("status").value as? String
+                    val receiverId = messageSnapshot.child("receiverId").value as? String
+                    messageStatus == "sent" && receiverId == ownerId
+                }
+
+                if (lastMessageSnapshot != null) {
+                    val lastMessageContent = lastMessageSnapshot.child("content").value as? String
+                    val lastMessageFileName = lastMessageSnapshot.child("fileName").value as? String
+                    val lastMessageFileType = lastMessageSnapshot.child("fileType").value as? String
+                    val lastMessageTimestamp = lastMessageSnapshot.child("timestamp").value as? Long ?: 0L
+
+                    val isFile = !lastMessageFileName.isNullOrEmpty()
+                    val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
+
+                    val userEntity = database.reference
+                        .child("Users")
+                        .child(userId ?: "")
+                        .get()
+                        .await()
+                        .getValue(UserEntity::class.java)?.apply { id = userId!! }
+
+                    if (userEntity != null) {
+                        buyersList.add(
+                            UserWithLastMessage(
+                                user = userEntity,
+                                lastMessage = lastMessageDisplay,
+                                lastMessageTimestamp = lastMessageTimestamp,
+                                carId = "buyer",
+                                isFile = isFile,
+                                fileName = if (isFile) lastMessageFileName else null,
+                                fileType = lastMessageFileType,
+                                unreadCount = unreadCount
+                            )
+                        )
+                    }
+                }
+            }
+
+            // Procesar datos de "sellers"
+            technicalSupportSnapshot.child("seller").child("messages").children.forEach { sellerSnapshot ->
+                val userId = sellerSnapshot.key
+                val lastMessageSnapshot = sellerSnapshot.children.lastOrNull()
+                val unreadCount = sellerSnapshot.children.count { messageSnapshot ->
+                    val messageStatus = messageSnapshot.child("status").value as? String
+                    val receiverId = messageSnapshot.child("receiverId").value as? String
+                    messageStatus == "sent" && receiverId == ownerId
+                }
+
+                if (lastMessageSnapshot != null) {
+                    val lastMessageContent = lastMessageSnapshot.child("content").value as? String
+                    val lastMessageFileName = lastMessageSnapshot.child("fileName").value as? String
+                    val lastMessageFileType = lastMessageSnapshot.child("fileType").value as? String
+                    val lastMessageTimestamp = lastMessageSnapshot.child("timestamp").value as? Long ?: 0L
+
+                    val isFile = !lastMessageFileName.isNullOrEmpty()
+                    val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
+
+                    val userEntity = database.reference
+                        .child("Users")
+                        .child(userId ?: "")
+                        .get()
+                        .await()
+                        .getValue(UserEntity::class.java)?.apply { id = userId!! }
+
+                    if (userEntity != null) {
+                        sellersList.add(
+                            UserWithLastMessage(
+                                user = userEntity,
+                                lastMessage = lastMessageDisplay,
+                                lastMessageTimestamp = lastMessageTimestamp,
+                                carId = "seller", // No aplica en este caso
+                                isFile = isFile,
+                                fileName = if (isFile) lastMessageFileName else null,
+                                fileType = lastMessageFileType,
+                                unreadCount = unreadCount
+                            )
+                        )
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // Manejo de errores
+            throw Exception("Error retrieving support user data: ${e.message}")
+        }
+
+        return SupportUserData(
+            buyers = buyersList,
+            sellers = sellersList
+        )
+    }
+
 }

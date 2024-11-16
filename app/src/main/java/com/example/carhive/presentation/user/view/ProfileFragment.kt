@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide // Asegúrate de tener Glide para cargar imágenes
+import com.bumptech.glide.Glide
 import com.example.carhive.data.model.UserEntity
-import com.example.carhive.MainActivity
 import com.example.carhive.presentation.user.adapter.ProfileOptionsAdapter
 import com.example.carhive.presentation.user.viewModel.ProfileViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserProfileBinding
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +24,8 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewModel by viewModels()
+
+    val buyerId = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +77,14 @@ class ProfileFragment : Fragment() {
                 }
                 "Terms & Conditions" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_termsFragment)
+                }
+                "Report a problem" -> {
+                    val bundle = Bundle().apply {
+                        putString("carId", "buyer")
+                        putString("ownerId", "TechnicalSupport")
+                        putString("buyerId", buyerId)
+                    }
+                    findNavController().navigate(R.id.action_userProfileFragment_to_UserReportMessagesFragment, bundle)
                 }
                 // Otros casos...
             }
