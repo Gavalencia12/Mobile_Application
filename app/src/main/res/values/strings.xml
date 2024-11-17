@@ -276,6 +276,44 @@
     <string name="no_results_found">no results found</string>
     <string name="play_pause">Play or Pause</string>
 
+    <!-- Admin approved cars -->
+    <string name="admin_car_model">Car Model</string>
+    <string name="admin_car_brand">Car Brand</string>
+    <string name="admin_car_price">Price</string>
+    <string name="car_firstname">First Name</string>
+
+    <!-- Section Titles -->
+    <string name="title_legal_information">Legal Information</string>
+    <string name="title_basic_identification">Basic Identification</string>
+    <string name="title_appearance">Appearance</string>
+    <string name="title_wear_and_tear">Wear and Tear</string>
+    <string name="title_mechanical_specifications">Mechanical Specifications</string>
+    <string name="title_publication_information">Publication Information</string>
+
+    <!-- Labels -->
+    <string name="label_vin">VIN:</string>
+    <string name="label_previous_owners">Previous Owners:</string>
+    <string name="label_location">Location:</string>
+    <string name="label_brand">Brand:</string>
+    <string name="label_model">Model:</string>
+    <string name="label_year">Year:</string>
+    <string name="label_doors">Doors:</string>
+    <string name="label_price">Price:</string>
+    <string name="label_color">Color:</string>
+    <string name="label_condition">Condition:</string>
+    <string name="label_mileage">Mileage:</string>
+    <string name="label_transmission">Transmission:</string>
+    <string name="label_fuel_type">Fuel Type:</string>
+    <string name="label_engine_capacity">Engine Capacity:</string>
+    <string name="label_views">Views:</string>
+    <string name="label_listing_date">Listing Date:</string>
+    <string name="label_last_update">Last Update:</string>
+
+    <!-- Button Texts -->
+    <string name="button_open_repuve">Open REPUVE</string>
+    <string name="button_approved">Approved</string>
+    <string name="button_disapproved">Disapproved</string>
+
     <!-- Spinner Options -->
     <string-array name="transmission_options">
         <item>Manual</item>
