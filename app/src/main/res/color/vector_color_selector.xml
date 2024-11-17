@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color blanco cuando el estado está seleccionado -->
+    <item android:state_selected="true" android:color="@android:color/white" />
+    <!-- Color gris por defecto -->
+    <item android:color="@color/gray" />
+</selector>

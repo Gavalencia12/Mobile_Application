@@ -97,131 +97,156 @@
         android:layout_height="wrap_content"
         android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@id/llTitle">
+
         <LinearLayout
+            android:id="@+id/llBrandsContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/llTitle">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
+
             <ImageButton
                 android:id="@+id/toyota"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:src="@drawable/toyota"
-                android:backgroundTint="@color/white_ghost"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/honda"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:src="@drawable/honda"
-                android:backgroundTint="@color/white_ghost"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/chevrolet"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:src="@drawable/chevrolet"
-                android:backgroundTint="@color/white_ghost"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/ford"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ford"
-                android:backgroundTint="@color/white_ghost"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/nissan"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:src="@drawable/nissan"
-                android:backgroundTint="@color/white_ghost"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/volkswagen"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
-                android:backgroundTint="@color/white_ghost"
                 android:src="@drawable/volkswagen"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/bmw"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
-                android:backgroundTint="@color/white_ghost"
                 android:src="@drawable/bmw"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/mercedes"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
-                android:backgroundTint="@color/white_ghost"
                 android:src="@drawable/mercedes"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/audi"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
-                android:backgroundTint="@color/white_ghost"
                 android:src="@drawable/audi"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <ImageButton
                 android:id="@+id/hyundai"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
-                android:backgroundTint="@color/white_ghost"
                 android:src="@drawable/hyundai"
+                android:background="@drawable/brand_button_selector"
                 android:contentDescription="@string/image"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
+
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
+
             <Button
                 android:id="@+id/otros"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:text="@string/more"
                 android:textColor="@color/dark_gray"
-                android:backgroundTint="@color/white_ghost"/>
+                android:background="@drawable/brand_button_selector" />
         </LinearLayout>
     </HorizontalScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -6,17 +6,23 @@
         android:title="Home" />
 
     <item
+        android:id="@+id/chats"
+        android:icon="@drawable/ic_chat"
+        android:title="Chats" />
+
+    <item
         android:id="@+id/crud"
         android:icon="@drawable/ic_carblack"
         android:title="Inventory" />
+
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/ic_notification"
+        android:title="Notifications" />
 
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_person"
         android:title="Profile" />
 
-    <item
-        android:id="@+id/signOutButton"
-        android:icon="@drawable/ic_selector_sign_out"
-        android:title="Sign Out" />
 </menu>

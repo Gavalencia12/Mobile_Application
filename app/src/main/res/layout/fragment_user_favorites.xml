@@ -7,7 +7,7 @@
     android:layout_marginTop="30dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    tools:context=".Presentation.user.view.FavoritesFragment">
+    tools:context=".presentation.user.view.FavoritesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

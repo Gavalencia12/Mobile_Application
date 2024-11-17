@@ -5,6 +5,7 @@
     alias(libs.plugins.crashlytics)
     id ("kotlin-kapt") // No se puede convertir en alias porque es parte del sistema de plugins de Kotlin y se debe aplicar de manera directa
     alias(libs.plugins.dagger)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -89,6 +90,8 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
     kapt(libs.dagger.hilt.compile)
 
 //    Kotlin dependencies

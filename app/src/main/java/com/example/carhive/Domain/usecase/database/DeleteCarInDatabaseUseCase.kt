@@ -1,6 +1,6 @@
 package com.example.carhive.Domain.usecase.database
 
-import com.example.carhive.Data.repository.AuthRepository
+import com.example.carhive.data.repository.AuthRepository
 import javax.inject.Inject
 
 class DeleteCarInDatabaseUseCase @Inject constructor(

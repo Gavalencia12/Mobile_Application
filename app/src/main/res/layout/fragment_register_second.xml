@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/blue"
-    tools:context=".Presentation.initial.Register.view.SecondRegisterFragment">
+    tools:context=".presentation.initial.Register.view.SecondRegisterFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvImagen"
