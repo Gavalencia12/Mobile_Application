@@ -33,12 +33,8 @@ class InterestedUsersViewModel @Inject constructor(
     private val _carsWithMessages = MutableLiveData<List<CarWithLastMessage>>()
     val carsWithMessages: LiveData<List<CarWithLastMessage>> get() = _carsWithMessages
 
-    private val _buyersMessages = MutableLiveData<List<UserWithLastMessage>>()
-    val buyersMessages: LiveData<List<UserWithLastMessage>> get() = _buyersMessages
-
-    private val _sellersMessages = MutableLiveData<List<CarWithLastMessage>>()
-    val sellersMessages: LiveData<List<CarWithLastMessage>> get() = _sellersMessages
-
+    private val _supportUserData = MutableLiveData<SupportUserData>()
+    val supportUserData: LiveData<SupportUserData> get() = _supportUserData
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
@@ -183,9 +179,10 @@ class InterestedUsersViewModel @Inject constructor(
         }
     }
 
-    private val _supportUserData = MutableLiveData<SupportUserData>()
-    val supportUserData: LiveData<SupportUserData> get() = _supportUserData
 
+    /**
+     * Load of users who have sent a message to technical support.
+     */
     fun loadSupportUsers(ownerId: String) {
         viewModelScope.launch {
             try {

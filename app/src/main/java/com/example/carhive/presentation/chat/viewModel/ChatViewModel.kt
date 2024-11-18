@@ -73,6 +73,8 @@ class ChatViewModel @Inject constructor(
                     // Actualiza el estado del mensaje a "read" si es necesario
                     if (message.receiverId == currentUserId && message.status == "sent") {
                         updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
+                    } else if (message.receiverId == "TechnicalSupport") {
+                        updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
                     }
                 }
             }
@@ -118,7 +120,15 @@ class ChatViewModel @Inject constructor(
     /**
      * Sends a file message with the specified metadata and updates the status in case of failure.
      */
-    fun sendFileMessage(ownerId: String, carId: String, buyerId: String, fileUri: Uri, fileType: String, fileName: String, fileHash: String) {
+    fun sendFileMessage(
+        ownerId: String,
+        carId: String,
+        buyerId: String,
+        fileUri: Uri,
+        fileType: String,
+        fileName: String,
+        fileHash: String
+    ) {
         viewModelScope.launch {
             val isSeller = currentUserId == ownerId
             val receiver = if (isSeller) buyerId else ownerId
@@ -130,7 +140,17 @@ class ChatViewModel @Inject constructor(
                 }
 
                 viewModelScope.launch {
-                    val result = sendFileMessageUseCase(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, receiver, deletedFor)
+                    val result = sendFileMessageUseCase(
+                        ownerId,
+                        carId,
+                        buyerId,
+                        fileUri,
+                        fileType,
+                        fileName,
+                        fileHash,
+                        receiver,
+                        deletedFor
+                    )
                     if (result.isFailure) {
                         _error.value = result.exceptionOrNull()?.message
                     }
@@ -142,7 +162,13 @@ class ChatViewModel @Inject constructor(
     /**
      * Updates the status of a message, such as marking it as "read" or "failed".
      */
-    private fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String) {
+    private fun updateMessageStatus(
+        ownerId: String,
+        carId: String,
+        buyerId: String,
+        messageId: String,
+        status: String
+    ) {
         viewModelScope.launch {
             updateMessageStatusUseCase(ownerId, carId, buyerId, messageId, status)
         }
@@ -157,7 +183,13 @@ class ChatViewModel @Inject constructor(
                 val messages = getAllMessagesOnceUseCase(ownerId, carId, buyerId)
 
                 messages.forEach { message ->
-                    deleteMessageForUserUseCase(ownerId, carId, buyerId, message.messageId, currentUserId)
+                    deleteMessageForUserUseCase(
+                        ownerId,
+                        carId,
+                        buyerId,
+                        message.messageId,
+                        currentUserId
+                    )
                 }
                 _messages.value = emptyList()
 
@@ -170,7 +202,13 @@ class ChatViewModel @Inject constructor(
     /**
      * Reports a user by adding a record in Firebase with sample messages.
      */
-    fun reportUser(currentUserId: String, ownerId: String, buyerId: String, carId: String, comment: String?) {
+    fun reportUser(
+        currentUserId: String,
+        ownerId: String,
+        buyerId: String,
+        carId: String,
+        comment: String?
+    ) {
         val isSeller = currentUserId == ownerId
         val receiver = if (isSeller) buyerId else ownerId
         viewModelScope.launch {
@@ -249,7 +287,12 @@ class ChatViewModel @Inject constructor(
     /**
      * Checks if a user is blocked by querying the Firebase database and invokes the provided callback.
      */
-    fun isUserBlocked(currentUserId: String, otherUserId: String, carId: String, callback: (Boolean) -> Unit) {
+    fun isUserBlocked(
+        currentUserId: String,
+        otherUserId: String,
+        carId: String,
+        callback: (Boolean) -> Unit
+    ) {
         val blockRef = FirebaseDatabase.getInstance().getReference("BlockedUsers")
             .child(currentUserId).child(otherUserId)
 
@@ -273,24 +316,107 @@ class ChatViewModel @Inject constructor(
      */
     fun loadInfoHead(ownerId: String, carId: String, buyerId: String) {
         viewModelScope.launch {
-            val isSeller = currentUserId == ownerId
+            try {
+                val isSeller = currentUserId == ownerId
 
-            if (isSeller) {
-                val buyerResult = getUserDataUseCase(buyerId)
-                if (buyerResult.isSuccess) {
-                    _buyerData.value = buyerResult.getOrNull()?.firstOrNull()
-                }
-            } else {
-                val userResult = getUserDataUseCase(ownerId)
-                if (userResult.isSuccess) {
-                    _userData.value = userResult.getOrNull()?.firstOrNull()
-                }
-            }
+                if (ownerId == "TechnicalSupport") {
+                    // Load data from Users using buyerId
+                    val userRef = FirebaseDatabase.getInstance()
+                        .getReference("Users")
+                        .child(buyerId)
+                        .get()
+                        .await()
 
-            val carResult = infoUseCase(ownerId, carId)
-            if (carResult.isSuccess) {
-                _carDetails.value = carResult.getOrNull()
+                    // Convert the data to UserEntity
+                    val userEntity = userRef.getValue(UserEntity::class.java)
+
+                    if (userEntity != null) {
+                        _buyerData.value = userEntity?:return@launch
+                    } else {
+                        _error.value = "Failed to load buyer data"
+                    }
+
+                    // Load car details (if applicable)
+                    val carResult = infoUseCase(ownerId, carId)
+                    if (carResult.isSuccess) {
+                        _carDetails.value = carResult.getOrNull()
+                    }
+                } else {
+                    // Logic for other cases
+                    if (isSeller) {
+                        val buyerResult = getUserDataUseCase(buyerId)
+                        if (buyerResult.isSuccess) {
+                            _buyerData.value = buyerResult.getOrNull()?.firstOrNull()
+                        }
+                    } else {
+                        val userResult = getUserDataUseCase(ownerId)
+                        if (userResult.isSuccess) {
+                            _userData.value = userResult.getOrNull()?.firstOrNull()
+                        }
+                    }
+
+                    // Load car details
+                    val carResult = infoUseCase(ownerId, carId)
+                    if (carResult.isSuccess) {
+                        _carDetails.value = carResult.getOrNull()
+                    }
+                }
+            } catch (e: Exception) {
+                _error.value = "Error loading user or car data: ${e.message}"
             }
         }
     }
+
+    /**
+     * Deletes all messages from the chat in the Firebase Realtime Database.
+     *
+     * @param directory The ID of the car related to the chat.
+     * @param buyerId The ID of the buyer in the chat.
+     */
+    fun deleteAllMessages(directory: String, buyerId: String) {
+        viewModelScope.launch {
+        val messagesRef = FirebaseDatabase.getInstance()
+            .getReference("ChatGroups")
+            .child("TechnicalSupport")
+            .child(directory) // Use the dynamic carId (buyer or seller)
+            .child("messages")
+            .child(buyerId)
+
+        messagesRef.removeValue().await()
+        }
+    }
+
+    /**
+     * Determines whether the user ID is located under the "buyer" or "seller" node in the database.
+     *
+     * @param userId The ID of the user to search for.
+     * @param onResult Callback that returns "buyer" or "seller" depending on the location, or null if not found.
+     */
+    fun findUserNode(userId: String, onResult: (String?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val database = FirebaseDatabase.getInstance().reference.child("ChatGroups").child("TechnicalSupport")
+
+                // Check if the user exists under the "buyer" node
+                val buyerSnapshot = database.child("buyer").child("messages").child(userId).get().await()
+                if (buyerSnapshot.exists()) {
+                    onResult("buyer")
+                    return@launch
+                }
+
+                // Check if the user exists under the "seller" node
+                val sellerSnapshot = database.child("seller").child("messages").child(userId).get().await()
+                if (sellerSnapshot.exists()) {
+                    onResult("seller")
+                    return@launch
+                }
+
+                // If the user is not found in either node
+                onResult(null)
+            } catch (e: Exception) {
+                onResult(null) // Return null if there's an error
+            }
+        }
+    }
+
 }

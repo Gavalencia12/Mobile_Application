@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.R
 import com.example.carhive.data.model.UserWithLastMessage
+import com.example.carhive.presentation.chat.adapter.AdminMessagesAdapter
 import com.example.carhive.presentation.chat.view.BaseMessagesFragment
 import com.example.carhive.presentation.chat.viewModel.InterestedUsersViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +20,20 @@ class AdminSupportFragment : BaseMessagesFragment() {
 
     // The owner's ID, retrieved from FirebaseAuth
     private val ownerId = FirebaseAuth.getInstance().currentUser?.uid
+
+    /**
+     * Initializes the RecyclerView and its adapter, setting up the item click listener to navigate to chat.
+     */
+    override fun setupRecyclerView() {
+        messagesAdminAdapter = AdminMessagesAdapter(mutableListOf(), mutableListOf()) { item ->
+            navigateToChat(item)
+        }
+
+        binding.recyclerViewInterestedUsers.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = messagesAdminAdapter
+        }
+    }
 
     /**
      * Defines navigation behavior based on the selected item type (User).

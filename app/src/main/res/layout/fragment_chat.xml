@@ -67,6 +67,21 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnFinished"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terminado"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/initialOptionsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/purple_200"
-            android:text="¿Por qué mi límite es $0?"
+            android:text="What information can I save about my car on the platform?"
             android:textColor="@color/white"
             android:layout_marginBottom="8dp"/>
 
@@ -88,7 +103,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/purple_200"
-            android:text="¿Cómo activo mi tarjeta?"
+            android:text="How do I register a new vehicle?"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/option3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_200"
+            android:text="What services does carhive offer?"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/option4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_200"
+            android:text="Is carhive available in my region?"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/option5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_200"
+            android:text="How do I reset my password?"
             android:textColor="@color/white"
             android:layout_marginBottom="8dp"/>
 

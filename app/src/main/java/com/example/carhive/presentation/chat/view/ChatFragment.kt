@@ -18,6 +18,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -114,10 +115,36 @@ class ChatFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        // Menu button for additional chat options
-        binding.menuButton.setOnClickListener {
-            showPopupMenu(it)
+        // Set menu button click listener and icon dynamically based on ownerId
+        binding.menuButton.apply {
+            if (ownerId == "TechnicalSupport") {
+                setOnClickListener { showReportDialog() }
+                setImageResource(R.drawable.ic_report_problem) // Change icon for "TechnicalSupport"
+            } else {
+                setOnClickListener { showPopupMenu(this) }
+                setImageResource(R.drawable.ic_more_vert) // Default icon
+            }
         }
+
+        if (ownerId == "TechnicalSupport") {
+            binding.btnFinished.visibility = View.VISIBLE
+            binding.btnFinished.setOnClickListener {
+                chatViewModel.findUserNode(buyerId) { result ->
+                    when (result) {
+                        "buyer" -> {
+                            showConfirmDeleteAllMessagesDialog("buyer")
+                        }
+                        "seller" -> {
+                            showConfirmDeleteAllMessagesDialog("seller")
+                        }
+                        else -> {
+                            Toast.makeText(requireContext(), "User not found in buyer or seller nodes", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+
         val isSeller = currentUserId == ownerId
         val blockedUserId = if (isSeller) buyerId else ownerId
         chatViewModel.isUserBlocked(currentUserId, blockedUserId, carId) { isBlocked ->
@@ -173,7 +200,6 @@ class ChatFragment : Fragment() {
                 }
             }
         }
-
         chatViewModel.userData.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.tvName.text = it.firstName
@@ -294,6 +320,29 @@ class ChatFragment : Fragment() {
             }
         )
         deleteDialog.show(parentFragmentManager, "DeleteChatDialog")
+    }
+
+    private fun showConfirmDeleteAllMessagesDialog(directory: String) {
+        val deleteDialog = GlobalDialogFragment.newInstance(
+            title = "Problem solved",
+            message = "Are you sure the problem is solved?",
+            positiveButtonText = "Clear",
+            negativeButtonText = "Cancel",
+            dialogType = GlobalDialogFragment.DialogType.DELETE_CHAT,
+            currentUserId = currentUserId,
+            ownerId = "TechnicalSupport",
+            carId = directory, // Use the carId determined dynamically
+            buyerId = buyerId,
+            onActionCompleted = {
+                // Call the ViewModel function to delete all messages
+                lifecycleScope.launch {
+                    chatViewModel.deleteAllMessages(directory, buyerId)
+                    findNavController().popBackStack()
+                    Toast.makeText(requireContext(), "Chat has been successfully resolved.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
+        deleteDialog.show(parentFragmentManager, "DeleteAllMessagesDialog")
     }
 
     private fun openFileChooser() {

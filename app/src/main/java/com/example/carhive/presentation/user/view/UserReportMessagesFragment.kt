@@ -123,6 +123,7 @@ class UserReportMessagesFragment : Fragment() {
 
         // Menu button for additional chat options
         binding.menuButton.setOnClickListener {
+            binding.menuButton.setImageResource(R.drawable.ic_report_problem)
             showReportDialog()
         }
 
@@ -131,23 +132,26 @@ class UserReportMessagesFragment : Fragment() {
     private fun setupInitialOptions() {
         val optionsContainer = binding.root.findViewById<LinearLayout>(R.id.initialOptionsContainer)
 
-        // Verifica si ya hay mensajes al iniciar
         if (chatAdapter.itemCount > 0) {
             optionsContainer.visibility = View.GONE
             return
         }
 
-        // Mostrar las opciones iniciales
         optionsContainer.visibility = View.VISIBLE
 
-        // Configurar eventos para los botones
         val button1 = binding.root.findViewById<Button>(R.id.option1)
         val button2 = binding.root.findViewById<Button>(R.id.option2)
+        val button3 = binding.root.findViewById<Button>(R.id.option3)
+        val button4 = binding.root.findViewById<Button>(R.id.option4)
+        val button5 = binding.root.findViewById<Button>(R.id.option5)
 
         val optionClickListener = View.OnClickListener { view ->
             when (view.id) {
-                R.id.option1 -> sendOptionMessage("¿Por qué mi límite es $0?")
-                R.id.option2 -> sendOptionMessage("¿Cómo activo mi tarjeta?")
+                R.id.option1 -> sendOptionMessage("What information can I save about my car on the platform?")
+                R.id.option2 -> sendOptionMessage("How do I register a new vehicle?")
+                R.id.option3 -> sendOptionMessage("What services does carhive offer?")
+                R.id.option4 -> sendOptionMessage("Is carhive available in my region?")
+                R.id.option5 -> sendOptionMessage("How do I reset my password?")
             }
 
             // Ocultar todas las opciones después de seleccionar una
@@ -157,6 +161,9 @@ class UserReportMessagesFragment : Fragment() {
 
         button1.setOnClickListener(optionClickListener)
         button2.setOnClickListener(optionClickListener)
+        button3.setOnClickListener(optionClickListener)
+        button4.setOnClickListener(optionClickListener)
+        button5.setOnClickListener(optionClickListener)
     }
 
     private fun sendOptionMessage(content: String) {
@@ -200,27 +207,13 @@ class UserReportMessagesFragment : Fragment() {
             }
         }
 
-        chatViewModel.userData.observe(viewLifecycleOwner) {
             binding.tvName.text = "Technical Support"
-            binding.tvCarModel.text = "wndjad"
+            binding.tvCarModel.text = "Send a message"
             Glide.with(requireContext())
                 .load(R.drawable.car_hive_logo)
                 .placeholder(R.drawable.ic_img)
                 .error(R.drawable.ic_error)
                 .into(binding.profileImage)
-        }
-
-        chatViewModel.buyerData.observe(viewLifecycleOwner) { buyer ->
-            buyer?.let {
-                binding.tvName.text = it.firstName
-                binding.tvCarModel.text = it.email
-                Glide.with(requireContext())
-                    .load(it.imageUrl)
-                    .placeholder(R.drawable.ic_img)
-                    .error(R.drawable.ic_error)
-                    .into(binding.profileImage)
-            }
-        }
     }
 
     /**

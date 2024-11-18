@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import com.example.carhive.Domain.model.Message
 import com.example.carhive.data.exception.RepositoryException
 import com.example.carhive.data.mapper.MessageMapper
@@ -471,28 +472,38 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
+    /**
+     * Retrieves support users (buyers and sellers) along with their last messages and unread message count.
+     * The function accesses the "TechnicalSupport" node in the database to retrieve the relevant data.
+     *
+     * @param ownerId The ID of the technical support owner (receiver of the messages).
+     * @return A [SupportUserData] object containing lists of buyers and sellers with their last messages and unread count.
+     */
     override suspend fun getSupportUsers(
         ownerId: String
     ): SupportUserData {
+        // Lists to store buyers and sellers with their last messages
         val buyersList = mutableListOf<UserWithLastMessage>()
         val sellersList = mutableListOf<UserWithLastMessage>()
 
         try {
-            // Referencia al nodo "TechnicalSupport"
+            // Fetch the "TechnicalSupport" node from the database
             val technicalSupportSnapshot = database.reference
                 .child("ChatGroups")
                 .child("TechnicalSupport")
                 .get()
                 .await()
 
-            // Procesar datos de "buyers"
+            // Process buyer data
             technicalSupportSnapshot.child("buyer").child("messages").children.forEach { buyerSnapshot ->
                 val userId = buyerSnapshot.key
                 val lastMessageSnapshot = buyerSnapshot.children.lastOrNull()
-                val unreadCount = buyerSnapshot.child(ownerId).children.count { messageSnapshot ->
+
+                // Count unread messages for the current buyer
+                val unreadCount = buyerSnapshot.children.count { messageSnapshot ->
                     val messageStatus = messageSnapshot.child("status").value as? String
                     val receiverId = messageSnapshot.child("receiverId").value as? String
-                    messageStatus == "sent" && receiverId == ownerId
+                    messageStatus == "sent" && receiverId == "TechnicalSupport"
                 }
 
                 if (lastMessageSnapshot != null) {
@@ -504,6 +515,7 @@ class ChatRepositoryImpl @Inject constructor(
                     val isFile = !lastMessageFileName.isNullOrEmpty()
                     val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
 
+                    // Retrieve the buyer's user data
                     val userEntity = database.reference
                         .child("Users")
                         .child(userId ?: "")
@@ -528,14 +540,16 @@ class ChatRepositoryImpl @Inject constructor(
                 }
             }
 
-            // Procesar datos de "sellers"
+            // Process seller data
             technicalSupportSnapshot.child("seller").child("messages").children.forEach { sellerSnapshot ->
                 val userId = sellerSnapshot.key
                 val lastMessageSnapshot = sellerSnapshot.children.lastOrNull()
+
+                // Count unread messages for the current seller
                 val unreadCount = sellerSnapshot.children.count { messageSnapshot ->
                     val messageStatus = messageSnapshot.child("status").value as? String
                     val receiverId = messageSnapshot.child("receiverId").value as? String
-                    messageStatus == "sent" && receiverId == ownerId
+                    messageStatus == "sent" && receiverId == "TechnicalSupport"
                 }
 
                 if (lastMessageSnapshot != null) {
@@ -547,6 +561,7 @@ class ChatRepositoryImpl @Inject constructor(
                     val isFile = !lastMessageFileName.isNullOrEmpty()
                     val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
 
+                    // Retrieve the seller's user data
                     val userEntity = database.reference
                         .child("Users")
                         .child(userId ?: "")
@@ -560,7 +575,7 @@ class ChatRepositoryImpl @Inject constructor(
                                 user = userEntity,
                                 lastMessage = lastMessageDisplay,
                                 lastMessageTimestamp = lastMessageTimestamp,
-                                carId = "seller", // No aplica en este caso
+                                carId = "seller",
                                 isFile = isFile,
                                 fileName = if (isFile) lastMessageFileName else null,
                                 fileType = lastMessageFileType,
@@ -571,14 +586,16 @@ class ChatRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            // Manejo de errores
+            // Handle any errors during data retrieval
             throw Exception("Error retrieving support user data: ${e.message}")
         }
 
+        // Return the collected buyer and seller data
         return SupportUserData(
             buyers = buyersList,
             sellers = sellersList
         )
     }
+
 
 }
