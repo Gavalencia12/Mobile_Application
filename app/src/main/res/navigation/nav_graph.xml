@@ -210,9 +210,19 @@
             android:id="@+id/action_termsSellerFragment_to_sellerProfileFragment"
             app:destination="@id/sellerProfileFragment" />
         <action
-            android:id="@+id/action_termsSellerFragment_to_privacyPolicyFragment"
-            app:destination="@id/privacyPolicyFragment" />
+            android:id="@+id/action_termsSellerFragment_to_sellerPrivacyPolicyFragment"
+            app:destination="@id/sellerPrivacyPolicyFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/sellerPrivacyPolicyFragment"
+        android:name="com.example.carhive.Presentation.user.items.SellerPrivacyPolicyFragment"
+        android:label="Privacy Policy"
+        tools:layout="@layout/fragment_seller_profile_privacy_policy">
+
+        <action
+            android:id="@+id/action_sellerPrivacyPolicyFragment_to_sellerProfileFragment"
+            app:destination="@id/sellerProfileFragment" />
     </fragment>
 
     <fragment
