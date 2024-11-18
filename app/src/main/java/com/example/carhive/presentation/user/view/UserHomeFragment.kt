@@ -1,5 +1,6 @@
 package com.example.carhive.presentation.user.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -49,6 +50,7 @@ class UserHomeFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -157,19 +159,16 @@ class UserHomeFragment : Fragment() {
 
         brandButtons.forEach { (button, brand) ->
             button.setOnClickListener {
-                button.isSelected = !button.isSelected // Alternar el estado seleccionado
+                button.isSelected = !button.isSelected
 
                 if (selectedBrandFilters.contains(brand)) {
-                    // Deseleccionar marca
                     selectedBrandFilters.remove(brand)
                     button.setBackgroundResource(R.drawable.default_button_background)
                 } else {
-                    // Seleccionar marca
                     selectedBrandFilters.add(brand)
                     button.setBackgroundResource(R.drawable.selected_button_background)
                 }
 
-                // Reorganizar botones y aplicar filtros
                 reorganizeBrandButtons(brandButtons)
                 applyBrandFilters()
             }
@@ -180,19 +179,15 @@ class UserHomeFragment : Fragment() {
     private fun reorganizeBrandButtons(brandButtons: Map<ImageButton, String>) {
         val linearLayout = binding.llBrands.findViewById<LinearLayout>(R.id.llBrandsContainer)
 
-        // Elimina todos los botones del `LinearLayout`
         linearLayout.removeAllViews()
 
-        // Lista de botones seleccionados primero, seguidos por los no seleccionados
         val sortedButtons = brandButtons.entries
             .sortedBy { if (selectedBrandFilters.contains(it.value)) 0 else 1 }
             .map { it.key }
 
-        // Agrega los botones al contenedor en el nuevo orden
         sortedButtons.forEach { button ->
             linearLayout.addView(button)
 
-            // Agregar espacio entre botones
             val space = Space(requireContext()).apply {
                 layoutParams = LinearLayout.LayoutParams(10, LinearLayout.LayoutParams.MATCH_PARENT)
             }
@@ -202,15 +197,14 @@ class UserHomeFragment : Fragment() {
 
 
     private fun applyBrandFilters() {
+
         if (selectedBrandFilters.isEmpty()) {
-            // Mostrar todos los autos si no hay filtros activos
             binding.recyclerViewRecomendations.visibility = View.VISIBLE
             binding.recommendedTitle.visibility = View.VISIBLE
             binding.userText.visibility = View.VISIBLE
             binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             viewModel.fetchCars()
         } else {
-            // Ocultar "Recommended Cars" y mostrar solo autos filtrados
             binding.recyclerViewRecomendations.visibility = View.GONE
             binding.recommendedTitle.visibility = View.GONE
             binding.userText.visibility = View.GONE
@@ -221,9 +215,6 @@ class UserHomeFragment : Fragment() {
             }
         }
     }
-
-
-
 
     // Setup for model search with autocomplete
     private fun setupModelSearch() {
@@ -270,6 +261,8 @@ class UserHomeFragment : Fragment() {
         setupColorFilter(dialogView)
         setupPriceMileageFilter(dialogView)
         setupSectionNavigation(dialogView)
+        setupConditionFilter(dialogView)
+
 
         // Apply or reset filters based on dialog actions
         dialogView.findViewById<Button>(R.id.btn_apply_filters).setOnClickListener {
@@ -298,20 +291,19 @@ class UserHomeFragment : Fragment() {
         val endYear = endYearInput.toIntOrNull()
 
         viewModel.yearRange = if (startYear != null || endYear != null) {
-            (startYear ?: viewModel.yearRange?.first ?: 1970) to (endYear ?: viewModel.yearRange?.second ?: Calendar.getInstance().get(Calendar.YEAR))
+            (startYear ?: viewModel.yearRange?.first ?: 1970) to
+                    (endYear ?: viewModel.yearRange?.second ?: Calendar.getInstance().get(Calendar.YEAR))
         } else {
             null
         }
 
-        viewModel.priceRange = Pair(
-            view.findViewById<EditText>(R.id.editText_min_price).text.toString().replace(",", "").toIntOrNull() ?: 0,
-            view.findViewById<EditText>(R.id.editText_max_price).text.toString().replace(",", "").toIntOrNull()
-        )
+        val minPrice = view.findViewById<EditText>(R.id.editText_min_price).text.toString().replace(",", "").toIntOrNull() ?: 0
+        val maxPrice = view.findViewById<EditText>(R.id.editText_max_price).text.toString().replace(",", "").toIntOrNull()
+        viewModel.priceRange = minPrice to maxPrice
 
-        viewModel.mileageRange = Pair(
-            view.findViewById<EditText>(R.id.editText_min_mileage).text.toString().replace(",", "").toIntOrNull() ?: 0,
-            view.findViewById<EditText>(R.id.editText_max_mileage).text.toString().replace(",", "").toIntOrNull()
-        )
+        val minMileage = view.findViewById<EditText>(R.id.editText_min_mileage).text.toString().replace(",", "").toIntOrNull() ?: 0
+        val maxMileage = view.findViewById<EditText>(R.id.editText_max_mileage).text.toString().replace(",", "").toIntOrNull()
+        viewModel.mileageRange = minMileage to maxMileage
 
         viewModel.applyFilters()
     }
@@ -415,14 +407,23 @@ class UserHomeFragment : Fragment() {
         }
     }
 
-    // Set up input filters with thousand separator formatting
     private fun setupPriceMileageFilter(view: View) {
         val minPrice: EditText = view.findViewById(R.id.editText_min_price)
         val maxPrice: EditText = view.findViewById(R.id.editText_max_price)
         val minMileage: EditText = view.findViewById(R.id.editText_min_mileage)
         val maxMileage: EditText = view.findViewById(R.id.editText_max_mileage)
 
+        minPrice.setText(formatWithThousandSeparator(viewModel.priceRange.first))
+        maxPrice.setText(viewModel.priceRange.second?.let { formatWithThousandSeparator(it) } ?: "")
+
+        minMileage.setText(formatWithThousandSeparator(viewModel.mileageRange.first))
+        maxMileage.setText(viewModel.mileageRange.second?.let { formatWithThousandSeparator(it) } ?: "")
+
         listOf(minPrice, maxPrice, minMileage, maxMileage).forEach { addThousandSeparator(it) }
+    }
+
+    private fun formatWithThousandSeparator(value: Int): String {
+        return NumberFormat.getNumberInstance(Locale.US).format(value)
     }
 
     // Adds thousand separators for price and mileage inputs
@@ -449,10 +450,10 @@ class UserHomeFragment : Fragment() {
     private fun setupSectionNavigation(view: View) {
         val scrollView: ScrollView = view.findViewById(R.id.scrollView)
         val sectionsMap = mapOf(
-            view.findViewById<TextView>(R.id.nav_option_brands) to view.findViewById<View>(R.id.section_brands),
-            view.findViewById<TextView>(R.id.nav_option_price) to view.findViewById<View>(R.id.section_price),
-            view.findViewById<TextView>(R.id.nav_option_mileage) to view.findViewById<View>(R.id.section_mileage),
-            view.findViewById<TextView>(R.id.nav_option_color) to view.findViewById<View>(R.id.section_color),
+            view.findViewById<TextView>(R.id.nav_option_brands) to view.findViewById(R.id.section_brands),
+            view.findViewById<TextView>(R.id.nav_option_price) to view.findViewById(R.id.section_price),
+            view.findViewById<TextView>(R.id.nav_option_mileage) to view.findViewById(R.id.section_mileage),
+            view.findViewById<TextView>(R.id.nav_option_color) to view.findViewById(R.id.section_color),
             view.findViewById<TextView>(R.id.nav_option_year) to view.findViewById<View>(R.id.section_year)
         )
 
@@ -506,7 +507,24 @@ class UserHomeFragment : Fragment() {
         findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
     }
 
+    private fun setupConditionFilter(view: View) {
+        val spinnerCondition: Spinner = view.findViewById(R.id.spinner_condition)
 
+        val conditionOptions = resources.getStringArray(R.array.condition_options).toList()
+        val selectedIndex = conditionOptions.indexOf(viewModel.selectedCondition ?: "All")
+        spinnerCondition.setSelection(if (selectedIndex >= 0) selectedIndex else 0)
+
+        spinnerCondition.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedCondition = parent.getItemAtPosition(position).toString()
+                viewModel.selectedCondition = if (selectedCondition == "All") null else selectedCondition
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                viewModel.selectedCondition = null
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

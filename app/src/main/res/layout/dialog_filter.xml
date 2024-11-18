@@ -166,12 +166,15 @@
                         android:paddingBottom="8dp"
                         android:textColor="@color/blue" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView_condition"
+                    <Spinner
+                        android:id="@+id/spinner_condition"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:entries="@array/condition_options"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
+
 
                 <!-- Price range selection -->
                 <LinearLayout

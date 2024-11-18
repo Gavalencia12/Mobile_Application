@@ -128,6 +128,8 @@ class UserViewModel @Inject constructor(
         _uniqueCarColors.value = colors
     }
 
+
+    var selectedCondition: String? = null
     /**
      * Applies filters to the list of cars based on selected criteria, including location.
      */
@@ -138,20 +140,15 @@ class UserViewModel @Inject constructor(
             val matchesYear = yearRange?.let { (min, max) -> car.year.toIntOrNull()?.let { it in min..max } } ?: true
             val matchesColor = selectedColors.isEmpty() || selectedColors.contains(car.color.capitalize())
             val matchesLocation = selectedLocation == null || car.location == selectedLocation
+            val matchesCondition = selectedCondition == null || car.condition == selectedCondition
 
             val carPrice = car.price.toIntOrNull() ?: 0
-            val matchesPrice = when {
-                priceRange.second != null -> carPrice in priceRange.first..priceRange.second!!
-                else -> carPrice >= priceRange.first
-            }
+            val matchesPrice = carPrice in (priceRange.first)..(priceRange.second ?: Int.MAX_VALUE)
 
             val carMileage = car.mileage.toIntOrNull() ?: 0
-            val matchesMileage = when {
-                mileageRange.second != null -> carMileage in mileageRange.first..mileageRange.second!!
-                else -> carMileage >= mileageRange.first
-            }
+            val matchesMileage = carMileage in (mileageRange.first)..(mileageRange.second ?: Int.MAX_VALUE)
 
-            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation && matchesPrice && matchesMileage
+            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation && matchesPrice && matchesMileage && matchesCondition
         }
         _carList.value = filteredCars
     }
@@ -178,8 +175,10 @@ class UserViewModel @Inject constructor(
         priceRange = 0 to null
         mileageRange = 0 to null
         selectedLocation = null
+        selectedCondition = null // Reinicia la condición seleccionada
         _carList.value = allCars
     }
+
 
     /**
      * Filters cars by location.

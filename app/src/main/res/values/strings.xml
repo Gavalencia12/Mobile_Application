@@ -304,11 +304,14 @@
         <item>Electric</item>
         <item>Hybrid</item>
     </string-array>
+
     <string-array name="condition_options">
+        <item>All</item>
         <item>New</item>
         <item>Used</item>
         <item>Pre-owned</item>
     </string-array>
+
     <string-array name="location_options">
         <item>All</item>
         <item>Armería</item>
