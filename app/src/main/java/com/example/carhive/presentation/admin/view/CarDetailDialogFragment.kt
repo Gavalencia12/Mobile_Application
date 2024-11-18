@@ -130,7 +130,7 @@ class CarDetailDialogFragment : DialogFragment() {
             dismiss()
         }
 
-        view.findViewById<Button>(R.id.desapproved_button).setOnClickListener {
+        view.findViewById<Button>(R.id.disapproved_button).setOnClickListener {
             val ownerId = arguments?.getString("owner_id")
             val carId = arguments?.getString("car_id")
             val carModel = arguments?.getString("car_model")
