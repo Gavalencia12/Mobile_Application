@@ -33,6 +33,11 @@
                 android:text="@string/context_privacy_policy" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy03"
+                android:text="@string/context_privacy_policy1" />
+
+            <TextView
                 style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/privacy_policy1"
                 android:text="@string/data_collection" />
@@ -171,6 +176,18 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/privacy_policy72"
                 android:text="@string/email_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy73"
+                android:text="@string/phone_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy74"
+                android:text="@string/address_contact_us"
                 android:textStyle="bold"/>
 
             <Button
