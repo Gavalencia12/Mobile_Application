@@ -226,7 +226,6 @@ class UserReportMessagesFragment : Fragment() {
         val reportDialog = GlobalDialogFragment.newInstance(
             title = "Report User",
             message = "Are you sure you want to report this user? This will send a sample of recent messages for review.",
-            showCheckBox = true,
             positiveButtonText = "Report",
             negativeButtonText = "Cancel",
             dialogType = GlobalDialogFragment.DialogType.REPORT,
@@ -234,10 +233,6 @@ class UserReportMessagesFragment : Fragment() {
             ownerId = ownerId,
             carId = carId,
             buyerId = buyerId,
-            onActionCompleted = {
-                chatViewModel.setUserBlocked(true)
-                chatViewModel.clearChatForUser(ownerId, carId, buyerId)
-            }
         )
         reportDialog.show(parentFragmentManager, "ReportDialog")
     }

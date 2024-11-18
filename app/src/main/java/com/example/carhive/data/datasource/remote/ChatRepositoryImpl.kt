@@ -50,33 +50,36 @@ class ChatRepositoryImpl @Inject constructor(
      * @param buyerId The ID of the buyer.
      * @return A Flow emitting Message objects as they are added to the chat.
      */
-    override fun getMessages(ownerId: String, carId: String, buyerId: String): Flow<Message> =
-        callbackFlow {
-            val messagesRef = database.reference
-                .child("ChatGroups")
-                .child(ownerId)
-                .child(carId)
-                .child("messages")
-                .child(buyerId)
+    override fun getMessages(ownerId: String, carId: String, buyerId: String): Flow<Message> = callbackFlow {
+        val messagesRef = database.reference
+            .child("ChatGroups")
+            .child(ownerId)
+            .child(carId)
+            .child("messages")
+            .child(buyerId)
 
-            val listener = object : ChildEventListener {
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val messageEntity = snapshot.getValue(MessageEntity::class.java)
-                    messageEntity?.let { message ->
-                        trySend(messageMapper.mapToDomain(message))
-                    }
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-                override fun onChildRemoved(snapshot: DataSnapshot) {}
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-                override fun onCancelled(error: DatabaseError) {
-                    close(error.toException())
-                }
+        val listener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val messageEntity = snapshot.getValue(MessageEntity::class.java)
+                messageEntity?.let { trySend(messageMapper.mapToDomain(it)) }
             }
-            messagesRef.addChildEventListener(listener)
-            awaitClose { messagesRef.removeEventListener(listener) }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val messageEntity = snapshot.getValue(MessageEntity::class.java)
+                messageEntity?.let { trySend(messageMapper.mapToDomain(it)) }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {
+                close(error.toException())
+            }
         }
+
+        messagesRef.addChildEventListener(listener)
+        awaitClose { messagesRef.removeEventListener(listener) }
+    }
+
 
     /**
      * Retrieves all messages for a specific chat group in a single query.

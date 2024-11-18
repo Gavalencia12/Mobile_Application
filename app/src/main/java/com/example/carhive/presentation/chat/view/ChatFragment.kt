@@ -186,6 +186,7 @@ class ChatFragment : Fragment() {
                 binding.buttonSend.visibility = View.VISIBLE
             }
         }
+
         lifecycleScope.launch {
             chatViewModel.messages.collect { messages ->
                 chatAdapter.updateMessages(messages)
@@ -265,10 +266,11 @@ class ChatFragment : Fragment() {
     }
 
     private fun showReportDialog() {
+        val checkboxAdmin = ownerId != "TechnicalSupport"
         val reportDialog = GlobalDialogFragment.newInstance(
             title = "Report User",
             message = "Are you sure you want to report this user? This will send a sample of recent messages for review.",
-            showCheckBox = true,
+            showCheckBox = checkboxAdmin,
             positiveButtonText = "Report",
             negativeButtonText = "Cancel",
             dialogType = GlobalDialogFragment.DialogType.REPORT,

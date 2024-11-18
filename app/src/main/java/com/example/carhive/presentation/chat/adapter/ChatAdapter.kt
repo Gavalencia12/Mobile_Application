@@ -132,6 +132,7 @@ class ChatAdapter(
                     messageTextView.text = message.content
                 }
             }
+            updateStatusIcon(message.status)
 
             timeTextView.text = message.getFormattedTime()
         }

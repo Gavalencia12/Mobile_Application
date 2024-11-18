@@ -89,6 +89,11 @@
         android:padding="8dp"
         android:visibility="gone">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome to the technical support section, where you can solve all the doubts and questions you have. Write your message telling us your doubt or problem about the app, we will answer you soon. Or choose one of the suggested options."/>
+
         <Button
             android:id="@+id/option1"
             android:layout_width="match_parent"

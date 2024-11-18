@@ -179,7 +179,6 @@ class InterestedUsersViewModel @Inject constructor(
         }
     }
 
-
     /**
      * Load of users who have sent a message to technical support.
      */

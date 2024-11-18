@@ -62,19 +62,19 @@ class ChatViewModel @Inject constructor(
     fun observeMessages(ownerId: String, carId: String, buyerId: String) {
         viewModelScope.launch {
             getMessagesUseCase(ownerId, carId, buyerId).collectLatest { message ->
+                // Si el mensaje no ha sido eliminado para este usuario
                 if (!message.deletedFor.contains(currentUserId)) {
-                    // Reemplaza el mensaje en la lista si ya existe, o agrégalo si no está
+                    // Si es un mensaje recibido, actualizar a "read" si corresponde
+                    if (message.receiverId == currentUserId && message.status == "sent") {
+                        updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
+                        message.status = "read" // Optimista: actualizar localmente
+                    }
+
+                    // Actualiza la lista local de mensajes
                     _messages.value = _messages.value.map {
                         if (it.messageId == message.messageId) message else it
                     }.toMutableList().apply {
                         if (none { it.messageId == message.messageId }) add(message)
-                    }
-
-                    // Actualiza el estado del mensaje a "read" si es necesario
-                    if (message.receiverId == currentUserId && message.status == "sent") {
-                        updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
-                    } else if (message.receiverId == "TechnicalSupport") {
-                        updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
                     }
                 }
             }
@@ -162,15 +162,13 @@ class ChatViewModel @Inject constructor(
     /**
      * Updates the status of a message, such as marking it as "read" or "failed".
      */
-    private fun updateMessageStatus(
-        ownerId: String,
-        carId: String,
-        buyerId: String,
-        messageId: String,
-        status: String
-    ) {
+    private fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String) {
         viewModelScope.launch {
-            updateMessageStatusUseCase(ownerId, carId, buyerId, messageId, status)
+            try {
+                updateMessageStatusUseCase(ownerId, carId, buyerId, messageId, status)
+            } catch (e: Exception) {
+                _error.value = "Error updating message status: ${e.message}"
+            }
         }
     }
 
