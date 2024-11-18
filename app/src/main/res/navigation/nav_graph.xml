@@ -174,6 +174,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
             app:destination="@id/sellerHomeFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_termsUserFragment"
+            app:destination="@id/termsUserFragment" />
     </fragment>
 
     <fragment
