@@ -95,7 +95,11 @@
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent34"
-                android:text="@string/link_privacy_policy"/>
+                android:text="@string/link_privacy_policy"
+                android:clickable="true"
+                android:focusable="true"
+                android:linksClickable="true" />
+
 
             <TextView
                 style="@style/format_subtitle_terms_condictions"
