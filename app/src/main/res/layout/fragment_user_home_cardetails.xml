@@ -211,5 +211,11 @@
             android:text="@string/default_car_description"
             android:fontFamily="@font/inter_bold"/>
 
+            <Button
+                android:id="@+id/messageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Message"
+                />
     </LinearLayout>
 </ScrollView>

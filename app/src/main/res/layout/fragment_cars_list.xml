@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="40dp"
-        tools:context=".Presentation.seller.view.CarsListFragment">
+        tools:context=".presentation.seller.view.CarsListFragment">
 
         <!-- Layout contenedor para el título -->
         <LinearLayout

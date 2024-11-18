@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="40dp"
-    tools:context=".Presentation.seller.view.SellerFavoritesFragment"
+    tools:context=".presentation.seller.view.SellerFavoritesFragment"
     android:background="@color/background">
 
     <LinearLayout

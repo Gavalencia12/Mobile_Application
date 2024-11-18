@@ -6,9 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".presentation.seller.view.SellerHomeFragment"
     android:background="@color/background"
-    android:paddingTop="40dp"
-    tools:context=".Presentation.seller.view.SellerHomeFragment">
+    android:paddingTop="40dp">
 
     <!-- User header section with title and back button -->
     <LinearLayout

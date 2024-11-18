@@ -1,124 +1,645 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <!-- Main container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/gray_bg"
+        android:gravity="center_horizontal">
+
+        <!-- Top bar with close button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/close_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_exit"
+                android:backgroundTint="@color/red"/>
+        </LinearLayout>
+
+        <!-- Image carousel with rounded corners -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:cardCornerRadius="16dp"
+            android:layout_marginBottom="16dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/car_image_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Legal Information Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_profile">
+
+            <!-- Section title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/legal_information"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp" />
+
+            <!-- VIN -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vin"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_vin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Previous Owners -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/previous_owners"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_previousOwners"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Location -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_profile">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/car_image_viewpager"
+        <!-- Wear and Tear Section title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wear_and_tear"
+            android:fontFamily="@font/inter_bold"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Mileage -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mileage"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/car_mileage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+        <!-- Basic Identification Section -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Modelo -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Model:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_model" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Marca -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Brand:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_brand" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Año -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Year:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_year" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Precio -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Price:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Color -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Color:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Kilometraje -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mileage:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_mileage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Transmisión -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Transmission:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_transmission" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Tipo de combustible -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fuel Type:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_fuelType" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Número de puertas -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Doors:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_doors" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Capacidad del motor -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Engine Capacity:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_engineCapacity" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Ubicación -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Location:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_location" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Condición -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Condition:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_condition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- VIN -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="VIN:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_vin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Propietarios anteriores -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Previous Owners:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_previousOwners" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Vistas -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Views:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_views" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Fecha de listado -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Listing Date:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_listingDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Última actualización -->
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Last Update:" android:textStyle="bold" />
-        <TextView android:id="@+id/car_lastUpdated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" />
-
-        <!-- Botón de cerrar el diálogo -->
-        <Button
-            android:id="@+id/close_button"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="close"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp" />
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_profile">
 
-        <!-- Botón para abrir la página web -->
-        <Button
-            android:id="@+id/open_website_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Open REPUVE"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp" />
+            <!-- Section title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/basic_identification"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp" />
 
-        <!-- Botón de Aprobado -->
-        <Button
-            android:id="@+id/approved_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Approved"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp" />
+            <!-- Brand -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
 
-        <!-- Botón de Desaprobado -->
-        <Button
-            android:id="@+id/desapproved_button"
-            android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brand"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Model -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/model"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_model"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Year -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/year"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Doors -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/doors"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_doors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Price -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Appearance Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Disapproved"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp" />
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_profile">
+
+            <!-- Section title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appearance"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Color -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/color"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Condition -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/condition"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_condition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Mechanical Specifications Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_profile">
+
+            <!-- Section title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mechanical_specifications"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Transmission -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/transmission"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_transmission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Fuel Type -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fuel_type"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_fuelType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Engine Capacity -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/engine_capacity"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_engineCapacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Publication Information Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_profile">
+
+            <!-- Section title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/publication_information"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Views -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/views"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Listing Date -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/listing_date"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_listingDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Last Update -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_update"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/car_lastUpdated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Open REPUVE Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/open_website_button"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:text="@string/open_repuve"
+                android:textSize="12sp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_option"/>
+        </LinearLayout>
+
+        <!-- Approval Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/approved_button"
+                android:text="@string/approved"
+                android:background="@drawable/rounded_option"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginEnd="10dp"/>
+
+            <Button
+                android:id="@+id/disapproved_button"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="@string/disapproved"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:background="@drawable/btn_dark_blue"/>
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

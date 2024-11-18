@@ -7,7 +7,7 @@
     android:layout_marginTop="30dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    tools:context=".Presentation.user.view.UserHomeFragment">
+    tools:context=".presentation.user.view.UserHomeFragment">
 
     <!-- Logo de la aplicación -->
         <ImageView
