@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
+import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.databinding.FragmentUserDetailsDialogBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-
 
 class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment() {
 
@@ -46,7 +46,6 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
             "Not Verified"
         }
 
-
         user.imageUrl?.let {
             Glide.with(this).load(it).into(binding.userImageView)
         }
@@ -59,7 +58,7 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
             verifyUser()
         }
         binding.Desactivate.setOnClickListener {
-            desactivateUser()
+            deactivateUser()
         }
     }
 
@@ -67,12 +66,15 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
         user.isverified = true
         user.verificationTimestamp = System.currentTimeMillis().toString()
 
-
         val userRef = database.child(user.id)
 
         userRef.child("isverified").setValue(true).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 userRef.child("verificationTimestamp").setValue(user.verificationTimestamp)
+                addHistoryEntry(
+                    eventType = "Verification",
+                    message = "User ${user.firstName} was verified"
+                )
                 Toast.makeText(requireContext(), "User successfully verified", Toast.LENGTH_SHORT).show()
                 dismiss()
             } else {
@@ -81,20 +83,39 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
         }
     }
 
-    private fun desactivateUser() {
+    private fun deactivateUser() {
         user.isverified = false
         user.verificationTimestamp = System.currentTimeMillis().toString()
-
 
         val userRef = database.child(user.id)
 
         userRef.child("isverified").setValue(false).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 userRef.child("verificationTimestamp").setValue(user.verificationTimestamp)
+                addHistoryEntry(
+                    eventType = "Deactivation",
+                    message = "User ${user.firstName} was deactivated"
+                )
                 Toast.makeText(requireContext(), "User successfully deactivated", Toast.LENGTH_SHORT).show()
                 dismiss()
             } else {
                 Toast.makeText(requireContext(), "Error deactivating the user", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun addHistoryEntry(eventType: String, message: String) {
+        val historyEntry = HistoryEntity(
+            userId = user.id,
+            timestamp = System.currentTimeMillis(),
+            eventType = eventType,
+            message = message
+        )
+
+        val historyRef = FirebaseDatabase.getInstance().getReference("History/userHistory")
+        historyRef.push().setValue(historyEntry).addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Toast.makeText(requireContext(), "Failed to log history entry", Toast.LENGTH_SHORT).show()
             }
         }
     }

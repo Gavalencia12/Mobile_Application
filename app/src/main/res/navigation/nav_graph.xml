@@ -274,7 +274,23 @@
         <action
             android:id="@+id/action_adminHomeFragment_to_adminCarListFragment"
             app:destination="@id/adminCarListFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminHistoryFragment"
+            app:destination="@id/adminHistoryFragment" />
+
     </fragment>
+    <fragment
+        android:id="@+id/adminHistoryFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminHistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_admin_history">
+
+        <action
+            android:id="@+id/action_adminHistoryFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+
+    </fragment>
+
 
     <fragment
         android:id="@+id/adminCarListFragment"
@@ -284,8 +300,6 @@
         <action
             android:id="@+id/action_adminCarListFragment_to_adminHomeFragment"
             app:destination="@id/adminHomeFragment" />
-
-
     </fragment>
 
     <fragment
