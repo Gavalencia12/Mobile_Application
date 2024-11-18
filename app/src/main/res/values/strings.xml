@@ -276,6 +276,28 @@
     <string name="no_results_found">no results found</string>
     <string name="play_pause">Play or Pause</string>
 
+    <!-- Admin approved cars -->
+    <string name="firstname">First Name</string>
+
+    <!-- Section Titles -->
+    <string name="legal_information">Legal Information</string>
+    <string name="basic_identification">Basic Identification</string>
+    <string name="appearance">Appearance</string>
+    <string name="wear_and_tear">Wear and Tear</string>
+    <string name="mechanical_specifications">Mechanical Specifications</string>
+    <string name="publication_information">Publication Information</string>
+
+    <!-- Labels -->
+    <string name="condition">Condition:</string>
+    <string name="views">Views:</string>
+    <string name="listing_date">Listing Date:</string>
+    <string name="last_update">Last Update:</string>
+
+    <!-- Button Texts -->
+    <string name="open_repuve">Open REPUVE</string>
+    <string name="approved">Approved</string>
+    <string name="disapproved">Disapproved</string>
+
     <!-- Spinner Options -->
     <string-array name="transmission_options">
         <item>Manual</item>
