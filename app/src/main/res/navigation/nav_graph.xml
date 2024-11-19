@@ -193,6 +193,18 @@
             android:id="@+id/action_userProfileFragment_to_privacyPolicyFragment"
             app:destination="@id/privacyPolicyFragment" />
 
+        <action
+            android:id="@+id/action_userProfileFragment_to_UserReportMessagesFragment"
+            app:destination="@id/userReportChat" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userReportChat"
+        android:name="com.example.carhive.presentation.user.view.UserReportMessagesFragment"
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_chatFragmentt_to_chatFragment"
+            app:destination="@id/userChat"/>
     </fragment>
 
     <fragment
@@ -261,6 +273,18 @@
         <action
             android:id="@+id/action_sellerProfileFragment_to_sellerPrivacyPolicyFragment"
             app:destination="@id/sellerPrivacyPolicyFragment" />
+        <action
+            android:id="@+id/action_sellerProfileFragment_to_sellerReportChat"
+            app:destination="@id/sellerReportChat"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/sellerReportChat"
+        android:name="com.example.carhive.presentation.seller.view.SellerReportMessagesFragment"
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_chatFragmentt_to_chatFragment"
+            app:destination="@id/userChat"/>
     </fragment>
 
     <fragment
@@ -319,6 +343,9 @@
         <action
             android:id="@+id/action_adminHomeFragment_to_adminCarListFragment"
             app:destination="@id/adminCarListFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminSupportFragment"
+            app:destination="@id/adminSupportFragment" />
     </fragment>
 
     <fragment
@@ -364,6 +391,15 @@
         android:id="@+id/carsListFragment"
         android:name="com.example.carhive.presentation.seller.view.CarsListFragment"
         android:label="Cars List" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminSupportFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminSupportFragment"
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_adminSupportFragment_to_chatFragment"
+            app:destination="@id/userChat"/>
     </fragment>
 
 </navigation>

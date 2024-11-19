@@ -1,14 +1,17 @@
 package com.example.carhive.presentation.chat.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.Domain.usecase.chats.GetInterestedUsersUseCase
+import com.example.carhive.Domain.usecase.chats.GetSupportUsersUseCase
 import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
 import com.example.carhive.data.model.UserWithLastMessage
 import com.example.carhive.data.model.CarWithLastMessage
 import com.example.carhive.data.model.SellerInterestedData
+import com.example.carhive.data.model.SupportUserData
 import com.example.carhive.data.model.UserEntity
 import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +23,7 @@ import javax.inject.Inject
 class InterestedUsersViewModel @Inject constructor(
     private val getInterestedUsersUseCase: GetInterestedUsersUseCase,
     private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase,
+    private val getSupportUsersUseCase: GetSupportUsersUseCase,
     private val database: FirebaseDatabase
 ) : ViewModel() {
 
@@ -28,6 +32,9 @@ class InterestedUsersViewModel @Inject constructor(
 
     private val _carsWithMessages = MutableLiveData<List<CarWithLastMessage>>()
     val carsWithMessages: LiveData<List<CarWithLastMessage>> get() = _carsWithMessages
+
+    private val _supportUserData = MutableLiveData<SupportUserData>()
+    val supportUserData: LiveData<SupportUserData> get() = _supportUserData
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
@@ -171,4 +178,19 @@ class InterestedUsersViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Load of users who have sent a message to technical support.
+     */
+    fun loadSupportUsers(ownerId: String) {
+        viewModelScope.launch {
+            try {
+                val supportData = getSupportUsersUseCase(ownerId)
+                _supportUserData.postValue(supportData)
+            } catch (e: Exception) {
+                _errorMessage.postValue("Error loading support users: ${e.message}")
+            }
+        }
+    }
+
 }

@@ -16,6 +16,7 @@ import com.example.carhive.presentation.user.adapter.ProfileOptionsAdapter
 import com.example.carhive.presentation.user.viewModel.ProfileViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentSellerProfileBinding
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,8 @@ class SellerProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewModel by viewModels()
+
+    val buyerId = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,6 +83,14 @@ class SellerProfileFragment : Fragment() {
                 }
                 "Privacy policy" -> {
                     findNavController().navigate(R.id.action_sellerProfileFragment_to_sellerPrivacyPolicyFragment)
+                }
+                "Report a problem" -> {
+                    val bundle = Bundle().apply {
+                        putString("carId", "seller")
+                        putString("ownerId", "TechnicalSupport")
+                        putString("buyerId", buyerId)
+                    }
+                    findNavController().navigate(R.id.action_sellerProfileFragment_to_sellerReportChat, bundle)
                 }
                 // Otros casos...
             }

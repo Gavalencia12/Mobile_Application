@@ -1,4 +1,4 @@
-package com.example.carhive.presentation.chat.view
+package com.example.carhive.presentation.user.view
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -14,24 +14,28 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.carhive.databinding.FragmentChatBinding
-import com.example.carhive.databinding.DialogFilePreviewBinding
-import com.example.carhive.presentation.chat.adapter.ChatAdapter
-import com.example.carhive.presentation.chat.viewModel.ChatViewModel
 import com.example.carhive.Domain.usecase.chats.CleanUpDatabaseUseCase
 import com.example.carhive.R
+import com.example.carhive.data.model.CarWithLastMessage
+import com.example.carhive.databinding.DialogFilePreviewBinding
+import com.example.carhive.databinding.FragmentChatBinding
+import com.example.carhive.presentation.chat.adapter.ChatAdapter
 import com.example.carhive.presentation.chat.dialog.GlobalDialogFragment
+import com.example.carhive.presentation.chat.view.BaseMessagesFragment
+import com.example.carhive.presentation.chat.viewModel.ChatViewModel
+import com.example.carhive.presentation.chat.viewModel.InterestedUsersViewModel
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,7 +43,7 @@ import java.security.MessageDigest
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChatFragment : Fragment() {
+class UserReportMessagesFragment : Fragment() {
 
     private lateinit var binding: FragmentChatBinding
     private val chatViewModel: ChatViewModel by viewModels()
@@ -75,6 +79,8 @@ class ChatFragment : Fragment() {
         setupRecyclerView()
         observeViewModel()
 
+        setupInitialOptions()
+
         // Start observing messages and load user information
         chatViewModel.observeMessages(ownerId, carId, buyerId)
         chatViewModel.loadInfoHead(ownerId, carId, buyerId)
@@ -82,14 +88,13 @@ class ChatFragment : Fragment() {
         requestStoragePermission()
 
         binding.buttonSend.setOnClickListener {
-            val admin = ownerId == "TechnicalSupport"
             val originalMessage = binding.editTextMessage.text.toString().trimEnd()
             if (originalMessage.isBlank()) {
                 Toast.makeText(context, "Cannot send an empty message", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val cleanedMessage = originalMessage.replace(Regex("\\n{2,}"), "\n")
-            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage, admin)
+            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage, admin = false)
             binding.editTextMessage.text.clear()
         }
 
@@ -116,49 +121,53 @@ class ChatFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        // Set menu button click listener and icon dynamically based on ownerId
-        binding.menuButton.apply {
-            if (ownerId == "TechnicalSupport") {
-                setOnClickListener { showReportDialog() }
-                setImageResource(R.drawable.ic_report_problem) // Change icon for "TechnicalSupport"
-            } else {
-                setOnClickListener { showPopupMenu(this) }
-                setImageResource(R.drawable.ic_more_vert) // Default icon
-            }
+        // Menu button for additional chat options
+        binding.menuButton.setOnClickListener {
+            binding.menuButton.setImageResource(R.drawable.ic_report_problem)
+            showReportDialog()
         }
 
-        if (ownerId == "TechnicalSupport") {
-            binding.btnFinished.visibility = View.VISIBLE
-            binding.btnFinished.setOnClickListener {
-                chatViewModel.findUserNode(buyerId) { result ->
-                    when (result) {
-                        "buyer" -> {
-                            showConfirmDeleteAllMessagesDialog("buyer")
-                        }
-                        "seller" -> {
-                            showConfirmDeleteAllMessagesDialog("seller")
-                        }
-                        else -> {
-                            Toast.makeText(requireContext(), "User not found in buyer or seller nodes", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
+    }
+
+    private fun setupInitialOptions() {
+        val optionsContainer = binding.root.findViewById<LinearLayout>(R.id.initialOptionsContainer)
+
+        if (chatAdapter.itemCount > 0) {
+            optionsContainer.visibility = View.GONE
+            return
         }
 
-        val isSeller = currentUserId == ownerId
-        val blockedUserId = if (isSeller) buyerId else ownerId
-        chatViewModel.isUserBlocked(currentUserId, blockedUserId, carId) { isBlocked ->
-            if (isBlocked) {
-                binding.blockedMessageTextView.visibility = View.VISIBLE
-                binding.messageInputLayout.visibility = View.GONE
-                binding.buttonSend.visibility = View.GONE
-            } else {
-                binding.blockedMessageTextView.visibility = View.GONE
-                binding.messageInputLayout.visibility = View.VISIBLE
-                binding.buttonSend.visibility = View.VISIBLE
+        optionsContainer.visibility = View.VISIBLE
+
+        val button1 = binding.root.findViewById<Button>(R.id.option1)
+        val button2 = binding.root.findViewById<Button>(R.id.option2)
+        val button3 = binding.root.findViewById<Button>(R.id.option3)
+        val button4 = binding.root.findViewById<Button>(R.id.option4)
+        val button5 = binding.root.findViewById<Button>(R.id.option5)
+
+        val optionClickListener = View.OnClickListener { view ->
+            when (view.id) {
+                R.id.option1 -> sendOptionMessage("What information can I save about my car on the platform?")
+                R.id.option2 -> sendOptionMessage("How do I register a new vehicle?")
+                R.id.option3 -> sendOptionMessage("What services does carhive offer?")
+                R.id.option4 -> sendOptionMessage("Is carhive available in my region?")
+                R.id.option5 -> sendOptionMessage("How do I reset my password?")
             }
+
+            // Ocultar todas las opciones después de seleccionar una
+            optionsContainer.removeAllViews()
+            optionsContainer.visibility = View.GONE
         }
+
+        button1.setOnClickListener(optionClickListener)
+        button2.setOnClickListener(optionClickListener)
+        button3.setOnClickListener(optionClickListener)
+        button4.setOnClickListener(optionClickListener)
+        button5.setOnClickListener(optionClickListener)
+    }
+
+    private fun sendOptionMessage(content: String) {
+        chatViewModel.sendTextMessage(ownerId, carId, buyerId, content, admin = false)
     }
 
     /**
@@ -176,21 +185,16 @@ class ChatFragment : Fragment() {
      * Observes data from the ViewModel to update the UI.
      */
     private fun observeViewModel() {
-        chatViewModel.isUserBlocked.observe(viewLifecycleOwner) { isBlocked ->
-            if (isBlocked) {
-                binding.blockedMessageTextView.visibility = View.VISIBLE
-                binding.messageInputLayout.visibility = View.GONE
-                binding.buttonSend.visibility = View.GONE
-            } else {
-                binding.blockedMessageTextView.visibility = View.GONE
-                binding.messageInputLayout.visibility = View.VISIBLE
-                binding.buttonSend.visibility = View.VISIBLE
-            }
-        }
-
         lifecycleScope.launch {
             chatViewModel.messages.collect { messages ->
                 chatAdapter.updateMessages(messages)
+
+                // Ocultar las opciones iniciales si hay mensajes
+                val optionsContainer = binding.root.findViewById<LinearLayout>(R.id.initialOptionsContainer)
+                if (messages.isNotEmpty()) {
+                    optionsContainer.visibility = View.GONE
+                }
+
                 binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
             }
         }
@@ -202,76 +206,26 @@ class ChatFragment : Fragment() {
                 }
             }
         }
-        chatViewModel.userData.observe(viewLifecycleOwner) { user ->
-            user?.let {
-                binding.tvName.text = it.firstName
-                binding.tvCarModel.text = it.email
-                Glide.with(requireContext())
-                    .load(it.imageUrl)
-                    .placeholder(R.drawable.ic_img)
-                    .error(R.drawable.ic_error)
-                    .into(binding.profileImage)
-            }
-        }
 
-        chatViewModel.buyerData.observe(viewLifecycleOwner) { buyer ->
-            buyer?.let {
-                binding.tvName.text = it.firstName
-                binding.tvCarModel.text = it.email
-                Glide.with(requireContext())
-                    .load(it.imageUrl)
-                    .placeholder(R.drawable.ic_img)
-                    .error(R.drawable.ic_error)
-                    .into(binding.profileImage)
-            }
-        }
+            binding.tvName.text = "Technical Support"
+            binding.tvCarModel.text = "Send a message"
+            Glide.with(requireContext())
+                .load(R.drawable.car_hive_logo)
+                .placeholder(R.drawable.ic_img)
+                .error(R.drawable.ic_error)
+                .into(binding.profileImage)
     }
 
     /**
      * Shows the options menu with actions to report, block, or delete the chat.
      */
-    private fun showPopupMenu(view: View) {
-        val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.inflate(R.menu.chat_menu)
-        val isSeller = currentUserId == ownerId
-        val blockedUserId = if (isSeller) buyerId else ownerId
 
-        chatViewModel.isUserBlocked(currentUserId, blockedUserId, carId) { isBlocked ->
-            val blockItem = popupMenu.menu.findItem(R.id.option_block)
-            blockItem.title = if (isBlocked) "Unblock" else "Block"
-
-            popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
-                when (menuItem.itemId) {
-                    R.id.option_report -> {
-                        showReportDialog()
-                        true
-                    }
-                    R.id.option_block -> {
-                        if (isBlocked) {
-                            chatViewModel.unblockUser(currentUserId, blockedUserId)
-                            Toast.makeText(requireContext(), "User unblocked", Toast.LENGTH_SHORT).show()
-                        } else {
-                            showBlockUserDialog()
-                        }
-                        true
-                    }
-                    R.id.option_exit -> {
-                        showConfirmDeleteChatDialog()
-                        true
-                    }
-                    else -> false
-                }
-            }
-            popupMenu.show()
-        }
-    }
 
     private fun showReportDialog() {
-        val checkboxAdmin = ownerId != "TechnicalSupport"
+        val ownerId = "Admin"
         val reportDialog = GlobalDialogFragment.newInstance(
             title = "Report User",
             message = "Are you sure you want to report this user? This will send a sample of recent messages for review.",
-            showCheckBox = checkboxAdmin,
             positiveButtonText = "Report",
             negativeButtonText = "Cancel",
             dialogType = GlobalDialogFragment.DialogType.REPORT,
@@ -279,73 +233,8 @@ class ChatFragment : Fragment() {
             ownerId = ownerId,
             carId = carId,
             buyerId = buyerId,
-            onActionCompleted = {
-                chatViewModel.setUserBlocked(true)
-                chatViewModel.clearChatForUser(ownerId, carId, buyerId)
-            }
         )
         reportDialog.show(parentFragmentManager, "ReportDialog")
-    }
-
-    private fun showBlockUserDialog() {
-        val blockDialog = GlobalDialogFragment.newInstance(
-            title = "Block User",
-            message = "Are you sure you want to block this user? You will not receive further messages from them.",
-            positiveButtonText = "Block",
-            negativeButtonText = "Cancel",
-            dialogType = GlobalDialogFragment.DialogType.BLOCK,
-            currentUserId = currentUserId,
-            ownerId = ownerId,
-            carId = carId,
-            buyerId = buyerId,
-            onActionCompleted = {
-                chatViewModel.setUserBlocked(true)
-            }
-        )
-        blockDialog.show(parentFragmentManager, "BlockDialog")
-    }
-
-    private fun showConfirmDeleteChatDialog() {
-        val deleteDialog = GlobalDialogFragment.newInstance(
-            title = "Confirmation",
-            message = "Are you sure you want to clear the chat? This action cannot be undone.",
-            positiveButtonText = "Accept",
-            negativeButtonText = "Cancel",
-            dialogType = GlobalDialogFragment.DialogType.DELETE_CHAT,
-            currentUserId = currentUserId,
-            ownerId = ownerId,
-            carId = carId,
-            buyerId = buyerId,
-            onActionCompleted = {
-                lifecycleScope.launch {
-                    chatViewModel.clearChatForUser(ownerId, carId, buyerId)
-                }
-            }
-        )
-        deleteDialog.show(parentFragmentManager, "DeleteChatDialog")
-    }
-
-    private fun showConfirmDeleteAllMessagesDialog(directory: String) {
-        val deleteDialog = GlobalDialogFragment.newInstance(
-            title = "Problem solved",
-            message = "Are you sure the problem is solved?",
-            positiveButtonText = "Clear",
-            negativeButtonText = "Cancel",
-            dialogType = GlobalDialogFragment.DialogType.DELETE_CHAT,
-            currentUserId = currentUserId,
-            ownerId = "TechnicalSupport",
-            carId = directory, // Use the carId determined dynamically
-            buyerId = buyerId,
-            onActionCompleted = {
-                // Call the ViewModel function to delete all messages
-                lifecycleScope.launch {
-                    chatViewModel.deleteAllMessages(directory, buyerId)
-                    findNavController().popBackStack()
-                    Toast.makeText(requireContext(), "Chat has been successfully resolved.", Toast.LENGTH_SHORT).show()
-                }
-            }
-        )
-        deleteDialog.show(parentFragmentManager, "DeleteAllMessagesDialog")
     }
 
     private fun openFileChooser() {

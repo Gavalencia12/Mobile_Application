@@ -36,7 +36,7 @@ data class Message(
     val fileName: String? = null,         // Name of the attached file, if any
     val fileSize: Long = 0L,              // Size of the attached file in bytes
     val hash: String? = null,             // Unique hash for the attached file
-    val status: String = "sent",          // Status of the message
+    var status: String = "sent",          // Status of the message
     val deletedFor: MutableList<String> = mutableListOf() // List of users who have deleted the message
 ) : Parcelable {
 

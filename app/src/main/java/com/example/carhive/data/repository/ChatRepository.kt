@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.example.carhive.Domain.model.Message
 import com.example.carhive.data.model.CarEntity
+import com.example.carhive.data.model.SupportUserData
 import com.example.carhive.data.model.UserWithLastMessage
 import kotlinx.coroutines.flow.Flow
 
@@ -43,5 +44,7 @@ interface ChatRepository {
     suspend fun updateMessageStatus(ownerId: String, carId: String, buyerId: String, messageId: String, status: String)
 
     suspend fun deleteMessageForUser(ownerId: String, carId: String, buyerId: String, messageId: String, userId: String)
+
+    suspend fun getSupportUsers(ownerId: String): SupportUserData
 
 }

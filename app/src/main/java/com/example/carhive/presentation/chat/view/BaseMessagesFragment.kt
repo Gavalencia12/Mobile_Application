@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.databinding.FragmentInterestedUsersBinding
+import com.example.carhive.presentation.chat.adapter.AdminMessagesAdapter
+import com.example.carhive.presentation.chat.adapter.SimpleUsersMessagesAdapter
 import com.example.carhive.presentation.chat.adapter.UsersMessagesAdapter
 import com.example.carhive.presentation.chat.viewModel.InterestedUsersViewModel
 
@@ -19,6 +21,7 @@ abstract class BaseMessagesFragment : Fragment() {
 
     protected lateinit var binding: FragmentInterestedUsersBinding
     protected lateinit var messagesAdapter: UsersMessagesAdapter
+    protected lateinit var messagesAdminAdapter: AdminMessagesAdapter
 
     // Abstract properties and methods for child fragments to implement
     abstract val viewModel: InterestedUsersViewModel
@@ -50,8 +53,12 @@ abstract class BaseMessagesFragment : Fragment() {
     /**
      * Initializes the RecyclerView and its adapter, setting up the item click listener to navigate to chat.
      */
-    private fun setupRecyclerView() {
+    protected open fun setupRecyclerView() {
         messagesAdapter = UsersMessagesAdapter(mutableListOf(), mutableListOf()) { item ->
+            navigateToChat(item)
+        }
+
+        messagesAdminAdapter = AdminMessagesAdapter(mutableListOf(), mutableListOf()) { item ->
             navigateToChat(item)
         }
 
@@ -59,6 +66,7 @@ abstract class BaseMessagesFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = messagesAdapter
         }
+
     }
 
     /**
@@ -75,6 +83,12 @@ abstract class BaseMessagesFragment : Fragment() {
         viewModel.carsWithMessages.observe(viewLifecycleOwner) { carsWithMessages ->
             val recentChats = carsWithMessages.take(5) // Gets the 5 most recent chats
             messagesAdapter.updateData(recentChats, carsWithMessages)
+        }
+
+        viewModel.supportUserData.observe(viewLifecycleOwner) { supportData ->
+            val buyers = supportData.buyers
+            val sellers = supportData.sellers
+            messagesAdminAdapter.updateData(buyers, sellers)
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
