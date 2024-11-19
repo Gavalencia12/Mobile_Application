@@ -1,39 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground">
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/car_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop"
-        />
-
-    <TextView
-        android:id="@+id/car_model"
-        android:layout_width="wrap_content"
+    <!-- CardView para el diseño de la tarjeta -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Car Model" />
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="5dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp">
 
-    <TextView
-        android:id="@+id/car_brand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Car Brand" />
+        <!-- Contenedor principal con orientación horizontal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="13dp"
+            android:gravity="center_vertical"
+            android:baselineAligned="false">
 
-    <TextView
-        android:id="@+id/car_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price" />
+            <!-- Imagen circular del coche -->
+            <ImageView
+                android:id="@+id/car_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/car_image"
+                android:background="@drawable/btn_gray"/>
 
-    <TextView
-        android:id="@+id/car_fistname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="FirstName" />
+            <!-- Contenedor para la información del coche -->
+            <LinearLayout
+                android:id="@+id/info_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Modelo del coche -->
+                <TextView
+                    android:id="@+id/car_model"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/car_model"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp" />
+
+                <!-- Marca del coche -->
+                <TextView
+                    android:id="@+id/car_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/car_brand"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp" />
+
+                <!-- Precio del coche -->
+                <TextView
+                    android:id="@+id/car_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/car_price"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="4dp" />
+
+                <!-- Nombre del dueño del coche -->
+                <TextView
+                    android:id="@+id/car_fistname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

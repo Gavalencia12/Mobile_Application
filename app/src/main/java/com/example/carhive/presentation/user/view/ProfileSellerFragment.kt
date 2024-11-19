@@ -72,10 +72,9 @@ class ProfileSellerFragment : Fragment() {
             findNavController().navigate(R.id.action_userProfileFragment_to_sellerHomeFragment)
         }
 
-        // Mostrar el modal de términos y condiciones cuando se hace clic en el TextView
+        // Mostrar términos y condiciones cuando se hace clic en el TextView
         binding.termsTextView.setOnClickListener {
-            val termsDialog = TermsAndConditionsDialogSeller()
-            termsDialog.show(parentFragmentManager, "TermsAndConditionsDialogSeller")
+            findNavController().navigate(R.id.action_userProfileFragment_to_termsSellerFragment)
         }
     }
 

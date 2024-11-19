@@ -8,75 +8,204 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         android:background="@drawable/rounded_btn">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_margin="20dp"
             android:orientation="vertical">
 
             <TextView
                 style="@style/format_title_terms_condictions"
-                android:id="@id/termsContent0"
-                android:text="@string/terms_and_conditions"/>
+                android:id="@+id/termsContent0"
+                android:text="@string/terms_and_conditions" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent01"
+                android:text="@string/context_terms_conditions" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent02"
+                android:text="@string/context_terms_conditions2" />
 
             <TextView
                 style="@style/format_subtitle_terms_condictions"
-                android:id="@id/termsContent1"
+                android:id="@+id/termsContent1"
                 android:text="@string/acceptance_Terms" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
-                android:id="@id/termsContent12"
-                android:text="@string/agree_terms_condictions"/>
+                android:id="@+id/termsContent11"
+                android:text="@string/agree_terms_condictions" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent12"
+                android:text="@string/modifify_terms_conditions" />
 
             <TextView
                 style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent2"
-                android:text="@string/use_application" />
+                android:text="@string/application_description" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent21"
+                android:text="@string/service_description" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent22"
-                android:text="@string/terms_condiction_use"/>
+                android:text="@string/objective_service" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent23"
-                android:text="@string/terms_condiction_age"/>
+                android:text="@string/objective_service2" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent24"
-                android:text="@string/terms_condiction_illegal"/>
+                android:text="@string/objective_service3"/>
 
             <TextView
                 style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent3"
-                android:text="@string/security_registration"/>
+                android:text="@string/privacy_data_protection" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent31"
+                android:text="@string/data_personal" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent32"
-                android:text="@string/terms_condiction_personal_information"/>
+                android:text="@string/information_security" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent33"
-                android:text="@string/terms_condiction_confidentiality"/>
+                android:text="@string/user_rights" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent34"
-                android:text="@string/terms_condiction_negligence"/>
+                android:text="@string/link_privacy_policy"
+                android:clickable="true"
+                android:focusable="true"
+                android:linksClickable="true" />
+
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent4"
+                android:text="@string/security_registration" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent41"
+                android:text="@string/context_registration_security" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent42"
+                android:text="@string/public_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent43"
+                android:text="@string/private_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:textStyle="bold"
+                android:id="@+id/termsContent44"
+                android:text="@string/user_responsability" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent45"
+                android:text="@string/user_responsability_confidentiality" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent46"
+                android:text="@string/user_responsability_negligence" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent47"
+                android:text="@string/user_responsability_negligence" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent5"
+                android:text="@string/use_application" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent51"
+                android:text="@string/terms_condiction_age" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent52"
+                android:text="@string/terms_condiction_illegal" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent53"
+                android:text="@string/unauthorized_access"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent54"
+                android:text="@string/falsifying_information"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent55"
+                android:text="@string/application_not"/>
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent6"
+                android:text="@string/subtitle_contact_us_terms" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent61"
+                android:text="@string/context_contact_us_terms1" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent62"
+                android:text="@string/email_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent63"
+                android:text="@string/phone_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent64"
+                android:text="@string/address_contact_us"
+                android:textStyle="bold"/>
 
             <Button
                 style="@style/button_selected"
                 android:id="@+id/closeButton"
                 android:text="@string/back"
                 android:background="@drawable/btn_style"
-                android:layout_marginVertical="55dp"/>
+                android:layout_marginVertical="35dp"/>
 
         </LinearLayout>
     </ScrollView>

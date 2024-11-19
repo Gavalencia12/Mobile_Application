@@ -4,12 +4,14 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import com.example.carhive.Domain.model.Message
 import com.example.carhive.data.exception.RepositoryException
 import com.example.carhive.data.mapper.MessageMapper
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.data.model.CarWithLastMessage
 import com.example.carhive.data.model.MessageEntity
+import com.example.carhive.data.model.SupportUserData
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.data.model.UserWithLastMessage
 import com.example.carhive.data.repository.ChatRepository
@@ -48,33 +50,36 @@ class ChatRepositoryImpl @Inject constructor(
      * @param buyerId The ID of the buyer.
      * @return A Flow emitting Message objects as they are added to the chat.
      */
-    override fun getMessages(ownerId: String, carId: String, buyerId: String): Flow<Message> =
-        callbackFlow {
-            val messagesRef = database.reference
-                .child("ChatGroups")
-                .child(ownerId)
-                .child(carId)
-                .child("messages")
-                .child(buyerId)
+    override fun getMessages(ownerId: String, carId: String, buyerId: String): Flow<Message> = callbackFlow {
+        val messagesRef = database.reference
+            .child("ChatGroups")
+            .child(ownerId)
+            .child(carId)
+            .child("messages")
+            .child(buyerId)
 
-            val listener = object : ChildEventListener {
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val messageEntity = snapshot.getValue(MessageEntity::class.java)
-                    messageEntity?.let { message ->
-                        trySend(messageMapper.mapToDomain(message))
-                    }
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-                override fun onChildRemoved(snapshot: DataSnapshot) {}
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-                override fun onCancelled(error: DatabaseError) {
-                    close(error.toException())
-                }
+        val listener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val messageEntity = snapshot.getValue(MessageEntity::class.java)
+                messageEntity?.let { trySend(messageMapper.mapToDomain(it)) }
             }
-            messagesRef.addChildEventListener(listener)
-            awaitClose { messagesRef.removeEventListener(listener) }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val messageEntity = snapshot.getValue(MessageEntity::class.java)
+                messageEntity?.let { trySend(messageMapper.mapToDomain(it)) }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {
+                close(error.toException())
+            }
         }
+
+        messagesRef.addChildEventListener(listener)
+        awaitClose { messagesRef.removeEventListener(listener) }
+    }
+
 
     /**
      * Retrieves all messages for a specific chat group in a single query.
@@ -469,4 +474,131 @@ class ChatRepositoryImpl @Inject constructor(
             messageRef.child("deletedFor").setValue(deletedForList).await()
         }
     }
+
+    /**
+     * Retrieves support users (buyers and sellers) along with their last messages and unread message count.
+     * The function accesses the "TechnicalSupport" node in the database to retrieve the relevant data.
+     *
+     * @param ownerId The ID of the technical support owner (receiver of the messages).
+     * @return A [SupportUserData] object containing lists of buyers and sellers with their last messages and unread count.
+     */
+    override suspend fun getSupportUsers(
+        ownerId: String
+    ): SupportUserData {
+        // Lists to store buyers and sellers with their last messages
+        val buyersList = mutableListOf<UserWithLastMessage>()
+        val sellersList = mutableListOf<UserWithLastMessage>()
+
+        try {
+            // Fetch the "TechnicalSupport" node from the database
+            val technicalSupportSnapshot = database.reference
+                .child("ChatGroups")
+                .child("TechnicalSupport")
+                .get()
+                .await()
+
+            // Process buyer data
+            technicalSupportSnapshot.child("buyer").child("messages").children.forEach { buyerSnapshot ->
+                val userId = buyerSnapshot.key
+                val lastMessageSnapshot = buyerSnapshot.children.lastOrNull()
+
+                // Count unread messages for the current buyer
+                val unreadCount = buyerSnapshot.children.count { messageSnapshot ->
+                    val messageStatus = messageSnapshot.child("status").value as? String
+                    val receiverId = messageSnapshot.child("receiverId").value as? String
+                    messageStatus == "sent" && receiverId == "TechnicalSupport"
+                }
+
+                if (lastMessageSnapshot != null) {
+                    val lastMessageContent = lastMessageSnapshot.child("content").value as? String
+                    val lastMessageFileName = lastMessageSnapshot.child("fileName").value as? String
+                    val lastMessageFileType = lastMessageSnapshot.child("fileType").value as? String
+                    val lastMessageTimestamp = lastMessageSnapshot.child("timestamp").value as? Long ?: 0L
+
+                    val isFile = !lastMessageFileName.isNullOrEmpty()
+                    val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
+
+                    // Retrieve the buyer's user data
+                    val userEntity = database.reference
+                        .child("Users")
+                        .child(userId ?: "")
+                        .get()
+                        .await()
+                        .getValue(UserEntity::class.java)?.apply { id = userId!! }
+
+                    if (userEntity != null) {
+                        buyersList.add(
+                            UserWithLastMessage(
+                                user = userEntity,
+                                lastMessage = lastMessageDisplay,
+                                lastMessageTimestamp = lastMessageTimestamp,
+                                carId = "buyer",
+                                isFile = isFile,
+                                fileName = if (isFile) lastMessageFileName else null,
+                                fileType = lastMessageFileType,
+                                unreadCount = unreadCount
+                            )
+                        )
+                    }
+                }
+            }
+
+            // Process seller data
+            technicalSupportSnapshot.child("seller").child("messages").children.forEach { sellerSnapshot ->
+                val userId = sellerSnapshot.key
+                val lastMessageSnapshot = sellerSnapshot.children.lastOrNull()
+
+                // Count unread messages for the current seller
+                val unreadCount = sellerSnapshot.children.count { messageSnapshot ->
+                    val messageStatus = messageSnapshot.child("status").value as? String
+                    val receiverId = messageSnapshot.child("receiverId").value as? String
+                    messageStatus == "sent" && receiverId == "TechnicalSupport"
+                }
+
+                if (lastMessageSnapshot != null) {
+                    val lastMessageContent = lastMessageSnapshot.child("content").value as? String
+                    val lastMessageFileName = lastMessageSnapshot.child("fileName").value as? String
+                    val lastMessageFileType = lastMessageSnapshot.child("fileType").value as? String
+                    val lastMessageTimestamp = lastMessageSnapshot.child("timestamp").value as? Long ?: 0L
+
+                    val isFile = !lastMessageFileName.isNullOrEmpty()
+                    val lastMessageDisplay = lastMessageFileName ?: lastMessageContent ?: ""
+
+                    // Retrieve the seller's user data
+                    val userEntity = database.reference
+                        .child("Users")
+                        .child(userId ?: "")
+                        .get()
+                        .await()
+                        .getValue(UserEntity::class.java)?.apply { id = userId!! }
+
+                    if (userEntity != null) {
+                        sellersList.add(
+                            UserWithLastMessage(
+                                user = userEntity,
+                                lastMessage = lastMessageDisplay,
+                                lastMessageTimestamp = lastMessageTimestamp,
+                                carId = "seller",
+                                isFile = isFile,
+                                fileName = if (isFile) lastMessageFileName else null,
+                                fileType = lastMessageFileType,
+                                unreadCount = unreadCount
+                            )
+                        )
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // Handle any errors during data retrieval
+            throw Exception("Error retrieving support user data: ${e.message}")
+        }
+
+        // Return the collected buyer and seller data
+        return SupportUserData(
+            buyers = buyersList,
+            sellers = sellersList
+        )
+    }
+
+
 }

@@ -102,7 +102,7 @@ class ThirdRegisterFragment : Fragment() {
         Log.d("ThirdRegisterFragment", "Creating image file at path: ${image.absolutePath}")
         return FileProvider.getUriForFile(
             context,
-            "${context.packageName}.provider",
+            "${context.packageName}.fileprovider",
             image
         )
     }
