@@ -82,7 +82,7 @@
                     android:id="@+id/car_fistname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/car_firstname"
+                    android:text=""
                     android:textSize="14sp"
                     android:textColor="@color/black"
                     android:layout_marginBottom="8dp" />
