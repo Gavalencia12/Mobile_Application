@@ -51,14 +51,23 @@ class CarDetailFragment : Fragment() {
 
         // Display car data in the views
         binding.carModel.text = carModel
-        binding.carPrice.text = "$ $carPrice"
+        binding.carPrice.text = buildString {
+            append("$ ")
+            append(carPrice)
+        }
         binding.carColor.text = "$carColor"
         binding.carDescription.text = carDescription
-        binding.carMileage.text = "$carMileage km"
+        binding.carMileage.text = buildString {
+            append(carMileage)
+            append(" km")
+        }
         binding.carTransmission.text = "$carTransmission"
         binding.carFuelType.text = "$carFuelType"
         binding.carDoors.text = "$carDoors"
-        binding.carEngineCapacity.text = "$carEngineCapacity cc"
+        binding.carEngineCapacity.text = buildString {
+            append(carEngineCapacity)
+            append(" cc")
+        }
         binding.carLocation.text = "$carLocation"
         binding.carCondition.text = "$carCondition"
         binding.carPreviousOwners.text = "$carPreviousOwners"
