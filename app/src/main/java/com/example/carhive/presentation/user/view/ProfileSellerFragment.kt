@@ -74,7 +74,7 @@ class ProfileSellerFragment : Fragment() {
 
         // Mostrar términos y condiciones cuando se hace clic en el TextView
         binding.termsTextView.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_termsUserFragment)
+            findNavController().navigate(R.id.action_userProfileFragment_to_termsSellerFragment)
         }
     }
 

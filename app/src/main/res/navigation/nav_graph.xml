@@ -119,6 +119,9 @@
             app:destination="@id/privacyPolicyFragment" />
 
     </fragment>
+
+
+
     <fragment
         android:id="@+id/privacyPolicyFragment"
         android:name="com.example.carhive.Presentation.user.items.PrivacyPolicyFragment"
@@ -203,8 +206,8 @@
             android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
             app:destination="@id/sellerHomeFragment" />
         <action
-            android:id="@+id/action_userProfileFragment_to_termsUserFragment"
-            app:destination="@id/termsUserFragment" />
+            android:id="@+id/action_userProfileFragment_to_termsSellerFragment"
+            app:destination="@id/termsSellerFragment" />
     </fragment>
 
     <fragment
@@ -256,8 +259,8 @@
             android:id="@+id/action_userProfileFragment_to_termsSellerFragment"
             app:destination="@id/termsSellerFragment"/>
         <action
-            android:id="@+id/action_sellerProfileFragment_to_privacyPolicyFragment"
-            app:destination="@id/privacyPolicyFragment" />
+            android:id="@+id/action_sellerProfileFragment_to_sellerPrivacyPolicyFragment"
+            app:destination="@id/sellerPrivacyPolicyFragment" />
     </fragment>
 
     <fragment
