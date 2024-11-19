@@ -171,18 +171,90 @@
     <string name="back">Back</string>
     <string name="become_seller">Become a Seller</string>
 
+    <!-- Privacy Policy, user-->
+    <string name="privacy_policy"><u>Privacy Policy</u></string>
+    <string name="date_privacy_policy"><u>Effective Date:</u> November 1, 2024</string>
+    <string name="context_privacy_policy">At CarHive, we are committed to protecting your personal data and respecting your privacy.</string>
+    <string name="context_privacy_policy1">This Privacy Policy outlines how we collect, use, store, and protect your information when you use our platform. By accessing or using CarHive, you agree to the terms outlined in this policy.</string>
+    <string name="data_collection">1. Data Collection</string>
+    <string name="context_data_collection">We collect the following types of personal data:</string>
+    <string name="user_information"><u>- User Information:</u> Name, email address, phone number, and any additional details provided during registration.</string>
+    <string name="transaction_data"><u>- Transaction Data:</u> Data related to services requested or interactions with other users.</string>
+    <string name="purpose_data">2. Purpose of Data Use</string>
+    <string name="context_purpose_data">Your personal data will be used exclusively for the following purposes:</string>
+    <string name="facility_communication">- To facilitate communication between users for buying, selling, or renting vehicles.</string>
+    <string name="personalize_experience">- To improve and personalize your experience on the platform.</string>
+    <string name="provide_customer">- To provide customer support and resolve inquiries.</string>
+    <string name="legal_requirements">- To comply with legal requirements and ensure the security of the platform.</string>
+    <string name="explicit_consent">We will never share your personal data with third parties without your explicit consent unless required by law.</string>
+    <string name="subtitle_information_security">3. Information Security</string>
+    <string name="context_information_security">We implement robust security measures to protect your personal data, including:</string>
+    <string name="encryption_information">- Encryption of sensitive information.</string>
+    <string name="restricted_access">- Restricted access to data by authorized personnel only.</string>
+    <string name="promise_carhive">While we strive to ensure the security of your data, no system can be 100% secure. Users are encouraged to take their own precautions when using online platforms.</string>
+    <string name="subtitle_user_rights">4. User Rights</string>
+    <string name="context_user_rights">You have the following rights regarding your personal data:</string>
+    <string name="information_correction"><u>- Correction:</u> You may update or correct inaccuracies in your personal data.</string>
+    <string name="information_deletion"><u>- Deletion:</u> You can request the deletion of your personal data, subject to legal and contractual obligations.</string>
+    <string name="information_withdrawal">Withdrawal of Consent: You can withdraw your consent for data processing at any time.</string>
+    <string name="contact_user_rights">To exercise these rights, please contact us at <u>carhive2004@gmail.com</u>.</string>
+    <string name="data_retention">5. Data Retention</string>
+    <string name="context_data_retention">We retain your personal data only as long as necessary to fulfill the purposes outlined in this policy or comply with legal obligations. Once data is no longer required, it will be securely deleted.</string>
+    <string name="update_privacy_policy">6. Changes to the Privacy Policy</string>
+    <string name="context_update_privacy_policy">CarHive reserves the right to update this Privacy Policy at any time. Changes will take effect upon publication on our platform. Users are encouraged to review this policy periodically.</string>
+    <string name="subtitle_contact_us">8. Contact Us</string>
+    <string name="context_contact_us">If you have any questions or concerns about this Privacy Policy or how your data is handled, please contact us at:</string>
+    <string name="email_contact_us"><u>Email</u>: carhive2004@gmail.com</string>
+    <string name="use_information">2. Use of Information</string>
+    <string name="context_use_information1">The information collected will be used exclusively for the following purposes:</string>
+    <string name="context_use_information2">- Managing your seller profile and listings.</string>
+    <string name="context_use_information3">- Facilitating communication with interested buyers.</string>
+    <string name="context_use_information4">- Verifying the authenticity and validity of the data provided.</string>
+    <string name="context_use_information5">- Ensuring compliance with our policies and platform quality standards.</string>
+    <string name="subtitle_seller_rights">4. Seller rights</string>
+    <string name="context_seller_rights1">As a seller, you have the following rights regarding your personal information:</string>
+    <string name="context_seller_rights2"><u>- Access:</u> Request a copy of the data we have collected about you.</string>
+    <string name="context_seller_rights3"><u>- Correction:</u> Update or correct inaccurate data.</string>
+    <string name="context_seller_rights4"><u>- Deletion:</u> Request the deletion of your personal information, except in cases where we are legally required to retain it.</string>
+    <string name="activity_monitoring">5. Activity Monitoring</string>
+    <string name="context_activity_monitoring1"> To ensure compliance with our policies and protect our community, CarHive may monitor the following activities:</string>
+    <string name="context_activity_monitoring2">- Listings created by the seller.</string>
+    <string name="context_activity_monitoring3">- Interactions through the integrated messaging system.</string>
+    <string name="context_activity_monitoring4">- Comments and reviews received.</string>
+    <string name="context_activity_monitoring5">Any activity that violates our policies may result in account suspension or removal.</string>
+    <string name="phone_contact_us"><u>Phone</u>: +52 123 456 7890</string>
+    <string name="address_contact_us"><u>Address</u>: Boulevard Miguel de la Madrid Pino Suarez #45, Manzanillo, Colima, México</string>
 
     <!--Terms and condictions -->
     <string name="acceptance_Terms">1. Acceptance of Terms</string>
-    <string name="agree_terms_condictions">By using the Carhive app, you agree to comply with the terms and conditions described below. If you do not agree with any of the terms, you must not use the app.</string>
-    <string name="use_application">2. Use of the Application</string>
-    <string name="terms_condiction_use">-Carhive is a platform that facilitates the buying and selling of new and used vehicles between users and sellers. We are not responsible for the quality, safety, or legality of the vehicles posted.</string>
+    <string name="context_terms_conditions">Welcome to CarHive. By downloading, accessing, or using our mobile application <u>("CarHive")</u>, you <u>("the User")</u> agree to be bound by the following terms and conditions of use.</string>
+    <string name="context_terms_conditions2">If you do not agree to these terms, we recommend refraining from using the Application.</string>
+    <string name="agree_terms_condictions">By using the Application, you acknowledge that you have read, understood, and accepted these terms and conditions. CarHive may modify these terms at any time.</string>
+    <string name="modifify_terms_conditions">The modifications will take effect upon being published in the Application. It is the User\'s responsibility to periodically review the updated terms.</string>
+    <string name="use_application">5. Use of the Application</string>
+    <string name="unauthorized_access">- Unauthorized access, hacking, or attempting to disrupt the functionality of the app is strictly forbidden and may result in legal action. </string>
+    <string name="falsifying_information">- Misrepresentation of information, such as falsifying vehicle details, is not allowed and may result in account suspension or termination.</string>
+    <string name="application_not">- The application may not be used to share inappropriate, offensive, or harmful content, including images, messages, or other forms of communication.</string>
+    <string name="application_description">2. Description of service</string>
+    <string name="service_description">CarHive is a platform designed to connect users with listings for <u>buying, selling</u> new and pre-owned vehicles.</string>
+    <string name="objective_service">Our mission is to <u>support local businesses</u> and empower individuals to share detailed and accurate information about their vehicles.</string>
+    <string name="objective_service2"><u>Please be advised:</u> CarHive does not facilitate financial transactions or act as an intermediary in purchases. Our platform serves solely to provide information and enable seamless communication between users.</string>
+    <string name="objective_service3">We disclaim all responsibility for the <u>quality, safety,</u> or <u>legality</u> of the vehicles listed.</string>
+    <string name="privacy_data_protection">3. Privacy and Data Protection</string>
+    <string name="data_personal"><u>- Use of Personal Data:</u> The data collected will be used exclusively for purposes related to CarHive\'s services and will not be shared with third parties without your explicit consent.</string>
+    <string name="information_security"><u>- Information Security:</u> We implement robust security measures to safeguard your personal information.</string>
+    <string name="user_rights"><u>- User Rights:</u> You have the right to access, correct, and request the deletion of your personal data at any time.</string>
+    <string name="link_privacy_policy">For more details, please refer to our <u>Privacy Policy</u>.</string>
     <string name="terms_condiction_age">- Users must be at least 18 years old to create an account and use the app.</string>
     <string name="terms_condiction_illegal">- The use of the app for illegal or fraudulent activities is strictly prohibited.</string>
-    <string name="security_registration">3. Registration and Security</string>
-    <string name="terms_condiction_personal_information">- To use Carhive, you must register and provide true, accurate, and up-to-date personal information.</string>
-    <string name="terms_condiction_confidentiality">- You are responsible for maintaining the confidentiality of your account and password, as well as all activities that occur under your account.</string>
-    <string name="terms_condiction_negligence">- Carhive will not be liable for unauthorized access to your account due to your own negligence.</string>
+    <string name="security_registration">4. Registration and Security</string>
+    <string name="context_registration_security">To access certain features of the CarHive application, you must register by providing accurate, up-to-date personal information. The required information includes:</string>
+    <string name="public_information"><u>- Public Information:</u> Your full name and profile photo, which will be visible to other users.</string>
+    <string name="private_information"><u>- Private Information:</u> Your phone number, email address, and other requested details. This information will be securely stored and kept confidential.</string>
+    <string name="user_responsability"><u>User Responsibility:</u></string>
+    <string name="user_responsability_confidentiality">You are responsible for maintaining the confidentiality of your login credentials (username and password) and for all activities that occur under your account.</string>
+    <string name="user_responsability_negligence">CarHive will not be held liable for any unauthorized access to your account resulting from your negligence.</string>
+    <string name="user_responsability_agree">By registering, you agree to provide truthful and accurate information and to keep your account details up to date.</string>
     <string name="accept_terms_condictions">I accept the </string>
     <string name="registration_responsabilites">2. Registration and Responsibilities</string>
     <string name="quality_condiction">3. Vehicle Quality and Condition</string>
@@ -193,6 +265,39 @@
     <string name="terms_condiction_legal_seller">- Any vehicle posted must comply with the legal regulations in your jurisdiction.</string>
     <string name="terms_condiction_responsibility_platform_seller">- It is your responsibility to ensure that the vehicle posted on the platform is in the condition described. Carhive is not responsible for disputes between buyers and sellers regarding the condition or quality of the vehicle.</string>
     <string name="terms_condiction_liability_seller">- As a seller, you are solely responsible for the transactions conducted through Carhive and any non-compliance related to the vehicles sold. Carhive does not act as an intermediary in the transaction and assumes no liability.</string>
+    <string name="subtitle_contact_us_terms">6. Contact us</string>
+    <string name="context_contact_us_terms1">For inquiries, comments, or reports related to these terms and conditions, you can contact us through:</string>
+
+    <string name="context_terms_conditions_seller">Welcome to CarHive. By registering as a seller user <u>("the Seller")</u> on our mobile application <u>("CarHive")</u>, you agree to the following terms and conditions of use.</string>
+    <string name="listing_management"><u>Listing Management:</u></string>
+    <string name="listing_management1">- Create, edit, and delete vehicle listings for sale or purchase</string>
+    <string name="listing_management2">- All listings will undergo a review and approval process by the administrative team to ensure quality, accuracy, and compliance with our policies.</string>
+    <string name="communication_buyers"><u>Communication with Buyers:</u></string>
+    <string name="communication_buyers1">- Interact directly with interested buyers through the integrated messaging system in the Application.</string>
+    <string name="communication_buyers2">- Sellers are expected to maintain professional, respectful, and timely communication.</string>
+    <string name="ratings_feedback"><u>Ratings and Feedback:</u></string>
+    <string name="ratings_feedback1">- Receive to evaluations and feedback from buyers with the aim of improving service quality.</string>
+    <string name="ratings_feedback2">- Feedback should be addressed seriously, and if necessary, escalated to CarHive\'s support team for conflict resolution.</string>
+    <string name="seller_responsibility">Seller Responsibility:</string>
+    <string name="precise_information"><u>1. Accurate and Precise Information</u>:</string>
+    <string name="precise_information1">- Provide accurate, complete, and up-to-date details about the vehicles and services offered.</string>
+    <string name="precise_information2">- Ensure that all provided information is verifiable and reliable.</string>
+    <string name="content_legality"><u>2. Content Legality</u>:</string>
+    <string name="content_legality1">- Ensure that all published content complies with applicable local, state, and federal laws and regulations.</string>
+    <string name="content_legality2">- Refrain from publishing false, misleading, or illegal content.</string>
+    <string name="documentation"><u>3. Documentation</u>:</string>
+    <string name="documentation1">- Possess all legal and necessary documentation that certifies the ownership, origin, and legal status of the vehicles offered.</string>
+    <string name="documentation2">- Provide additional documentation to buyers if required to complete a transaction securely.</string>
+    <string name="professional_conduct"><u>4. Professional Conduct</u>:</string>
+    <string name="professional_conduct1">- Always maintain respectful, professional, and timely communication with buyers.</string>
+    <string name="professional_conduct2">- Respond to inquiries and information requests in a clear and transparent manner.</string>
+    <string name="privacy_confidentiality"><u>5. Privacy and Confidentiality</u>:</string>
+    <string name="privacy_confidentiality1">- Protect buyers\' personal information and use it solely for purposes related to the application.</string>
+    <string name="privacy_confidentiality2">- Do not share or disclose personal data without the explicit consent of the buyer.</string>
+    <string name="laws_regulations"><u>6. Compliance with Laws and Regulations</u>:</string>
+    <string name="laws_regulations1">- Respect and comply with all applicable local, state, and federal laws related to vehicle transactions.</string>
+    <string name="laws_regulations2">- Assume full responsibility for any violations of laws related to transactions conducted outside the application.</string>
+
 
     <!-- Seller profile  -->
     <string name="model_name">Model name</string>
@@ -275,6 +380,28 @@
     <string name="error_empty_search_query">error empty search query</string>
     <string name="no_results_found">no results found</string>
     <string name="play_pause">Play or Pause</string>
+
+    <!-- Admin approved cars -->
+    <string name="firstname">First Name</string>
+
+    <!-- Section Titles -->
+    <string name="legal_information">Legal Information</string>
+    <string name="basic_identification">Basic Identification</string>
+    <string name="appearance">Appearance</string>
+    <string name="wear_and_tear">Wear and Tear</string>
+    <string name="mechanical_specifications">Mechanical Specifications</string>
+    <string name="publication_information">Publication Information</string>
+
+    <!-- Labels -->
+    <string name="condition">Condition:</string>
+    <string name="views">Views:</string>
+    <string name="listing_date">Listing Date:</string>
+    <string name="last_update">Last Update:</string>
+
+    <!-- Button Texts -->
+    <string name="open_repuve">Open REPUVE</string>
+    <string name="approved">Approved</string>
+    <string name="disapproved">Disapproved</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

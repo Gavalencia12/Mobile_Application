@@ -15,14 +15,17 @@
 
     <TextView
         android:id="@+id/textcar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="Car List"
-        android:textSize="25sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
         android:gravity="center"
         android:fontFamily="@font/inter_bold"
         android:textColor="@color/black"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="35dp"
+        android:layout_toEndOf="@id/bureturn"
+        android:layout_alignBaseline="@id/bureturn"
+        android:layout_marginStart="16dp"/>
 
     <!-- SearchView -->
     <RelativeLayout
@@ -39,9 +42,11 @@
             android:id="@+id/search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search Car..."
+            android:layout_weight="1"
+            android:hint="@string/search_hint"
             android:padding="10dp"
             android:layout_marginStart="23dp"
+            android:background="@drawable/rounded_search"
             android:textColor="@android:color/black" />
 
         <ImageView
@@ -49,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_search"
-            android:contentDescription="Buscar"
+            android:contentDescription="@string/search_description"
             android:padding="10dp"/>
     </RelativeLayout>
 
@@ -58,6 +63,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="16dp"/>
 
 </RelativeLayout>

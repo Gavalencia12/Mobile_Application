@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_secondRegisterFragment_to_firstRegisterFragment"
             app:destination="@id/firstRegisterFragment" />
+        <action
+            android:id="@+id/action_secondRegisterFragment_to_termsUserFragment"
+            app:destination="@id/termsUserFragment" />
     </fragment>
 
     <fragment
@@ -111,6 +114,24 @@
         <action
             android:id="@+id/action_userProfileFragment_to_sellerProfileFragment"
             app:destination="@id/userProfileFragment"/>
+        <action
+            android:id="@+id/action_termsUserFragment_to_privacyPolicyFragment"
+            app:destination="@id/privacyPolicyFragment" />
+
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="com.example.carhive.Presentation.user.items.PrivacyPolicyFragment"
+        android:label="Privacy Policy"
+        tools:layout="@layout/fragment_user_profile_privacy_policy">
+
+        <action
+            android:id="@+id/action_privacyPolicyFragment_to_serProfileFragment"
+            app:destination="@id/userProfileFragment" />
+
     </fragment>
 
     <fragment
@@ -169,6 +190,10 @@
             android:id="@+id/action_userProfileFragment_to_termsFragment"
             app:destination="@id/termsUserFragment" />
         <action
+            android:id="@+id/action_userProfileFragment_to_privacyPolicyFragment"
+            app:destination="@id/privacyPolicyFragment" />
+
+        <action
             android:id="@+id/action_userProfileFragment_to_UserReportMessagesFragment"
             app:destination="@id/userReportChat" />
     </fragment>
@@ -192,6 +217,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
             app:destination="@id/sellerHomeFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_termsSellerFragment"
+            app:destination="@id/termsSellerFragment" />
     </fragment>
 
     <fragment
@@ -243,6 +271,9 @@
             android:id="@+id/action_userProfileFragment_to_termsSellerFragment"
             app:destination="@id/termsSellerFragment"/>
         <action
+            android:id="@+id/action_sellerProfileFragment_to_sellerPrivacyPolicyFragment"
+            app:destination="@id/sellerPrivacyPolicyFragment" />
+        <action
             android:id="@+id/action_sellerProfileFragment_to_sellerReportChat"
             app:destination="@id/sellerReportChat"/>
     </fragment>
@@ -262,6 +293,20 @@
         tools:layout="@layout/fragment_seller_profile_terms">
         <action
             android:id="@+id/action_termsSellerFragment_to_sellerProfileFragment"
+            app:destination="@id/sellerProfileFragment" />
+        <action
+            android:id="@+id/action_termsSellerFragment_to_sellerPrivacyPolicyFragment"
+            app:destination="@id/sellerPrivacyPolicyFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/sellerPrivacyPolicyFragment"
+        android:name="com.example.carhive.Presentation.user.items.SellerPrivacyPolicyFragment"
+        android:label="Privacy Policy"
+        tools:layout="@layout/fragment_seller_profile_privacy_policy">
+
+        <action
+            android:id="@+id/action_sellerPrivacyPolicyFragment_to_sellerProfileFragment"
             app:destination="@id/sellerProfileFragment" />
     </fragment>
 

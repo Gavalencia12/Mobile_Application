@@ -81,6 +81,9 @@ class SellerProfileFragment : Fragment() {
                 "Terms & Conditions" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_termsSellerFragment)
                 }
+                "Privacy policy" -> {
+                    findNavController().navigate(R.id.action_sellerProfileFragment_to_sellerPrivacyPolicyFragment)
+                }
                 "Report a problem" -> {
                     val bundle = Bundle().apply {
                         putString("carId", "seller")
