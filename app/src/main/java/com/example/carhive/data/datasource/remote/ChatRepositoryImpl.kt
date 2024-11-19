@@ -145,57 +145,47 @@ class ChatRepositoryImpl @Inject constructor(
      * @param ownerId The ID of the owner (seller).
      * @param carId The ID of the car associated with the chat.
      * @param buyerId The ID of the buyer.
-     * @param fileUri The URI of the file to send.
-     * @param fileType The type of the file (e.g., image, video).
-     * @param fileName The name of the file.
-     * @param fileHash The unique hash of the file.
-     * @param receiver The ID of the message receiver.
-     * @param deletedFor List of users for whom the message is deleted.
      */
     override suspend fun sendFileMessage(
         ownerId: String,
         carId: String,
         buyerId: String,
-        fileUri: Uri,
-        fileType: String,
-        fileName: String,
-        fileHash: String,
-        receiver: String,
-        deletedFor: List<String>
+        message: Message
     ): Result<Unit> {
         return try {
+            val fileUri = Uri.parse(message.fileUrl) // Se asegura de que el archivo tenga URI válido
             val fileSize = context.contentResolver.openFileDescriptor(fileUri, "r")?.statSize ?: 0L
 
-            // Define the storage folder based on file type
+            // Define la carpeta de almacenamiento según el tipo de archivo
             val folder = when {
-                fileType.startsWith("image/") -> "images"
-                fileType.startsWith("video/") -> "videos"
+                message.fileType?.startsWith("image/") == true -> "images"
+                message.fileType?.startsWith("video/") == true -> "videos"
                 else -> "documents"
             }
 
-            // Check if the file with the same hash already exists
+            val fileHash = message.hash ?: throw IllegalArgumentException("File hash is required")
             val fileRef = database.reference.child("ChatGroups").child("Files").child(folder).child(fileHash)
             val fileSnapshot = fileRef.get().await()
 
             val downloadUri: Uri
             if (!fileSnapshot.exists()) {
-                // Upload file to Firebase Storage if it doesn't exist
-                val storageReference = storage.reference.child("chat_files/$buyerId/$folder/$fileName")
+                // Sube el archivo a Firebase Storage si no existe
+                val storageReference = storage.reference.child("chat_files/${buyerId}/${folder}/${message.fileName}")
                 val uploadTask = storageReference.putFile(fileUri).await()
                 downloadUri = uploadTask.storage.downloadUrl.await()
 
-                // Save file metadata in Firebase Database
+                // Guarda los metadatos del archivo en Firebase Database
                 val fileData = mapOf(
-                    "name" to fileName,
+                    "name" to message.fileName,
                     "timestamp" to System.currentTimeMillis(),
-                    "type" to fileType,
+                    "type" to message.fileType,
                     "size" to fileSize,
                     "url" to downloadUri.toString(),
                     "users" to listOf(buyerId)
                 )
                 fileRef.setValue(fileData).await()
             } else {
-                // Use existing file URL and update user list if necessary
+                // Usa la URL existente y actualiza la lista de usuarios si es necesario
                 downloadUri = Uri.parse(fileSnapshot.child("url").value as String)
                 val existingUsers = fileSnapshot.child("users").value as MutableList<String>
                 if (!existingUsers.contains(buyerId)) {
@@ -204,32 +194,28 @@ class ChatRepositoryImpl @Inject constructor(
                 }
             }
 
-            // Create message reference in the chat group
-            val messageRef = database.reference
-                .child("ChatGroups")
+            // Actualiza el mensaje con la URL descargada y otros metadatos
+            val updatedMessage = message.copy(
+                messageId = database.reference.child("ChatGroups")
+                    .child(ownerId)
+                    .child(carId)
+                    .child("messages")
+                    .child(buyerId)
+                    .push().key ?: "",
+                fileUrl = downloadUri.toString(),
+                fileSize = fileSize
+            )
+
+            val messageEntity = messageMapper.mapToEntity(updatedMessage)
+            database.reference.child("ChatGroups")
                 .child(ownerId)
                 .child(carId)
                 .child("messages")
                 .child(buyerId)
-                .push()
+                .child(updatedMessage.messageId)
+                .setValue(messageEntity)
+                .await()
 
-            // Create and send the message with `deletedFor`
-            val message = Message(
-                messageId = messageRef.key ?: "",
-                senderId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
-                fileUrl = downloadUri.toString(),
-                fileType = fileType,
-                fileName = fileName,
-                fileSize = fileSize,
-                hash = fileHash,
-                timestamp = System.currentTimeMillis(),
-                receiverId = receiver,
-                carId = carId,
-                deletedFor = deletedFor.toMutableList()
-            )
-
-            // Save the message in Firebase Database
-            messageRef.setValue(message).await()
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(Exception("Error sending file message: ${e.message}", e))
