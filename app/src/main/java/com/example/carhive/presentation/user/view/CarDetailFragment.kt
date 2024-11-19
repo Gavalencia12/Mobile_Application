@@ -42,7 +42,6 @@ class CarDetailFragment : Fragment() {
         val carEngineCapacity = arguments?.getString("carEngineCapacity")
         val carLocation = arguments?.getString("carLocation")
         val carCondition = arguments?.getString("carCondition")
-        val carVin = arguments?.getString("carVin")
         val carPreviousOwners = arguments?.getInt("carPreviousOwners")
         val carMileage = arguments?.getString("carMileage")
         val carYear = arguments?.getString("carYear")
