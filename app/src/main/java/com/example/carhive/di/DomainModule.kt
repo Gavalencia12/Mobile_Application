@@ -13,6 +13,7 @@ import com.example.carhive.Domain.usecase.chats.DeleteMessageForUserUseCase
 import com.example.carhive.Domain.usecase.chats.GetAllMessagesOnceUseCase
 import com.example.carhive.Domain.usecase.chats.GetInterestedUsersUseCase
 import com.example.carhive.Domain.usecase.chats.GetMessagesUseCase
+import com.example.carhive.Domain.usecase.chats.GetSupportUsersUseCase
 import com.example.carhive.Domain.usecase.chats.GetUserInfoUseCase
 import com.example.carhive.Domain.usecase.chats.SendFileMessageUseCase
 import com.example.carhive.Domain.usecase.chats.SendMessageUseCase
@@ -265,6 +266,11 @@ object DomainModule {
         @Singleton
         fun provideGetAllMessagesOnceUseCase(repository: ChatRepository): GetAllMessagesOnceUseCase =
             GetAllMessagesOnceUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideGetSupportUsersUseCase(repository: ChatRepository): GetSupportUsersUseCase =
+            GetSupportUsersUseCase(repository)
 
     //      <---------------------------------------- End ----------------------------------------->
 

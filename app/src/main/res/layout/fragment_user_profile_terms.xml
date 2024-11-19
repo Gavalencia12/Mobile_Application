@@ -8,130 +8,204 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         android:background="@drawable/rounded_btn">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_margin="20dp"
             android:orientation="vertical">
 
             <TextView
+                style="@style/format_title_terms_condictions"
                 android:id="@+id/termsContent0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_and_conditions"
-                android:fontFamily="@font/inter_extrabold"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:paddingBottom="16dp" />
+                android:text="@string/terms_and_conditions" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent01"
+                android:text="@string/context_terms_conditions" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent02"
+                android:text="@string/context_terms_conditions2" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/acceptance_Terms"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/acceptance_Terms" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent11"
+                android:text="@string/agree_terms_condictions" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:text="@string/agree_terms_condictions"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:justificationMode="inter_word"/>
+                android:text="@string/modifify_terms_conditions" />
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/use_application"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/application_description" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent21"
+                android:text="@string/service_description" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_use"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/objective_service" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_age"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/objective_service2" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_illegal"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="16dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/objective_service3"/>
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/security_registration"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/privacy_data_protection" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent31"
+                android:text="@string/data_personal" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_personal_information"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/information_security" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent33"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_confidentiality"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/user_rights" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent34"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_condiction_negligence"
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="16dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/link_privacy_policy"
+                android:clickable="true"
+                android:focusable="true"
+                android:linksClickable="true" />
+
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent4"
+                android:text="@string/security_registration" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent41"
+                android:text="@string/context_registration_security" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent42"
+                android:text="@string/public_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent43"
+                android:text="@string/private_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:textStyle="bold"
+                android:id="@+id/termsContent44"
+                android:text="@string/user_responsability" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent45"
+                android:text="@string/user_responsability_confidentiality" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent46"
+                android:text="@string/user_responsability_negligence" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent47"
+                android:text="@string/user_responsability_negligence" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent5"
+                android:text="@string/use_application" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent51"
+                android:text="@string/terms_condiction_age" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent52"
+                android:text="@string/terms_condiction_illegal" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent53"
+                android:text="@string/unauthorized_access"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent54"
+                android:text="@string/falsifying_information"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent55"
+                android:text="@string/application_not"/>
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent6"
+                android:text="@string/subtitle_contact_us_terms" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent61"
+                android:text="@string/context_contact_us_terms1" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent62"
+                android:text="@string/email_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent63"
+                android:text="@string/phone_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent64"
+                android:text="@string/address_contact_us"
+                android:textStyle="bold"/>
 
             <Button
+                style="@style/button_selected"
                 android:id="@+id/closeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/back"
-                android:layout_gravity="center"
                 android:background="@drawable/btn_style"
-                android:textColor="@android:color/white"
-                android:layout_marginBottom="55dp"/>
+                android:layout_marginVertical="35dp"/>
 
         </LinearLayout>
     </ScrollView>

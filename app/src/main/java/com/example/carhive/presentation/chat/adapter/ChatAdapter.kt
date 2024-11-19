@@ -53,7 +53,7 @@ class ChatAdapter(
     override fun getItemViewType(position: Int): Int {
         val currentMessage = messages[position]
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-        return if (currentMessage.senderId == currentUserId) VIEW_TYPE_SENT else VIEW_TYPE_RECEIVED
+        return if (currentMessage.senderId == currentUserId || currentMessage.senderId == "TechnicalSupport") VIEW_TYPE_SENT else VIEW_TYPE_RECEIVED
     }
 
     /**
@@ -132,6 +132,7 @@ class ChatAdapter(
                     messageTextView.text = message.content
                 }
             }
+            updateStatusIcon(message.status)
 
             timeTextView.text = message.getFormattedTime()
         }

@@ -48,9 +48,10 @@ class ProfileViewModel @Inject constructor(
 //        "Notifications",
 //        "Theme",
 //        "Languaje",
-//        "Report a problem",
+        "Report a problem",
 //        "Help",
         "Terms & Conditions",
+        "Privacy policy",
         "Do you want to become a seller?",
         "Log out"
     )
@@ -59,9 +60,10 @@ class ProfileViewModel @Inject constructor(
 //        "Notifications",
 //        "Theme",
 //        "Languaje",
-//        "Report a problem",
+        "Report a problem",
 //        "Help",
         "Terms & Conditions",
+        "Privacy policy",
         "Log out"
     )
 
@@ -69,9 +71,10 @@ class ProfileViewModel @Inject constructor(
 //        R.drawable.ic_notifications,
 //        R.drawable.ic_mode_screen,
 //        R.drawable.ic_language,
-//        R.drawable.ic_report_problem,
+        R.drawable.ic_report_problem,
 //        R.drawable.ic_help,
         R.drawable.ic_terms,
+        R.drawable.ic_security_policy,
         R.drawable.ic_change_account,
         R.drawable.ic_logout
     )
@@ -80,9 +83,10 @@ class ProfileViewModel @Inject constructor(
 //        R.drawable.ic_notifications,
 //        R.drawable.ic_mode_screen,
 //        R.drawable.ic_language,
-//        R.drawable.ic_report_problem,
+        R.drawable.ic_report_problem,
 //        R.drawable.ic_help,
         R.drawable.ic_terms,
+        R.drawable.ic_security_policy,
         R.drawable.ic_logout
     )
 

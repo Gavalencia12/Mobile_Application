@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:background="@drawable/rounded_btn">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/format_title_terms_condictions"
+                android:id="@+id/privacy_policy0"
+                android:text="@string/privacy_policy" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy01"
+                android:text="@string/date_privacy_policy" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy02"
+                android:text="@string/context_privacy_policy" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/privacy_policy1"
+                android:text="@string/data_collection" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy11"
+                android:text="@string/context_data_collection" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy12"
+                android:text="@string/user_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy13"
+                android:text="@string/transaction_data" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/privacy_policy2"
+                android:text="@string/use_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy21"
+                android:text="@string/context_use_information1" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy22"
+                android:text="@string/context_use_information2" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy23"
+                android:text="@string/context_use_information3" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy24"
+                android:text="@string/context_use_information4" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy25"
+                android:text="@string/context_use_information5" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy26"
+                android:text="@string/explicit_consent" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/privacy_policy3"
+                android:text="@string/subtitle_information_security" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy31"
+                android:text="@string/context_information_security" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy32"
+                android:text="@string/encryption_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy33"
+                android:text="@string/restricted_access" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy34"
+                android:text="@string/promise_carhive" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/privacy_policy4"
+                android:text="@string/subtitle_seller_rights" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy41"
+                android:text="@string/context_seller_rights1" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy42"
+                android:text="@string/context_seller_rights2" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy43"
+                android:text="@string/context_seller_rights3" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy44"
+                android:text="@string/context_seller_rights4" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy45"
+                android:text="@string/contact_user_rights" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/privacy_policy5"
+                android:text="@string/activity_monitoring" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy51"
+                android:text="@string/context_activity_monitoring1" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy52"
+                android:text="@string/context_activity_monitoring2" />
+
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy53"
+                android:text="@string/context_activity_monitoring3" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy54"
+                android:text="@string/context_activity_monitoring4" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy55"
+                android:text="@string/context_activity_monitoring5" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/privacy_policy6"
+                android:text="@string/update_privacy_policy" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy61"
+                android:text="@string/context_privacy_policy" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/privacy_policy7"
+                android:text="@string/subtitle_contact_us" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy71"
+                android:text="@string/context_contact_us" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy72"
+                android:text="@string/email_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy73"
+                android:text="@string/phone_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/privacy_policy74"
+                android:text="@string/address_contact_us"
+                android:textStyle="bold"/>
+
+            <Button
+                style="@style/button_selected"
+                android:id="@+id/close"
+                android:text="@string/back"
+                android:background="@drawable/btn_style"
+                android:layout_marginVertical="55dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

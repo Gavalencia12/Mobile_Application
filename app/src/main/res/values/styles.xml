@@ -139,7 +139,7 @@
     <style name="format_title_terms_condictions">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/inter_extrabold</item>
         <item name="android:layout_gravity">center</item>
@@ -149,7 +149,7 @@
     <style name="format_subtitle_terms_condictions">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">18sp</item>
         <item name="fontFamily">@font/inter_semibold</item>
         <item name="android:layout_marginVertical" tools:ignore="NewApi">8dp</item>

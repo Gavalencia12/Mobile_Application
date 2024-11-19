@@ -59,6 +59,9 @@ class AdminHomeFragment : Fragment() {
             findNavController().navigate(R.id.action_adminHomeFragment_to_adminHistoryFragment)
         }
 
+        binding.btnReport.setOnClickListener {
+            findNavController().navigate(R.id.action_adminHomeFragment_to_adminSupportFragment)
+        }
     }
 
     override fun onDestroyView() {

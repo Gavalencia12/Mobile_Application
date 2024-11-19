@@ -8,12 +8,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         android:background="@drawable/rounded_btn">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_margin="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -22,61 +23,312 @@
                 android:text="@string/terms_and_conditions" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent01"
+                android:text="@string/context_terms_conditions_seller" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent02"
+                android:text="@string/context_terms_conditions2" />
+
+            <TextView
                 style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent1"
                 android:text="@string/acceptance_Terms" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent11"
+                android:text="@string/agree_terms_condictions" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent12"
-                android:text="@string/agree_terms_condiction_seller" />
+                android:text="@string/modifify_terms_conditions" />
 
             <TextView
                 style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent2"
-                android:text="@string/registration_responsabilites" />
+                android:text="@string/application_description" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent21"
+                android:text="@string/service_description" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent22"
-                android:text="@string/terms_condiction_personal_information_seller"/>
+                android:text="@string/objective_service" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent23"
-                android:text="@string/terms_condiction_responsabilities_seller" />
+                android:text="@string/objective_service2" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent24"
-                android:text="@string/terms_condiction_legal_seller" />
+                android:text="@string/objective_service3"/>
 
             <TextView
                 style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent3"
-                android:text="@string/quality_condiction" />
+                android:text="@string/privacy_data_protection" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent31"
+                android:text="@string/data_personal" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent32"
-                android:text="@string/terms_condiction_responsibility_platform_seller" />
+                android:text="@string/information_security" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent33"
+                android:text="@string/user_rights" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent34"
+                android:text="@string/link_privacy_policy"/>
 
             <TextView
                 style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent4"
-                android:text="@string/liability" />
+                android:text="@string/security_registration" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent41"
+                android:text="@string/context_registration_security" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent42"
-                android:text="@string/terms_condiction_liability_seller"/>
+                android:text="@string/public_information" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent43"
+                android:text="@string/private_information" />
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:textStyle="bold"
+                android:id="@+id/termsContent44"
+                android:text="@string/seller_responsibility" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent45"
+                android:text="@string/precise_information"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent46"
+                android:text="@string/precise_information1"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent47"
+                android:text="@string/precise_information2"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent48"
+                android:text="@string/content_legality"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent49"
+                android:text="@string/content_legality1"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A01"
+                android:text="@string/content_legality2"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A02"
+                android:text="@string/documentation"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A03"
+                android:text="@string/documentation1"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A04"
+                android:text="@string/documentation2"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A05"
+                android:text="@string/professional_conduct"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A06"
+                android:text="@string/professional_conduct1"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A07"
+                android:text="@string/professional_conduct2"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A08"
+                android:text="@string/privacy_confidentiality"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A09"
+                android:text="@string/privacy_confidentiality1"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A10"
+                android:text="@string/privacy_confidentiality2"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A11"
+                android:text="@string/laws_regulations"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A12"
+                android:text="@string/laws_regulations1"
+                android:layout_marginStart="15dp" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent4A13"
+                android:text="@string/laws_regulations2"
+                android:layout_marginStart="15dp" />
+
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent5"
+                android:text="@string/use_application" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent51"
+                android:text="@string/listing_management"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent52"
+                android:text="@string/listing_management1" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent53"
+                android:text="@string/listing_management2"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent54"
+                android:text="@string/communication_buyers"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent55"
+                android:text="@string/communication_buyers1"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent56"
+                android:text="@string/communication_buyers2"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent57"
+                android:text="@string/ratings_feedback"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent58"
+                android:text="@string/ratings_feedback1"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent59"
+                android:text="@string/ratings_feedback2"/>
+
+            <TextView
+                style="@style/format_subtitle_terms_condictions"
+                android:id="@+id/termsContent6"
+                android:text="@string/subtitle_contact_us_terms" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent61"
+                android:text="@string/context_contact_us_terms1" />
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent62"
+                android:text="@string/email_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent63"
+                android:text="@string/phone_contact_us"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/format_content_terms_condictions"
+                android:id="@+id/termsContent64"
+                android:text="@string/address_contact_us"
+                android:textStyle="bold"/>
+
 
             <Button
                 style="@style/button_selected"
                 android:id="@+id/close"
                 android:text="@string/back"
                 android:background="@drawable/btn_style"
-                android:layout_marginVertical="55dp"/>
+                android:layout_marginVertical="35dp"/>
 
         </LinearLayout>
     </ScrollView>

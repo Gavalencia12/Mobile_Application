@@ -119,8 +119,7 @@ class SecondRegisterFragment : Fragment() {
 
         // Mostrar el modal de términos y condiciones cuando se hace clic en el TextView
         binding.termsTextView.setOnClickListener {
-            val termsDialog = TermsAndConditionsDialog()
-            termsDialog.show(parentFragmentManager, "TermsAndConditionsDialog")
+            findNavController().navigate(R.id.action_secondRegisterFragment_to_termsUserFragment)
         }
     }
 
