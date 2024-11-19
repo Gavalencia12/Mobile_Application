@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import com.example.carhive.data.model.HistoryEntity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -132,8 +133,9 @@ class CarDetailDialogFragment : DialogFragment() {
         view.findViewById<Button>(R.id.disapproved_button).setOnClickListener {
             val ownerId = arguments?.getString("owner_id")
             val carId = arguments?.getString("car_id")
+            val carModel = arguments?.getString("car_model")
 
-            if (ownerId != null) {
+            if (ownerId != null && carId != null && carModel != null) {
                 val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
                 db.child("email").get().addOnSuccessListener { emailSnapshot ->
                     val ownerEmail = emailSnapshot.value as? String
@@ -157,9 +159,15 @@ class CarDetailDialogFragment : DialogFragment() {
                 }.addOnFailureListener { exception ->
                     Log.e("CarDetailDialogFragment", "Error al obtener el correo del propietario: ", exception)
                 }
+
+                // Registrar en el historial de desaprobación
+                logDesapprovalHistory(ownerId, carId, carModel)
+
+                // Desmarcar como aprobado
+                updateCarApprovalStatus(false)
             }
-            updateCarApprovalStatus(false)
         }
+
     }
 
     private fun sendEmail(ownerEmail: String, carId: String?, fullName: String) {
@@ -171,16 +179,16 @@ class CarDetailDialogFragment : DialogFragment() {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(ownerEmail))
-            putExtra(Intent.EXTRA_SUBJECT, "Notificación de desaprobación de su coche")
+            putExtra(Intent.EXTRA_SUBJECT, "Notification of car disapproval")
             putExtra(
                 Intent.EXTRA_TEXT,
                 """
-                Estimado usuario $fullName,
+                Dear user $fullName,
                 
-                Su coche con ID: $carId no ha sido aprobado. Por favor, revise sus datos y vuelva a intentarlo.
+                Your car with ID: $carId has not been approved. Please review your data and try again.
                 
-                Saludos,
-                El equipo de CarHive
+                Regards,
+                The CarHive team
                 """.trimIndent()
             )
         }
@@ -194,16 +202,67 @@ class CarDetailDialogFragment : DialogFragment() {
     private fun updateCarApprovalStatus(isApproved: Boolean) {
         val ownerId = arguments?.getString("owner_id")
         val carId = arguments?.getString("car_id")
+        val carModel = arguments?.getString("car_model")
 
-        if (ownerId == null || carId == null) {
+        if (ownerId == null || carId == null || carModel == null) {
             return
         }
 
         val db = FirebaseDatabase.getInstance().getReference("Car").child(ownerId).child(carId)
         db.child("approved").setValue(isApproved)
-            .addOnSuccessListener { }
-            .addOnFailureListener { exception -> }
+            .addOnSuccessListener {
+                if (isApproved) {
+                    logApprovalHistory(ownerId, carId, carModel)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("CarDetailDialogFragment", "Error al actualizar el estado de aprobación: ", exception)
+            }
     }
+
+    private fun logApprovalHistory(ownerId: String, carId: String, carModel: String) {
+        val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
+        db.child("firstName").get().addOnSuccessListener { firstNameSnapshot ->
+            val firstName = firstNameSnapshot.value as? String
+            if (firstName != null) {
+                val timestamp = System.currentTimeMillis()
+                val eventType = "Car Approval"
+                val message = "The car $carModel by $firstName has been approved."
+
+
+                val historyRef = FirebaseDatabase.getInstance().getReference("History/carHistory")
+                val historyEntry = HistoryEntity(
+                    userId = ownerId,
+                    timestamp = timestamp,
+                    eventType = eventType,
+                    message = message
+                )
+                historyRef.push().setValue(historyEntry)
+            }
+        }
+    }
+
+    private fun logDesapprovalHistory(ownerId: String, carId: String, carModel: String) {
+        val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
+        db.child("firstName").get().addOnSuccessListener { firstNameSnapshot ->
+            val firstName = firstNameSnapshot.value as? String
+            if (firstName != null) {
+                val timestamp = System.currentTimeMillis()
+                val eventType = "Car Disapproval"
+                val message = "The car $carModel by $firstName has been disapproved. "
+
+                val historyRef = FirebaseDatabase.getInstance().getReference("History/carHistory")
+                val historyEntry = HistoryEntity(
+                    userId = ownerId,
+                    timestamp = timestamp,
+                    eventType = eventType,
+                    message = message
+                )
+                historyRef.push().setValue(historyEntry)
+            }
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()

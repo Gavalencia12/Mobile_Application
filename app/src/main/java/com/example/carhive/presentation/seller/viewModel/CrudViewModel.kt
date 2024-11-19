@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.carhive.data.model.CarEntity
+import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.Domain.model.Car
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.database.*
@@ -19,8 +20,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import com.example.carhive.R
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.tasks.await
+
 
 @HiltViewModel
 class CrudViewModel @Inject constructor(
@@ -153,6 +157,25 @@ class CrudViewModel @Inject constructor(
         }
     }
 
+    private fun logEventDirectly(userId: String, eventType: String, message: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val history = HistoryEntity(
+                    userId = userId,
+                    timestamp = System.currentTimeMillis(),
+                    eventType = eventType,
+                    message = message
+                )
+                val ref = FirebaseDatabase.getInstance().getReference("History/carHistory").push()
+                ref.setValue(history)
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                }
+            }
+        }
+    }
+
+
     // Function to add a car to the database
     fun addCarToDatabase(
         modelo: String,
@@ -176,8 +199,10 @@ class CrudViewModel @Inject constructor(
         images: List<Uri>
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val currentUser = getCurrentUserIdUseCase()
-            val userId = currentUser.getOrNull() ?: return@launch
+            val currentUserResult = getCurrentUserIdUseCase()
+            val userId = currentUserResult.getOrNull() ?: return@launch
+
+            val firstName = getUserFirstName(userId)
 
             val formattedColor = color.lowercase().replaceFirstChar { it.uppercase() }
 
@@ -207,24 +232,27 @@ class CrudViewModel @Inject constructor(
             )
 
             val result = saveCarToDatabaseUseCase(userId, car)
-            result.fold(
-                onSuccess = { carId ->
-                    val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
-                    val imageUrls = imageUploadResult.getOrNull()
+            result.onSuccess { carId ->
+                logEventDirectly(
+                    userId = userId,
+                    eventType = "Create",
+                    message = "Car model ($modelo) created by $firstName."
+                )
+                val imageUploadResult = uploadToCarImageUseCase(userId, carId, images)
+                val imageUrls = imageUploadResult.getOrNull()
 
-                    if (imageUrls != null) {
-                        val updatedCar = car.copy(imageUrls = imageUrls, id = carId)
-                        updateCarInDatabase(userId, carId, updatedCar)
-                    }
-                },
-                onFailure = {
-                    withContext(Dispatchers.Main) {
-                        showToast(R.string.error_adding_car)
-                    }
+                if (imageUrls != null) {
+                    val updatedCar = car.copy(imageUrls = imageUrls, id = carId)
+                    updateCarInDatabase(userId, carId, updatedCar)
                 }
-            )
+            }.onFailure {
+                withContext(Dispatchers.Main) {
+                    showToast(R.string.error_adding_car)
+                }
+            }
         }
     }
+
 
     // Helper function to update car in the database
     private fun updateCarInDatabase(userId: String, carId: String, updatedCar: Car) {
@@ -246,19 +274,32 @@ class CrudViewModel @Inject constructor(
     // Function to delete a car from the database
     fun deleteCar(userId: String, carId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = deleteCarInDatabaseUseCase(userId, carId)
-            result.fold(
-                onSuccess = {
-                    fetchCarsForUser()
-                },
-                onFailure = {
-                    withContext(Dispatchers.Main) {
-                        showToast(R.string.error_deleting_car)
+            val carResult = getCarUserInDatabaseUseCase(userId)
+            carResult.onSuccess { cars ->
+                val car = cars.firstOrNull { it.id == carId }
+                val modelo = car?.modelo ?: "Unknown model"
+                val firstName = getUserFirstName(userId) // Implementa esta función
+
+                val result = deleteCarInDatabaseUseCase(userId, carId)
+                result.fold(
+                    onSuccess = {
+                        logEventDirectly(
+                            userId = userId,
+                            eventType = "Delete",
+                            message = "Car model ($modelo) deleted by $firstName."
+                        )
+                        fetchCarsForUser()
+                    },
+                    onFailure = {
+                        withContext(Dispatchers.Main) {
+                            showToast(R.string.error_deleting_car)
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
+
 
     // Function to update car details
     fun updateCar(
@@ -288,6 +329,8 @@ class CrudViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val formattedColor = color.lowercase().replaceFirstChar { it.uppercase() }
+            val firstName = getUserFirstName(userId)
+
 
             val car = Car(
                 id = carId,
@@ -316,21 +359,55 @@ class CrudViewModel @Inject constructor(
 
             val combinedImageUrls = existingImages + newImages
             val updatedCar = car.copy(imageUrls = combinedImageUrls)
-            updateCarInDatabase(userId, carId, updatedCar)
+
+            val result = updateCarToDatabaseUseCase(userId, carId, updatedCar)
+            result.onSuccess {
+                logEventDirectly(
+                    userId = userId,
+                    eventType = "Update",
+                    message = "Car model ($modelo) created by $firstName."
+                )
+                fetchCarsForUser()
+            }.onFailure {
+                withContext(Dispatchers.Main) {
+                    showToast(R.string.error_updating_car)
+                }
+            }
         }
     }
 
     // Function to update the sold status of a car
     fun updateCarSoldStatus(userId: String, carId: String, sold: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = updateCarSoldStatusUseCase(userId, carId, sold)
-            result.onFailure {
-                withContext(Dispatchers.Main) {
-                    showToast(R.string.error_updating_sold_status)
+            val carResult = getCarUserInDatabaseUseCase(userId)
+            carResult.onSuccess { cars ->
+                val car = cars.firstOrNull { it.id == carId }
+                val modelo = car?.modelo ?: "Unknown model"
+                val firstName = getUserFirstName(userId) // Implementa esta función
+                val status = if (sold) "sold" else "available"
+
+                val result = updateCarSoldStatusUseCase(userId, carId, sold)
+                result.onSuccess {
+                    logEventDirectly(
+                        userId = userId,
+                        eventType = "Update",
+                        message = "Car model ($modelo) marked as $status by $firstName."
+                    )
+                }.onFailure {
+                    withContext(Dispatchers.Main) {
+                        showToast(R.string.error_updating_sold_status)
+                    }
                 }
             }
         }
     }
+
+    suspend fun getUserFirstName(userId: String): String {
+        val database = FirebaseDatabase.getInstance().getReference("Users").child(userId)
+        val snapshot = database.get().await()
+        return snapshot.child("firstName").value.toString()
+    }
+
 
     // Function to retrieve the current user ID
     suspend fun getCurrentUserId(): String {
