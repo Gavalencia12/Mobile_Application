@@ -123,6 +123,7 @@ class CarDetailFragment : Fragment() {
                     .load(it.imageUrl)
                     .placeholder(R.drawable.ic_profile)
                     .error(R.drawable.ic_error)
+                    .circleCrop()
                     .into(binding.ivProfile)
             }
         }.addOnFailureListener {

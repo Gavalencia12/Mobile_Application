@@ -41,11 +41,13 @@
         <!-- Page indicator dots -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            app:tabIndicatorColor="@color/white" />
+            app:tabIndicatorColor="@color/white"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"/>
     </RelativeLayout>
 
     <!-- Car model and price -->
@@ -114,6 +116,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -146,6 +149,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -183,6 +187,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -215,6 +220,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -252,6 +258,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -284,6 +291,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -321,6 +329,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -352,6 +361,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -389,6 +399,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -421,6 +432,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
@@ -485,6 +497,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@drawable/btn_style"
                     android:layout_marginTop="26dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="8dp"
@@ -494,21 +507,26 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:contentDescription="@string/image"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:src="@drawable/ic_profile" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_weight="1"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="center"
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/tvName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text=""
-                            android:textColor="@color/blue_pressed"
-                            android:fontFamily="@font/inter_extrabold"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter_bold"
                             android:textSize="15sp"/>
                         <TextView
                             android:id="@+id/tvLocation"
@@ -517,7 +535,8 @@
                             android:text=""
                             android:textColor="@color/dark_gray"
                             android:fontFamily="@font/inter_bold"
-                            android:textSize="15sp"/>
+                            android:textSize="15sp"
+                            android:visibility="gone"/>
                     </LinearLayout>
                     <Button
                         android:id="@+id/messageButton"
@@ -526,10 +545,11 @@
                         android:text="@string/message"
                         android:drawableEnd="@drawable/ic_message"
                         android:drawablePadding="10dp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_gravity="center_vertical"
-                        style="@style/ButtonTheme"/>
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/inter_extrabold"
+                        android:textColor="@color/white"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
