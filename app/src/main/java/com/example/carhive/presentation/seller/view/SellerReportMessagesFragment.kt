@@ -93,7 +93,7 @@ class SellerReportMessagesFragment : Fragment() {
                 return@setOnClickListener
             }
             val cleanedMessage = originalMessage.replace(Regex("\\n{2,}"), "\n")
-            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage)
+            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage, admin = false)
             binding.editTextMessage.text.clear()
         }
 
@@ -166,7 +166,7 @@ class SellerReportMessagesFragment : Fragment() {
     }
 
     private fun sendOptionMessage(content: String) {
-        chatViewModel.sendTextMessage(ownerId, carId, buyerId, content)
+        chatViewModel.sendTextMessage(ownerId, carId, buyerId, content, admin = false)
     }
 
     /**

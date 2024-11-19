@@ -65,7 +65,7 @@ class ChatViewModel @Inject constructor(
                 // Si el mensaje no ha sido eliminado para este usuario
                 if (!message.deletedFor.contains(currentUserId)) {
                     // Si es un mensaje recibido, actualizar a "read" si corresponde
-                    if (message.receiverId == currentUserId && message.status == "sent") {
+                    if (message.receiverId == currentUserId || message.receiverId == "TechnicalSupport" && message.status == "sent") {
                         updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
                         message.status = "read" // Optimista: actualizar localmente
                     }
@@ -85,15 +85,17 @@ class ChatViewModel @Inject constructor(
      * Sends a text message if the user is not blocked by the receiver. If the sender is blocked,
      * the receiver's ID is added to the `deletedFor` list.
      */
-    fun sendTextMessage(ownerId: String, carId: String, buyerId: String, content: String) {
+    fun sendTextMessage(ownerId: String, carId: String, buyerId: String, content: String, admin: Boolean) {
         val isSeller = currentUserId == ownerId
-        val receiver = if (isSeller) buyerId else ownerId
+        val receiver = if (isSeller) buyerId else if (ownerId=="TechnicalSupport") buyerId else ownerId
+        var sender = currentUserId
+        if (admin) sender = "TechnicalSupport"
 
         viewModelScope.launch {
             isUserBlocked(receiver, currentUserId, carId) { isBlocked ->
                 val message = Message(
                     messageId = "",
-                    senderId = currentUserId,
+                    senderId = sender,
                     receiverId = receiver,
                     content = content,
                     timestamp = System.currentTimeMillis(),

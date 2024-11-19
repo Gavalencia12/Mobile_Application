@@ -82,13 +82,14 @@ class ChatFragment : Fragment() {
         requestStoragePermission()
 
         binding.buttonSend.setOnClickListener {
+            val admin = ownerId == "TechnicalSupport"
             val originalMessage = binding.editTextMessage.text.toString().trimEnd()
             if (originalMessage.isBlank()) {
                 Toast.makeText(context, "Cannot send an empty message", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val cleanedMessage = originalMessage.replace(Regex("\\n{2,}"), "\n")
-            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage)
+            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage, admin)
             binding.editTextMessage.text.clear()
         }
 
