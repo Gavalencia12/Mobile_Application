@@ -127,7 +127,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent45"
                 android:text="@string/precise_information"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -145,7 +146,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent48"
                 android:text="@string/content_legality"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -163,7 +165,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent4A02"
                 android:text="@string/documentation"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -181,7 +184,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent4A05"
                 android:text="@string/professional_conduct"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -199,7 +203,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent4A08"
                 android:text="@string/privacy_confidentiality"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -217,7 +222,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent4A11"
                 android:text="@string/laws_regulations"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -241,7 +247,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent51"
                 android:text="@string/listing_management"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -257,7 +264,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent54"
                 android:text="@string/communication_buyers"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
@@ -273,7 +281,8 @@
                 style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent57"
                 android:text="@string/ratings_feedback"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <TextView
                 style="@style/format_content_terms_condictions"
