@@ -219,7 +219,7 @@
     <string name="engine_capacity">Engine Capacity</string>
     <string name="engine_capacity_hint">Engine Capacity (cc)</string>
     <string name="speed">Speed</string>
-    <string name="fuel_type">Fuel type</string>
+    <string name="fuel_type">Fuel Type</string>
     <string name="speed_hint">Speed (km/h)</string>
     <string name="location">Location</string>
     <string name="condiction">Condition</string>
@@ -292,6 +292,7 @@
     <string name="return_text">return</string>
     <string name="more">More</string>
     <string name="play_pause">Play or Pause</string>
+    <string name="specifications">Specifications</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

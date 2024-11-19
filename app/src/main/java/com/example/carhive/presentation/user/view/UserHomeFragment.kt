@@ -497,7 +497,6 @@ class UserHomeFragment : Fragment() {
             putString("carEngineCapacity", car.engineCapacity)
             putString("carLocation", car.location)
             putString("carCondition", car.condition)
-            putString("carVin", car.vin)
             putInt("carPreviousOwners", car.previousOwners)
             putInt("carViews", car.views)
             putString("carMileage", car.mileage)

@@ -53,18 +53,17 @@ class CarDetailFragment : Fragment() {
         // Display car data in the views
         binding.carModel.text = carModel
         binding.carPrice.text = "$ $carPrice"
-        binding.carColor.text = "Color: $carColor"
+        binding.carColor.text = "$carColor"
         binding.carDescription.text = carDescription
-        binding.carMileage.text = "Mileage: $carMileage"
-        binding.carTransmission.text = "Transmission: $carTransmission"
-        binding.carFuelType.text = "Fuel Type: $carFuelType"
-        binding.carDoors.text = "Doors: $carDoors"
-        binding.carEngineCapacity.text = "Engine Capacity: $carEngineCapacity"
-        binding.carLocation.text = "Location: $carLocation"
-        binding.carCondition.text = "Condition: $carCondition"
-        binding.carVin.text = "VIN: $carVin"
-        binding.carPreviousOwners.text = "Previous Owners: $carPreviousOwners"
-        binding.carYear.text = "Year: $carYear"
+        binding.carMileage.text = "$carMileage km"
+        binding.carTransmission.text = "$carTransmission"
+        binding.carFuelType.text = "$carFuelType"
+        binding.carDoors.text = "$carDoors"
+        binding.carEngineCapacity.text = "$carEngineCapacity cc"
+        binding.carLocation.text = "$carLocation"
+        binding.carCondition.text = "$carCondition"
+        binding.carPreviousOwners.text = "$carPreviousOwners"
+        binding.carYear.text = "$carYear"
 
         // Set up ViewPager2 with images
         carImageUrls?.let {
