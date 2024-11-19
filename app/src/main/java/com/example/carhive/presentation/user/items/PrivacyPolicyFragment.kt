@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.carhive.MainActivity
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserProfilePrivacyPolicyBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class PrivacyPolicyFragment : Fragment() {
 
@@ -28,7 +30,11 @@ class PrivacyPolicyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.close.setOnClickListener {
-            findNavController().navigate(R.id.action_privacyPolicyFragment_to_serProfileFragment)
+            val isLog = FirebaseAuth.getInstance().currentUser != null
+            findNavController().popBackStack()
+            if(isLog) {
+                (activity as MainActivity).bottomNavigationViewUser.selectedItemId = R.id.profile
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.carhive.MainActivity
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentSellerProfilePrivacyPolicyBinding
 
@@ -24,7 +25,8 @@ class SellerPrivacyPolicyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.close.setOnClickListener {
-            findNavController().navigate(R.id.action_sellerPrivacyPolicyFragment_to_sellerProfileFragment)
+            findNavController().popBackStack()
+            (activity as MainActivity).bottomNavigationViewSeller.selectedItemId = R.id.profile
         }
     }
 

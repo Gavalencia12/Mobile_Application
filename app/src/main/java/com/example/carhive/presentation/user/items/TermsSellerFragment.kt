@@ -50,7 +50,7 @@ class TermsSellerFragment : Fragment() {
         termsContent.movementMethod = android.text.method.LinkMovementMethod.getInstance()
 
         binding.close.setOnClickListener {
-            findNavController().navigate(R.id.action_termsSellerFragment_to_sellerProfileFragment)
+            findNavController().popBackStack()
             (activity as MainActivity).bottomNavigationViewSeller.selectedItemId = R.id.profile
         }
     }

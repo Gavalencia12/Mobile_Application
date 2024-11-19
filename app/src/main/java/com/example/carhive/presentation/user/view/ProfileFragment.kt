@@ -76,6 +76,9 @@ class ProfileFragment : Fragment() {
                 "Terms & Conditions" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_termsFragment)
                 }
+                "Privacy policy" -> {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_privacyPolicyFragment)
+                }
                 // Otros casos...
             }
         }

@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.carhive.MainActivity
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserProfileTermsBinding
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,9 +51,12 @@ class TermsUserFragment: Fragment() {
         termsContent.text = spannableString
         termsContent.movementMethod = android.text.method.LinkMovementMethod.getInstance()
 
-        binding.closeButton.setOnClickListener{
-            findNavController().navigate(R.id.action_userProfileFragment_to_sellerProfileFragment)
-            (activity as MainActivity).bottomNavigationViewUser.selectedItemId = R.id.profile
+        binding.closeButton.setOnClickListener {
+            val isLog = FirebaseAuth.getInstance().currentUser != null
+            findNavController().popBackStack()
+            if(isLog) {
+                (activity as MainActivity).bottomNavigationViewUser.selectedItemId = R.id.profile
+            }
         }
     }
 
