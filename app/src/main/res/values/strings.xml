@@ -293,6 +293,7 @@
     <string name="more">More</string>
     <string name="play_pause">Play or Pause</string>
     <string name="specifications">Specifications</string>
+    <string name="error_loading_user">error loading user</string>
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

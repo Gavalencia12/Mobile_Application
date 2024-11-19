@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.carhive.R
-import com.example.carhive.presentation.user.adapter.ImagePagerAdapter
 import com.example.carhive.databinding.FragmentUserHomeCardetailsBinding
+import com.example.carhive.presentation.user.adapter.ImagePagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,7 +32,7 @@ class CarDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve all car data fields from the Bundle
+        // Retrieve car data from arguments
         val carId = arguments?.getString("carId")
         val carModel = arguments?.getString("carModel")
         val carPrice = arguments?.getString("carPrice")
@@ -46,42 +48,38 @@ class CarDetailFragment : Fragment() {
         val carMileage = arguments?.getString("carMileage")
         val carYear = arguments?.getString("carYear")
         val carImageUrls = arguments?.getStringArrayList("carImageUrls")
-        val ownerId = arguments?.getString("ownerId")
-        val buyerId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario actual
+        val ownerId = arguments?.getString("carOwnerId")
+        val buyerId = FirebaseAuth.getInstance().currentUser?.uid
 
-        // Display car data in the views
+        // Display car data
         binding.carModel.text = carModel
-        binding.carPrice.text = buildString {
-            append("$ ")
-            append(carPrice)
-        }
-        binding.carColor.text = "$carColor"
+        binding.carPrice.text = "$ $carPrice"
+        binding.carColor.text = carColor
         binding.carDescription.text = carDescription
-        binding.carMileage.text = buildString {
-            append(carMileage)
-            append(" km")
-        }
-        binding.carTransmission.text = "$carTransmission"
-        binding.carFuelType.text = "$carFuelType"
+        binding.carMileage.text = "$carMileage km"
+        binding.carTransmission.text = carTransmission
+        binding.carFuelType.text = carFuelType
         binding.carDoors.text = "$carDoors"
-        binding.carEngineCapacity.text = buildString {
-            append(carEngineCapacity)
-            append(" cc")
-        }
-        binding.carLocation.text = "$carLocation"
-        binding.carCondition.text = "$carCondition"
+        binding.carEngineCapacity.text = "$carEngineCapacity cc"
+        binding.carLocation.text = carLocation
+        binding.carCondition.text = carCondition
         binding.carPreviousOwners.text = "$carPreviousOwners"
-        binding.carYear.text = "$carYear"
+        binding.carYear.text = carYear
+
+        // Load owner data and display it in the profile section
+        ownerId?.let {
+            loadUserData(it)
+        }
 
         // Set up ViewPager2 with images
         carImageUrls?.let {
             val imagePagerAdapter = ImagePagerAdapter(it)
             binding.viewPager.adapter = imagePagerAdapter
 
-            // Set up TabLayout (dots) with ViewPager2
+            // Set up TabLayout with ViewPager2
             TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()
 
-            // Set up arrows for navigation
+            // Arrows navigation
             binding.arrowLeft.setOnClickListener {
                 val previousItem = binding.viewPager.currentItem - 1
                 if (previousItem >= 0) {
@@ -96,14 +94,39 @@ class CarDetailFragment : Fragment() {
                 }
             }
         }
-        // Configurar el botón de mensaje
+
+        // Set up message button
         binding.messageButton.setOnClickListener {
             val bundle = Bundle().apply {
-                putString("carId", carId) // ID de la publicación
-                putString("ownerId", ownerId) // ID del vendedor
-                putString("buyerId", buyerId) // ID del comprador actual
+                putString("carId", carId)
+                putString("ownerId", ownerId)
+                putString("buyerId", buyerId)
             }
             findNavController().navigate(R.id.action_carDetailFragment_to_chat, bundle)
+        }
+    }
+
+    /**
+     * Fetches user data using the ownerId and displays it in the profile section.
+     */
+    private fun loadUserData(ownerId: String) {
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Users/$ownerId")
+
+        databaseReference.get().addOnSuccessListener { snapshot ->
+            val user = snapshot.getValue(SimpleUser::class.java) // Usar SimpleUser para evitar problemas con role
+            user?.let {
+                // Concatenate firstName and lastName to display full name
+                val fullName = "${it.firstName} ${it.lastName}"
+                binding.tvName.text = fullName
+
+                Glide.with(requireContext())
+                    .load(it.imageUrl)
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_error)
+                    .into(binding.ivProfile)
+            }
+        }.addOnFailureListener {
+            binding.tvName.text = getString(R.string.error_loading_user)
         }
     }
 
@@ -112,3 +135,12 @@ class CarDetailFragment : Fragment() {
         _binding = null
     }
 }
+
+/**
+ * Simplified User class to avoid role deserialization issues.
+ */
+data class SimpleUser(
+    val firstName: String = "",
+    val lastName: String = "",
+    val imageUrl: String = ""
+)

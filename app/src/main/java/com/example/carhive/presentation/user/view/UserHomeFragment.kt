@@ -501,6 +501,7 @@ class UserHomeFragment : Fragment() {
             putInt("carViews", car.views)
             putString("carMileage", car.mileage)
             putString("carYear", car.year)
+            putString("carOwnerId", car.ownerId)
             putStringArrayList("carImageUrls", car.imageUrls?.let { ArrayList(it) })
         }
         findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
