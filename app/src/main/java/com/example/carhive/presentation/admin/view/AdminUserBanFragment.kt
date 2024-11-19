@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.carhive.R
 import com.example.carhive.presentation.admin.viewModel.AdminUserBanViewModel
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.presentation.admin.view.Adapters.UserAdapterBan
@@ -67,6 +69,10 @@ class AdminUserBanFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        binding.bureturn.setOnClickListener {
+            findNavController().navigate(R.id.action_adminUserBanFragment_to_adminHomeFragment)
+        }
     }
 
     private fun showDeleteConfirmationDialog(user: UserEntity) {
