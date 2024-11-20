@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">CarHive</string>
     <string name="logo">Logo</string>
-    <string name="update_car">Actualizar Carro</string>
-    <string name="create_car">Crear Carro</string>
+    <string name="update_car">Update Car</string>
+    <string name="create_car">Create Car</string>
     <string name="car_created_successfully">Car created successfully</string>
     <string name="enter_car_name_and_select_images">Please enter a car name and select 5 images</string>
     <string name="failed_to_load_cars">Failed to load cars</string>
@@ -32,7 +32,7 @@
     <string name="full_image_description">Full image view\n</string>
     <string name="images_selected">0</string>
     <string name="failed_to_create_car">Failed to create car\n</string>
-    <string name="car_deleted_successfully">Car deleted successfly\n</string>
+    <string name="car_deleted_successfully">Car deleted successfully\n</string>
     <string name="failed_to_delete_car">Failed to delete car</string>
     <string name="failed_to_delete_car_images">Failed to delete car images\n</string>
     <string name="no_images_available">No images available</string>
@@ -46,6 +46,50 @@
     <string name="view_more">View more</string>
     <string name="edit">Edit</string>
     <string name="options">Options</string>
+    <string name="welcome_back_to">Welcome back to</string>
+    <string name="nice_to_see_you_again">Nice to see you again!</string>
+    <string name="please_enter_your_information_for_continue">Please enter your information for continue</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="password">Password</string>
+    <string name="forgot_your_password">Forgot your Password?</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register_now">Register Now!</string>
+    <string name="image">image</string>
+    <string name="registration">Registration</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email_address">Email address</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="next">Next</string>
+    <string name="already_have_an_account_log_in">Already have an account? Log in</string>
+    <string name="min_6_characters_with_upper_lower_numbers_and_special_symbols">* Min. 6 characters, with upper, lower, numbers, and special symbols.</string>
+    <string name="curp">CURP</string>
+    <string name="phone_number">Phone number</string>
+    <string name="voter_id">Voter ID</string>
+    <string name="i_accept_the">I accept the</string>
+    <string name="finish_registration">Finish Registration</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="select_profile_image">Select Profile Image</string>
+    <string name="verification">Verification</string>
+    <string name="esperando_verificaci_n_de_correo">Waiting for verification email…</string>
+    <string name="continuar">Continue</string>
+    <string name="didn_t_you_receive_the_email_resend">Didn\'t you receive the email? Resend</string>
+    <string name="welcome_to_carhive">Welcome to CarHive</string>
+    <string name="you_are_already_part_of_us">You are already part of us!</string>
+    <string name="thanks_for_joining_us_your_next_car_is_just_a_few_clicks_away">Thanks for joining us! Your next car is just a few clicks away.</string>
+    <string name="get_started">Get started</string>
+    <string name="send_recovery_email">Send recovery email</string>
+    <string name="recover_your_password">Recover your password</string>
+    <string name="personal_information">Personal information</string>
+    <string name="home">Home</string>
+    <string name="there_are_no_cars_available">There are no cars available</string>
+    <string name="favorites">Favorites</string>
+    <string name="there_are_no_favorites_in_your_list">There are no favorites in your list</string>
+    <string name="become_a_seller">Become a Seller</string>
+    <string name="contact">Contact</string>
+    <string name="message">Message</string>
+    <string name="delete_favorite">Delete Favorite</string>
     <string name="edit_car_title">Edit Car</string>
     <string name="update_button">Update</string>
     <string name="confirm_reset">Confirm Reset</string>
@@ -60,7 +104,7 @@
     <string name="error_removing_favorite">Error removing car from favorites</string>
     <string name="error_fetching_user_data">Error fetching user data</string>
     <string name="brand_selected">brand selected\n</string>
-    <string name="creating_listing">Creating car listing...</string>
+    <string name="creating_listing">Creating car listing…</string>
     <string name="error_fill_all_fields">Please fill in all fields</string>
     <string name="error_select_5_images">You must select exactly 5 images</string>
     <string name="success_listing_created">Car listing created successfully!</string>
@@ -69,7 +113,7 @@
     <string name="cancel_button">Cancel</string>
     <string name="select_five_images">You must select exactly 5 images.</string>
     <string name="complete_all_fields">Please complete all fields.</string>
-    <string name="uploading_images">Uploading images, please wait...</string>
+    <string name="uploading_images">Uploading images, please wait…</string>
     <string name="changes_saved">Changes saved successfully.</string>
     <string name="error_saving_changes">Error uploading images or saving changes. Please try again.</string>
     <string name="image_count_text">%1$d / %2$d images selected</string>
@@ -106,70 +150,17 @@
     <string name="car_condition">Condition: %1$s</string>
     <string name="car_vin">VIN: %1$s</string>
     <string name="car_previous_owners">Previous Owners: %1$d</string>
-    <string name="car_price">Price: $%1$s</string>
+    <string name="car_price">$%1$s</string>
     <string name="car_description">Description: %1$s</string>
     <string name="image_count">%1$d/%2$d</string>
     <string name="car_details_title">Car Details</string>
-    <string name="default_car_model">Toyota Sienta Black 24k</string>
-    <string name="default_car_price">$30,000</string>
-    <string name="default_car_color">Color: Black</string>
-    <string name="default_car_mileage">Mileage: 20,000 km</string>
-    <string name="default_car_transmission">Transmission: Automatic</string>
-    <string name="default_car_fuel_type">Fuel Type: Gasoline</string>
-    <string name="default_car_engine_capacity">Engine Capacity: 2.0L</string>
-    <string name="default_car_location">Location: Zapopan, Jalisco</string>
-    <string name="default_car_doors">Doors: 4</string>
-    <string name="default_car_year">Year: 2020</string>
-    <string name="default_car_vin">VIN: ABCD1234EFG56789</string>
-    <string name="default_car_previous_owners">Previous Owners: 1</string>
-    <string name="default_car_views">Views: 256</string>
     <string name="description_label">Description</string>
-    <string name="default_car_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="default_car_condition">New</string>
-    <string name="welcome_back_to">Welcome back to</string>
-    <string name="nice_to_see_you_again">Nice to see you again!</string>
-    <string name="please_enter_your_information_for_continue">Please enter your information for continue</string>
-    <string name="enter_your_email">Enter your email</string>
-    <string name="password">Password</string>
-    <string name="forgot_your_password">Forgot your Password?</string>
-    <string name="login">Login</string>
-    <string name="don_t_have_an_account">Don\'t have an account?</string>
-    <string name="register_now">Register Now!</string>
-    <string name="image">image</string>
-    <string name="registration">Registration</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
-    <string name="email_address">Email address</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="next">Next</string>
-    <string name="already_have_an_account_log_in">Already have an account? Log in</string>
-    <string name="min_6_characters_with_upper_lower_numbers_and_special_symbols">* Min. 6 characters, with upper, lower, numbers, and special symbols.</string>
-    <string name="curp">CURP</string>
-    <string name="phone_number">Phone number</string>
-    <string name="voter_id">Voter ID</string>
-    <string name="i_accept_the">I accept the</string>
-    <string name="finish_registration">Finish Registration</string>
-    <string name="choose_image">Choose Image</string>
-    <string name="select_profile_image">Select Profile Image</string>
-    <string name="verification">Verification</string>
-    <string name="esperando_verificaci_n_de_correo">Waiting for verification email...</string>
-    <string name="continuar">Continue</string>
-    <string name="didn_t_you_receive_the_email_resend">Didn\'t you receive the email? Resend</string>
-    <string name="welcome_to_carhive">Welcome to CarHive</string>
-    <string name="you_are_already_part_of_us">You are already part of us!</string>
-    <string name="thanks_for_joining_us_your_next_car_is_just_a_few_clicks_away">Thanks for joining us! Your next car is just a few clicks away.</string>
-    <string name="get_started">Get started</string>
-    <string name="send_recovery_email">Send recovery email</string>
-    <string name="recover_your_password">Recover your password</string>
-    <string name="personal_information">Personal information</string>
-    <string name="home">Home</string>
-    <string name="there_are_no_cars_available">There are no cars available</string>
-    <string name="favorites">Favorites</string>
-    <string name="there_are_no_favorites_in_your_list">There are no favorites in your list</string>
-    <string name="become_a_seller">Become a Seller</string>
-    <string name="contact">Contact</string>
+    <string name="error_empty_search_query">error empty search query</string>
+    <string name="no_results_found">no results found</string>
     <string name="back">Back</string>
     <string name="become_seller">Become a Seller</string>
+    <string name="all">All</string>
 
     <!-- Privacy Policy, user-->
     <string name="privacy_policy"><u>Privacy Policy</u></string>
@@ -333,7 +324,7 @@
     <string name="engine_capacity">Engine Capacity</string>
     <string name="engine_capacity_hint">Engine Capacity (cc)</string>
     <string name="speed">Speed</string>
-    <string name="fuel_type">Fuel type</string>
+    <string name="fuel_type">Fuel Type</string>
     <string name="speed_hint">Speed (km/h)</string>
     <string name="location">Location</string>
     <string name="condiction">Condition</string>
@@ -364,7 +355,7 @@
     <string name="new_car_entries">New Car Entries</string>
     <string name="general_report">General Report</string>
     <string name="user_bans">USER BANS</string>
-    <string name="search_hint">Search...</string>
+    <string name="search_hint">Search…</string>
     <string name="search_description">Buscar</string>
     <string name="verified_users_report">Verified Users Report</string>
     <string name="switch_to_monthly_view">Switch to Monthly View</string>
@@ -376,10 +367,38 @@
     <string name="unban_button">UNBAN</string>
     <string name="ban_button">BAN</string>
     <string name="user_image_desc">User Image</string>
-
-    <string name="error_empty_search_query">error empty search query</string>
-    <string name="no_results_found">no results found</string>
+    <string name="recommended">Recommended</string>
+    <string name="models">Models</string>
+    <string name="brands">Brands</string>
+    <string name="select_a_brand">Select a Brand</string>
+    <string name="search_brand">Search brand</string>
+    <string name="price_range">Price Range</string>
+    <string name="minimum_price">Minimum Price</string>
+    <string name="maximum_price">Maximum Price</string>
+    <string name="mileage_range">Mileage Range</string>
+    <string name="minimum_mileage">Minimum Mileage</string>
+    <string name="maximum_mileage">Maximum Mileage</string>
+    <string name="vehicle_color">Vehicle Color</string>
+    <string name="choose_a_color">Choose a color</string>
+    <string name="vehicle_year">Vehicle Year</string>
+    <string name="start_year">Start year</string>
+    <string name="end_year">End year</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="clear_filters">Clear Filters</string>
+    <string name="Search_your_car">Search your car</string>
+    <string name="condition">Condition</string>
+    <string name="car_condition_filter">Car Condition</string>
+    <string name="near_to_you">Near to you!</string>
+    <string name="car_views">Views</string>
+    <string name="car_view_updated">view updated</string>
+    <string name="error_updating_car_view">error updated</string>
+    <string name="error_updating_view_count">error_updating\n</string>
+    <string name="error_fetching_view_status">error fetchig viewers</string>
+    <string name="return_text">return</string>
+    <string name="more">More</string>
     <string name="play_pause">Play or Pause</string>
+    <string name="specifications">Specifications</string>
+    <string name="error_loading_user">error loading user</string>
 
     <!-- Admin approved cars -->
     <string name="firstname">First Name</string>
@@ -393,7 +412,6 @@
     <string name="publication_information">Publication Information</string>
 
     <!-- Labels -->
-    <string name="condition">Condition:</string>
     <string name="views">Views:</string>
     <string name="listing_date">Listing Date:</string>
     <string name="last_update">Last Update:</string>
@@ -414,11 +432,14 @@
         <item>Electric</item>
         <item>Hybrid</item>
     </string-array>
+
     <string-array name="condition_options">
+        <item>All</item>
         <item>New</item>
         <item>Used</item>
         <item>Pre-owned</item>
     </string-array>
+
     <string-array name="location_options">
         <item>All</item>
         <item>Armería</item>

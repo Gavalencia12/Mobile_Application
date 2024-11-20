@@ -26,7 +26,7 @@
             android:padding="24dp"
             app:layout_constraintEnd_toEndOf="parent">
 
-           <!-- Gif de la ventana de carga -->
+            <!-- Loading GIF -->
             <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/myGifImageView"
                 android:layout_width="wrap_content"
@@ -41,21 +41,21 @@
                 android:id="@+id/loadingIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" /> <!-- Estaba visible por defecto -->
+                android:visibility="gone" />
 
-            <!-- Mensaje de espera -->
+            <!-- Waiting message -->
             <TextView
                 android:id="@+id/emailVerificationStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/esperando_verificaci_n_de_correo"
-                android:visibility="visible" /> <!-- Estaba oculto por defecto -->
+                android:visibility="visible" />
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-            <!-- Botón de continuar -->
+            <!-- Button to continue -->
             <Button
                 android:id="@+id/continueButton"
                 android:layout_width="match_parent"
@@ -63,13 +63,13 @@
                 android:text="@string/continuar"
                 android:layout_marginTop="16dp"
                 android:enabled="false"
-                style="@style/ButtonTheme"/> <!-- Deshabilitado por defecto -->
+                style="@style/ButtonTheme"/>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-            <!-- Enlace para reenviar el correo -->
+            <!-- Resend email link -->
             <TextView
                 android:id="@+id/loginLink"
                 android:layout_width="wrap_content"

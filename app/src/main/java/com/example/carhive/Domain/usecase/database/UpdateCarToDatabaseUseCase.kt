@@ -7,7 +7,7 @@ import javax.inject.Inject
 class UpdateCarToDatabaseUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
-    suspend operator fun invoke(userId: String, carId:String, car:Car): Result<Unit> {
+    suspend operator fun invoke(userId: String, carId:String, car: Car): Result<Unit> {
         return repository.updateCarToDatabase(userId, carId, car)
     }
 }

@@ -12,25 +12,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="45dp"
         android:layout_marginBottom="30dp"
         android:layout_weight="1">
 
-        <!-- Enlace para reresar -->
+        <!-- Link for going back to the previous screen -->
         <TextView
             android:id="@+id/backToSecondPartLink"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:clickable="true"
+            android:focusable="true"
             app:drawableStartCompat="@drawable/ic_arrow_back"
             app:drawableTint="@color/dark_blue"
-            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Título -->
+        <!-- Title -->
         <TextView
             android:id="@+id/tv_rgt_title"
             android:layout_width="wrap_content"
@@ -43,10 +43,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" /> <!-- Centrado horizontal -->
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Imagen de registro -->
+    <!-- Verificatiom image -->
     <ImageView
         android:id="@+id/selectedImageView"
         android:layout_width="match_parent"
@@ -56,7 +56,7 @@
         android:contentDescription="@string/image"
         android:src="@drawable/ic_register3" />
 
-    <!-- Texto de selección de imagen -->
+    <!-- Select profile image label -->
     <TextView
         android:id="@+id/selectProfileImageLabel"
         android:layout_width="match_parent"
@@ -69,7 +69,7 @@
         android:textColor="@color/dark_blue"
         android:textSize="24sp" />
 
-    <!-- Botón para seleccionar imagen -->
+    <!-- Select profile image button -->
     <Button
         android:id="@+id/chooseImageButton"
         android:layout_width="wrap_content"
@@ -80,11 +80,12 @@
         android:drawableStart="@drawable/ic_add_photo"
         android:drawablePadding="15dp"
         android:fontFamily="@font/inter_bold"
+        android:gravity="center"
         android:text="@string/choose_image"
         android:textColor="@color/blue"
         android:textSize="16sp" />
 
-    <!-- Botón para finalizar el registro -->
+    <!-- Finish registration button -->
     <Button
         android:id="@+id/finishRegistrationButton"
         android:layout_width="match_parent"
@@ -93,6 +94,6 @@
         android:layout_marginBottom="50dp"
         android:enabled="false"
         android:text="@string/finish_registration"
-        style="@style/ButtonTheme"/> <!-- Habilitar en el código según la lógica -->
+        style="@style/ButtonTheme"/>
 
 </LinearLayout>
