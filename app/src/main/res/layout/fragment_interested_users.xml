@@ -2,11 +2,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingVertical="40dp"
+    android:background="@color/gray_light">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewInterestedUsers"
+    <TextView
+        style="@style/title_dialog"
+        android:text="@string/messages"
+        android:paddingHorizontal="15dp"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:background="@drawable/content_chats"
+        android:paddingVertical="10dp"
+        android:layout_marginTop="20dp">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewInterestedUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </LinearLayout>

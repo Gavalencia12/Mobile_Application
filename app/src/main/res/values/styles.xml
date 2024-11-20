@@ -97,6 +97,14 @@
         <item name="android:gravity">left</item>
     </style>
 
+    <style name="content_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:gravity">left</item>
+    </style>
+
     <style name="tw_section_dialog">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -139,7 +147,7 @@
     <style name="format_title_terms_condictions">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/black</item>@drawable/edittext_background
         <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/inter_extrabold</item>
         <item name="android:layout_gravity">center</item>
@@ -163,6 +171,12 @@
         <item name="android:textSize">16sp</item>
         <item name="fontFamily">@font/inter</item>
         <item name="android:justificationMode" tools:ignore="NewApi">inter_word</item>
+    </style>
+
+    <style name="button_style_dialog_small">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

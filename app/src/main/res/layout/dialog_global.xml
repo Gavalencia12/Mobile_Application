@@ -3,26 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/decision_dialog_style" >
 
     <TextView
         android:id="@+id/dialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceHeadline6" />
+        style="@style/title_dialog"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/dialogMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textAppearance="?attr/textAppearanceBody1" />
+        style="@style/content_dialog" />
 
     <EditText
         android:id="@+id/editTextReportComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Añadir un comentario (opcional)"
+        android:hint="Add a comment (optional)"
         android:layout_marginTop="16dp"
         android:visibility="gone" />
 
@@ -31,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Bloquear usuario y vaciar chat" />
+        android:text="Block user and clear chat" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,16 +43,19 @@
         android:gravity="end">
 
         <Button
+            style="@style/button_style_dialog_small"
             android:id="@+id/buttonNegative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Cancelar" />
+            android:text="@string/cancel"
+            android:textColor="@drawable/btn_formality_text_color"
+            android:background="@drawable/btn_formality_forms"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="8dp"/>
 
         <Button
+            style="@style/button_style_dialog_small"
             android:id="@+id/buttonPositive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Aceptar" />
+            android:text="@string/block"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_formality_forms_negative" />
     </LinearLayout>
 </LinearLayout>

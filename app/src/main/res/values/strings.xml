@@ -444,4 +444,12 @@
         <item>Audi</item>
         <item>Hyundai</item>
     </string-array>
+
+    <!-- section chats -->
+    <string name="messages">Messages</string>
+    <string name="block">Block</string>
+    <string name="report">Report</string>
+
+
 </resources>
+

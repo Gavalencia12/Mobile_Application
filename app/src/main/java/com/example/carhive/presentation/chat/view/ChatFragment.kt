@@ -290,7 +290,7 @@ class ChatFragment : Fragment() {
     private fun showBlockUserDialog() {
         val blockDialog = GlobalDialogFragment.newInstance(
             title = "Block User",
-            message = "Are you sure you want to block this user? You will not receive further messages from them.",
+            message = "Are you sure you want to block this user? You won't receive any more messages from them.",
             positiveButtonText = "Block",
             negativeButtonText = "Cancel",
             dialogType = GlobalDialogFragment.DialogType.BLOCK,

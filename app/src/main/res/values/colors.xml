@@ -35,4 +35,6 @@
     <color name="brand_default_background">#FFFFFF</color> <!-- White for default background -->
     <color name="brand_selected_text">#0000FF</color> <!-- Blue for selected text -->
     <color name="brand_default_text">#000000</color> <!-- Black for default text -->
+    <color name="transparent">#00000000</color>
+    <color name="red_light">#D32F2F</color> <!-- #E62222 -->
 </resources>
