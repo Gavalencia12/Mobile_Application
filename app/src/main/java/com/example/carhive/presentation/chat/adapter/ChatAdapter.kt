@@ -38,13 +38,13 @@ import kotlinx.coroutines.launch
 class ChatAdapter(
     private val messages: MutableList<Message>,
     private val fragmentManager: FragmentManager,
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
+    private val admin: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_SENT = 1
         const val VIEW_TYPE_RECEIVED = 2
-        private const val TAG = "ChatAdapter"
     }
 
     /**
@@ -53,7 +53,7 @@ class ChatAdapter(
     override fun getItemViewType(position: Int): Int {
         val currentMessage = messages[position]
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-        return if (currentMessage.senderId == currentUserId || currentMessage.senderId == "TechnicalSupport") VIEW_TYPE_SENT else VIEW_TYPE_RECEIVED
+        return if (currentMessage.senderId == currentUserId || admin && currentMessage.senderId == "TechnicalSupport") VIEW_TYPE_SENT else VIEW_TYPE_RECEIVED
     }
 
     /**
@@ -110,6 +110,13 @@ class ChatAdapter(
          * Binds message data to the view components and configures the message type (text, image, etc.).
          */
         fun bind(message: Message, previousMessage: Message?) {
+
+            messageTextView.visibility = View.GONE
+            fileContainer.visibility = View.GONE
+            fileImageView.visibility = View.GONE
+            retryButton.visibility = View.GONE
+            fileImageView.setImageDrawable(null)
+
             // Shows the date header if this is the first message of the day
             if (previousMessage == null || message.getFormattedDate() != previousMessage.getFormattedDate()) {
                 dateTextView.visibility = View.VISIBLE
@@ -117,11 +124,6 @@ class ChatAdapter(
             } else {
                 dateTextView.visibility = View.GONE
             }
-
-            // Configure message content based on type
-            messageTextView.visibility = View.GONE
-            fileContainer.visibility = View.GONE
-            retryButton.visibility = View.GONE
 
             when {
                 message.fileType?.startsWith("image/") == true -> configureImageView(message)

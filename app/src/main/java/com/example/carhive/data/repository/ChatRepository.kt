@@ -31,12 +31,7 @@ interface ChatRepository {
         ownerId: String,
         carId: String,
         buyerId: String,
-        fileUri: Uri,
-        fileType: String,
-        fileName: String,
-        fileHash: String,
-        receiver: String,
-        deletedFor: List<String> // Agregamos `deletedFor` como parámetro
+        message: Message
     ): Result<Unit>
 
     suspend fun cleanUpDatabase(context: Context)

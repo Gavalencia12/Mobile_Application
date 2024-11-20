@@ -71,18 +71,17 @@ class ChatFragment : Fragment() {
         lifecycleScope.launch {
             cleanUpDatabaseUseCase(requireContext())
         }
-
+        val admin = ownerId == "TechnicalSupport"
         setupRecyclerView()
         observeViewModel()
 
         // Start observing messages and load user information
-        chatViewModel.observeMessages(ownerId, carId, buyerId)
+        chatViewModel.observeMessages(ownerId, carId, buyerId, admin)
         chatViewModel.loadInfoHead(ownerId, carId, buyerId)
 
         requestStoragePermission()
 
         binding.buttonSend.setOnClickListener {
-            val admin = ownerId == "TechnicalSupport"
             val originalMessage = binding.editTextMessage.text.toString().trimEnd()
             if (originalMessage.isBlank()) {
                 Toast.makeText(context, "Cannot send an empty message", Toast.LENGTH_SHORT).show()
@@ -165,7 +164,8 @@ class ChatFragment : Fragment() {
      * Sets up the RecyclerView for displaying chat messages.
      */
     private fun setupRecyclerView() {
-        chatAdapter = ChatAdapter(mutableListOf(), childFragmentManager, viewLifecycleOwner.lifecycleScope)
+        val admin = ownerId == "TechnicalSupport"
+        chatAdapter = ChatAdapter(mutableListOf(), childFragmentManager, viewLifecycleOwner.lifecycleScope, admin)
         binding.recyclerViewMessages.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = chatAdapter
@@ -394,8 +394,9 @@ class ChatFragment : Fragment() {
 
         builder.setPositiveButton("Send") { dialog, _ ->
             lifecycleScope.launch {
+                val admin = ownerId == "TechnicalSupport"
                 val fileHash = calculateFileHash(fileUri)
-                chatViewModel.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash)
+                chatViewModel.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, admin)
                 dialog.dismiss()
             }
         }
