@@ -15,6 +15,7 @@ import com.example.carhive.presentation.user.adapter.ProfileOptionsAdapter
 import com.example.carhive.presentation.user.viewModel.ProfileViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserProfileBinding
+import com.example.carhive.presentation.user.items.UpdateDataDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,6 +58,10 @@ class ProfileFragment : Fragment() {
         binding.ibtnBack.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_userHomeFragment)
         }
+        binding.updateData.setOnClickListener {
+            val dialog = UpdateDataDialogFragment()
+            dialog.show(parentFragmentManager, "UpdateDataDialog")
+        }
 
 
         // Configurar la lista de opciones del perfil
@@ -88,6 +93,9 @@ class ProfileFragment : Fragment() {
                         putString("buyerId", buyerId)
                     }
                     findNavController().navigate(R.id.action_userProfileFragment_to_UserReportMessagesFragment, bundle)
+                }
+                "Personal Data" -> {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_privacyPolicyFragment)
                 }
                 // Otros casos...
             }
