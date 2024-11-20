@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.carhive.Domain.model.Car
 import com.example.carhive.data.model.CarEntity
+import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
@@ -231,18 +232,55 @@ class UserViewModel @Inject constructor(
 
                 if (isFavorite) {
                     val result = addCarToFavoritesUseCase(userId, fullName, car.id, car.id, car.ownerId)
-                    if (result.isSuccess) showToast(R.string.car_added_to_favorites)
-                    else showToast(R.string.error_adding_favorite)
+                    if (result.isSuccess) {
+                        showToast(R.string.car_added_to_favorites)
+                        addHistoryEvent(
+                            userId,
+                            "Add to Favorite",
+                            "Car ${car.modelo} (${car.id}) added to favorites by $fullName."
+                        )
+                    } else {
+                        showToast(R.string.error_adding_favorite)
+                    }
                 } else {
                     val result = removeCarFromFavoritesUseCase(userId, car.id)
-                    if (result.isSuccess) showToast(R.string.car_removed_from_favorites)
-                    else showToast(R.string.error_removing_favorite)
+                    if (result.isSuccess) {
+                        showToast(R.string.car_removed_from_favorites)
+                        addHistoryEvent(
+                            userId,
+                            "Remove to Favorite",
+                            "Car ${car.modelo} (${car.id}) removed from favorites by $fullName."
+                        )
+                    } else {
+                        showToast(R.string.error_removing_favorite)
+                    }
                 }
             } else {
                 showToast(R.string.error_fetching_user_data)
             }
         }
     }
+
+    /**
+     * Adds an event to the user's history in the database.
+     */
+    private fun addHistoryEvent(userId: String, eventType: String, message: String) {
+        val timestamp = System.currentTimeMillis()
+        val historyEntity = HistoryEntity(userId, timestamp, eventType, message)
+
+        // Push the history event directly under the 'History/userHistory' node
+        firebaseDatabase.getReference("History/userHistory")
+            .push()
+            .setValue(historyEntity)
+            .addOnSuccessListener {
+                // Optional: Handle successful addition if needed
+            }
+            .addOnFailureListener { exception ->
+                // Log or handle failure here
+                exception.printStackTrace()
+            }
+    }
+
 
     // Show toast message with the specified string resource ID
     private fun showToast(messageResId: Int) {
