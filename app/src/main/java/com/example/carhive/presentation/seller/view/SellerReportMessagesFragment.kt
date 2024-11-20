@@ -81,7 +81,7 @@ class SellerReportMessagesFragment : Fragment() {
         setupInitialOptions()
 
         // Start observing messages and load user information
-        chatViewModel.observeMessages(ownerId, carId, buyerId)
+        chatViewModel.observeMessages(ownerId, carId, buyerId, admin = false)
         chatViewModel.loadInfoHead(ownerId, carId, buyerId)
 
         requestStoragePermission()
@@ -174,7 +174,7 @@ class SellerReportMessagesFragment : Fragment() {
      */
     private fun setupRecyclerView() {
         chatAdapter =
-            ChatAdapter(mutableListOf(), childFragmentManager, viewLifecycleOwner.lifecycleScope)
+            ChatAdapter(mutableListOf(), childFragmentManager, viewLifecycleOwner.lifecycleScope, admin = false)
         binding.recyclerViewMessages.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = chatAdapter
@@ -294,7 +294,8 @@ class SellerReportMessagesFragment : Fragment() {
                     fileUri,
                     fileType,
                     fileName,
-                    fileHash
+                    fileHash,
+                    admin = false
                 )
                 dialog.dismiss()
             }
