@@ -42,6 +42,7 @@ android:paddingTop="10dp">
         android:hint="Search Movement..."
         android:padding="10dp"
         android:layout_marginStart="23dp"
+        android:background="@null"
         android:textColor="@android:color/black" />
 
     <ImageView
