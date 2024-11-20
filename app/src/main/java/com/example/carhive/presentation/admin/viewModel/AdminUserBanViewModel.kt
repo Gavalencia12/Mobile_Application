@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.data.model.UserEntity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -13,46 +14,79 @@ import kotlinx.coroutines.tasks.await
 
 class AdminUserBanViewModel : ViewModel() {
 
-    private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users")
+    private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
     private val _users = MutableLiveData<List<UserEntity>>()
     val users: LiveData<List<UserEntity>> = _users
 
-    fun banUser(userId: String) {
+    init {
+        loadUsers()
+    }
+
+    private fun loadUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                database.child(userId).child("banned").setValue(true).await()
+                val userList = mutableListOf<UserEntity>()
+                val snapshot = database.child("Users").get().await()
+                snapshot.children.forEach { userSnapshot ->
+                    val user = userSnapshot.getValue(UserEntity::class.java)
+                    user?.let {
+                        it.id = userSnapshot.key ?: ""
+                        userList.add(it)
+                    }
+                }
+                _users.postValue(userList)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun unbanUser(userId: String) {
+    fun banUser(userId: String, userName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                database.child(userId).child("banned").setValue(false).await()
+                database.child("Users").child(userId).child("banned").setValue(true).await()
+                logHistory(userId, "Ban", "User $userName was banned")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun deleteUser(userId: String) {
+    fun unbanUser(userId: String, userName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                database.child(userId).removeValue().await()
+                database.child("Users").child(userId).child("banned").setValue(false).await()
+                logHistory(userId, "Unban", "User $userName was unbanned")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun filterUsers(query: String): List<UserEntity> {
-        val lowercaseQuery = query.lowercase()
-        return _users.value?.filter { user ->
-            user.firstName.lowercase().contains(lowercaseQuery) ||
-                    user.lastName.lowercase().contains(lowercaseQuery) ||
-                    user.email.lowercase().contains(lowercaseQuery)
-        } ?: emptyList()
+    fun deleteUser(userId: String, userName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                database.child("Users").child(userId).removeValue().await()
+                logHistory(userId, "Delete", "User $userName was deleted")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun logHistory(userId: String, eventType: String, message: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val historyEntry = HistoryEntity(
+                    userId = userId,
+                    timestamp = System.currentTimeMillis(),
+                    eventType = eventType,
+                    message = message
+                )
+                database.child("History/userHistory").push().setValue(historyEntry).await()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

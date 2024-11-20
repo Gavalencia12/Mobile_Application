@@ -10,7 +10,7 @@
     android:padding="16dp"
     tools:context=".presentation.initial.Register.view.FiveRegisterFragment">
 
-    <!-- Título de bienvenida -->
+    <!-- Welcome text -->
     <TextView
         android:id="@+id/welcomeName"
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="8dp" />
 
-    <!-- Imagen de bienvenida -->
+    <!-- Welcome image -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="24dp" />
 
-    <!-- Texto principal -->
+    <!-- Main text -->
     <TextView
         android:id="@+id/welcomeTitle"
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="8dp" />
 
-    <!-- Texto secundario -->
+    <!-- Subtext -->
     <TextView
         android:id="@+id/welcomeSubtitle"
         android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="32dp" />
 
-    <!-- Botón de "Get Started" -->
+    <!-- Get started button -->
     <Button
         android:id="@+id/getStartedButton"
         android:layout_width="match_parent"

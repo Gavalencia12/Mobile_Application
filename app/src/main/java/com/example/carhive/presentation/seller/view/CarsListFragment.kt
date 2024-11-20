@@ -63,7 +63,7 @@ class CarsListFragment : Fragment() {
 
         // Observe the carList LiveData from the ViewModel to update the UI when data changes
         viewModel.carList.observe(viewLifecycleOwner) { carList ->
-            val approvedCars = carList.filter { it.approved }
+            val approvedCars = carList
 
             // Filter the list based on the showSoldCars flag: show sold cars, unsold cars, or all cars
             val filteredCars = when (showSoldCars) {

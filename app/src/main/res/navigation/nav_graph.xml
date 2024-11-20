@@ -265,8 +265,8 @@
             android:id="@+id/action_sellerProfileFragment_to_loginFragment"
             app:destination="@id/loginFragment"/>
         <action
-        android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
-        app:destination="@id/sellerHomeFragment"/>
+            android:id="@+id/action_userProfileFragment_to_sellerHomeFragment"
+            app:destination="@id/sellerHomeFragment"/>
         <action
             android:id="@+id/action_userProfileFragment_to_termsSellerFragment"
             app:destination="@id/termsSellerFragment"/>
@@ -346,6 +346,19 @@
         <action
             android:id="@+id/action_adminHomeFragment_to_adminSupportFragment"
             app:destination="@id/adminSupportFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminHistoryFragment"
+            app:destination="@id/adminHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminHistoryFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminHistoryFragment"
+        tools:layout="@layout/fragment_admin_history">
+
+        <action
+            android:id="@+id/action_adminHistoryFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
     </fragment>
 
     <fragment

@@ -17,120 +17,66 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/format_title_terms_condictions"
                 android:id="@+id/termsContent0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Terms and conditions"
-                android:fontFamily="@font/inter_extrabold"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                android:paddingBottom="16dp" />
+                android:text="@string/terms_and_conditions" />
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1. Acceptance of Terms"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/acceptance_Terms" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:text="By registering as a seller on Carhive, you agree to comply with the terms and conditions described below."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:justificationMode="inter_word"/>
+                android:text="@string/agree_terms_condiction_seller" />
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2. Registration and Responsibilities"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/registration_responsabilites" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- To post vehicles on Carhive, you must register as a seller and provide accurate information about yourself and your company (if applicable)."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_personal_information_seller"/>
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- You are responsible for ensuring that the information and images of the vehicles are accurate and truthful."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_responsabilities_seller" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- Any vehicle posted must comply with the legal regulations in your jurisdiction."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="16dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_legal_seller" />
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3. Vehicle Quality and Condition"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/quality_condiction" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- It is your responsibility to ensure that the vehicle posted on the platform is in the condition described. Carhive is not responsible for disputes between buyers and sellers regarding the condition or quality of the vehicle."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_responsibility_platform_seller" />
 
             <TextView
+                style="@style/format_subtitle_terms_condictions"
                 android:id="@+id/termsContent4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4. Liability"
-                android:fontFamily="@font/inter_semibold"
-                android:textSize="16sp"
-                android:paddingBottom="16dp" />
+                android:text="@string/liability" />
 
             <TextView
+                style="@style/format_content_terms_condictions"
                 android:id="@+id/termsContent42"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- As a seller, you are solely responsible for the transactions conducted through Carhive and any non-compliance related to the vehicles sold. Carhive does not act as an intermediary in the transaction and assumes no liability."
-                android:fontFamily="@font/inter"
-                android:textSize="16sp"
-                android:paddingBottom="5dp"
-                android:justificationMode="inter_word" />
+                android:text="@string/terms_condiction_liability_seller"/>
 
             <Button
+                style="@style/button_selected"
                 android:id="@+id/closeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Close"
-                android:layout_gravity="center"
+                android:text="@string/back"
                 android:background="@drawable/btn_style"
-                android:textColor="@android:color/white"
-                android:layout_marginBottom="55dp"/>
+                android:layout_marginVertical="55dp"/>
 
         </LinearLayout>
     </ScrollView>

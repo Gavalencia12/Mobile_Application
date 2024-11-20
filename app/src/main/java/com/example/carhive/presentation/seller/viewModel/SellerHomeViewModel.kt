@@ -93,19 +93,20 @@ class SellerHomeViewModel @Inject constructor(
 
     // Actualizar los conteos de total, vendidos y no vendidos, solo para los carros aprobados
     private fun updateCarCounts(cars: List<CarEntity>) {
-        val unapprovedCars = cars.filter { !it.approved } // Filtrar autos no aprobados
-        val approvedCars = cars.filter { it.approved } // Filtrar los autos aprobados
-        val totalApproved = approvedCars.size // Número total de autos aprobados
-        val soldCount = approvedCars.count { it.sold } // Contar los autos vendidos entre los aprobados
-        val unsoldCount = totalApproved - soldCount // Contar los autos no vendidos entre los aprobados
+        val totalCars = cars.size // Total de carros en la base de datos
+        val unapprovedCars = cars.filter { !it.approved } // Carros no aprobados
+        val approvedCars = cars.filter { it.approved } // Carros aprobados
 
-        // Actualizar los LiveData con los conteos para autos aprobados
-        _totalCarsCount.value = totalApproved
-        _soldCarsCount.value = soldCount
-        _unsoldCarsCount.value = unsoldCount
-        _unapprovedCarsCount.value = unapprovedCars.size // Actualizar el contador de no aprobados
+        val soldCount = approvedCars.count { it.sold } // Carros aprobados y vendidos
+        val unsoldCount = approvedCars.count { !it.sold } // Carros aprobados y no vendidos
 
+        // Actualizar los LiveData con los conteos
+        _totalCarsCount.value = totalCars // Todos los carros, independientemente del estado
+        _soldCarsCount.value = soldCount // Carros vendidos entre los aprobados
+        _unsoldCarsCount.value = unsoldCount // Carros no vendidos entre los aprobados
+        _unapprovedCarsCount.value = unapprovedCars.size // Carros no aprobados
     }
+
 
     // Obtener el número de carros con al menos un favorito
     // Función para obtener el número de carros con al menos una reacción (favorito) de otros usuarios
