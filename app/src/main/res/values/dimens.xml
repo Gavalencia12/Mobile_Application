@@ -1,0 +1,5 @@
+<!-- res/values/dimens.xml -->
+<resources>
+    <!-- Otras dimensiones aquí -->
+    <dimen name="bottom_padding">40dp</dimen>
+</resources>

@@ -160,10 +160,8 @@ class CarDetailDialogFragment : DialogFragment() {
                     Log.e("CarDetailDialogFragment", "Error al obtener el correo del propietario: ", exception)
                 }
 
-                // Registrar en el historial de desaprobación
                 logDesapprovalHistory(ownerId, carId, carModel)
 
-                // Desmarcar como aprobado
                 updateCarApprovalStatus(false)
             }
         }

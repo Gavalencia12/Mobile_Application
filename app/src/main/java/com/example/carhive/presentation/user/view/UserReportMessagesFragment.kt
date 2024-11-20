@@ -82,7 +82,7 @@ class UserReportMessagesFragment : Fragment() {
         setupInitialOptions()
 
         // Start observing messages and load user information
-        chatViewModel.observeMessages(ownerId, carId, buyerId)
+        chatViewModel.observeMessages(ownerId, carId, buyerId, admin = false)
         chatViewModel.loadInfoHead(ownerId, carId, buyerId)
 
         requestStoragePermission()
@@ -174,7 +174,7 @@ class UserReportMessagesFragment : Fragment() {
      * Sets up the RecyclerView for displaying chat messages.
      */
     private fun setupRecyclerView() {
-        chatAdapter = ChatAdapter(mutableListOf(), childFragmentManager, viewLifecycleOwner.lifecycleScope)
+        chatAdapter = ChatAdapter(mutableListOf(), childFragmentManager, viewLifecycleOwner.lifecycleScope, admin = false)
         binding.recyclerViewMessages.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = chatAdapter
@@ -210,9 +210,10 @@ class UserReportMessagesFragment : Fragment() {
             binding.tvName.text = "Technical Support"
             binding.tvCarModel.text = "Send a message"
             Glide.with(requireContext())
-                .load(R.drawable.car_hive_logo)
+                .load(R.drawable.car_hive_circle_logo)
                 .placeholder(R.drawable.ic_img)
                 .error(R.drawable.ic_error)
+                .circleCrop()
                 .into(binding.profileImage)
     }
 
@@ -282,7 +283,7 @@ class UserReportMessagesFragment : Fragment() {
         builder.setPositiveButton("Send") { dialog, _ ->
             lifecycleScope.launch {
                 val fileHash = calculateFileHash(fileUri)
-                chatViewModel.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash)
+                chatViewModel.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, admin = false)
                 dialog.dismiss()
             }
         }

@@ -8,7 +8,6 @@
     android:background="@color/blue"
     tools:context=".presentation.initial.Login.view.LoginFragment">
 
-    <!-- CardView de bienvenida -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvWelcome"
         android:layout_height="wrap_content"
@@ -17,13 +16,13 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
-        <!-- Texto de bienvenida -->
+        <!-- Welcome text -->
         <TextView
             android:id="@+id/welcome_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="100dp"
             android:fontFamily="@font/inter_bold"
             android:text="@string/welcome_back_to"
             android:textColor="@color/white"
@@ -32,11 +31,10 @@
             app:layout_constraintBottom_toTopOf="@+id/hive"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Contenedor lineal para los textos "Car" y "Hive" -->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="130dp"
             android:layout_marginBottom="50dp"
             android:gravity="center"
             tools:ignore="MissingConstraints">
@@ -52,7 +50,6 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!-- CardView para la información de inicio de sesión -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -69,36 +66,38 @@
             android:background="@drawable/rounded_top_cornes"
             android:padding="24dp">
 
-            <!-- Mensaje de saludo -->
+            <!-- Title -->
             <TextView
                 android:id="@+id/nice_to_see_you"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:fontFamily="@font/inter_extrabold"
                 android:text="@string/nice_to_see_you_again"
                 android:textColor="@color/dark_blue"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:layout_marginBottom="10dp"/>
 
-            <!-- Instrucciones -->
+            <!-- Instruction -->
             <TextView
                 android:id="@+id/instruction"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/please_enter_your_information_for_continue"
                 android:textColor="@color/gray"
                 android:textSize="15sp" />
 
-            <!-- Campo de entrada para el correo electrónico -->
+            <!-- Input fields for email -->
             <EditText
                 android:id="@+id/email_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginBottom="20dp"
                 android:autofillHints="Email"
@@ -107,11 +106,11 @@
                 android:inputType="textEmailAddress"
                 style="@style/EditTextStyle"/>
 
-            <!-- Campo de entrada para la contraseña -->
+            <!-- Input field for password -->
             <EditText
                 android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginBottom="10dp"
                 android:autofillHints="Password"
@@ -121,19 +120,19 @@
                 android:inputType="textPassword"
                 style="@style/EditTextStyle"/>
 
-            <!-- Texto para recuperar la contraseña -->
+            <!-- Link to forgot password -->
             <TextView
                 android:id="@+id/forgot_password_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginBottom="34dp"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/forgot_your_password"
                 android:textColor="@color/gray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginBottom="10dp" />
 
-            <!-- Botón para iniciar sesión -->
+            <!-- Login button -->
             <Button
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
@@ -143,17 +142,18 @@
                 android:text="@string/login"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"  />
 
-            <!-- Registro -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
-                <!-- Texto "Don't have an account?" -->
+                <!-- Question text -->
                 <TextView
                     android:id="@+id/register_question"
                     android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
                     android:textColor="@color/dark_blue"
                     android:textSize="15sp" />
 
-                <!-- Enlace para registrarse -->
+                <!-- Link to register -->
                 <TextView
                     android:id="@+id/register_now_text"
                     android:layout_width="wrap_content"

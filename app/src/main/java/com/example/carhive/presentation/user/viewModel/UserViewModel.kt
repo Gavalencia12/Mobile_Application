@@ -1,4 +1,4 @@
-package com.example.carhive.presentation.user.viewModel
+package com.example.carhive.Presentation.user.viewModel
 
 import android.app.Application
 import android.widget.Toast
@@ -6,18 +6,23 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.carhive.Domain.model.Car
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
+import com.example.carhive.Domain.usecase.database.UpdateCarToDatabaseUseCase
 import com.example.carhive.Domain.usecase.favorites.AddCarToFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
+import com.example.carhive.Presentation.user.adapter.CarHomeAdapter
 import com.example.carhive.R
 import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +33,8 @@ class UserViewModel @Inject constructor(
     private val removeCarFromFavoritesUseCase: RemoveCarFromFavoritesUseCase,
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
     private val getUserDataUseCase: GetUserDataUseCase,
-    private val firebaseDatabase: FirebaseDatabase
+    private val firebaseDatabase: FirebaseDatabase,
+    private val updateCarToDatabaseUseCase: UpdateCarToDatabaseUseCase
 ) : AndroidViewModel(application) {
 
     // Default list of car brands retrieved from string resources
@@ -38,11 +44,17 @@ class UserViewModel @Inject constructor(
     private val _carList = MutableLiveData<List<CarEntity>>()
     val carList: LiveData<List<CarEntity>> get() = _carList
 
+    private val _recommendedCarList = MutableLiveData<List<CarEntity>>()
+    val recommendedCarList: LiveData<List<CarEntity>> get() = _recommendedCarList
+
     // LiveData to hold user data
     private val _userData = MutableLiveData<UserEntity?>()
     val userData: LiveData<UserEntity?> get() = _userData
 
     private var allCars: List<CarEntity> = emptyList()
+    private var favoriteCounts: Map<String, Int> = emptyMap() // Map for favorite counts
+
+    private lateinit var recommendedCarAdapter: CarHomeAdapter
 
     // Selected filters
     var selectedBrands: MutableSet<String> = mutableSetOf()
@@ -50,6 +62,7 @@ class UserViewModel @Inject constructor(
     var yearRange: Pair<Int, Int>? = null
     var priceRange: Pair<Int, Int?> = 0 to null
     var mileageRange: Pair<Int, Int?> = 0 to null
+    var selectedColors: MutableSet<String> = mutableSetOf()
 
     // Standardized selected color (first letter capitalized)
     var selectedColor: String? = null
@@ -59,6 +72,8 @@ class UserViewModel @Inject constructor(
 
     // Current location filter
     private var selectedLocation: String? = null
+
+
 
     // Unique car models and colors for filter options
     private val _uniqueCarModels = MutableLiveData<List<String>>()
@@ -78,9 +93,27 @@ class UserViewModel @Inject constructor(
                 _carList.value = allCars
                 loadUniqueCarModels()
                 loadUniqueCarColors()
+                fetchRecommendedCars() // Update recommended cars after fetching all cars
             } else {
                 showToast(R.string.error_fetching_cars)
             }
+        }
+    }
+
+    /**
+     * Fetches the recommended cars based on views, favorite counts, and model name.
+     */
+    fun fetchRecommendedCars() {
+        viewModelScope.launch {
+            // Order by views, reactions, and alphabetical order by model name
+            val sortedCars = allCars.sortedWith(
+                compareByDescending<CarEntity> { it.views }
+                    .thenByDescending { favoriteCounts[it.id] ?: 0 }
+                    .thenBy { it.modelo }
+            )
+
+            // Take the top 10 cars
+            _recommendedCarList.value = sortedCars.take(5)
         }
     }
 
@@ -96,6 +129,8 @@ class UserViewModel @Inject constructor(
         _uniqueCarColors.value = colors
     }
 
+
+    var selectedCondition: String? = null
     /**
      * Applies filters to the list of cars based on selected criteria, including location.
      */
@@ -104,25 +139,31 @@ class UserViewModel @Inject constructor(
             val matchesBrand = selectedBrands.isEmpty() || selectedBrands.contains(car.brand)
             val matchesModel = selectedModel == null || car.modelo == selectedModel
             val matchesYear = yearRange?.let { (min, max) -> car.year.toIntOrNull()?.let { it in min..max } } ?: true
-            val matchesColor = selectedColor == null || car.color.equals(selectedColor, ignoreCase = true)
+            val matchesColor = selectedColors.isEmpty() || selectedColors.contains(car.color.capitalize())
             val matchesLocation = selectedLocation == null || car.location == selectedLocation
+            val matchesCondition = selectedCondition == null || car.condition == selectedCondition
 
             val carPrice = car.price.toIntOrNull() ?: 0
-            val matchesPrice = when {
-                priceRange.second != null -> carPrice in priceRange.first..priceRange.second!!
-                else -> carPrice >= priceRange.first
-            }
+            val matchesPrice = carPrice in (priceRange.first)..(priceRange.second ?: Int.MAX_VALUE)
 
             val carMileage = car.mileage.toIntOrNull() ?: 0
-            val matchesMileage = when {
-                mileageRange.second != null -> carMileage in mileageRange.first..mileageRange.second!!
-                else -> carMileage >= mileageRange.first
-            }
+            val matchesMileage = carMileage in (mileageRange.first)..(mileageRange.second ?: Int.MAX_VALUE)
 
-            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation && matchesPrice && matchesMileage
+            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation && matchesPrice && matchesMileage && matchesCondition
         }
         _carList.value = filteredCars
     }
+
+    fun filterCarsBySelectedBrands(selectedBrands: Set<String>, onFilterApplied: (List<CarEntity>) -> Unit) {
+        val filteredCars = if (selectedBrands.isEmpty()) {
+            allCars
+        } else {
+            allCars.filter { selectedBrands.contains(it.brand) }
+        }
+        onFilterApplied(filteredCars)
+    }
+
+
 
     /**
      * Resets all filters and shows the complete list of cars.
@@ -135,8 +176,10 @@ class UserViewModel @Inject constructor(
         priceRange = 0 to null
         mileageRange = 0 to null
         selectedLocation = null
+        selectedCondition = null // Reinicia la condición seleccionada
         _carList.value = allCars
     }
+
 
     /**
      * Filters cars by location.
@@ -242,5 +285,82 @@ class UserViewModel @Inject constructor(
     // Show toast message with the specified string resource ID
     private fun showToast(messageResId: Int) {
         Toast.makeText(getApplication(), getApplication<Application>().getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun mapCarEntityToCar(carEntity: CarEntity): Car {
+        return Car(
+            id = carEntity.id,
+            modelo = carEntity.modelo,
+            color = carEntity.color,
+            mileage = carEntity.mileage,
+            brand = carEntity.brand,
+            description = carEntity.description,
+            price = carEntity.price,
+            year = carEntity.year,
+            sold = carEntity.sold,
+            imageUrls = carEntity.imageUrls,
+            ownerId = carEntity.ownerId,
+            transmission = carEntity.transmission,
+            fuelType = carEntity.fuelType,
+            doors = carEntity.doors,
+            engineCapacity = carEntity.engineCapacity,
+            location = carEntity.location,
+            condition = carEntity.condition,
+            features = carEntity.features,
+            vin = carEntity.vin,
+            previousOwners = carEntity.previousOwners,
+            views = carEntity.views,
+            listingDate = carEntity.listingDate,
+            lastUpdated = carEntity.lastUpdated
+        )
+    }
+
+    /**
+     * Handles unique views count for a car by checking if the current user has viewed it.
+     */
+    fun handleCarView(car: CarEntity) {
+        viewModelScope.launch {
+            val currentUser = getCurrentUserIdUseCase()
+            val userId = currentUser.getOrNull() ?: return@launch
+
+            // Check if the user has already viewed the car in Firebase
+            val viewsRef = firebaseDatabase.getReference("views/${car.id}/$userId")
+
+            viewsRef.get().addOnSuccessListener { snapshot ->
+                if (!snapshot.exists()) {
+                    // Increment the view count only if it is a unique view
+                    car.views += 1
+
+                    // Add the unique view to Firebase and update the view count in the car's database entry
+                    viewsRef.setValue(true).addOnSuccessListener {
+                        updateCarViewCountInDatabase(car)
+                    }.addOnFailureListener {
+                        showToast(R.string.error_updating_view_count)
+                    }
+                }
+            }.addOnFailureListener {
+                showToast(R.string.error_fetching_view_status)
+            }
+        }
+    }
+
+    private fun updateCarViewCountInDatabase(car: CarEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val ownerId = car.ownerId
+
+            // Create an updated Car object with the view count only
+            val updatedCar = mapCarEntityToCar(car).copy(views = car.views)
+
+            // Update the view count in the car's database entry
+            val result = updateCarToDatabaseUseCase(ownerId, car.id, updatedCar)
+            result.fold(
+                onSuccess = { fetchCars() },
+                onFailure = {
+                    withContext(Dispatchers.Main) {
+                        showToast(R.string.error_updating_car)
+                    }
+                }
+            )
+        }
     }
 }

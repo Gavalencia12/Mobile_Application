@@ -22,7 +22,6 @@ class FortRegisterViewModel @Inject constructor(
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    // Método para verificar el estado del email
     fun checkEmailVerification() {
         viewModelScope.launch {
             val user = auth.currentUser

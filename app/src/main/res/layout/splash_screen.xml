@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Fondo de color azul -->
+    <!-- Blue background -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#153CE5" />
+        android:background="#153CE5"
+        android:contentDescription="@string/image" />
 
-    <!-- ImageView para el GIF -->
+    <!-- Splash GIF -->
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
         android:layout_width="match_parent"

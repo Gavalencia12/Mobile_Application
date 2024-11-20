@@ -113,15 +113,16 @@ class ChatViewModel @Inject constructor(
      * Observes chat messages and updates the messages list. Automatically updates the message
      * status to "read" if the current user is the message receiver.
      */
-    fun observeMessages(ownerId: String, carId: String, buyerId: String) {
+    fun observeMessages(ownerId: String, carId: String, buyerId: String, admin: Boolean) {
         viewModelScope.launch {
             getMessagesUseCase(ownerId, carId, buyerId).collectLatest { message ->
-                // Si el mensaje no ha sido eliminado para este usuario
                 if (!message.deletedFor.contains(currentUserId)) {
-                    // Si es un mensaje recibido, actualizar a "read" si corresponde
-                    if (message.receiverId == currentUserId || message.receiverId == "TechnicalSupport" && message.status == "sent") {
+                    if (message.receiverId == currentUserId && message.status == "sent") {
                         updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
-                        message.status = "read" // Optimista: actualizar localmente
+                        message.status = "read"
+                    } else if (message.receiverId == "TechnicalSupport" && admin){
+                        updateMessageStatus(ownerId, carId, buyerId, message.messageId, "read")
+                        message.status = "read"
                     }
 
                     // Actualiza la lista local de mensajes
@@ -141,7 +142,7 @@ class ChatViewModel @Inject constructor(
      */
     fun sendTextMessage(ownerId: String, carId: String, buyerId: String, content: String, admin: Boolean) {
         val isSeller = currentUserId == ownerId
-        val receiver = if (isSeller) buyerId else if (ownerId=="TechnicalSupport") buyerId else ownerId
+        val receiver = if (isSeller) buyerId else if (ownerId=="TechnicalSupport") if (!admin) "TechnicalSupport" else buyerId else ownerId
         var sender = currentUserId
         if (admin) sender = "TechnicalSupport"
 
@@ -183,11 +184,14 @@ class ChatViewModel @Inject constructor(
         fileUri: Uri,
         fileType: String,
         fileName: String,
-        fileHash: String
+        fileHash: String,
+        admin: Boolean
     ) {
         viewModelScope.launch {
             val isSeller = currentUserId == ownerId
-            val receiver = if (isSeller) buyerId else ownerId
+            val receiver = if (isSeller) buyerId else if (ownerId == "TechnicalSupport")
+                if (!admin) "TechnicalSupport" else buyerId
+            else ownerId
 
             isUserBlocked(receiver, currentUserId, carId) { isBlocked ->
                 val deletedFor = mutableListOf<String>()
@@ -195,18 +199,24 @@ class ChatViewModel @Inject constructor(
                     deletedFor.add(receiver)
                 }
 
+                // Crear el objeto Message
+                val message = Message(
+                    messageId = "",
+                    senderId = if (admin) "TechnicalSupport" else currentUserId,
+                    receiverId = receiver,
+                    fileUrl = fileUri.toString(), // Inicialmente, el URI del archivo sin la URL descargable
+                    fileType = fileType,
+                    fileName = fileName,
+                    hash = fileHash,
+                    timestamp = System.currentTimeMillis(),
+                    status = "sent",
+                    carId = carId,
+                    deletedFor = deletedFor
+                )
+
+                // Llamar al caso de uso para enviar el archivo
                 viewModelScope.launch {
-                    val result = sendFileMessageUseCase(
-                        ownerId,
-                        carId,
-                        buyerId,
-                        fileUri,
-                        fileType,
-                        fileName,
-                        fileHash,
-                        receiver,
-                        deletedFor
-                    )
+                    val result = sendFileMessageUseCase(ownerId, carId, buyerId, message)
                     if (result.isFailure) {
                         _error.value = result.exceptionOrNull()?.message
                     }

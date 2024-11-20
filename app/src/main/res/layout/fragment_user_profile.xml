@@ -44,8 +44,7 @@
                     android:contentDescription="@string/image"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_edit"
-                    android:padding="5dp"
-                    android:visibility="invisible"/>
+                    android:padding="5dp"/>
 
             </RelativeLayout>
 
@@ -101,8 +100,7 @@
                     android:layout_centerHorizontal="true"
                     android:text=""
                     android:textColor="#757575"
-                    android:textSize="14sp"
-                    android:visibility="gone"/>
+                    android:textSize="14sp"/>
             </RelativeLayout>
 
             <ListView
