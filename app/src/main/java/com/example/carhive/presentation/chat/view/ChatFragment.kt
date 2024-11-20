@@ -210,6 +210,7 @@ class ChatFragment : Fragment() {
                     .load(it.imageUrl)
                     .placeholder(R.drawable.ic_img)
                     .error(R.drawable.ic_error)
+                    .circleCrop()
                     .into(binding.profileImage)
             }
         }
@@ -222,6 +223,7 @@ class ChatFragment : Fragment() {
                     .load(it.imageUrl)
                     .placeholder(R.drawable.ic_img)
                     .error(R.drawable.ic_error)
+                    .circleCrop()
                     .into(binding.profileImage)
             }
         }

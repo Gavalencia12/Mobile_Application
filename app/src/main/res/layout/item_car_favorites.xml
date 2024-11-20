@@ -10,61 +10,94 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/carImage"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter" />
+        <!-- Imagen del auto -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:weightSum="1">
 
+            <ImageView
+                android:id="@+id/carImage"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/car_image"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+
+        <!-- Sección de información del auto -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/carModel"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/model_name"
-                android:fontFamily="@font/inter_bold"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/carModel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:text=""
+                    android:fontFamily="@font/inter_bold"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Botón de eliminar de favoritos -->
+                <ImageButton
+                    android:id="@+id/deleteFavoriteButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_exit"
+                    android:contentDescription="@string/delete_favorite"
+                    android:scaleType="centerInside"
+                    android:padding="2dp" />
+            </LinearLayout>
+
+            <!-- Marca del auto -->
             <TextView
                 android:id="@+id/carBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/brand"
+                android:gravity="top"
+                android:text=""
                 android:fontFamily="@font/inter_bold"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
+            <!-- Precio del auto -->
             <TextView
                 android:id="@+id/carPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/price"
+                android:gravity="bottom"
+                android:text=""
                 android:fontFamily="@font/inter_bold"
-                android:textSize="16sp"
-                android:textColor="@android:color/holo_green_dark" />
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="16sp" />
 
+            <!-- Botón de más información -->
+            <Button
+                android:id="@+id/btnMoreInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/contact"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/ic_person_outline"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                style="@style/ButtonTheme"/>
         </LinearLayout>
-
-        <!-- Botón de eliminar de favoritos (icono de X) -->
-        <ImageButton
-            android:id="@+id/deleteFavoriteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_exit"
-            android:contentDescription="Eliminar de favoritos" />
 
     </LinearLayout>
 

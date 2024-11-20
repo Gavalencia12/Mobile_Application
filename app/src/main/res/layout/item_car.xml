@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
@@ -10,97 +11,84 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:orientation="vertical"
+        android:padding="8dp">
 
-        <LinearLayout
+        <ImageView
+            android:id="@id/carImage"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/car_image"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@id/carModel"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:weightSum="1">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text=""
+            android:fontFamily="@font/inter_bold"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/carImage"
-                android:layout_width="125dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@id/carBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:fontFamily="@font/inter_semibold"
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/carPrice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:layout_gravity="start|center_vertical"
+                android:text=""
+                android:fontFamily="@font/inter_bold"
+                android:textSize="15sp"
+                android:textColor="@android:color/holo_green_dark" />
 
-                <TextView
-                    android:id="@+id/carModel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:text=""
-                    android:fontFamily="@font/inter_bold"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:padding="10dp">
 
                 <CheckBox
                     android:id="@+id/favoriteCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:padding="10dp"
-                    android:gravity="end|center"
+                    android:layout_gravity="center"
                     android:button="@drawable/checkbox_heart_selector" />
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/carBrand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="top"
-                android:text=""
-                android:fontFamily="@font/inter_bold"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/carPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:text=""
-                android:fontFamily="@font/inter_bold"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/btnMoreInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="bottom"
-                android:text="@string/contact"
-                android:fontFamily="@font/inter_extrabold"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:drawableStart="@drawable/ic_person_outline"
-                android:paddingStart="25dp"
-                android:paddingEnd="25dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:background="@drawable/button_more_info_background"
-                android:textStyle="bold" />
-
-
+            </FrameLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnMoreInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="bottom"
+            android:text="@string/contact"
+            android:textSize="14sp"
+            android:drawableStart="@drawable/ic_person_outline"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            style="@style/ButtonTheme"
+            android:visibility="gone"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

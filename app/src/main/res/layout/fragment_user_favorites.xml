@@ -9,32 +9,86 @@
     android:layout_marginEnd="10dp"
     tools:context=".presentation.user.view.FavoritesFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/llTop"
+        android:gravity="center_vertical"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:fontFamily="@font/inter_semibold"
+            android:textSize="15sp"
+            app:drawableStartCompat="@drawable/ic_location"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/TwUbication"
+            android:id="@+id/ubication"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_bgw"
+            android:contentDescription="@string/logo"
+            android:layout_marginEnd="3dp"/>
+    </LinearLayout>
+
+    <AutoCompleteTextView
+        android:id="@id/autoComplete_model_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/Search_your_car"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="10dp"
+        android:padding="12dp"
+        android:background="@drawable/shadow_background"
+        android:inputType="text"
+        android:textColorHint="@android:color/darker_gray"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/llTop"/>
+
     <TextView
         android:id="@+id/user_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/favorites"
-        android:textSize="24sp"
+        android:fontFamily="@font/inter_bold"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/autoComplete_model_search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/user_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Opción para mostrar un mensaje cuando no haya favoritos -->
+    <!-- No favorites message -->
     <TextView
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/there_are_no_favorites_in_your_list"
+        android:fontFamily="@font/inter_semibold"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

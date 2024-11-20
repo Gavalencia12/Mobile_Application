@@ -11,7 +11,9 @@ import com.example.carhive.Domain.usecase.chats.*
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.data.model.UserEntity
+import com.example.carhive.data.model.HistoryEntity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,6 +56,58 @@ class ChatViewModel @Inject constructor(
     val isUserBlocked: LiveData<Boolean> get() = _isUserBlocked
 
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
+    private val historyRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("History/userHistory")
+
+    private fun logHistoryEvent(userId: String, eventType: String, message: String) {
+        val history = HistoryEntity(
+            userId = userId,
+            timestamp = System.currentTimeMillis(),
+            eventType = eventType,
+            message = message
+        )
+
+        viewModelScope.launch {
+            try {
+                val newHistoryRef = historyRef.push()
+                newHistoryRef.setValue(history).await()
+            } catch (e: Exception) {
+                Log.e("ChatViewModel", "Error logging history event: ${e.message}")
+            }
+        }
+    }
+
+    fun createChat(ownerId: String, buyerId: String, carId: String) {
+        viewModelScope.launch {
+            try {
+                // Lógica para crear un chat
+                logHistoryEvent(
+                    userId = currentUserId,
+                    eventType = "Chat Created",
+                    message = "Chat creado entre $ownerId y $buyerId para el auto $carId"
+                )
+            } catch (e: Exception) {
+                _error.value = "Error creando el chat: ${e.message}"
+            }
+        }
+    }
+
+    // Registro al eliminar un chat
+    fun deleteChat(ownerId: String, buyerId: String, carId: String) {
+        viewModelScope.launch {
+            try {
+                // Lógica para eliminar un chat
+                logHistoryEvent(
+                    userId = currentUserId,
+                    eventType = "Chat Deleted",
+                    message = "Chat eliminado entre $ownerId y $buyerId para el auto $carId"
+                )
+            } catch (e: Exception) {
+                _error.value = "Error eliminando el chat: ${e.message}"
+            }
+        }
+    }
+
+    // Registro al reportar un usuario
 
     /**
      * Observes chat messages and updates the messages list. Automatically updates the message

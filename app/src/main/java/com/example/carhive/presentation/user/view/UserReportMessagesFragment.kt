@@ -210,9 +210,10 @@ class UserReportMessagesFragment : Fragment() {
             binding.tvName.text = "Technical Support"
             binding.tvCarModel.text = "Send a message"
             Glide.with(requireContext())
-                .load(R.drawable.car_hive_logo)
+                .load(R.drawable.car_hive_circle_logo)
                 .placeholder(R.drawable.ic_img)
                 .error(R.drawable.ic_error)
+                .circleCrop()
                 .into(binding.profileImage)
     }
 
