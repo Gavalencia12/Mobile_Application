@@ -51,8 +51,7 @@
                     android:text="@string/first_name"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:layout_gravity="center"/>
+                    android:textSize="16dp"/>
 
                 <!-- User's last name -->
                 <TextView
@@ -62,8 +61,7 @@
                     android:text="@string/last_name"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:layout_gravity="center"/>
+                    android:textSize="16dp"/>
             </LinearLayout>
 
             <!-- User's email address -->
