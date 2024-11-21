@@ -1,6 +1,8 @@
 package com.example.carhive.presentation.admin.view
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -41,11 +43,13 @@ class AdminUserBanFragment : Fragment() {
 
         adapter = UserAdapterBan(listOf(),
             onBanClick = { user ->
-                banViewModel.banUser(user.id, "${user.firstName} ${user.lastName}")
+                banViewModel.banUser(user.id, "${user.firstName} ${user.lastName}", user.email)
+                sendEmail(user.email, "Account Banned", "Your account has been banned. Contact support for further details.")
                 Toast.makeText(requireContext(), "User banned successfully", Toast.LENGTH_SHORT).show()
             },
             offBanClick = { user ->
-                banViewModel.unbanUser(user.id, "${user.firstName} ${user.lastName}")
+                banViewModel.unbanUser(user.id, "${user.firstName} ${user.lastName}", user.email)
+                sendEmail(user.email, "Account Unbanned", "Your account has been reinstated. You can now access the platform.")
                 Toast.makeText(requireContext(), "User unbanned successfully", Toast.LENGTH_SHORT).show()
             },
             onDeleteClick = { user ->
@@ -80,12 +84,14 @@ class AdminUserBanFragment : Fragment() {
             .setTitle("Delete user")
             .setMessage("Are you sure you want to delete ${user.firstName} ${user.lastName}? This action cannot be undone.")
             .setPositiveButton("Delete") { _, _ ->
-                banViewModel.deleteUser(user.id, "${user.firstName} ${user.lastName}")
+                banViewModel.deleteUser(user.id, "${user.firstName} ${user.lastName}", user.email)
+                sendEmail(user.email, "Account Deleted", "Your account has been permanently deleted from our platform.")
                 Toast.makeText(requireContext(), "User deleted successfully", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
+
 
     private fun filterUsers(query: String) {
         val filteredList = banViewModel.users.value?.filter { user ->
@@ -94,6 +100,19 @@ class AdminUserBanFragment : Fragment() {
                     user.email.contains(query, ignoreCase = true)
         } ?: emptyList()
         adapter.updateData(filteredList)
+    }
+    private fun sendEmail(email: String, subject: String, message: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, message)
+        }
+        try {
+            startActivity(Intent.createChooser(intent, "Send Email"))
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error sending email", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {

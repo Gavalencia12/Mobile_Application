@@ -122,6 +122,15 @@
                 android:textColor="@color/black"
                 android:layout_gravity="center"/>
 
+            <TextView
+                android:id="@+id/textban"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verified"
+                android:fontFamily="@font/inter_light"
+                android:textColor="@color/black"
+                android:layout_gravity="center"/>
+
             <!-- User role within the system (e.g., Admin, User) -->
             <TextView
                 android:id="@+id/rolText"
