@@ -17,7 +17,7 @@ class UserAdapterBan(
 
     inner class UserBanViewHolder(val binding: ItemUserBanBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: UserEntity) {
-            user.imageUrl?.let {
+            user.imageUrl2?.let {
                 Glide.with(binding.root.context)
                     .load(it)
                     .into(binding.userImageView)

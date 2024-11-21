@@ -41,12 +41,12 @@ class ThirdRegisterViewModel @Inject constructor(
 
                 // Subir la imagen al storage
                 val uploadResult = uploadToProfileImageUseCase(userId, imageUri)
-                val imageUrl = uploadResult.getOrNull() ?: return@launch // Si falla la subida, termina aquí
+                val imageUrl2 = uploadResult.getOrNull() ?: return@launch // Si falla la subida, termina aquí
 
                 val verificationTimestamp = System.currentTimeMillis().toString()
 
                 // Crear un nuevo objeto de usuario con la URL de la imagen
-                val updatedUser = user.copy(imageUrl = imageUrl, verificationTimestamp = verificationTimestamp)
+                val updatedUser = user.copy(imageUrl2 = imageUrl2, verificationTimestamp = verificationTimestamp)
 
                 // Guardar la información actualizada del usuario en la base de datos
                 val saveResult = saveUserToDatabaseUseCase(userId, updatedUser)
