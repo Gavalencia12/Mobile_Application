@@ -33,7 +33,6 @@ class UserDetailsDialogFragment(private val user: UserEntity,private val onUserU
 
         database = FirebaseDatabase.getInstance().getReference("Users")
 
-        // Mostrar los datos del usuario
         binding.firstNameText.text = user.firstName
         binding.lastNameText.text = user.lastName
         binding.emailText.text = user.email
