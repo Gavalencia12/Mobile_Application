@@ -421,6 +421,10 @@
     <string name="approved">Approved</string>
     <string name="disapproved">Disapproved</string>
 
+    <string name="type_of_event">Type of Event</string>
+    <string name="date_and_time">Date and Time</string>
+
+
     <!-- Spinner Options -->
     <string-array name="transmission_options">
         <item>Manual</item>
