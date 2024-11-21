@@ -42,6 +42,7 @@ class UserRepositoryImpl @Inject constructor(
                     putString("voterID", userEntity.voterID)
                     putString("curp", userEntity.curp)
                     putString("imageUrl", userEntity.imageUrl)
+                    putString("imageUrl2", userEntity.imageUrl2)
                     putInt("role", userEntity.role)
                     putBoolean("termsUser", userEntity.termsUser)
                     apply() // Aplica los cambios en SharedPreferences
@@ -65,6 +66,7 @@ class UserRepositoryImpl @Inject constructor(
                     voterID = sharedPreferences.getString("voterID", "") ?: "",
                     curp = sharedPreferences.getString("curp", "") ?: "",
                     imageUrl = sharedPreferences.getString("imageUrl", null),
+                    imageUrl2 = sharedPreferences.getString("imageUrl2", null),
                     role = sharedPreferences.getInt("role", -1), // -1 indica usuario sin rol asignado
                     termsUser = sharedPreferences.getBoolean("termsUser",false)
                 )

@@ -39,6 +39,12 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Escuchar el resultado del diálogo
+        parentFragmentManager.setFragmentResultListener("update_request_key", this) { _, _ ->
+            // Recargar los datos del usuario después de actualizar
+            viewModel.fetchUserData()
+        }
+
         // Observar los datos del usuario
         viewModel.userData.observe(viewLifecycleOwner, Observer { result ->
             result.onSuccess { userList ->
@@ -86,7 +92,7 @@ class ProfileFragment : Fragment() {
                 "Privacy policy" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_privacyPolicyFragment)
                 }
-                "Report a problem" -> {
+                "Technical Support" -> {
                     val bundle = Bundle().apply {
                         putString("carId", "buyer")
                         putString("ownerId", "TechnicalSupport")
@@ -95,7 +101,7 @@ class ProfileFragment : Fragment() {
                     findNavController().navigate(R.id.action_userProfileFragment_to_UserReportMessagesFragment, bundle)
                 }
                 "Personal Data" -> {
-                    findNavController().navigate(R.id.action_userProfileFragment_to_privacyPolicyFragment)
+                    findNavController().navigate(R.id.action_userProfileFragment_to_PersonalDataFragment)
                 }
                 // Otros casos...
             }

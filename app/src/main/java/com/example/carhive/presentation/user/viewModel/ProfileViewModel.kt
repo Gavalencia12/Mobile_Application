@@ -26,7 +26,7 @@ class ProfileViewModel @Inject constructor(
     // Método para obtener los datos del usuario
     fun fetchUserData() {
         viewModelScope.launch {
-            val userIdResult = getCurrentUserIdUseCase() // Obtén el ID del usuario
+            val userIdResult = getCurrentUserIdUseCase()
             val userId = userIdResult.getOrNull()
             Log.i("angel", "es $userId")
             userIdResult.onSuccess {

@@ -11,6 +11,13 @@
         android:padding="16dp">
 
         <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone number"
+            android:inputType="number" />
+
+        <EditText
             android:id="@+id/et_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,19 +30,18 @@
             android:layout_height="wrap_content"
             android:hint="Address"
             android:inputType="text" />
-
-        <EditText
-            android:id="@+id/et_interior_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Interior Number"
-            android:inputType="text" />
-
         <EditText
             android:id="@+id/et_outer_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Outer Number"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/et_interior_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Interior Number (optional)"
             android:inputType="text" />
 
         <RadioGroup
@@ -71,17 +77,26 @@
             android:inputType="textMultiLine"
             android:lines="3"
             android:gravity="top" />
+        <TextView
+            android:id="@+id/tvImageUrl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Imagen de perfil"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
 
         <Button
-            android:id="@+id/btn_upload_image"
+            style="@style/button_selected"
+            android:id="@+id/btnSelectImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upload Image" />
 
         <ImageView
-            android:id="@+id/iv_uploaded_image"
+            android:id="@+id/ivUserImage"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="165dp"
             android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
             android:contentDescription="Uploaded Image" />
@@ -90,21 +105,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
+            android:gravity="center"
             android:paddingTop="16dp">
 
             <Button
+                style="@style/button_dialog"
+                android:background="@drawable/button_delete"
+                android:textColor="@drawable/btn_txt_color"
                 android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancel" />
 
             <Button
+                style="@style/button_dialog"
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="Save" />
+                android:text="Save"
+                android:background="@drawable/button_edit"
+                android:textColor="@drawable/btn_edit_txt_color"
+                />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

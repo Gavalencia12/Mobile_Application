@@ -46,7 +46,7 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
             "Not Verified"
         }
 
-        user.imageUrl?.let {
+        user.imageUrl2?.let {
             Glide.with(this).load(it).into(binding.userImageView)
         }
 
