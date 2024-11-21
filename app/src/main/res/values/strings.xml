@@ -362,6 +362,7 @@
     <string name="verify_users">Verify Users</string>
     <string name="verify_button">Verify</string>
     <string name="email">Email</string>
+    <string name="Ban">Ban</string>
     <string name="verified">Verified</string>
     <string name="role">Role</string>
     <string name="unban_button">UNBAN</string>

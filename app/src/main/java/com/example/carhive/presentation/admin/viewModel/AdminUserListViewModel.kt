@@ -26,7 +26,7 @@ class AdminUserListViewModel @Inject constructor(
         getUsers()
     }
 
-    private fun getUsers() {
+    fun getUsers() {
         val usersRef = database.getReference("Users")
         usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -42,7 +42,7 @@ class AdminUserListViewModel @Inject constructor(
                             else -> UserRole.NORMAL_USER
                         }
 
-
+                        userEntity.id = snapshot.key ?: ""
                         userList.add(userEntity)
                     }
                 }

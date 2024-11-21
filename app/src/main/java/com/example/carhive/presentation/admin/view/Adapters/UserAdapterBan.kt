@@ -26,12 +26,22 @@ class UserAdapterBan(
             binding.firstNameText.text = user.firstName
             binding.lastNameText.text = user.lastName
             binding.curpText.text = user.curp
+            binding.BanText.text = if (user.isBanned) {
+                "Banned"
+            } else {
+                "Not Banned"
+            }
 
             binding.emailText.text = user.email
             binding.verifiedText.text = if (user.isverified) {
                 "Verified"
             } else {
                 "Not Verified"
+            }
+            binding.textban.text = if (user.isBanned) {
+                "Banned"
+            } else {
+                "Not Banned"
             }
             binding.rolText.text = when (user.role) {
                 0 -> "ADMINISTRATOR"

@@ -65,6 +65,15 @@
                     android:textSize="16dp" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/BanText"
+                android:fontFamily="@font/inter_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/Ban"
+                android:textColor="@color/white"/>
+
             <!-- User's email address -->
             <TextView
                 android:id="@+id/emailText"
@@ -110,6 +119,15 @@
             <!-- Verification status (e.g., Verified/Unverified) -->
             <TextView
                 android:id="@+id/verifiedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verified"
+                android:fontFamily="@font/inter_light"
+                android:textColor="@color/black"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textban"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/verified"
