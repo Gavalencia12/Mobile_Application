@@ -41,33 +41,36 @@ class AdminUserBanViewModel : ViewModel() {
         }
     }
 
-    fun banUser(userId: String, userName: String) {
+    fun banUser(userId: String, userName: String, userEmail: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 database.child("Users").child(userId).child("banned").setValue(true).await()
                 logHistory(userId, "Ban", "User $userName was banned")
+                loadUsers() // Recarga los usuarios
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun unbanUser(userId: String, userName: String) {
+    fun unbanUser(userId: String, userName: String, userEmail: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 database.child("Users").child(userId).child("banned").setValue(false).await()
                 logHistory(userId, "Unban", "User $userName was unbanned")
+                loadUsers() // Recarga los usuarios
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun deleteUser(userId: String, userName: String) {
+    fun deleteUser(userId: String, userName: String, userEmail: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 database.child("Users").child(userId).removeValue().await()
                 logHistory(userId, "Delete", "User $userName was deleted")
+                loadUsers() // Recarga los usuarios
             } catch (e: Exception) {
                 e.printStackTrace()
             }
