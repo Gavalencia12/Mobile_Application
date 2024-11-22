@@ -470,6 +470,9 @@
     <string name="messages">Messages</string>
     <string name="block">Block</string>
     <string name="report">Report</string>
+    <string name="user_car">User or Car Name</string>
+    <string name="last_message">Last Message</string>
+    <string name="num">9</string>
 
 
 </resources>

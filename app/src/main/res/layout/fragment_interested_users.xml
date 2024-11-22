@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingVertical="40dp"
+    android:paddingTop="60dp"
     android:background="@color/gray_light">
 
     <TextView
@@ -12,15 +12,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@drawable/content_chats"
-        android:paddingVertical="10dp"
+        android:paddingVertical="20dp"
         android:layout_marginTop="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewInterestedUsers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

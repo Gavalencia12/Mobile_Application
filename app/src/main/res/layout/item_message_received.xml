@@ -6,18 +6,14 @@
     <LinearLayout
         android:id="@+id/llHead"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <!-- Encabezado de fecha -->
         <TextView
+            style="@style/header_date"
             android:id="@+id/dateHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textSize="12sp"
-            android:textAlignment="center"
-            android:textColor="@color/gray"
-            android:visibility="gone"/>
+            android:padding="10dp"/>
     </LinearLayout>
 
     <!-- Contenedor de mensajes y archivos -->
@@ -35,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_background"
-            android:backgroundTint="@color/dark_blue"
+            android:backgroundTint="@color/blue"
             android:padding="8dp"
             android:maxWidth="260dp"
             android:textColor="@android:color/white"

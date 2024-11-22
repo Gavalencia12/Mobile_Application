@@ -3,10 +3,11 @@
     android:layout_height="match_parent"
     android:background="#000000"> <!-- Fondo negro detrás de la imagen -->
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imageViewFull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
         android:background="#000000" /> <!-- Fondo negro dentro del ImageView -->
 </FrameLayout>

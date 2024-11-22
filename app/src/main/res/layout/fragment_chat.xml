@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="40dp">
+    android:paddingTop="40dp" >
 
     <!-- Header con botón de retroceso, imagen de perfil, detalles y menú -->
     <LinearLayout
@@ -23,12 +23,10 @@
 
         <!-- Foto de perfil -->
         <ImageView
+            style="@style/circle_shape_ic"
             android:id="@+id/profileImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="12dp"
-            android:scaleType="centerCrop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_profile"/>
 
         <!-- Nombre y modelo del coche -->
@@ -36,20 +34,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center">
 
             <TextView
+                style="@style/title_content_chat"
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="Nombre de la persona"/>
+                android:text="Nombre de la persona" />
 
             <TextView
+                style="@style/content_notify"
                 android:id="@+id/tv_car_model"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@color/gray"
                 android:text="Modelo del coche"/>
@@ -62,7 +58,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_more_vert"
-            android:contentDescription="Menu Button"/>
+            android:padding="8dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -146,7 +142,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:nestedScrollingEnabled="false"/>
 
     <!-- Texto para indicar que el usuario está bloqueado -->
     <TextView
@@ -160,35 +157,49 @@
         android:textSize="14sp"
         android:visibility="gone"/>
 
+
     <!-- Input para enviar mensaje con attachButton -->
     <LinearLayout
         android:id="@+id/messageInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:layout_marginBottom="5dp">
 
-        <!-- Botón de adjuntar archivo -->
+        <LinearLayout
+            style="@style/EditTextChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_marginEnd="10dp">
+
+            <EditText
+                style="@style/EditTextChat"
+                android:id="@+id/editTextMessage"
+                android:hint="Escribe un mensaje..."
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp" />
+
+            <!-- Botón de adjuntar archivo -->
+            <ImageButton
+                android:id="@+id/attachButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_attach_file"
+                android:layout_marginStart="15dp"/>
+        </LinearLayout>
+
         <ImageButton
-            android:id="@+id/attachButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_attach_file" />
-
-        <EditText
-            android:id="@+id/editTextMessage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Escribe un mensaje..."
-            android:padding="8dp"/>
-
-        <Button
             android:id="@+id/buttonSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enviar"/>
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/ic_send"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/blue" />
     </LinearLayout>
+
 </LinearLayout>

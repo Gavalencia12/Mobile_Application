@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000000">
 
     <!-- ViewPager para las imágenes/videos -->
@@ -14,19 +15,20 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#ffffff"
+        android:background="#5C000000"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:visibility="gone"> <!-- Inicialmente oculto -->
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/closeButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:contentDescription="@string/close"
-            android:padding="4dp"
-            android:src="@drawable/ic_exit" />
+            android:padding="8dp"
+            android:src="@drawable/ic_exit"
+            app:tint="@color/white"/>
     </LinearLayout>
 
 </FrameLayout>
