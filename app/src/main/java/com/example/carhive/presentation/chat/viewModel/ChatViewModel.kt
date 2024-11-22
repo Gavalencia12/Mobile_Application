@@ -6,6 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.Constraints
 import com.example.carhive.Domain.model.Message
 import com.example.carhive.Domain.usecase.chats.*
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
@@ -19,10 +24,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +38,7 @@ class ChatViewModel @Inject constructor(
     private val infoUseCase: GetUserInfoUseCase,
     private val deleteMessageForUserUseCase: DeleteMessageForUserUseCase,
     private val updateMessageStatusUseCase: UpdateMessageStatusUseCase,
-    private val getAllMessagesOnceUseCase: GetAllMessagesOnceUseCase
+    private val getAllMessagesOnceUseCase: GetAllMessagesOnceUseCase,
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
@@ -54,6 +58,9 @@ class ChatViewModel @Inject constructor(
 
     private val _isUserBlocked = MutableLiveData<Boolean>()
     val isUserBlocked: LiveData<Boolean> get() = _isUserBlocked
+
+    private val _uploading = MutableLiveData<Boolean>()
+    val uploading: LiveData<Boolean> get() = _uploading
 
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
     private val historyRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("History/userHistory")
@@ -136,6 +143,70 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    fun sendTextMessageWithNotification(ownerId: String, carId: String, buyerId: String, content: String, admin: Boolean) {
+        val isSeller = currentUserId == ownerId
+        val receiverId = if (isSeller) buyerId else ownerId
+
+        viewModelScope.launch {
+            try {
+                // Verifica cuántos mensajes hay en el chat
+                val messagesRef = FirebaseDatabase.getInstance()
+                    .getReference("ChatGroups")
+                    .child(ownerId)
+                    .child(carId)
+                    .child("messages")
+                    .child(buyerId)
+                    .get()
+                    .await()
+
+                val messageCount = messagesRef.childrenCount
+                Log.d("angel", "$messageCount")
+
+                // Envía el mensaje
+                sendTextMessage(ownerId, carId, buyerId, content, admin)
+
+                // Solo envía la notificación si es el primer mensaje
+                if (messageCount == 0L) {
+                    sendNotificationToOwner(receiverId, carId)
+                }
+            } catch (e: Exception) {
+                _error.value = "Error sending message: ${e.message}"
+            }
+        }
+    }
+
+    fun sendFileMessageWithNotification(ownerId: String, carId: String, buyerId: String, fileUri: Uri, fileType: String, fileName: String, fileHash: String, admin: Boolean) {
+        val isSeller = currentUserId == ownerId
+        val receiverId = if (isSeller) buyerId else ownerId
+
+        viewModelScope.launch {
+            try {
+                // Verifica cuántos mensajes hay en el chat
+                val messagesRef = FirebaseDatabase.getInstance()
+                    .getReference("ChatGroups")
+                    .child(ownerId)
+                    .child(carId)
+                    .child("messages")
+                    .child(buyerId)
+                    .get()
+                    .await()
+
+                val messageCount = messagesRef.childrenCount
+                Log.d("angel", "$messageCount")
+
+                // Envía el mensaje
+                sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, admin)
+
+                // Solo envía la notificación si es el primer mensaje
+                if (messageCount == 0L) {
+                    sendNotificationToOwner(receiverId, carId)
+                }
+            } catch (e: Exception) {
+                _error.value = "Error sending message: ${e.message}"
+            }
+        }
+    }
+
     /**
      * Sends a text message if the user is not blocked by the receiver. If the sender is blocked,
      * the receiver's ID is added to the `deletedFor` list.
@@ -174,6 +245,24 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    private fun sendNotificationToOwner(receiverId: String, carId: String) {
+        val notificationRef = FirebaseDatabase.getInstance().getReference("Notifications/$receiverId").push()
+
+        val notification = mapOf(
+            "id" to notificationRef.key,
+            "title" to "New Message",
+            "message" to "You have a new message in your chat for car ID: $carId",
+            "timestamp" to System.currentTimeMillis(),
+            "isRead" to false
+        )
+
+        notificationRef.setValue(notification).addOnSuccessListener {
+            Log.d("ChatViewModel", "Notification sent to $receiverId")
+        }.addOnFailureListener { e ->
+            Log.e("ChatViewModel", "Error sending notification: ${e.message}")
+        }
+    }
+
     /**
      * Sends a file message with the specified metadata and updates the status in case of failure.
      */
@@ -188,6 +277,7 @@ class ChatViewModel @Inject constructor(
         admin: Boolean
     ) {
         viewModelScope.launch {
+            _uploading.value = true
             val isSeller = currentUserId == ownerId
             val receiver = if (isSeller) buyerId else if (ownerId == "TechnicalSupport")
                 if (!admin) "TechnicalSupport" else buyerId
@@ -217,6 +307,7 @@ class ChatViewModel @Inject constructor(
                 // Llamar al caso de uso para enviar el archivo
                 viewModelScope.launch {
                     val result = sendFileMessageUseCase(ownerId, carId, buyerId, message)
+                    _uploading.value = false
                     if (result.isFailure) {
                         _error.value = result.exceptionOrNull()?.message
                     }

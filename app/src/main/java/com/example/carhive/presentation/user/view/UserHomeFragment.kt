@@ -487,6 +487,7 @@ class UserHomeFragment : Fragment() {
     // Navigate to car detail screen with car details
     private fun navigateToCarDetail(car: CarEntity) {
         val bundle = Bundle().apply {
+            putString("carId", car.id)
             putString("carModel", car.modelo)
             putString("carPrice", car.price)
             putString("carColor", car.color)
