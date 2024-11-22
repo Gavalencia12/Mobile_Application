@@ -13,10 +13,13 @@ import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.Domain.usecase.database.UpdateCarToDatabaseUseCase
 import com.example.carhive.Domain.usecase.favorites.AddCarToFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
+import com.example.carhive.Domain.usecase.notifications.AddNotificationUseCase
+import com.example.carhive.Domain.usecase.notifications.ListenForNewFavoritesUseCase
 import com.example.carhive.Presentation.user.adapter.CarHomeAdapter
 import com.example.carhive.R
 import com.google.firebase.database.FirebaseDatabase
@@ -36,8 +39,14 @@ class UserViewModel @Inject constructor(
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
     private val getUserDataUseCase: GetUserDataUseCase,
     private val firebaseDatabase: FirebaseDatabase,
-    private val updateCarToDatabaseUseCase: UpdateCarToDatabaseUseCase
+    private val updateCarToDatabaseUseCase: UpdateCarToDatabaseUseCase,
+    private val addNotificationUseCase: AddNotificationUseCase,
+    private val listenForNewFavoritesUseCase: ListenForNewFavoritesUseCase,
+    private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase
 ) : AndroidViewModel(application) {
+
+    // Default list of car brands retrieved from string resources
+    val defaultBrands = application.resources.getStringArray(R.array.brand_options).toList()
 
     // LiveData to hold the list of cars
     private val _carList = MutableLiveData<List<CarEntity>>()
@@ -113,7 +122,7 @@ class UserViewModel @Inject constructor(
             }
         }
     }
-    
+
     /**
      * Fetches the recommended cars based on views, favorite counts, and model name.
      */
@@ -244,6 +253,7 @@ class UserViewModel @Inject constructor(
                     val result = addCarToFavoritesUseCase(userId, fullName, car.id, car.id, car.ownerId)
                     if (result.isSuccess) {
                         showToast(R.string.car_added_to_favorites)
+                        listenForNewFavorites(car.id, car.ownerId, car.modelo) // Inicia la lógica de notificaciones
                         addHistoryEvent(
                             userId,
                             "Add to Favorite",
@@ -261,8 +271,6 @@ class UserViewModel @Inject constructor(
                             "Remove to Favorite",
                             "Car ${car.modelo} (${car.id}) removed from favorites by $fullName."
                         )
-                    } else {
-                        showToast(R.string.error_removing_favorite)
                     }
                 }
             } else {
@@ -289,6 +297,35 @@ class UserViewModel @Inject constructor(
                 // Log or handle failure here
                 exception.printStackTrace()
             }
+    }
+
+    fun listenForNewFavorites(carId: String, sellerId: String, name: String) {
+        viewModelScope.launch {
+            listenForNewFavoritesUseCase(carId) { buyerId, buyerName, carId ->
+                createBuyerNotification(buyerId, name)
+                createSellerNotification(sellerId, buyerName, carId, name)
+            }
+        }
+    }
+
+    private fun createBuyerNotification(buyerId: String, name: String) {
+        viewModelScope.launch {
+            addNotificationUseCase(
+                userId = buyerId,
+                title = "Car added to favorites",
+                message = "You have added the car $name to your favorites."
+            )
+        }
+    }
+
+    private fun createSellerNotification(sellerId: String, buyerName: String, carId: String, name: String) {
+        viewModelScope.launch {
+            addNotificationUseCase(
+                userId = sellerId,
+                title = "New favorite for your car",
+                message = "Your car $name has been added to favorites by $buyerName."
+            )
+        }
     }
 
     // Show toast message with the specified string resource ID

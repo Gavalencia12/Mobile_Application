@@ -150,6 +150,7 @@ class UserHomeFragment : Fragment() {
 
     private fun navigateToCarDetail(car: CarEntity) {
         val bundle = Bundle().apply {
+            putString("carId", car.id)
             putString("carModel", car.modelo)
             putString("carPrice", car.price)
             putString("carColor", car.color)
