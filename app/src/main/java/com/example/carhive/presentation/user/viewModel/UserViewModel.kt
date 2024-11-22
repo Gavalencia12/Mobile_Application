@@ -259,8 +259,6 @@ class UserViewModel @Inject constructor(
                             "Add to Favorite",
                             "Car ${car.modelo} (${car.id}) added to favorites by $fullName."
                         )
-                    } else {
-                        showToast(R.string.error_adding_favorite)
                     }
                 } else {
                     val result = removeCarFromFavoritesUseCase(userId, car.id)
