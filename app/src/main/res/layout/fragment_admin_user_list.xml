@@ -43,7 +43,7 @@
             android:hint="@string/search_hint"
             android:padding="10dp"
             android:layout_marginStart="23dp"
-            android:background="@drawable/rounded_search"
+            android:background="@null"
             android:textColor="@android:color/black" />
 
         <ImageView

@@ -25,13 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/ibtnBack"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentStart="true"-->
-<!--                    android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--                    android:src="@drawable/ic_arrow_back" />-->
+                <ImageButton
+                    android:id="@+id/ibtnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_arrow_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -42,12 +42,14 @@
                     android:textStyle="bold" />
 
                 <ImageButton
+                    android:id="@+id/update_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/image"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_edit"
-                    android:visibility="invisible"/>
+                    android:padding="5dp"/>
             </RelativeLayout>
 
             <RelativeLayout

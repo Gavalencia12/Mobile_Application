@@ -17,7 +17,7 @@ class UserAdapterBan(
 
     inner class UserBanViewHolder(val binding: ItemUserBanBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: UserEntity) {
-            user.imageUrl?.let {
+            user.imageUrl2?.let {
                 Glide.with(binding.root.context)
                     .load(it)
                     .into(binding.userImageView)
@@ -26,12 +26,22 @@ class UserAdapterBan(
             binding.firstNameText.text = user.firstName
             binding.lastNameText.text = user.lastName
             binding.curpText.text = user.curp
+            binding.BanText.text = if (user.isBanned) {
+                "Banned"
+            } else {
+                "Not Banned"
+            }
 
             binding.emailText.text = user.email
             binding.verifiedText.text = if (user.isverified) {
                 "Verified"
             } else {
                 "Not Verified"
+            }
+            binding.textban.text = if (user.isBanned) {
+                "Banned"
+            } else {
+                "Not Banned"
             }
             binding.rolText.text = when (user.role) {
                 0 -> "ADMINISTRATOR"

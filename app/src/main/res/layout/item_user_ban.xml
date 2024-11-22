@@ -5,77 +5,82 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
-
     <!-- Horizontal container for profile image and basic information -->
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/profile_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corner_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:background="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/white">
 
-        <!-- Circular profile image for the user -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/userImageView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/user_image_desc"
-            android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/CircleImageView" />
-
-        <!-- Container for name, surname, and ID with rounded edges -->
+        <!-- Container for image and text -->
         <LinearLayout
-            android:id="@+id/basic_info_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
 
-            <!-- Horizontal layout for first and last names -->
+            <!-- Circular profile image -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/userImageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/user_image_desc"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+            <!-- Container for text -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/basic_info_container"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <!-- User's first name -->
-                <TextView
-                    android:id="@+id/firstNameText"
+                <!-- User's first and last name -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:text="@string/first_name"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:orientation="horizontal">
 
-                <!-- User's last name -->
+                    <TextView
+                        android:id="@+id/firstNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/first_name"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/lastNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/last_name"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- User's email address -->
                 <TextView
-                    android:id="@+id/lastNameText"
+                    android:id="@+id/emailText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="@string/last_name"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:layout_marginTop="4dp"
+                    android:text="@string/email"
+                    android:textColor="@color/gray" />
+
             </LinearLayout>
-
-            <!-- User's email address -->
-            <TextView
-                android:id="@+id/emailText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/email"
-                android:textColor="@color/white"/>
-
         </LinearLayout>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <!-- Expandable container for additional information -->
     <LinearLayout
@@ -110,6 +115,15 @@
             <!-- Verification status (e.g., Verified/Unverified) -->
             <TextView
                 android:id="@+id/verifiedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verified"
+                android:fontFamily="@font/inter_light"
+                android:textColor="@color/black"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textban"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/verified"

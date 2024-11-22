@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 
-class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment() {
+class UserDetailsDialogFragment(private val user: UserEntity,private val onUserUpdated: () -> Unit ) : DialogFragment() {
 
     private var _binding: FragmentUserDetailsDialogBinding? = null
     private val binding get() = _binding!!
@@ -36,7 +36,6 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
 
         database = FirebaseDatabase.getInstance().getReference("Users")
 
-        // Mostrar los datos del usuario
         binding.firstNameText.text = user.firstName
         binding.lastNameText.text = user.lastName
         binding.emailText.text = user.email
@@ -49,7 +48,7 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
             "Not Verified"
         }
 
-        user.imageUrl?.let {
+        user.imageUrl2?.let {
             Glide.with(this).load(it).into(binding.userImageView)
         }
 
@@ -80,6 +79,7 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
                 )
                 sendNotification(true)
                 Toast.makeText(requireContext(), "User successfully verified", Toast.LENGTH_SHORT).show()
+                onUserUpdated()
                 dismiss()
             } else {
                 Toast.makeText(requireContext(), "Error verifying the user", Toast.LENGTH_SHORT).show()
@@ -102,6 +102,7 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
                 )
                 sendNotification(false)
                 Toast.makeText(requireContext(), "User successfully deactivated", Toast.LENGTH_SHORT).show()
+                onUserUpdated()
                 dismiss()
             } else {
                 Toast.makeText(requireContext(), "Error deactivating the user", Toast.LENGTH_SHORT).show()

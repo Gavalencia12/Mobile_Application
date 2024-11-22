@@ -42,7 +42,9 @@ class AdminUserListFragment : Fragment() {
 
         adapter = UserAdapter(listOf(),
             onVerifyClick = { user ->
-                val dialog = UserDetailsDialogFragment(user)
+                val dialog = UserDetailsDialogFragment(user){
+                    viewModel.getUsers()
+                }
                 dialog.show(parentFragmentManager, "UserDetailsDialog")
             },
             onDeleteClick = { user ->

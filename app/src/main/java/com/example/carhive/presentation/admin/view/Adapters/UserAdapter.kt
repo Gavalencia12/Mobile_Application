@@ -20,7 +20,7 @@ class UserAdapter(private var userList: List<UserEntity>, private val onVerifyCl
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = userList[position]
-        user.imageUrl?.let {
+        user.imageUrl2?.let {
             Glide.with(holder.itemView.context)
                 .load(it)
                 .into(holder.binding.userImageView)
