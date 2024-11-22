@@ -11,14 +11,17 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import com.example.carhive.data.model.HistoryEntity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.carhive.Presentation.admin.view.FullScreenImageDialogFragment
-import com.example.carhive.data.model.CarEntity
 import com.example.carhive.R
+import com.example.carhive.data.datasource.remote.NotificationsRepositoryImpl
+import com.example.carhive.data.model.CarEntity
+import com.example.carhive.data.model.HistoryEntity
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 
 class CarDetailDialogFragment : DialogFragment() {
 
@@ -65,6 +68,7 @@ class CarDetailDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let { bundle ->
+            // Set text fields with car details
             view.findViewById<TextView>(R.id.car_model).text = bundle.getString("car_model")
             view.findViewById<TextView>(R.id.car_brand).text = bundle.getString("car_brand")
             view.findViewById<TextView>(R.id.car_price).text = bundle.getString("car_price")
@@ -83,184 +87,179 @@ class CarDetailDialogFragment : DialogFragment() {
             view.findViewById<TextView>(R.id.car_listingDate).text = bundle.getString("car_listingDate")
             view.findViewById<TextView>(R.id.car_lastUpdated).text = bundle.getString("car_lastUpdated")
 
+            // Handle image URLs
             val imageUrls = bundle.getStringArrayList("car_imageUrls")
             if (!imageUrls.isNullOrEmpty()) {
-                val viewPager = view.findViewById<ViewPager2>(R.id.car_image_viewpager)
-                viewPager.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-                    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-                        val imageView = ImageView(parent.context).apply {
-                            layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT
-                            )
-                            scaleType = ImageView.ScaleType.CENTER_CROP
-                        }
-                        return object : RecyclerView.ViewHolder(imageView) {}
-                    }
-
-                    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-                        val imageView = holder.itemView as ImageView
-                        Glide.with(requireContext())
-                            .load(imageUrls[position])
-                            .into(imageView)
-
-                        imageView.setOnClickListener {
-                            val fullScreenDialog = FullScreenImageDialogFragment.newInstance(imageUrls, position)
-                            fullScreenDialog.show(parentFragmentManager, "FullScreenImageDialog")
-                        }
-                    }
-
-                    override fun getItemCount(): Int = imageUrls.size
-                }
+                setupImageCarousel(view, imageUrls)
             }
         }
 
+        // Close button
         val closeButton = view.findViewById<Button>(R.id.close_button)
         closeButton.setOnClickListener {
             dismiss()
         }
 
-        view.findViewById<Button>(R.id.open_website_button).setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www2.repuve.gob.mx:8443/ciudadania/"))
-            startActivity(intent)
+        // Open Repuve button
+        val openWebsiteButton = view.findViewById<Button>(R.id.open_website_button)
+        openWebsiteButton.setOnClickListener {
+            openRepuveWebsite()
         }
 
+        // Approve button
         view.findViewById<Button>(R.id.approved_button).setOnClickListener {
-            updateCarApprovalStatus(true)
-            dismiss()
+            val ownerId = arguments?.getString("owner_id") ?: return@setOnClickListener
+            val carId = arguments?.getString("car_id") ?: return@setOnClickListener
+            val carModel = arguments?.getString("car_model") ?: return@setOnClickListener
+
+            updateCarApprovalStatus(ownerId, carId, carModel, true)
         }
 
+        // Disapprove button
         view.findViewById<Button>(R.id.disapproved_button).setOnClickListener {
-            val ownerId = arguments?.getString("owner_id")
-            val carId = arguments?.getString("car_id")
-            val carModel = arguments?.getString("car_model")
+            val ownerId = arguments?.getString("owner_id") ?: return@setOnClickListener
+            val carId = arguments?.getString("car_id") ?: return@setOnClickListener
+            val carModel = arguments?.getString("car_model") ?: return@setOnClickListener
 
-            if (ownerId != null && carId != null && carModel != null) {
-                val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
-                db.child("email").get().addOnSuccessListener { emailSnapshot ->
-                    val ownerEmail = emailSnapshot.value as? String
-                    db.child("firstName").get().addOnSuccessListener { firstNameSnapshot ->
-                        val firstName = firstNameSnapshot.value as? String
-                        db.child("lastName").get().addOnSuccessListener { lastNameSnapshot ->
-                            val lastName = lastNameSnapshot.value as? String
+            updateCarApprovalStatus(ownerId, carId, carModel, false)
+            sendDisapprovalEmail(ownerId, carId, carModel)
+        }
+    }
 
-                            if (ownerEmail != null && firstName != null && lastName != null) {
-                                val fullName = "$firstName $lastName"
-                                sendEmail(ownerEmail, carId, fullName)
-                            } else {
-                                Log.e("CarDetailDialogFragment", "No se encontró el email o nombre completo para el ownerId: $ownerId")
-                            }
-                        }.addOnFailureListener { exception ->
-                            Log.e("CarDetailDialogFragment", "Error al obtener el apellido del propietario: ", exception)
-                        }
-                    }.addOnFailureListener { exception ->
-                        Log.e("CarDetailDialogFragment", "Error al obtener el nombre del propietario: ", exception)
-                    }
-                }.addOnFailureListener { exception ->
-                    Log.e("CarDetailDialogFragment", "Error al obtener el correo del propietario: ", exception)
+    private fun setupImageCarousel(view: View, imageUrls: ArrayList<String>) {
+        val viewPager = view.findViewById<ViewPager2>(R.id.car_image_viewpager)
+        viewPager.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                val imageView = ImageView(parent.context).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    scaleType = ImageView.ScaleType.CENTER_CROP
                 }
-
-                logDesapprovalHistory(ownerId, carId, carModel)
-
-                updateCarApprovalStatus(false)
+                return object : RecyclerView.ViewHolder(imageView) {}
             }
-        }
 
-    }
+            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+                val imageView = holder.itemView as ImageView
+                Glide.with(requireContext())
+                    .load(imageUrls[position])
+                    .into(imageView)
 
-    private fun sendEmail(ownerEmail: String, carId: String?, fullName: String) {
-        if (!isAdded || !isVisible) {
-            Log.e("CarDetailDialogFragment", "El fragmento no está adjunto o visible en la actividad")
-            return
-        }
+                // Set click listener to open image in full screen
+                imageView.setOnClickListener {
+                    val fullScreenDialog = FullScreenImageDialogFragment.newInstance(imageUrls, position)
+                    fullScreenDialog.show(parentFragmentManager, "FullScreenImageDialog")
+                }
+            }
 
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(ownerEmail))
-            putExtra(Intent.EXTRA_SUBJECT, "Notification of car disapproval")
-            putExtra(
-                Intent.EXTRA_TEXT,
-                """
-                Dear user $fullName,
-                
-                Your car with ID: $carId has not been approved. Please review your data and try again.
-                
-                Regards,
-                The CarHive team
-                """.trimIndent()
-            )
-        }
-        try {
-            startActivity(Intent.createChooser(intent, "Enviar correo"))
-        } catch (ex: Exception) {
-            Log.e("CarDetailDialogFragment", "No se pudo enviar el correo electrónico.", ex)
+            override fun getItemCount(): Int = imageUrls.size
         }
     }
 
-    private fun updateCarApprovalStatus(isApproved: Boolean) {
-        val ownerId = arguments?.getString("owner_id")
-        val carId = arguments?.getString("car_id")
-        val carModel = arguments?.getString("car_model")
+    private fun openRepuveWebsite() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www2.repuve.gob.mx:8443/ciudadania/"))
+        startActivity(intent)
+    }
 
-        if (ownerId == null || carId == null || carModel == null) {
-            return
-        }
-
+    private fun updateCarApprovalStatus(ownerId: String, carId: String, carModel: String, isApproved: Boolean) {
         val db = FirebaseDatabase.getInstance().getReference("Car").child(ownerId).child(carId)
         db.child("approved").setValue(isApproved)
             .addOnSuccessListener {
                 if (isApproved) {
                     logApprovalHistory(ownerId, carId, carModel)
+                    sendApprovalNotification(ownerId, carModel)
+                } else {
+                    logDisapprovalHistory(ownerId, carId, carModel)
+                    sendDisapprovalNotification(ownerId, carModel)
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("CarDetailDialogFragment", "Error al actualizar el estado de aprobación: ", exception)
+                Log.e("CarDetailDialogFragment", "Error al actualizar el estado de aprobación: ${exception.message}")
             }
+    }
+
+    private fun sendDisapprovalEmail(ownerId: String, carId: String, carModel: String) {
+        val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
+        db.child("email").get().addOnSuccessListener { snapshot ->
+            val ownerEmail = snapshot.getValue(String::class.java) ?: return@addOnSuccessListener
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(ownerEmail))
+                putExtra(Intent.EXTRA_SUBJECT, "Car Disapproval Notification")
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    """
+                    Dear user,
+                    
+                    Your car with ID: $carId and model: $carModel has not been approved. Please review your data and resubmit the listing.
+                    
+                    Regards,
+                    CarHive Team
+                    """.trimIndent()
+                )
+            }
+            try {
+                startActivity(Intent.createChooser(intent, "Send email"))
+            } catch (ex: Exception) {
+                Log.e("CarDetailDialogFragment", "Failed to send email: ${ex.message}")
+            }
+        }
+    }
+
+    private fun sendApprovalNotification(ownerId: String, carModel: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val repository = NotificationsRepositoryImpl(requireContext(), FirebaseDatabase.getInstance())
+            repository.notifyCarApprovalStatus(
+                userId = ownerId,
+                carModel = carModel,
+                isApproved = true
+            )
+        }
+        dismiss()
+    }
+
+    private fun sendDisapprovalNotification(ownerId: String, carModel: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val repository = NotificationsRepositoryImpl(requireContext(), FirebaseDatabase.getInstance())
+            repository.notifyCarApprovalStatus(
+                userId = ownerId,
+                carModel = carModel,
+                isApproved = false
+            )
+        }
+        dismiss()
     }
 
     private fun logApprovalHistory(ownerId: String, carId: String, carModel: String) {
-        val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
-        db.child("firstName").get().addOnSuccessListener { firstNameSnapshot ->
-            val firstName = firstNameSnapshot.value as? String
-            if (firstName != null) {
-                val timestamp = System.currentTimeMillis()
-                val eventType = "Car Approval"
-                val message = "The car $carModel by $firstName has been approved."
+        val timestamp = System.currentTimeMillis()
+        val eventType = "Car Approval"
+        val message = "The car $carModel has been approved."
 
-
-                val historyRef = FirebaseDatabase.getInstance().getReference("History/carHistory")
-                val historyEntry = HistoryEntity(
-                    userId = ownerId,
-                    timestamp = timestamp,
-                    eventType = eventType,
-                    message = message
-                )
-                historyRef.push().setValue(historyEntry)
-            }
-        }
+        val historyRef = FirebaseDatabase.getInstance().getReference("History/carHistory")
+        val historyEntry = HistoryEntity(
+            userId = ownerId,
+            timestamp = timestamp,
+            eventType = eventType,
+            message = message
+        )
+        historyRef.push().setValue(historyEntry)
     }
 
-    private fun logDesapprovalHistory(ownerId: String, carId: String, carModel: String) {
-        val db = FirebaseDatabase.getInstance().getReference("Users").child(ownerId)
-        db.child("firstName").get().addOnSuccessListener { firstNameSnapshot ->
-            val firstName = firstNameSnapshot.value as? String
-            if (firstName != null) {
-                val timestamp = System.currentTimeMillis()
-                val eventType = "Car Disapproval"
-                val message = "The car $carModel by $firstName has been disapproved. "
+    private fun logDisapprovalHistory(ownerId: String, carId: String, carModel: String) {
+        val timestamp = System.currentTimeMillis()
+        val eventType = "Car Disapproval"
+        val message = "The car $carModel has been disapproved."
 
-                val historyRef = FirebaseDatabase.getInstance().getReference("History/carHistory")
-                val historyEntry = HistoryEntity(
-                    userId = ownerId,
-                    timestamp = timestamp,
-                    eventType = eventType,
-                    message = message
-                )
-                historyRef.push().setValue(historyEntry)
-            }
-        }
+        val historyRef = FirebaseDatabase.getInstance().getReference("History/carHistory")
+        val historyEntry = HistoryEntity(
+            userId = ownerId,
+            timestamp = timestamp,
+            eventType = eventType,
+            message = message
+        )
+        historyRef.push().setValue(historyEntry)
     }
-
 
     override fun onStart() {
         super.onStart()

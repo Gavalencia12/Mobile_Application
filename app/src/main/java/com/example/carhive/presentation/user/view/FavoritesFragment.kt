@@ -46,6 +46,7 @@ class FavoritesFragment : Fragment() {
             },
             onCarClick = { car ->
                 val bundle = Bundle().apply {
+                    putString("carId", car.id)
                     putString("carModel", car.modelo)
                     putString("carPrice", car.price)
                     putString("carColor", car.color)
@@ -60,6 +61,7 @@ class FavoritesFragment : Fragment() {
                     putInt("carPreviousOwners", car.previousOwners)
                     putString("carYear", car.year)
                     putString("carMileage", car.mileage)
+                    putString("carOwnerId", car.ownerId)
                     putStringArrayList("carImageUrls", ArrayList(car.imageUrls)) // Adds image URLs if available
                 }
                 // Navigate manually to CarDetailFragment, passing the bundle

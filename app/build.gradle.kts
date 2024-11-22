@@ -83,6 +83,7 @@ dependencies {
     annotationProcessor(libs.bumptech.glide.compiler)
     implementation(libs.gifdrawable)
 
+
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)
 
@@ -136,6 +137,7 @@ dependencies {
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation (libs.androidx.recyclerview)
 
+    implementation ("androidx.work:work-runtime-ktx:2.8.1")
 
 
 }

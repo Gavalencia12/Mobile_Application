@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.presentation.seller.viewModel.CarAdapter
 import com.example.carhive.presentation.seller.viewModel.CrudViewModel
 import com.example.carhive.databinding.FragmentSellerCrudBinding
+import com.example.carhive.presentation.seller.items.CrudDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

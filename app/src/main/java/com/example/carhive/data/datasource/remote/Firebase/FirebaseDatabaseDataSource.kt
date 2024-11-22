@@ -266,21 +266,35 @@ class FirebaseDatabaseDataSource @Inject constructor(
         }
     }
 
-    suspend fun addCarToFavorites(userId: String, userName: String, carId: String, carModel: String, carOwner: String): Result<Unit> {
+    suspend fun addCarToFavorites(
+        userId: String,
+        userName: String,
+        carId: String,
+        carModel: String,
+        carOwner: String
+    ): Result<Unit> {
         return try {
             val timestamp = System.currentTimeMillis()
 
-            // Agregar a "UserFavorites" con el userId como clave
-            database.getReference("Favorites/UserFavorites")
-                .child(userId) // Usar userId como clave aquí
+            // Referencia al nodo "UserFavorites"
+            val userFavoritesRef = database.getReference("Favorites/UserFavorites")
+                .child(userId)
                 .child(carId)
-                .setValue(
-                    mapOf(
-                        "addedAt" to timestamp,
-                        "carModel" to carModel,
-                        "carOwner" to carOwner
-                    )
-                ).await()
+
+            // Verificar si el coche ya está en favoritos
+            val isAlreadyFavorite = userFavoritesRef.get().await().exists()
+            if (isAlreadyFavorite) {
+                return Result.failure(RepositoryException("Car is already marked as favorite"))
+            }
+
+            // Agregar a "UserFavorites" con el userId como clave
+            userFavoritesRef.setValue(
+                mapOf(
+                    "addedAt" to timestamp,
+                    "carModel" to carModel,
+                    "carOwner" to carOwner
+                )
+            ).await()
 
             // Agregar a "CarFavorites" con el userId como clave y guardar el userName como un valor
             database.getReference("Favorites/CarFavorites")
@@ -307,7 +321,6 @@ class FirebaseDatabaseDataSource @Inject constructor(
             Result.failure(RepositoryException("Error adding car to favorites: ${e.message}", e))
         }
     }
-
 
     suspend fun getUserFavorites(userId: String): Result<List<FavoriteCar>> {
         return try {
@@ -348,24 +361,31 @@ class FirebaseDatabaseDataSource @Inject constructor(
 
     suspend fun removeCarFromFavorites(userId: String, carId: String): Result<Unit> {
         return try {
-            // Eliminar el coche de "UserFavorites"
-            val userFavorites = database.getReference("Favorites/UserFavorites")
+            // Referencia al nodo "UserFavorites"
+            val userFavoritesRef = database.getReference("Favorites/UserFavorites")
                 .child(userId)
                 .child(carId)
-                .removeValue().await()
+
+            // Verificar si el coche está marcado como favorito
+            val isFavorite = userFavoritesRef.get().await().exists()
+            if (!isFavorite) {
+                return Result.failure(RepositoryException("Car is not marked as favorite"))
+            }
+
+            // Eliminar el coche de "UserFavorites"
+            userFavoritesRef.removeValue().await()
 
             // Eliminar el usuario de "CarFavorites"
-            val carFavorites = database.getReference("Favorites/CarFavorites")
+            val carFavoritesRef = database.getReference("Favorites/CarFavorites")
                 .child(carId)
                 .child("users")
                 .child(userId)
-                .removeValue().await()
+            carFavoritesRef.removeValue().await()
 
             // Decrementar el contador de favoritos
             val favoriteCountRef = database.getReference("Favorites/CarFavorites")
                 .child(carId)
                 .child("favoriteCount")
-
             val favoriteCount = favoriteCountRef.get().await().getValue(Int::class.java) ?: 0
             if (favoriteCount > 0) {
                 favoriteCountRef.setValue(favoriteCount - 1).await()

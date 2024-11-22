@@ -133,13 +133,21 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Dropdown for selecting car brand -->
-        <Spinner
-            style="@style/style_spinner"
+        <AutoCompleteTextView
+
+            style="@style/inputModal"
             android:id="@+id/spinnerBrand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/select_brand"
+            android:inputType="text"
+            android:importantForAccessibility="yes"
+            android:autofillHints="name"
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tw_brand"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
 
         <!-- Label for car price field -->
         <TextView

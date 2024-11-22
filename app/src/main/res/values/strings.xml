@@ -437,6 +437,7 @@
     <string name="age">Age</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="please_fill_in_the_required_information">Please fill in the required information</string>
+    <string name="select_brand">Select brand</string>
 
 
     <!-- Spinner Options -->

@@ -1,6 +1,7 @@
 package com.example.carhive.Presentation.user.viewModel
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -12,10 +13,13 @@ import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.Domain.usecase.auth.GetCurrentUserIdUseCase
 import com.example.carhive.Domain.usecase.database.GetAllCarsFromDatabaseUseCase
+import com.example.carhive.Domain.usecase.database.GetCarUserInDatabaseUseCase
 import com.example.carhive.Domain.usecase.database.GetUserDataUseCase
 import com.example.carhive.Domain.usecase.database.UpdateCarToDatabaseUseCase
 import com.example.carhive.Domain.usecase.favorites.AddCarToFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
+import com.example.carhive.Domain.usecase.notifications.AddNotificationUseCase
+import com.example.carhive.Domain.usecase.notifications.ListenForNewFavoritesUseCase
 import com.example.carhive.Presentation.user.adapter.CarHomeAdapter
 import com.example.carhive.R
 import com.google.firebase.database.FirebaseDatabase
@@ -24,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.example.carhive.Presentation.user.adapter.BrandAdapter
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
@@ -34,7 +39,10 @@ class UserViewModel @Inject constructor(
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
     private val getUserDataUseCase: GetUserDataUseCase,
     private val firebaseDatabase: FirebaseDatabase,
-    private val updateCarToDatabaseUseCase: UpdateCarToDatabaseUseCase
+    private val updateCarToDatabaseUseCase: UpdateCarToDatabaseUseCase,
+    private val addNotificationUseCase: AddNotificationUseCase,
+    private val listenForNewFavoritesUseCase: ListenForNewFavoritesUseCase,
+    private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase
 ) : AndroidViewModel(application) {
 
     // Default list of car brands retrieved from string resources
@@ -56,6 +64,10 @@ class UserViewModel @Inject constructor(
 
     private lateinit var recommendedCarAdapter: CarHomeAdapter
 
+    private val _brandList = MutableLiveData<List<String>>()
+    val brandList: LiveData<List<String>> get() = _brandList
+
+
     // Selected filters
     var selectedBrands: MutableSet<String> = mutableSetOf()
     var selectedModel: String? = null
@@ -72,8 +84,6 @@ class UserViewModel @Inject constructor(
 
     // Current location filter
     private var selectedLocation: String? = null
-
-
 
     // Unique car models and colors for filter options
     private val _uniqueCarModels = MutableLiveData<List<String>>()
@@ -96,6 +106,19 @@ class UserViewModel @Inject constructor(
                 fetchRecommendedCars() // Update recommended cars after fetching all cars
             } else {
                 showToast(R.string.error_fetching_cars)
+            }
+        }
+    }
+
+    fun fetchBrandsFromCars() {
+        viewModelScope.launch {
+            val result = getAllCarsFromDatabaseUseCase()
+            if (result.isSuccess) {
+                val cars = result.getOrNull()
+                val uniqueBrands = cars?.map { it.brand }?.distinct() ?: emptyList()
+                _brandList.value = uniqueBrands // Actualiza el LiveData de marcas
+            } else {
+                Log.e("UserViewModel", "Error al obtener los autos")
             }
         }
     }
@@ -128,7 +151,6 @@ class UserViewModel @Inject constructor(
         val colors = allCars.map { it.color.replaceFirstChar { it.uppercase() } }.distinct()
         _uniqueCarColors.value = colors
     }
-
 
     var selectedCondition: String? = null
     /**
@@ -163,8 +185,6 @@ class UserViewModel @Inject constructor(
         onFilterApplied(filteredCars)
     }
 
-
-
     /**
      * Resets all filters and shows the complete list of cars.
      */
@@ -179,7 +199,6 @@ class UserViewModel @Inject constructor(
         selectedCondition = null // Reinicia la condición seleccionada
         _carList.value = allCars
     }
-
 
     /**
      * Filters cars by location.
@@ -234,13 +253,12 @@ class UserViewModel @Inject constructor(
                     val result = addCarToFavoritesUseCase(userId, fullName, car.id, car.id, car.ownerId)
                     if (result.isSuccess) {
                         showToast(R.string.car_added_to_favorites)
+                        listenForNewFavorites(car.id, car.ownerId, car.modelo) // Inicia la lógica de notificaciones
                         addHistoryEvent(
                             userId,
                             "Add to Favorite",
                             "Car ${car.modelo} (${car.id}) added to favorites by $fullName."
                         )
-                    } else {
-                        showToast(R.string.error_adding_favorite)
                     }
                 } else {
                     val result = removeCarFromFavoritesUseCase(userId, car.id)
@@ -251,8 +269,6 @@ class UserViewModel @Inject constructor(
                             "Remove to Favorite",
                             "Car ${car.modelo} (${car.id}) removed from favorites by $fullName."
                         )
-                    } else {
-                        showToast(R.string.error_removing_favorite)
                     }
                 }
             } else {
@@ -281,6 +297,34 @@ class UserViewModel @Inject constructor(
             }
     }
 
+    fun listenForNewFavorites(carId: String, sellerId: String, name: String) {
+        viewModelScope.launch {
+            listenForNewFavoritesUseCase(carId) { buyerId, buyerName, carId ->
+                createBuyerNotification(buyerId, name)
+                createSellerNotification(sellerId, buyerName, carId, name)
+            }
+        }
+    }
+
+    private fun createBuyerNotification(buyerId: String, name: String) {
+        viewModelScope.launch {
+            addNotificationUseCase(
+                userId = buyerId,
+                title = "Car added to favorites",
+                message = "You have added the car $name to your favorites."
+            )
+        }
+    }
+
+    private fun createSellerNotification(sellerId: String, buyerName: String, carId: String, name: String) {
+        viewModelScope.launch {
+            addNotificationUseCase(
+                userId = sellerId,
+                title = "New favorite for your car",
+                message = "Your car $name has been added to favorites by $buyerName."
+            )
+        }
+    }
 
     // Show toast message with the specified string resource ID
     private fun showToast(messageResId: Int) {

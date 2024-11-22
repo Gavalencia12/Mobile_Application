@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.notifications -> {
+                    navController.navigate(R.id.notificationsFragment)
                     true
                 }
                 R.id.profile -> {
@@ -98,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.notifications -> {
+                    navController.navigate(R.id.notificationsSellerFragment)
                     true
                 }
                 R.id.profile -> {
@@ -111,11 +113,11 @@ class MainActivity : AppCompatActivity() {
         // Adjust bottom navigation visibility based on the current destination (fragment)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.userHomeFragment, R.id.userProfileFragment, R.id.favoritesFragment, R.id.userHomeCarDetailFragment, R.id.userMessages -> {
+                R.id.userHomeFragment, R.id.userProfileFragment, R.id.favoritesFragment, R.id.userHomeCarDetailFragment, R.id.userMessages, R.id.notificationsFragment -> {
                     hideAllBottomNavigation()
                     showUserBottomNavigation()
                 }
-                R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.sellerProfileFragment, R.id.sellerInterestedUsersFragment -> {
+                R.id.sellerHomeFragment, R.id.sellerCrudFragment, R.id.sellerProfileFragment, R.id.sellerInterestedUsersFragment, R.id.notificationsSellerFragment -> {
                     hideAllBottomNavigation() // Hide other navigations and show the seller navigation
                     showSellerBottomNavigation()
                 }
