@@ -82,6 +82,9 @@ dependencies {
     implementation(libs.material)
     annotationProcessor(libs.bumptech.glide.compiler)
     implementation(libs.gifdrawable)
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
 
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)

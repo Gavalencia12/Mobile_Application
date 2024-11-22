@@ -424,6 +424,7 @@
 
     <string name="type_of_event">Type of Event</string>
     <string name="date_and_time">Date and Time</string>
+    <string name="select_brand">Select brand</string>
 
 
     <!-- Spinner Options -->
@@ -463,6 +464,7 @@
         <item>Honda</item>
         <item>Ford</item>
         <item>Chevrolet</item>
+        <item>HOLA</item>
         <item>Nissan</item>
         <item>Volkswagen</item>
         <item>BMW</item>

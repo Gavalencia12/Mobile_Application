@@ -1,6 +1,7 @@
-package com.example.carhive.presentation.seller.view
+package com.example.carhive.presentation.seller.items
 
 import SelectedImagesAdapter
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -53,9 +55,7 @@ class CrudDialogFragment : DialogFragment() {
 
         // Handles the Create button click, validating input and triggering car listing creation
         binding.buttonCreate.setOnClickListener {
-            if (isFormValid()) {
-                createCarListing()
-            }
+            validateForm()
         }
 
         // Handles the Cancel button click
@@ -152,7 +152,7 @@ class CrudDialogFragment : DialogFragment() {
             binding.etModelo.text.toString(),
             binding.etColor.text.toString(),
             binding.etMileage.text.toString(),
-            binding.spinnerBrand.selectedItem.toString(),
+            binding.spinnerBrand.text.toString(),
             binding.etDescription.text.toString(),
             binding.etPrice.text.toString(),
             binding.spinnerYear.selectedItem.toString(),
@@ -189,7 +189,7 @@ class CrudDialogFragment : DialogFragment() {
             modelo = binding.etModelo.text.toString(),
             color = binding.etColor.text.toString(),
             mileage = binding.etMileage.text.toString(),
-            brand = binding.spinnerBrand.selectedItem.toString(),
+            brand=  binding.spinnerBrand.text.toString(),
             description = binding.etDescription.text.toString(),
             price = binding.etPrice.text.toString(),
             year = binding.spinnerYear.selectedItem.toString(),
@@ -231,13 +231,111 @@ class CrudDialogFragment : DialogFragment() {
         setupSpinner(binding.spinnerTransmission, listOf("Manual", "Automatic"))
         setupSpinner(binding.spinnerFuelType, listOf("Gasoline", "Diesel", "Electric", "Hybrid"))
         setupSpinner(binding.spinnerCondition, listOf("New", "Used", "Pre-owned"))
-        setupSpinner(binding.spinnerLocation, listOf("Armería", "Colima", "Comala", "Coquimatlán", "Cuauhtémoc", "Ixtlahuacán", "Manzanillo", "Minatitlán", "Tecomán", "Villa de Álvarez"))
+        setupSpinner(
+            binding.spinnerLocation,
+            listOf(
+                "Armería", "Colima", "Comala", "Coquimatlán", "Cuauhtémoc",
+                "Ixtlahuacán", "Manzanillo", "Minatitlán", "Tecomán", "Villa de Álvarez"
+            )
+        )
 
         val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
         setupSpinner(binding.spinnerYear, (1970..currentYear).map { it.toString() })
-        setupSpinner(binding.spinnerBrand, listOf("Toyota", "Honda", "Ford", "Chevrolet", "Nissan", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Hyundai"))
+
+        setupBrandSpinner()
     }
 
+    private fun setupBrandSpinner() {
+        // Marcas predeterminadas
+        val defaultBrands = listOf("Toyota", "Honda", "Ford", "Chevrolet", "Nissan", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Hyundai")
+
+        // Cargar otras marcas desde car_brands.json
+        val otherBrands = loadBrandsFromJson()?.filterNot { defaultBrands.contains(it) }
+            ?: listOf("No additional brands available")
+
+        // Combinar listas y eliminar el separador
+        val combinedBrands = defaultBrands + otherBrands
+
+        // Configura el AutoCompleteTextView con las marcas
+        setupAutoCompleteTextView(binding.spinnerBrand, combinedBrands)
+    }
+
+    /**
+     * Configura un AutoCompleteTextView con la lista de marcas.
+     */
+    private fun setupAutoCompleteTextView(autoCompleteTextView: AutoCompleteTextView, options: List<String>) {
+        // Usamos ArrayAdapter para las sugerencias de autocompletado
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, options)
+
+        // Configuramos el AutoCompleteTextView con el adapter
+        autoCompleteTextView.setAdapter(adapter)
+        autoCompleteTextView.setThreshold(1) // Comienza a mostrar sugerencias después de un carácter
+
+        // Manejo de la selección de un elemento
+        autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
+            val selectedBrand = parent.getItemAtPosition(position) as String
+            Toast.makeText(requireContext(), "Selected: $selectedBrand", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Muestra un AlertDialog si la marca no existe cuando el usuario presiona "Create"
+     */
+    private fun showAlertIfInvalidBrand() {
+        val userInput = binding.spinnerBrand.text.toString()
+
+        if (!isBrandValid(userInput)) {
+            AlertDialog.Builder(requireContext())
+                .setMessage("The brand '$userInput' does not exist. Please select a valid brand.")
+                .setPositiveButton("OK", null)
+                .show()
+        }
+    }
+
+    /**
+     * Verifica si la marca ingresada es válida
+     */
+    private fun isBrandValid(userInput: String): Boolean {
+        val allBrands = loadBrandsFromJson() ?: emptyList()
+        return allBrands.contains(userInput)
+    }
+
+    /**
+     * Verifica si los campos están completos y muestra el mensaje adecuado
+     */
+    private fun validateForm() {
+        if (!isFormValid()) {
+            return
+        }
+
+        // Si todos los campos están completos, verificar la marca
+        val userInput = binding.spinnerBrand.text.toString()
+        if (isBrandValid(userInput)) {
+            createCarListing() // Crear el carro si la marca es válida
+        } else {
+            showAlertIfInvalidBrand() // Si la marca no es válida, mostrar el AlertDialog
+        }
+    }
+
+    /**
+     * Lee y parsea las marcas adicionales desde un archivo JSON.
+     */
+    private fun loadBrandsFromJson(): List<String>? {
+        return try {
+            val jsonString = requireContext().assets.open("car_brands.json").bufferedReader().use { it.readText() }
+            val jsonArray = org.json.JSONArray(jsonString)
+
+            // Convertir el JSONArray en una lista de strings
+            (0 until jsonArray.length()).map { jsonArray.getString(it) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    /**
+     * Configura un spinner con una lista de opciones.
+     */
     private fun setupSpinner(spinner: Spinner, options: List<String>) {
         spinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
