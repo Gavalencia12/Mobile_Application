@@ -103,6 +103,9 @@ class ProfileFragment : Fragment() {
                 "Personal Data" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_PersonalDataFragment)
                 }
+                "Comment History" -> {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_PersonalDataFragment)
+                }
                 // Otros casos...
             }
         }
