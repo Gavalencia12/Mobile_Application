@@ -422,7 +422,10 @@
     <string name="Car"><u>Cars</u></string>
     <string name="Comments">Comments</string>
     <string name="Comment"><u>Comments</u></string>
-    <string name="Calificacion"><u>calificacion</u></string>
+    <string name="Qualification">Qualification</string>
+    <string name="commentext">Comment</string>
+    <string name="timetext">Time</string>
+
 
 
     <!-- Button Texts -->

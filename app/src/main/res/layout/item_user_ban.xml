@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/email"
+                    android:text="@string/Ban"
                     android:textColor="@color/gray" />
 
                 <!-- User's email address -->

@@ -97,9 +97,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        style="@style/txt_footer"
                         android:text="7"
-                        android:textStyle="bold"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/num_comments"
@@ -110,8 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Cars"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
+                        style="@style/txt_footer"
                         app:layout_constraintTop_toBottomOf="@+id/num_cars"
                         app:layout_constraintStart_toStartOf="@+id/num_cars"
                         app:layout_constraintEnd_toEndOf="@+id/num_cars"
@@ -123,8 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
+                        style="@style/txt_footer"
                         android:text="7"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/num_cars"
@@ -132,12 +129,11 @@
                         app:layout_constraintHorizontalChainStyle="spread_inside" />
 
                     <TextView
+                        style="@style/txt_footer"
                         android:id="@+id/comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Comments"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@+id/num_comments"
                         app:layout_constraintStart_toStartOf="@+id/num_comments"
                         app:layout_constraintEnd_toEndOf="@+id/num_comments"
@@ -182,9 +178,8 @@
                     android:id="@+id/calificacion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Calificacion"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:text="@string/Qualification"
+                    style="@style/txt_footer"
                     android:layout_below="@+id/stars_seller"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="2dp" />
@@ -203,8 +198,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Cars"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    style="@style/txt_footer"
                     android:layout_marginEnd="32dp"/>
 
                 <!-- Segundo TextView con margen adicional -->
@@ -213,8 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Comment"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    style="@style/txt_footer"
                     android:layout_marginStart="32dp"
                     android:textColor="@color/blue" />
             </LinearLayout>
