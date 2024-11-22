@@ -433,4 +433,44 @@
             app:destination="@id/userChat"/>
     </fragment>
 
+
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.carhive.presentation.notifications.view.NotificationsFragment">
+        <action
+            android:id="@+id/action_notificationsFragment_to_profile"
+            app:destination="@id/userProfileFragment" />
+
+        <action
+            android:id="@+id/action_notificationsFragment_to_favorites"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_chats"
+            app:destination="@id/userMessages" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_defaultFragment"
+            app:destination="@id/notificationsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationsSellerFragment"
+        android:name="com.example.carhive.presentation.notifications.view.NotificationsSellerFragment">
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_profile"
+            app:destination="@id/sellerProfileFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_allCars"
+            app:destination="@id/carsListFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_favorites"
+            app:destination="@id/sellerFavoriteFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_chats"
+            app:destination="@id/sellerInterestedUsersFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_defaultFragment"
+            app:destination="@id/notificationsSellerFragment" />
+    </fragment>
+
 </navigation>
