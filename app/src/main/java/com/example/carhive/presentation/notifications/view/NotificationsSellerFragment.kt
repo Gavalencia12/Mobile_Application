@@ -41,15 +41,20 @@ class NotificationsSellerFragment : Fragment() {
         // Obtener el ID del usuario autenticado
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserId != null) {
-            // Pasa el NavController al adaptador
+            // Configura el adaptador y pasa los callbacks correspondientes
             adapter = NotificationsSellerAdapter(
                 notifications,
-                currentUserId,
-                findNavController() // Pasamos el NavController aquí
-            ) { notification ->
-                onNotificationClicked(notification)
-            }
+                findNavController(), // Pasamos el NavController aquí
+                onDeleteClick = { notification ->
+                    onDeleteNotification(notification)
+                },
+                onMarkAsReadClick = { notification ->
+                    onNotificationClicked(notification)
+                }
+            )
             recyclerView.adapter = adapter
+
+            // Carga las notificaciones para el usuario actual
             viewModel.loadNotifications(currentUserId)
         } else {
             Toast.makeText(requireContext(), "Usuario no autenticado", Toast.LENGTH_SHORT).show()
@@ -63,7 +68,8 @@ class NotificationsSellerFragment : Fragment() {
         viewModel.notifications.observe(viewLifecycleOwner) { newNotifications ->
             notifications.clear()
             notifications.addAll(newNotifications)
-            adapter.notifyDataSetChanged()
+            adapter.updateNotifications(newNotifications)
+            Log.d("angel", "observe: $newNotifications")
         }
     }
 
@@ -77,4 +83,10 @@ class NotificationsSellerFragment : Fragment() {
             }
         }
     }
+
+    private fun onDeleteNotification(notification: NotificationModel) {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        viewModel.deleteNotification(currentUserId, notification.id)
+    }
+
 }

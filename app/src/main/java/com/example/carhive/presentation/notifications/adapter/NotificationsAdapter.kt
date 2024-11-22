@@ -1,6 +1,7 @@
 package com.example.carhive.presentation.notifications.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.NavController
 import com.example.carhive.R
 import com.example.carhive.data.model.NotificationModel
-import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +19,8 @@ class NotificationsAdapter(
     private val notifications: MutableList<NotificationModel>,
     private val userId: String,
     private val navController: NavController,
-    private val onItemClick: (NotificationModel) -> Unit
+    private val onDeleteClick: (NotificationModel) -> Unit,
+    private val onMarkAsReadClick: (NotificationModel) -> Unit
 ) : RecyclerView.Adapter<NotificationsAdapter.NotificationViewHolder>() {
 
     inner class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -38,73 +39,61 @@ class NotificationsAdapter(
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         val notification = notifications[position]
+
         holder.titleTextView.text = notification.title
         holder.messageTextView.text = notification.message
 
-        // Format date/time
+        // Formatear la fecha
         val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        val date = Date(notification.timestamp)
-        holder.timestampTextView.text = formatter.format(date)
+        holder.timestampTextView.text = formatter.format(Date(notification.timestamp))
 
-        // Set the icon based on title
+        // Establecer ícono según el título
         holder.iconImageView.setImageResource(getIconResource(notification.title))
 
-        // Update background based on read status
+        // Actualizar el fondo según el estado `isRead`
         updateNotificationBackground(holder, notification.isRead)
 
-        // Listen for delete button clicks
+        // Escuchar clics en el botón de eliminar
         holder.deleteButton.setOnClickListener {
-            showDeleteConfirmation(holder.itemView.context, notification, position)
+            showDeleteConfirmation(holder.itemView.context, notification)
         }
 
-        // Handle notification click
+        // Escuchar clic en la notificación
         holder.itemView.setOnClickListener {
+            if (!notification.isRead) {
+                onMarkAsReadClick(notification) // Marca como leído
+            }
             navigateToFragment(notification.title)
-            onItemClick(notification)
         }
     }
 
     private fun updateNotificationBackground(holder: NotificationViewHolder, isRead: Boolean) {
         val context = holder.itemView.context
-        if (isRead) {
-            holder.itemView.setBackgroundColor(
-                ContextCompat.getColor(context, android.R.color.transparent)
-            )
-        } else {
-            holder.itemView.setBackgroundColor(
-                ContextCompat.getColor(context, R.color.notification_unread_background)
-            )
-        }
+        holder.itemView.setBackgroundColor(
+            if (isRead) ContextCompat.getColor(context, android.R.color.transparent)
+            else ContextCompat.getColor(context, R.color.notification_unread_background)
+        )
     }
 
-    override fun getItemCount(): Int = notifications.size
+    fun updateNotifications(newNotifications: List<NotificationModel>) {
+        notifications.clear()
+        notifications.addAll(newNotifications)
+        notifyDataSetChanged() // Forzar actualización completa
+    }
 
-    // Show confirmation dialog before deleting the notification
-    private fun showDeleteConfirmation(context: Context, notification: NotificationModel, position: Int) {
+    private fun showDeleteConfirmation(context: Context, notification: NotificationModel) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(context)
         builder.setTitle("Delete Notification")
         builder.setMessage("Are you sure you want to delete this notification?")
         builder.setPositiveButton("Delete") { _, _ ->
-            deleteNotification(notification, position)
+            onDeleteClick(notification)
         }
         builder.setNegativeButton("Cancel", null)
         builder.show()
     }
 
-    // Delete the notification from Firebase and update the list
-    private fun deleteNotification(notification: NotificationModel, position: Int) {
-        val notificationRef = FirebaseDatabase.getInstance()
-            .getReference("Notifications/$userId/${notification.id}")
+    override fun getItemCount(): Int = notifications.size
 
-        notificationRef.removeValue().addOnSuccessListener {
-            notifications.removeAt(position)
-            notifyItemRemoved(position)
-        }.addOnFailureListener { e ->
-            println("Error deleting notification: ${e.message}")
-        }
-    }
-
-    // Navigation logic
     private fun navigateToFragment(title: String) {
         when {
             title.contains("Account Verified", ignoreCase = true) || title.contains("Account Deactivated", ignoreCase = false) -> {
@@ -122,7 +111,6 @@ class NotificationsAdapter(
         }
     }
 
-    // Get icon resource based on notification title
     private fun getIconResource(title: String): Int {
         return when {
             title.contains("Account Verified", ignoreCase = true) || title.contains("Account Deactivated", ignoreCase = false) -> R.drawable.ic_notifications_account
@@ -132,4 +120,3 @@ class NotificationsAdapter(
         }
     }
 }
-

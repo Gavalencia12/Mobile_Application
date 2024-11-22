@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carhive.R
@@ -40,15 +39,21 @@ class NotificationsFragment : Fragment() {
         // Obtener el ID del usuario autenticado
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         if (currentUserId != null) {
-            // Pasa el NavController al adaptador
+            // Configura el adaptador y pasa los callbacks correspondientes
             adapter = NotificationsAdapter(
                 notifications,
                 currentUserId,
-                findNavController() // Pasamos el NavController aquí
-            ) { notification ->
-                onNotificationClicked(notification)
-            }
+                findNavController(),
+                onDeleteClick = { notification ->
+                    onDeleteNotification(notification)
+                },
+                onMarkAsReadClick = { notification ->
+                    onNotificationClicked(notification)
+                }
+            )
             recyclerView.adapter = adapter
+
+            // Carga las notificaciones para el usuario actual
             viewModel.loadNotifications(currentUserId)
         } else {
             Toast.makeText(requireContext(), "Usuario no autenticado", Toast.LENGTH_SHORT).show()
@@ -62,7 +67,7 @@ class NotificationsFragment : Fragment() {
         viewModel.notifications.observe(viewLifecycleOwner) { newNotifications ->
             notifications.clear()
             notifications.addAll(newNotifications)
-            adapter.notifyDataSetChanged()
+            adapter.updateNotifications(newNotifications) // Actualiza el adaptador
         }
     }
 
@@ -75,5 +80,10 @@ class NotificationsFragment : Fragment() {
                 Toast.makeText(requireContext(), "Usuario no autenticado", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun onDeleteNotification(notification: NotificationModel) {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        viewModel.deleteNotification(currentUserId, notification.id)
     }
 }

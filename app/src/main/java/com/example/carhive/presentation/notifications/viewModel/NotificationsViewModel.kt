@@ -1,5 +1,6 @@
 package com.example.carhive.presentation.notifications.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
-    private val markNotificationAsReadUseCase: MarkNotificationAsReadUseCase
 ) : ViewModel() {
 
     private val _notifications = MutableLiveData<List<NotificationModel>>()
@@ -28,35 +28,38 @@ class NotificationsViewModel @Inject constructor(
     fun loadNotifications(userId: String) {
         val notificationsRef = FirebaseDatabase.getInstance()
             .getReference("Notifications/$userId")
-            .orderByChild("timestamp") // Ordenar por el campo de timestamp
-            .limitToLast(20) // Limitar a las últimas 20 notificaciones
+            .orderByChild("timestamp")
+            .limitToLast(20)
 
         notificationsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val notificationsList = mutableListOf<NotificationModel>()
-                for (childSnapshot in snapshot.children) {
-                    val notification = childSnapshot.getValue(NotificationModel::class.java)
-                    if (notification != null) {
-                        notificationsList.add(notification)
-                    }
-                }
-                // Invertir el orden para que las más recientes queden arriba
-                notificationsList.reverse()
+                val notificationList = snapshot.children.mapNotNull {
+                    val notification = it.getValue(NotificationModel::class.java)
+                    // Si el campo isRead es null, configúralo como false por defecto
+                    notification?.copy(isRead = it.child("isRead").getValue(Boolean::class.java) ?: false)
+                }.sortedByDescending { it.timestamp }
 
-                _notifications.postValue(notificationsList)
+                _notifications.postValue(notificationList) // Actualiza LiveData
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Manejo del error
                 println("Error fetching notifications: ${error.message}")
             }
         })
     }
 
-
     fun markNotificationAsRead(userId: String, notificationId: String) {
-        viewModelScope.launch {
-            markNotificationAsReadUseCase(userId, notificationId)
+        val notificationRef = FirebaseDatabase.getInstance()
+            .getReference("Notifications/$userId/$notificationId")
+        notificationRef.child("isRead").setValue(true).addOnSuccessListener {
+            // Recargar notificaciones después de marcar como leído
+            loadNotifications(userId)
         }
+    }
+
+    fun deleteNotification(userId: String, notificationId: String) {
+        val notificationRef = FirebaseDatabase.getInstance()
+            .getReference("Notifications/$userId/$notificationId")
+        notificationRef.removeValue()
     }
 }
