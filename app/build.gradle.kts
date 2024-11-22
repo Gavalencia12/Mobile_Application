@@ -83,6 +83,7 @@ dependencies {
     annotationProcessor(libs.bumptech.glide.compiler)
     implementation(libs.gifdrawable)
 
+
 //    Corrutinas dependencies
     implementation(libs.kotlinx.coroutines.android)
 

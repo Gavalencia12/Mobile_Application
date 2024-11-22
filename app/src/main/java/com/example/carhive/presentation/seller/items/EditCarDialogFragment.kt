@@ -1,6 +1,7 @@
 package com.example.carhive.presentation.seller.view
 
 import SelectedImagesAdapter
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
@@ -26,18 +27,15 @@ import kotlinx.coroutines.tasks.await
 
 class EditCarDialogFragment : DialogFragment() {
 
-    // View binding to access UI elements
     private var _binding: DialogCarOptionsBinding? = null
     private val binding get() = _binding!!
 
-    // Variables for ViewModel, car to be edited, and lists for images
     private lateinit var viewModel: CrudViewModel
     private lateinit var car: CarEntity
     private val selectedImages = mutableListOf<Uri>()
     private val existingImageUrls = mutableListOf<String>()
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
 
-    // Activity result launcher for selecting multiple images
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == android.app.Activity.RESULT_OK) {
             result.data?.let { data ->
@@ -56,42 +54,35 @@ class EditCarDialogFragment : DialogFragment() {
     }
 
     companion object {
-        // Factory method to create an instance with a car and view model
         fun newInstance(car: CarEntity, viewModel: CrudViewModel) = EditCarDialogFragment().apply {
             this.car = car
             this.viewModel = viewModel
         }
     }
 
-    // Set dialog theme to fullscreen
     override fun onCreateDialog(savedInstanceState: Bundle?) = Dialog(requireContext(), R.style.DialogTheme_FullScreen)
 
-    // Inflate layout and initialize binding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         DialogCarOptionsBinding.inflate(inflater, container, false).also {
             _binding = it
         }.root
 
-    // Setup UI components and listeners
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupListeners()
     }
 
-    // Populate UI elements with car details and initialize image adapter
     private fun setupUI() {
         binding.apply {
-            // Check if editing an existing car or creating a new one
             if (::car.isInitialized) {
-                dialogTitle.text = getString(R.string.edit_car_title) // Set title to "Edit Car"
-                buttonCreate.text = getString(R.string.update_button)  // Set button text to "Update"
+                dialogTitle.text = getString(R.string.edit_car_title)
+                buttonCreate.text = getString(R.string.update_button)
             } else {
-                dialogTitle.text = getString(R.string.new_product_title) // Default title "New Product"
-                buttonCreate.text = getString(R.string.create_button)  // Default button "Create"
+                dialogTitle.text = getString(R.string.new_product_title)
+                buttonCreate.text = getString(R.string.create_button)
             }
 
-            // Set car fields if updating an existing car
             if (::car.isInitialized) {
                 etModelo.setText(car.modelo)
                 etColor.setText(car.color)
@@ -110,26 +101,23 @@ class EditCarDialogFragment : DialogFragment() {
                 selectedImages.add(Uri.parse(imageUrl))
             }
 
-            // Initialize adapter to display selected images
             selectedImagesAdapter = SelectedImagesAdapter(selectedImages) { position -> removeImage(position) }
             binding.rvSelectedImages.apply {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = selectedImagesAdapter
             }
 
-            // Set up dropdown options
             setupSpinners()
             updateImageCounter()
+            setupAutoCompleteTextView()
         }
     }
 
-    // Initialize spinners with options and set selected values
     private fun setupSpinners() {
         val transmissionOptions = resources.getStringArray(R.array.transmission_options).toList()
         val fuelTypeOptions = resources.getStringArray(R.array.fuel_type_options).toList()
         val conditionOptions = resources.getStringArray(R.array.condition_options).toList()
         val locationOptions = resources.getStringArray(R.array.location_options).toList()
-        val brandOptions = resources.getStringArray(R.array.brand_options).toList()
         val yearOptions = (1970..java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)).map { it.toString() }
 
         binding.apply {
@@ -137,12 +125,10 @@ class EditCarDialogFragment : DialogFragment() {
             setupSpinner(spinnerFuelType, fuelTypeOptions, car.fuelType)
             setupSpinner(spinnerCondition, conditionOptions, car.condition)
             setupSpinner(spinnerLocation, locationOptions, car.location)
-            setupSpinner(spinnerBrand, brandOptions, car.brand)
             setupSpinner(spinnerYear, yearOptions, car.year)
         }
     }
 
-    // Helper function to configure a spinner with options
     private fun setupSpinner(spinner: Spinner, options: List<String>, selectedOption: String?) {
         spinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -150,18 +136,51 @@ class EditCarDialogFragment : DialogFragment() {
         selectedOption?.let { spinner.setSelection(options.indexOf(it)) }
     }
 
-    // Set up button listeners
+    private fun setupAutoCompleteTextView() {
+        // Cargar las marcas del archivo JSON
+        val brandOptions = loadBrandsFromJson() ?: listOf()
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, brandOptions)
+        binding.spinnerBrand.apply {
+            setAdapter(adapter)
+            setThreshold(1) // Comienza a mostrar sugerencias después de escribir 1 carácter
+
+            // Manejar la selección de un elemento
+            setOnItemClickListener { _, _, position, _ ->
+                val selectedBrand = adapter.getItem(position) as String
+                binding.spinnerBrand.setText(selectedBrand) // Asegurarse de que se muestra la marca seleccionada
+                Toast.makeText(requireContext(), "Selected: $selectedBrand", Toast.LENGTH_SHORT).show()
+            }
+
+            // Si ya hay una marca seleccionada (por ejemplo, la marca de un auto ya existente), mostrarla
+            if (::car.isInitialized) {
+                val selectedBrand = car.brand  // Suponiendo que car.brand tiene la marca seleccionada previamente
+                setText(selectedBrand, false)  // Establecer el texto sin activar el foco
+            }
+
+            // Validar la marca ingresada al perder el foco
+            setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    val userInput = binding.spinnerBrand.text.toString()
+                    if (!brandOptions.contains(userInput)) {
+                        showAlertIfInvalidBrand()
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun setupListeners() {
         binding.buttonSelectImages.setOnClickListener { openImagePicker() }
 
         binding.buttonCreate.setOnClickListener {
-            updateCar()
+            validateForm()
         }
 
         binding.buttonCancel.setOnClickListener { dismiss() }
     }
 
-    // Open image picker to select images
     private fun openImagePicker() {
         Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "image/*"
@@ -170,13 +189,11 @@ class EditCarDialogFragment : DialogFragment() {
         }.also { imagePickerLauncher.launch(it) }
     }
 
-    // Add selected image URI to the list
     private fun addImageUri(uri: Uri) {
         requireContext().contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         selectedImages.add(uri)
     }
 
-    // Remove image from the list at the given position
     private fun removeImage(position: Int) {
         if (position in selectedImages.indices) {
             val uriToRemove = selectedImages[position]
@@ -189,18 +206,16 @@ class EditCarDialogFragment : DialogFragment() {
         }
     }
 
-    // Update displayed image count
     private fun updateImageCounter() {
         binding.tvImageCount.text = getString(R.string.image_count_text, selectedImages.size, 5)
     }
 
-    // Collect input data and update the car record
-    private fun updateCar() {
+    private fun validateForm() {
         with(binding) {
             val modelo = etModelo.text.toString()
             val color = etColor.text.toString()
             val mileage = etMileage.text.toString()
-            val brand = spinnerBrand.selectedItem.toString()
+            val brand = spinnerBrand.text.toString()
             val description = etDescription.text.toString()
             val price = etPrice.text.toString()
             val year = spinnerYear.selectedItem.toString()
@@ -214,17 +229,23 @@ class EditCarDialogFragment : DialogFragment() {
             val vin = etVin.text.toString()
             val previousOwners = etPreviousOwners.text.toString().toIntOrNull() ?: 0
 
+            // Check that all fields are filled
             if (validateFields(modelo, color, mileage, brand, description, price, year, engineCapacity, location, vin)) {
-                if (selectedImages.size != 5) {
-                    Toast.makeText(requireContext(), R.string.select_five_images, Toast.LENGTH_SHORT).show()
-                    return
-                }
+                // Check if the selected brand exists
+                if (isBrandValid(brand)) {
+                    if (selectedImages.size != 5) {
+                        Toast.makeText(requireContext(), R.string.select_five_images, Toast.LENGTH_SHORT).show()
+                        return
+                    }
 
-                viewModel.viewModelScope.launch {
-                    uploadImagesAndSaveCar(
-                        modelo, color, mileage, brand, description, price, year, transmission, fuelType,
-                        doors, engineCapacity, location, condition, features, vin, previousOwners
-                    )
+                    viewModel.viewModelScope.launch {
+                        uploadImagesAndSaveCar(
+                            modelo, color, mileage, brand, description, price, year, transmission, fuelType,
+                            doors, engineCapacity, location, condition, features, vin, previousOwners
+                        )
+                    }
+                } else {
+                    showAlertIfInvalidBrand()  // Show error if brand is not valid
                 }
             } else {
                 Toast.makeText(requireContext(), R.string.complete_all_fields, Toast.LENGTH_SHORT).show()
@@ -232,10 +253,34 @@ class EditCarDialogFragment : DialogFragment() {
         }
     }
 
-    // Check if all fields are filled
     private fun validateFields(vararg fields: String) = fields.all { it.isNotEmpty() }
 
-    // Upload images and save car details to Firebase
+    private fun showAlertIfInvalidBrand() {
+        val userInput = binding.spinnerBrand.text.toString()
+        AlertDialog.Builder(requireContext())
+            .setMessage("The brand '$userInput' does not exist. Please select a valid brand.")
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun isBrandValid(userInput: String): Boolean {
+        val allBrands = loadBrandsFromJson() ?: emptyList()
+        return allBrands.contains(userInput)
+    }
+
+    private fun loadBrandsFromJson(): List<String>? {
+        return try {
+            val jsonString = requireContext().assets.open("car_brands.json").bufferedReader().use { it.readText() }
+            val jsonArray = org.json.JSONArray(jsonString)
+
+            // Convertir el JSONArray en una lista de strings
+            (0 until jsonArray.length()).map { jsonArray.getString(it) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     private suspend fun uploadImagesAndSaveCar(
         modelo: String,
         color: String,
@@ -317,15 +362,16 @@ class EditCarDialogFragment : DialogFragment() {
         }
     }
 
-    // Clear binding when the view is destroyed
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    // Set dialog width to almost full screen when starting
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout((resources.displayMetrics.widthPixels * 0.99).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.99).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 }

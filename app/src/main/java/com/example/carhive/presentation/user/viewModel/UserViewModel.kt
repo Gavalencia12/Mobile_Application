@@ -1,6 +1,7 @@
 package com.example.carhive.Presentation.user.viewModel
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -27,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.example.carhive.Presentation.user.adapter.BrandAdapter
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
@@ -62,6 +64,10 @@ class UserViewModel @Inject constructor(
 
     private lateinit var recommendedCarAdapter: CarHomeAdapter
 
+    private val _brandList = MutableLiveData<List<String>>()
+    val brandList: LiveData<List<String>> get() = _brandList
+
+
     // Selected filters
     var selectedBrands: MutableSet<String> = mutableSetOf()
     var selectedModel: String? = null
@@ -78,8 +84,6 @@ class UserViewModel @Inject constructor(
 
     // Current location filter
     private var selectedLocation: String? = null
-
-
 
     // Unique car models and colors for filter options
     private val _uniqueCarModels = MutableLiveData<List<String>>()
@@ -102,6 +106,19 @@ class UserViewModel @Inject constructor(
                 fetchRecommendedCars() // Update recommended cars after fetching all cars
             } else {
                 showToast(R.string.error_fetching_cars)
+            }
+        }
+    }
+
+    fun fetchBrandsFromCars() {
+        viewModelScope.launch {
+            val result = getAllCarsFromDatabaseUseCase()
+            if (result.isSuccess) {
+                val cars = result.getOrNull()
+                val uniqueBrands = cars?.map { it.brand }?.distinct() ?: emptyList()
+                _brandList.value = uniqueBrands // Actualiza el LiveData de marcas
+            } else {
+                Log.e("UserViewModel", "Error al obtener los autos")
             }
         }
     }
@@ -134,7 +151,6 @@ class UserViewModel @Inject constructor(
         val colors = allCars.map { it.color.replaceFirstChar { it.uppercase() } }.distinct()
         _uniqueCarColors.value = colors
     }
-
 
     var selectedCondition: String? = null
     /**
@@ -169,8 +185,6 @@ class UserViewModel @Inject constructor(
         onFilterApplied(filteredCars)
     }
 
-
-
     /**
      * Resets all filters and shows the complete list of cars.
      */
@@ -185,7 +199,6 @@ class UserViewModel @Inject constructor(
         selectedCondition = null // Reinicia la condición seleccionada
         _carList.value = allCars
     }
-
 
     /**
      * Filters cars by location.

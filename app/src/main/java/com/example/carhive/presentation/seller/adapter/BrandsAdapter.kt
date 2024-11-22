@@ -6,68 +6,63 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.carhive.R // Import the R class to reference string resources
+import com.example.carhive.R
 
-// Adapter to display and manage selectable car brands in a RecyclerView
 class BrandAdapter(
-    private var brands: MutableList<String>, // MutableList allows for updating the list of brands
-    private val selectedBrands: MutableSet<String>, // Stores selected brands
-    private val onBrandSelectionChanged: (Set<String>) -> Unit // Callback to notify selection changes
+    private var brands: MutableList<String>,
+    private val selectedBrands: MutableSet<String>,
+    private val onBrandSelectionChanged: (Set<String>) -> Unit // Callback para cambios de selección
 ) : RecyclerView.Adapter<BrandAdapter.BrandViewHolder>() {
 
-    // Inflates the item view for each brand and creates a ViewHolder
+    // Inflar y crear el ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrandViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_brand, parent, false) // Use a custom layout for better flexibility
+            .inflate(R.layout.item_brand, parent, false)
         return BrandViewHolder(view)
     }
 
-    // Binds data (brand name) to the ViewHolder at the given position
+    // Enlazar los datos a la vista
     override fun onBindViewHolder(holder: BrandViewHolder, position: Int) {
         val brand = brands[position]
-        holder.bind(brand) // Pass brand name to the bind method
+        holder.bind(brand)
     }
 
-    // Returns the total count of brands in the list
+    // Contar los elementos en la lista
     override fun getItemCount(): Int = brands.size
 
-    // Updates the list of brands with a new set of brands
+    // Actualiza la lista de marcas
     fun updateBrands(newBrands: List<String>) {
-        brands.clear() // Clear the current list
-        brands.addAll(newBrands) // Add the new list of brands
-        notifyDataSetChanged() // Notify RecyclerView to refresh
+        brands.clear() // Limpiar la lista de marcas actual
+        brands.addAll(newBrands) // Agregar las nuevas marcas
+        notifyDataSetChanged() // Notificar que los datos cambiaron
     }
 
-    // ViewHolder class to represent and manage the UI for each brand item
+    // ViewHolder para manejar cada elemento
     inner class BrandViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val brandName: TextView = view.findViewById(R.id.brand_name) // TextView for brand name
+        private val brandName: TextView = view.findViewById(R.id.brand_name)
 
-        // Binds brand data and sets up click functionality
         fun bind(brand: String) {
-            brandName.text = brand // Set the brand name text
-            updateViewState(brand) // Apply styling based on selection state
+            brandName.text = brand
+            updateViewState(brand)
 
-            // Toggle selection when item is clicked
             itemView.setOnClickListener {
-                toggleSelection(brand) // Update selection state
-                onBrandSelectionChanged(selectedBrands) // Notify the selection change
+                toggleSelection(brand)
+                onBrandSelectionChanged(selectedBrands)
             }
         }
 
-        // Updates the view's appearance based on whether the brand is selected
         private fun updateViewState(brand: String) {
             itemView.setBackgroundColor(if (selectedBrands.contains(brand)) Color.LTGRAY else Color.TRANSPARENT)
             brandName.setTextColor(if (selectedBrands.contains(brand)) Color.BLUE else Color.BLACK)
         }
 
-        // Toggles selection state for the given brand
         private fun toggleSelection(brand: String) {
             if (selectedBrands.contains(brand)) {
-                selectedBrands.remove(brand) // Unselect if already selected
+                selectedBrands.remove(brand)
             } else {
-                selectedBrands.add(brand) // Select if not already selected
+                selectedBrands.add(brand)
             }
-            notifyItemChanged(adapterPosition) // Notify that this item has changed
+            notifyItemChanged(adapterPosition)
         }
     }
 }
