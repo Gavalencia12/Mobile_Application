@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -236,6 +237,41 @@ class CrudDialogFragment : DialogFragment() {
         val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
         setupSpinner(binding.spinnerYear, (1970..currentYear).map { it.toString() })
         setupSpinner(binding.spinnerBrand, listOf("Toyota", "Honda", "Ford", "Chevrolet", "Nissan", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Hyundai"))
+    }
+
+    // Set up color filter buttons
+    private fun setupColorFilter(view: View) {
+        val colorButtons = listOf(
+            Pair(R.id.red_button, "Red"),
+            Pair(R.id.orange_button, "Orange"),
+            Pair(R.id.yellow_button, "Yellow"),
+            Pair(R.id.green_button, "Green"),
+            Pair(R.id.blue_button, "Blue"),
+            Pair(R.id.purple_button, "Purple"),
+            Pair(R.id.pink_button, "Pink"),
+            Pair(R.id.white_button, "White"),
+            Pair(R.id.gray_button, "Gray"),
+            Pair(R.id.black_button, "Black")
+        )
+
+        colorButtons.forEach { (buttonId, color) ->
+            val button = view.findViewById<Button>(buttonId)
+
+            button.setBackgroundResource(R.drawable.selected_circle)
+            button.isSelected = viewModel.selectedColors.contains(color)
+
+            button.setOnClickListener {
+                if (viewModel.selectedColors.contains(color)) {
+                    viewModel.selectedColors.remove(color)
+                    button.isSelected = false
+                    Toast.makeText(requireContext(), "Color deselected: $color", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.selectedColors.add(color)
+                    button.isSelected = true
+                    Toast.makeText(requireContext(), "Color selected: $color", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setupSpinner(spinner: Spinner, options: List<String>) {
