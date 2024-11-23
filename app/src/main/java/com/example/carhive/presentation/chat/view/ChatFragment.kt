@@ -88,7 +88,7 @@ class ChatFragment : Fragment() {
                 return@setOnClickListener
             }
             val cleanedMessage = originalMessage.replace(Regex("\\n{2,}"), "\n")
-            chatViewModel.sendTextMessage(ownerId, carId, buyerId, cleanedMessage, admin)
+            chatViewModel.sendTextMessageWithNotification(ownerId, carId, buyerId, cleanedMessage, admin)
             binding.editTextMessage.text.clear()
         }
 
@@ -176,6 +176,15 @@ class ChatFragment : Fragment() {
      * Observes data from the ViewModel to update the UI.
      */
     private fun observeViewModel() {
+
+        chatViewModel.uploading.observe(viewLifecycleOwner) { isUploading ->
+            if (isUploading) {
+                showLoadingDialog()
+            } else {
+                hideLoadingDialog()
+            }
+        }
+
         chatViewModel.isUserBlocked.observe(viewLifecycleOwner) { isBlocked ->
             if (isBlocked) {
                 binding.blockedMessageTextView.visibility = View.VISIBLE
@@ -228,6 +237,24 @@ class ChatFragment : Fragment() {
             }
         }
     }
+
+    private var loadingDialog: AlertDialog? = null
+
+    private fun showLoadingDialog() {
+        if (loadingDialog == null) {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setCancelable(false)
+            builder.setView(LayoutInflater.from(requireContext()).inflate(R.layout.dialog_loading, null))
+            loadingDialog = builder.create()
+        }
+        loadingDialog?.show()
+    }
+
+    private fun hideLoadingDialog() {
+        loadingDialog?.dismiss()
+        loadingDialog = null
+    }
+
 
     /**
      * Shows the options menu with actions to report, block, or delete the chat.
@@ -394,9 +421,16 @@ class ChatFragment : Fragment() {
 
         builder.setPositiveButton("Send") { dialog, _ ->
             lifecycleScope.launch {
+                showLoadingDialog() // Mostrar el diálogo de cargando
                 val admin = ownerId == "TechnicalSupport"
                 val fileHash = calculateFileHash(fileUri)
-                chatViewModel.sendFileMessage(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, admin)
+                try {
+                    chatViewModel.sendFileMessageWithNotification(ownerId, carId, buyerId, fileUri, fileType, fileName, fileHash, admin)
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Error sending file: ${e.message}", Toast.LENGTH_SHORT).show()
+                } finally {
+                    hideLoadingDialog() // Ocultar el diálogo de cargando
+                }
                 dialog.dismiss()
             }
         }

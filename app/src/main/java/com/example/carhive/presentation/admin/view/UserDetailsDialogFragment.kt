@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.carhive.data.datasource.remote.NotificationsRepositoryImpl
 import com.example.carhive.data.model.HistoryEntity
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.databinding.FragmentUserDetailsDialogBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 
-class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment() {
+class UserDetailsDialogFragment(private val user: UserEntity,private val onUserUpdated: () -> Unit ) : DialogFragment() {
 
     private var _binding: FragmentUserDetailsDialogBinding? = null
     private val binding get() = _binding!!
@@ -33,7 +36,6 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
 
         database = FirebaseDatabase.getInstance().getReference("Users")
 
-        // Mostrar los datos del usuario
         binding.firstNameText.text = user.firstName
         binding.lastNameText.text = user.lastName
         binding.emailText.text = user.email
@@ -46,7 +48,7 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
             "Not Verified"
         }
 
-        user.imageUrl?.let {
+        user.imageUrl2?.let {
             Glide.with(this).load(it).into(binding.userImageView)
         }
 
@@ -75,7 +77,9 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
                     eventType = "Verification",
                     message = "User ${user.firstName} was verified"
                 )
+                sendNotification(true)
                 Toast.makeText(requireContext(), "User successfully verified", Toast.LENGTH_SHORT).show()
+                onUserUpdated()
                 dismiss()
             } else {
                 Toast.makeText(requireContext(), "Error verifying the user", Toast.LENGTH_SHORT).show()
@@ -96,11 +100,21 @@ class UserDetailsDialogFragment(private val user: UserEntity) : DialogFragment()
                     eventType = "Deactivation",
                     message = "User ${user.firstName} was deactivated"
                 )
+                sendNotification(false)
                 Toast.makeText(requireContext(), "User successfully deactivated", Toast.LENGTH_SHORT).show()
+                onUserUpdated()
                 dismiss()
             } else {
                 Toast.makeText(requireContext(), "Error deactivating the user", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun sendNotification(isVerified: Boolean) {
+        val fullName = "${user.firstName} ${user.lastName}"
+        viewLifecycleOwner.lifecycleScope.launch {
+            val repository = NotificationsRepositoryImpl(requireContext(), FirebaseDatabase.getInstance())
+            repository.listenForUserVerification(user.id, isVerified, fullName)
         }
     }
 

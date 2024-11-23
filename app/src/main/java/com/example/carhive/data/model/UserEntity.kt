@@ -9,6 +9,7 @@ data class UserEntity(
     var voterID: String = "",
     var curp: String = "",
     var imageUrl: String? = null,
+    var imageUrl2: String? = null,
     var role: Int = 2,
     var isverified: Boolean = false,
     var isBanned: Boolean = false,

@@ -362,6 +362,7 @@
     <string name="verify_users">Verify Users</string>
     <string name="verify_button">Verify</string>
     <string name="email">Email</string>
+    <string name="Ban">Ban</string>
     <string name="verified">Verified</string>
     <string name="role">Role</string>
     <string name="unban_button">UNBAN</string>
@@ -420,6 +421,11 @@
     <string name="open_repuve">Open REPUVE</string>
     <string name="approved">Approved</string>
     <string name="disapproved">Disapproved</string>
+
+    <string name="type_of_event">Type of Event</string>
+    <string name="date_and_time">Date and Time</string>
+    <string name="select_brand">Select brand</string>
+
 
     <!-- Spinner Options -->
     <string-array name="transmission_options">

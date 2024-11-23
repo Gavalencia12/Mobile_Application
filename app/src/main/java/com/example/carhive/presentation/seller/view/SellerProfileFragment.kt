@@ -16,6 +16,7 @@ import com.example.carhive.presentation.user.adapter.ProfileOptionsAdapter
 import com.example.carhive.presentation.user.viewModel.ProfileViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentSellerProfileBinding
+import com.example.carhive.presentation.user.items.UpdateDataDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,6 +39,12 @@ class SellerProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        // Escuchar el resultado del diálogo
+        parentFragmentManager.setFragmentResultListener("update_request_key", this) { _, _ ->
+            // Recargar los datos del usuario después de actualizar
+            viewModel.fetchUserData()
+        }
 
         // Vincular el BottomNavigationView con el NavController
         val navController = findNavController()
@@ -59,11 +66,14 @@ class SellerProfileFragment : Fragment() {
         // Iniciar la obtención de los datos del usuario
         viewModel.fetchUserData()
 
-//        binding.ibtnBack.setOnClickListener {
-//            // Navegar al userHomeFragment
-//            findNavController().navigate(R.id.action_userProfileFragment_to_userHomeFragment)
-//            (activity as MainActivity).bottomNavigationViewSeller.selectedItemId = R.id.home
-//        }
+        binding.ibtnBack.setOnClickListener {
+            // Navegar al userHomeFragment
+            findNavController().navigate(R.id.action_userProfileFragment_to_sellerHomeFragment)
+        }
+        binding.updateData.setOnClickListener {
+            val dialog = UpdateDataDialogFragment()
+            dialog.show(parentFragmentManager, "UpdateDataDialog")
+        }
 
         // Configurar la lista de opciones del perfil
         val listView = binding.profileOptionsList
@@ -91,6 +101,9 @@ class SellerProfileFragment : Fragment() {
                         putString("buyerId", buyerId)
                     }
                     findNavController().navigate(R.id.action_sellerProfileFragment_to_sellerReportChat, bundle)
+                }
+                "Personal Data" -> {
+                    findNavController().navigate(R.id.action_sellerProfileFragment_to_PersonalDataFragment)
                 }
                 // Otros casos...
             }

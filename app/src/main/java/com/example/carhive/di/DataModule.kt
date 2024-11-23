@@ -8,12 +8,14 @@ import com.example.carhive.data.datasource.remote.ChatRepositoryImpl
 import com.example.carhive.data.datasource.remote.Firebase.FirebaseAuthDataSource
 import com.example.carhive.data.datasource.remote.Firebase.FirebaseDatabaseDataSource
 import com.example.carhive.data.datasource.remote.Firebase.FirebaseStorageDataSource
+import com.example.carhive.data.datasource.remote.NotificationsRepositoryImpl
 import com.example.carhive.data.datasource.remote.RepositoryImpl
 import com.example.carhive.data.mapper.CarMapper
 import com.example.carhive.data.mapper.MessageMapper
 import com.example.carhive.data.mapper.UserMapper
 import com.example.carhive.data.repository.AuthRepository
 import com.example.carhive.data.repository.ChatRepository
+import com.example.carhive.data.repository.NotificationsRepository
 import com.example.carhive.data.repository.SessionRepository
 import com.example.carhive.data.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -124,5 +126,14 @@ object DataModule {
         messageMapper
     ) // Provides the implementation of ChatRepository.
 
+    @Provides
+    @Singleton
+    fun provideNotificationsRepository(
+        context: Context,
+        database: FirebaseDatabase
+    ) : NotificationsRepository = NotificationsRepositoryImpl(
+        context,
+        database
+    )
 
 }

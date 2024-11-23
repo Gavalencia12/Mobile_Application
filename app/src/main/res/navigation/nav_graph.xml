@@ -196,6 +196,21 @@
         <action
             android:id="@+id/action_userProfileFragment_to_UserReportMessagesFragment"
             app:destination="@id/userReportChat" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_PersonalDataFragment"
+            app:destination="@id/PersonalDataFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PersonalDataFragment"
+        android:name="com.example.carhive.presentation.user.view.AdditionalDataFragment"
+        tools:layout="@layout/fragment_additional_data">
+        <action
+            android:id="@+id/action_PersonalDataFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"/>
+        <action
+            android:id="@+id/action_PersonalDataFragment_to_sellerProfileFragment"
+            app:destination="@id/sellerProfileFragment"/>
     </fragment>
 
     <fragment
@@ -276,6 +291,9 @@
         <action
             android:id="@+id/action_sellerProfileFragment_to_sellerReportChat"
             app:destination="@id/sellerReportChat"/>
+        <action
+            android:id="@+id/action_sellerProfileFragment_to_PersonalDataFragment"
+            app:destination="@id/PersonalDataFragment" />
     </fragment>
 
     <fragment
@@ -413,6 +431,46 @@
         <action
             android:id="@+id/action_adminSupportFragment_to_chatFragment"
             app:destination="@id/userChat"/>
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.carhive.presentation.notifications.view.NotificationsFragment">
+        <action
+            android:id="@+id/action_notificationsFragment_to_profile"
+            app:destination="@id/userProfileFragment" />
+
+        <action
+            android:id="@+id/action_notificationsFragment_to_favorites"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_chats"
+            app:destination="@id/userMessages" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_defaultFragment"
+            app:destination="@id/notificationsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationsSellerFragment"
+        android:name="com.example.carhive.presentation.notifications.view.NotificationsSellerFragment">
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_profile"
+            app:destination="@id/sellerProfileFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_allCars"
+            app:destination="@id/carsListFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_favorites"
+            app:destination="@id/sellerFavoriteFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_chats"
+            app:destination="@id/sellerInterestedUsersFragment" />
+        <action
+            android:id="@+id/action_notificationsSellerFragment_to_defaultFragment"
+            app:destination="@id/notificationsSellerFragment" />
     </fragment>
 
 </navigation>

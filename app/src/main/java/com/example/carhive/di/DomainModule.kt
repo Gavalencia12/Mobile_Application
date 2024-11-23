@@ -34,6 +34,14 @@ import com.example.carhive.Domain.usecase.favorites.GetCarFavoriteCountAndUsersU
 import com.example.carhive.Domain.usecase.favorites.GetUserFavoriteCarsUseCase
 import com.example.carhive.Domain.usecase.favorites.GetUserFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
+import com.example.carhive.Domain.usecase.notifications.AddNotificationUseCase
+import com.example.carhive.Domain.usecase.notifications.ListenForCarApprovalStatusUseCase
+import com.example.carhive.Domain.usecase.notifications.ListenForChatMessagesUseCase
+import com.example.carhive.Domain.usecase.notifications.ListenForNewFavoritesUseCase
+import com.example.carhive.Domain.usecase.notifications.ListenForUserVerificationUseCase
+import com.example.carhive.Domain.usecase.notifications.MarkNotificationAsReadUseCase
+import com.example.carhive.Domain.usecase.notifications.NotifyCarApprovalStatusUseCase
+import com.example.carhive.Domain.usecase.notifications.ShowNotificationUseCase
 import com.example.carhive.Domain.usecase.session.GetUserRoleUseCase
 import com.example.carhive.Domain.usecase.session.IsUserAuthenticatedUseCase
 import com.example.carhive.Domain.usecase.session.SaveUserRoleUseCase
@@ -43,6 +51,7 @@ import com.example.carhive.Domain.usecase.user.GetUserPreferencesUseCase
 import com.example.carhive.Domain.usecase.user.SavePasswordUseCase
 import com.example.carhive.Domain.usecase.user.SaveUserPreferencesUseCase
 import com.example.carhive.data.repository.ChatRepository
+import com.example.carhive.data.repository.NotificationsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -271,6 +280,49 @@ object DomainModule {
         @Singleton
         fun provideGetSupportUsersUseCase(repository: ChatRepository): GetSupportUsersUseCase =
             GetSupportUsersUseCase(repository)
+
+    //      <---------------------------------------- End ----------------------------------------->
+
+    //      <---------------------------------- Notifications ------------------------------------->
+        @Provides
+        @Singleton
+        fun provideListenForChatMessagesUseCase(repository: NotificationsRepository): ListenForChatMessagesUseCase =
+            ListenForChatMessagesUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideListenForNewFavoritesUseCase(repository: NotificationsRepository): ListenForNewFavoritesUseCase =
+            ListenForNewFavoritesUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideListenForCarApprovalStatusUseCase(repository: NotificationsRepository): ListenForCarApprovalStatusUseCase =
+            ListenForCarApprovalStatusUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideNotifyCarApprovalStatusUseCase(repository: NotificationsRepository): NotifyCarApprovalStatusUseCase =
+            NotifyCarApprovalStatusUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideListenForUserVerificationUseCase(repository: NotificationsRepository): ListenForUserVerificationUseCase =
+            ListenForUserVerificationUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideAddNotificationUseCase(repository: NotificationsRepository): AddNotificationUseCase =
+            AddNotificationUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideMarkNotificationAsReadUseCase(repository: NotificationsRepository): MarkNotificationAsReadUseCase =
+            MarkNotificationAsReadUseCase(repository)
+
+        @Provides
+        @Singleton
+        fun provideShowNotificationUseCase(repository: NotificationsRepository): ShowNotificationUseCase =
+            ShowNotificationUseCase(repository)
 
     //      <---------------------------------------- End ----------------------------------------->
 

@@ -37,6 +37,8 @@
     <color name="brand_default_background">#FFFFFFFF</color> <!-- White for default background -->
     <color name="brand_selected_text">#FF0000FF</color> <!-- Blue for selected text -->
     <color name="brand_default_text">#FF000000</color> <!-- Black for default text -->
+    <color name="notification_unread_background">#E3F2FD</color> <!-- Un azul claro -->
+
     <color name="transparent">#00000000</color>
     <color name="red_light">#D32F2F</color> <!-- #E62222 -->
     <color name="red_lighting">#E2A9A9</color>
