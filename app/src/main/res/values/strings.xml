@@ -425,6 +425,9 @@
     <string name="Qualification">Qualification</string>
     <string name="commentext">Comment</string>
     <string name="timetext">Time</string>
+    <string name="User_Comment">Comment</string>
+    <string name="title_comment">COMMENT</string>
+    <string name="Rating">Rating</string>
 
 
 

@@ -104,6 +104,14 @@ class CarDetailFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_carDetailFragment_to_chat, bundle)
         }
+        binding.tvName.setOnClickListener {
+            val sellerId = ownerId // Asegúrate de que este ID ya está disponible
+            val bundle = Bundle().apply {
+                putString("sellerId", sellerId)
+            }
+            findNavController().navigate(R.id.action_carDetailFragment_to_SellerProfileFragmentCars, bundle)
+        }
+
     }
 
     /**

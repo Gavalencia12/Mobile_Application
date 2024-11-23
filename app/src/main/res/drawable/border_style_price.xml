@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo del contenedor -->
+    <item>
+        <shape>
+            <solid android:color="@color/black" /> <!-- Fondo blanco -->
+        </shape>
+    </item>
+
+    <!-- Superposición para ocultar el borde superior -->
+    <item android:top="0dp" android:end="8dp" android:left="8dp" android:bottom="8dp">
+
+    </item>
+</layer-list>

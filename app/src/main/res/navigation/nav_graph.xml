@@ -153,6 +153,42 @@
         <action
             android:id="@+id/action_carDetailFragment_to_chat"
             app:destination="@id/userChat" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_SellerProfileFragmentCars"
+            app:destination="@id/sellerProfileFragmentCars" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sellerProfileFragmentCars"
+        android:name="com.example.carhive.presentation.user.view.SellerProfileFragmentCars"
+        tools:layout="@layout/fragment_seller_profile_cars">
+        <argument
+            android:name="sellerId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_SellerProfileFragmentCars_to_userHomeFragment"
+            app:destination="@id/userHomeFragment" />
+        <action
+            android:id="@+id/action_SellerProfileFragmentCars_to_carDetailFragment"
+            app:destination="@id/userHomeCarDetailFragment" />
+        <action
+            android:id="@+id/action_SellerProfileFragmentCars_to_UserSellerProfileCommentsFragment"
+            app:destination="@id/UserSellerProfileCommentsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/UserSellerProfileCommentsFragment"
+        android:name="com.example.carhive.presentation.user.view.UserSellerProfileCommentsFragment"
+        tools:layout="@layout/fragment_seller_profile_comments">
+        <argument
+            android:name="sellerId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_UserSellerProfileCommentsFragment_to_SellerProfileFragmentCars"
+            app:destination="@id/sellerProfileFragmentCars" />
+        <action
+            android:id="@+id/action_UserSellerProfileFragmentCars_to_userHomeFragment"
+            app:destination="@id/userHomeFragment" />
     </fragment>
 
     <fragment

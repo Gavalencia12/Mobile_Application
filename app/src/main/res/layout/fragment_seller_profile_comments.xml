@@ -18,8 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -39,6 +38,15 @@
                     android:text="@string/user_comments"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+                <ImageButton
+                    android:id="@+id/comment_seller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/image"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_edit"
+                    android:padding="5dp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -89,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_below="@+id/profile_image">
+                    android:layout_below="@+id/profile_name">
 
                     <!-- Primer conjunto: Número y Texto -->
                     <TextView
@@ -98,11 +106,9 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         style="@style/txt_footer"
-                        android:text="7"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/num_comments"
-                        app:layout_constraintHorizontalChainStyle="spread_inside" />
+                        app:layout_constraintEnd_toStartOf="@+id/num_comments" />
 
                     <TextView
                         android:id="@+id/cars"
@@ -125,15 +131,14 @@
                         android:text="7"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/num_cars"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontalChainStyle="spread_inside" />
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
-                        style="@style/txt_footer"
                         android:id="@+id/comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Comments"
+                        style="@style/txt_footer"
                         app:layout_constraintTop_toBottomOf="@+id/num_comments"
                         app:layout_constraintStart_toStartOf="@+id/num_comments"
                         app:layout_constraintEnd_toEndOf="@+id/num_comments"
@@ -189,8 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="8dp">
+                android:gravity="center_horizontal">
 
                 <!-- Primer TextView con margen adicional -->
                 <TextView
@@ -211,9 +215,11 @@
                     android:layout_marginStart="32dp"
                     android:textColor="@color/blue" />
             </LinearLayout>
-
-
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray"
+                android:layout_marginVertical="1dp" />
             <ListView
                 android:id="@+id/list_comments"
                 android:layout_width="match_parent"
