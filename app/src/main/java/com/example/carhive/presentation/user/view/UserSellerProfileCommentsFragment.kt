@@ -89,7 +89,7 @@ class UserSellerProfileCommentsFragment : Fragment() {
                 Glide.with(requireContext())
                     .load(it.imageUrl)
                     .placeholder(R.drawable.ic_profile)
-                    .error(R.drawable.ic_error)
+                    .error(R.drawable.ic_profile)
                     .circleCrop()
                     .into(binding.profileImage)
             }
@@ -137,6 +137,7 @@ class UserSellerProfileCommentsFragment : Fragment() {
                         totalRating += it.rating // Sumar la calificación
                     }
                 }
+                ratingsAdapter.notifyDataSetChanged()
 
                 if (ratingsList.isNotEmpty()) {
                     // Actualizar cantidad de comentarios y promedio

@@ -66,6 +66,15 @@
                         android:text="@string/last_name"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/roleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Role"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/stars_seller"

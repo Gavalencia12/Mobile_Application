@@ -411,8 +411,9 @@
     <string name="wear_and_tear">Wear and Tear</string>
     <string name="mechanical_specifications">Mechanical Specifications</string>
     <string name="publication_information">Publication Information</string>
-    <string name="user_seller">Seller</string>
+    <string name="user_seller">Cars</string>
     <string name="user_comments">Comments</string>
+    <string name="comment_history">Comment History</string>
 
     <!-- Labels -->
     <string name="views">Views:</string>

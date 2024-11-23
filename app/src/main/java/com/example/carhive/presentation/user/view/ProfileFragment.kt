@@ -104,7 +104,7 @@ class ProfileFragment : Fragment() {
                     findNavController().navigate(R.id.action_userProfileFragment_to_PersonalDataFragment)
                 }
                 "Comment History" -> {
-                    findNavController().navigate(R.id.action_userProfileFragment_to_PersonalDataFragment)
+                    findNavController().navigate(R.id.action_userProfileFragment_to_CommentHistoryFragment)
                 }
                 // Otros casos...
             }
@@ -119,7 +119,8 @@ class ProfileFragment : Fragment() {
         } else {
             binding.ivIsVerified.visibility = View.GONE
         }
-        Glide.with(this).load(user.imageUrl).circleCrop().into(binding.profileImage)
+        Glide.with(this).load(user.imageUrl).placeholder(R.drawable.ic_profile).error(R.drawable.ic_profile).circleCrop().into(binding.profileImage)
+
     }
 
     override fun onDestroyView() {

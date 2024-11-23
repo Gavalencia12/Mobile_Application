@@ -173,7 +173,8 @@
             app:destination="@id/userHomeCarDetailFragment" />
         <action
             android:id="@+id/action_SellerProfileFragmentCars_to_UserSellerProfileCommentsFragment"
-            app:destination="@id/UserSellerProfileCommentsFragment" />
+            app:destination="@id/UserSellerProfileCommentsFragment"
+            />
     </fragment>
 
     <fragment
@@ -235,6 +236,20 @@
         <action
             android:id="@+id/action_userProfileFragment_to_PersonalDataFragment"
             app:destination="@id/PersonalDataFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_CommentHistoryFragment"
+            app:destination="@id/UserCommentHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/UserCommentHistoryFragment"
+        android:name="com.example.carhive.presentation.user.view.UserCommentHistoryFragment"
+        tools:layout="@layout/fragment_user_comment_history">
+
+        <action
+            android:id="@+id/action_UserCommentHistoryFragment_to_sellerProfileFragmentCars"
+            app:destination="@id/sellerProfileFragmentCars" />
+
     </fragment>
 
     <fragment
@@ -330,6 +345,15 @@
         <action
             android:id="@+id/action_sellerProfileFragment_to_PersonalDataFragment"
             app:destination="@id/PersonalDataFragment" />
+        <action
+            android:id="@+id/action_sellerProfileFragment_to_CommentHistoryFragment"
+            app:destination="@id/SellerCommentHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SellerCommentHistoryFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerCommentHistoryFragment"
+        tools:layout="@layout/fragment_seller_comment_history">
     </fragment>
 
     <fragment
