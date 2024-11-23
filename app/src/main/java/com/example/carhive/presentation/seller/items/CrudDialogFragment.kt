@@ -37,6 +37,8 @@ class CrudDialogFragment : DialogFragment() {
     private val selectedImages = mutableListOf<Uri>()
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
 
+    private var selectedColor: String? = null
+
     private val maxImages = 5
 
     override fun onCreateView(
@@ -53,6 +55,7 @@ class CrudDialogFragment : DialogFragment() {
         setupImageRecyclerView()
         setupImagePicker()
         setupSpinners()
+        setupColorFilter(binding.root)
 
         // Handles the Create button click, validating input and triggering car listing creation
         binding.buttonCreate.setOnClickListener {
@@ -151,7 +154,7 @@ class CrudDialogFragment : DialogFragment() {
     private fun isFormValid(): Boolean {
         val requiredFields = listOf(
             binding.etModelo.text.toString(),
-            binding.etColor.text.toString(),
+            binding.colorGrid.toString(),
             binding.etMileage.text.toString(),
             binding.spinnerBrand.text.toString(),
             binding.etDescription.text.toString(),
@@ -188,7 +191,7 @@ class CrudDialogFragment : DialogFragment() {
         // Directly passing individual fields to addCarToDatabase function
         viewModel.addCarToDatabase(
             modelo = binding.etModelo.text.toString(),
-            color = binding.etColor.text.toString(),
+            color = selectedColor ?: "",
             mileage = binding.etMileage.text.toString(),
             brand=  binding.spinnerBrand.text.toString(),
             description = binding.etDescription.text.toString(),
@@ -355,19 +358,26 @@ class CrudDialogFragment : DialogFragment() {
         colorButtons.forEach { (buttonId, color) ->
             val button = view.findViewById<Button>(buttonId)
 
-            button.setBackgroundResource(R.drawable.selected_circle)
-            button.isSelected = viewModel.selectedColors.contains(color)
+            button.isSelected = color == selectedColor // Marca el botón si el color ya está seleccionado
+            button.setBackgroundResource(if (button.isSelected) R.drawable.selected_circle else R.drawable.selected_circle)
 
             button.setOnClickListener {
-                if (viewModel.selectedColors.contains(color)) {
-                    viewModel.selectedColors.remove(color)
+                // Actualiza el color seleccionado
+                if (selectedColor == color) {
+                    selectedColor = null
                     button.isSelected = false
-                    Toast.makeText(requireContext(), "Color deselected: $color", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.selectedColors.add(color)
+                    selectedColor = color
+                    colorButtons.forEach { (id, _) ->
+                        val otherButton = view.findViewById<Button>(id)
+                        otherButton.isSelected = false
+                        otherButton.setBackgroundResource(R.drawable.selected_circle)
+                    }
                     button.isSelected = true
-                    Toast.makeText(requireContext(), "Color selected: $color", Toast.LENGTH_SHORT).show()
+                    button.setBackgroundResource(R.drawable.selected_circle)
                 }
+
+                Toast.makeText(requireContext(), "Selected color: $selectedColor", Toast.LENGTH_SHORT).show()
             }
         }
     }
