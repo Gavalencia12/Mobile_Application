@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.carhive.data.model.CarEntity
+import com.example.carhive.data.model.RatingSellerEntity
 import com.example.carhive.presentation.user.adapter.CarAdapter
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -66,6 +67,7 @@ class SellerProfileFragmentCars : Fragment() {
         sellerId?.let {
             loadUserData(it)
             loadCars(it, carAdapter)
+            loadComments(it)
         }
 
         binding.ibtnBack.setOnClickListener {
@@ -128,7 +130,78 @@ class SellerProfileFragmentCars : Fragment() {
     }
 
 
+    private fun loadComments(sellerId: String) {
+        val databaseReference = FirebaseDatabase.getInstance().getReference("RatingSeller/$sellerId")
 
+        databaseReference.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                var totalRating = 0
+                val ratingsList = mutableListOf<Int>() // Lista para las calificaciones
+
+                for (commentSnapshot in snapshot.children) {
+                    val comment = commentSnapshot.getValue(RatingSellerEntity::class.java)
+                    comment?.let {
+                        ratingsList.add(it.rating)
+                        totalRating += it.rating
+                    }
+                }
+
+                // Actualizar la cantidad de comentarios
+                binding.numComments.text = ratingsList.size.toString()
+
+                if (ratingsList.isNotEmpty()) {
+                    // Calcular el promedio y actualizar las estrellas
+                    val averageRating = totalRating / ratingsList.size
+                    updateStars(averageRating)
+
+                    // Mostrar el promedio y ocultar el mensaje de "No hay calificaciones"
+                    binding.Qualification.visibility = View.VISIBLE
+                    binding.NotQualification.visibility = View.GONE
+                } else {
+                    // No hay calificaciones
+                    binding.Qualification.visibility = View.GONE
+                    binding.NotQualification.visibility = View.VISIBLE
+                    updateStars(0) // No mostrar estrellas
+                }
+            } else {
+                // No hay comentarios
+                binding.numComments.text = "0"
+                binding.Qualification.visibility = View.GONE
+                binding.NotQualification.visibility = View.VISIBLE
+                updateStars(0) // No mostrar estrellas
+            }
+        }
+    }
+
+
+    private fun updateStars(averageRating: Int) {
+        // Determinar cuántas estrellas mostrar
+        val stars = when (averageRating) {
+            in 0..19 -> 0
+            in 20..39 -> 1
+            in 40..59 -> 2
+            in 60..79 -> 3
+            in 80..99 -> 4
+            else -> 5
+        }
+
+        // Actualizar las estrellas en el layout
+        val starImages = listOf(
+            binding.star1,
+            binding.star2,
+            binding.star3,
+            binding.star4,
+            binding.star5
+        )
+
+        for (i in starImages.indices) {
+            if (i < stars) {
+                starImages[i].setImageResource(R.drawable.star) // Estrella llena
+            } else {
+                starImages[i].setImageResource(R.drawable.nostar) // Estrella vacía
+            }
+        }
+    }
 
 
 

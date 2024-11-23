@@ -77,26 +77,31 @@
                     android:layout_marginTop="5dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/star" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/star" />
-
-                    <ImageView
+                        android:id="@+id/star1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/nostar" />
 
                     <ImageView
+                        android:id="@+id/star2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/nostar" />
 
                     <ImageView
+                        android:id="@+id/star3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/nostar" />
+
+                    <ImageView
+                        android:id="@+id/star4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/nostar" />
+
+                    <ImageView
+                        android:id="@+id/star5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/nostar" />

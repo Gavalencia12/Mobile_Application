@@ -128,7 +128,6 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         style="@style/txt_footer"
-                        android:text="7"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/num_cars"
                         app:layout_constraintEnd_toEndOf="parent" />
@@ -155,39 +154,56 @@
                     android:layout_marginTop="5dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/star" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/star" />
-
-                    <ImageView
+                        android:id="@+id/star1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/nostar" />
 
                     <ImageView
+                        android:id="@+id/star2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/nostar" />
 
                     <ImageView
+                        android:id="@+id/star3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/nostar" />
+
+                    <ImageView
+                        android:id="@+id/star4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/nostar" />
+
+                    <ImageView
+                        android:id="@+id/star5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/nostar" />
                 </LinearLayout>
                 <TextView
-                    android:id="@+id/calificacion"
+                    android:id="@+id/Qualification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Qualification"
                     style="@style/txt_footer"
                     android:layout_below="@+id/stars_seller"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp" />
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/NotQualification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_Rating"
+                    style="@style/txt_footer"
+                    android:layout_below="@+id/stars_seller"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
             <LinearLayout
@@ -220,12 +236,13 @@
                 android:layout_height="2dp"
                 android:background="@color/gray"
                 android:layout_marginVertical="1dp" />
-            <ListView
-                android:id="@+id/list_comments"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewRatings"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white" >
-            </ListView>
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp" />
+
         </LinearLayout>
     </ScrollView>
 
