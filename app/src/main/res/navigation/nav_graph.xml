@@ -110,7 +110,7 @@
     <fragment
         android:id="@+id/termsUserFragment"
         android:name="com.example.carhive.presentation.user.items.TermsUserFragment"
-        tools:layout="@layout/fragment_seller_profile">
+        tools:layout="@layout/fragment_user_profile_terms">
         <action
             android:id="@+id/action_userProfileFragment_to_sellerProfileFragment"
             app:destination="@id/userProfileFragment"/>
@@ -375,6 +375,9 @@
         <action
             android:id="@+id/action_termsSellerFragment_to_sellerPrivacyPolicyFragment"
             app:destination="@id/sellerPrivacyPolicyFragment" />
+        <action
+            android:id="@+id/action_termsSellerFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
 
     </fragment>
     <fragment

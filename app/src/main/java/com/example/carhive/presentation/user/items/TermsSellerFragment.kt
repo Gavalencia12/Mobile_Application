@@ -13,6 +13,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.carhive.MainActivity
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentSellerProfileTermsBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.example.carhive.data.model.UserEntity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +33,8 @@ class TermsSellerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val role = arguments?.getInt("role") ?: 2
 
         val termsContent: TextView = binding.termsContent34
 
@@ -50,8 +55,25 @@ class TermsSellerFragment : Fragment() {
         termsContent.movementMethod = android.text.method.LinkMovementMethod.getInstance()
 
         binding.close.setOnClickListener {
-            findNavController().popBackStack()
-            (activity as MainActivity).bottomNavigationViewSeller.selectedItemId = R.id.profile
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                val databaseReference = FirebaseDatabase.getInstance().getReference("Users/$userId")
+
+                databaseReference.get().addOnSuccessListener { snapshot ->
+                    val user = snapshot.getValue(UserEntity::class.java)
+                    val role = user?.role ?: 2 // Por defecto, rol de usuario
+
+                    // Verificar si la actividad sigue activa antes de acceder
+                    val activity = activity as? MainActivity
+                    if (activity != null) {
+                        if (role == 1) {
+                            activity.bottomNavigationViewSeller.selectedItemId = R.id.profile
+                        } else if (role == 2) {
+                            activity.bottomNavigationViewUser.selectedItemId = R.id.profile
+                        }
+                    }
+                }
+            }
         }
     }
 
