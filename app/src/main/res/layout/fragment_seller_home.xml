@@ -156,16 +156,16 @@
                                 android:id="@+id/score"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="20dp"
-                                android:text="@string/example_number"
+                                android:layout_marginLeft="30dp"
                                 android:textColor="@color/white"
                                 android:textSize="60sp"
                                 android:textStyle="bold" />
 
+
                             <View
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="0.5" />
 
                             <!-- Rating icon -->
                             <ImageView
@@ -415,114 +415,19 @@
 
 
             <!-- Horizontal scroll view for seller reviews -->
-            <HorizontalScrollView
-                android:id="@+id/section_reviews"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/section_cards_3"
                 android:overScrollMode="never"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/section_cards_3" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
 
-                    <!-- Review card 1 -->
-                    <androidx.cardview.widget.CardView
-                        style="@style/card_info"
-                        android:id="@+id/card_review_1"
-                        android:backgroundTint="@color/blue_pressed"
-                        >
 
-                        <!-- Review content layout -->
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="10dp">
-
-                            <ImageView
-                                android:id="@+id/icon_review"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:src="@drawable/ic_review"
-                                android:layout_alignParentStart="true"
-                                android:contentDescription="@null"/>
-
-                            <TextView
-                                style="@style/title_dialog"
-                                android:id="@+id/title_review"
-                                android:layout_width="wrap_content"
-                                android:text="@string/review"
-                                android:textColor="@color/white"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="20dp" />
-
-                            <!-- Texto de la reseña -->
-                            <TextView
-                                style="@style/txt_footer"
-                                android:id="@+id/review"
-                                android:text="@string/txt_review"
-                                android:textColor="@color/white"
-                                android:textStyle="normal"
-                                android:textAlignment="center"
-                                android:maxLines="3"
-                                android:layout_below="@id/title_review"
-                                android:layout_marginTop="20dp" />
-
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Review card 2 -->
-                    <androidx.cardview.widget.CardView
-                        style="@style/card_info"
-                        android:id="@+id/card_review"
-                        android:backgroundTint="@color/blue_pressed" >
-
-                        <!-- Review content layout -->
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="10dp">
-
-                            <!-- Imagen  -->
-                            <ImageView
-                                android:id="@+id/icon_review1"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:src="@drawable/ic_review"
-                                android:layout_alignParentStart="true"
-                                android:contentDescription="@null"/>
-
-                            <!-- Título -->
-                            <TextView
-                                style="@style/title_dialog"
-                                android:id="@+id/title_review1"
-                                android:layout_width="wrap_content"
-                                android:text="@string/review"
-                                android:textColor="@color/white"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="20dp" />
-
-                            <!-- Texto de la reseña -->
-                            <TextView
-                                style="@style/txt_footer"
-                                android:id="@+id/review1"
-                                android:text="@string/txt_review"
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                android:textStyle="normal"
-                                android:textAlignment="center"
-                                android:maxLines="3"
-                                android:layout_below="@id/title_review1"
-                                android:layout_marginTop="20dp" />
-
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </HorizontalScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom navigation for seller options -->
