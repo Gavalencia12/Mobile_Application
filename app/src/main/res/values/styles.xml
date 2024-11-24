@@ -217,8 +217,8 @@
     </style>
 
     <style name="ic_content_chat">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
         <item name="android:visibility">gone</item>
     </style>
 
