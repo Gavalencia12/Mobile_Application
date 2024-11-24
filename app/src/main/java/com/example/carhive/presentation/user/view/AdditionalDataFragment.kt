@@ -43,7 +43,10 @@ class AdditionalDataFragment : Fragment() {
                 binding.profileName.text = "${user.firstName} ${user.lastName}"
                 binding.textEmail.text = user.email
                 binding.textPhoneNumber.text = user.phoneNumber
-                Glide.with(this).load(user.imageUrl).into(binding.profileImage)
+                Glide.with(this)
+                    .load(user.imageUrl)
+                    .circleCrop()
+                    .into(binding.profileImage)
             }
         }
 

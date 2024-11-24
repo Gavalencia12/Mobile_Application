@@ -242,7 +242,7 @@
             android:id="@+id/et_engineCapacity"
             android:layout_marginVertical="15dp"
             android:hint="@string/engine_capacity_hint"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             app:layout_constraintTop_toBottomOf="@id/tw_engine_capacity"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -256,17 +256,151 @@
             app:layout_constraintTop_toBottomOf="@id/et_engineCapacity"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Input field for car color -->
-        <EditText
-            style="@style/inputModal"
-            android:id="@+id/et_color"
+        <!-- Color Grid -->
+        <GridLayout
+            android:id="@id/color_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
             android:layout_marginVertical="15dp"
-            android:hint="@string/color"
-            android:inputType="text"
-            android:autofillHints="name"
+            android:columnCount="5"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/tw_color"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+            <!-- Color Buttons -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/red_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/red"
+                    android:tag="Red"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/orange_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/orange"
+                    android:tag="Orange"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/yellow_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/yellow"
+                    android:tag="Yellow"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/green_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/green"
+                    android:tag="Green"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/blue_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/blue"
+                    android:tag="Blue"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/purple_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/purple"
+                    android:tag="Purple"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/pink_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/pink"
+                    android:tag="Pink"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/white_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/gray_bg"
+                    android:tag="White"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/gray_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/gray"
+                    android:tag="Gray"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/black_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/black"
+                    android:tag="Black"/>
+            </FrameLayout>
+        </GridLayout>
 
         <!-- Label for max speed -->
         <TextView
@@ -274,7 +408,7 @@
             android:id="@+id/tw_speed"
             android:layout_marginTop="20dp"
             android:text="@string/speed"
-            app:layout_constraintTop_toBottomOf="@id/et_color"
+            app:layout_constraintTop_toBottomOf="@id/color_grid"
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Input field for max speed -->

@@ -73,7 +73,7 @@ class UserHomeFragment : Fragment() {
             viewModel.selectedBrands = selectedBrands.toMutableSet()
         }
 
-        // Set up recyclers with horizontal layouts for car lists
+        // Configurar RecyclerViews con layouts horizontales para listas de autos
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = carAdapter
@@ -84,43 +84,45 @@ class UserHomeFragment : Fragment() {
             adapter = recommendedCarAdapter
         }
 
-        // Observe brand list changes to update the BrandAdapter
+        // Observar cambios en la lista de marcas para actualizar el BrandAdapter
         viewModel.brandList.observe(viewLifecycleOwner) { brands ->
             brandAdapter.updateBrands(brands) // Actualiza el brandAdapter con las marcas obtenidas dinámicamente de Firebase
         }
-        // Variable to track if we are in "all cars" view or "default" view
+
+        // Variable para rastrear si estamos en la vista "todos los autos" o en la vista "predeterminada"
         var isShowingAllCars = false
 
-        // Fetch cars and brands
+        // Obtener autos y marcas
         viewModel.fetchCars()
         viewModel.fetchBrandsFromCars() // Llama a fetchBrandsFromCars para obtener las marcas
-        // Set up the allCars button to toggle between views
+
+        // Configurar el botón "Todos los Autos" para alternar entre vistas
         binding.allCars.setOnClickListener {
             if (isShowingAllCars) {
-                // Revert to the default view
+                // Revertir a la vista predeterminada
                 binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 binding.recyclerViewRecomendations.visibility = View.VISIBLE
                 binding.recommendedTitle.visibility = View.VISIBLE
                 binding.userText.visibility = View.VISIBLE
-                binding.recyclerView.setPadding(0, 0, 0, 0) // Remove padding in the default view
+                binding.recyclerView.setPadding(0, 0, 0, 0) // Quitar padding en la vista predeterminada
                 binding.allCars.text = getString(R.string.all)
 
-                // Fetch recommended and nearby cars
+                // Obtener autos recomendados y cercanos
                 viewModel.fetchCars()
                 carAdapter.notifyDataSetChanged()
 
                 isShowingAllCars = false
             } else {
-                // Switch to a grid layout and show all cars
+                // Cambiar a un layout de cuadrícula y mostrar todos los autos
                 binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
                 binding.recyclerViewRecomendations.visibility = View.GONE
                 binding.recommendedTitle.visibility = View.GONE
                 binding.userText.visibility = View.GONE
-                binding.recyclerView.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.bottom_padding)) // Add padding at the bottom
-                binding.recyclerView.clipToPadding = false // Allow padding in the RecyclerView
+                binding.recyclerView.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.bottom_padding)) // Añadir padding al fondo
+                binding.recyclerView.clipToPadding = false // Permitir padding en el RecyclerView
                 binding.allCars.text = getString(R.string.return_text)
 
-                // Fetch all cars without filters
+                // Obtener todos los autos sin filtros
                 viewModel.fetchCars()
                 carAdapter.notifyDataSetChanged()
 
@@ -128,15 +130,15 @@ class UserHomeFragment : Fragment() {
             }
         }
 
-        // Initialize the brand filter buttons
+        // Inicializar los botones de filtro de marca
         setupBrandButtons()
 
-        // Observe car list changes
+        // Observar cambios en la lista de autos
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
             carAdapter.updateCars(cars)
         }
 
-        // Observe recommended car list changes
+        // Observar cambios en la lista de autos recomendados
         viewModel.recommendedCarList.observe(viewLifecycleOwner) { recommendedCars ->
             recommendedCarAdapter.updateCars(recommendedCars)
         }
@@ -144,7 +146,7 @@ class UserHomeFragment : Fragment() {
         setupLocationFilter()
         setupModelSearch() // Llamada al método que configura la búsqueda de modelos de carros
 
-        // Show filter dialog when the filters button is clicked
+        // Mostrar el diálogo de filtros cuando se hace clic en el botón de filtros
         binding.filtrers.setOnClickListener { showFilterDialog() } // Llamada al método que muestra el diálogo de filtros
     }
 
@@ -152,6 +154,7 @@ class UserHomeFragment : Fragment() {
         val bundle = Bundle().apply {
             putString("carId", car.id)
             putString("carModel", car.modelo)
+            putString("carBrand", car.brand)
             putString("carPrice", car.price)
             putString("carColor", car.color)
             putString("carDescription", car.description)
@@ -222,6 +225,7 @@ class UserHomeFragment : Fragment() {
                     button.isSelected = true
                     Toast.makeText(requireContext(), "Color selected: $color", Toast.LENGTH_SHORT).show()
                 }
+                viewModel.applyFilters()
             }
         }
     }
@@ -240,6 +244,47 @@ class UserHomeFragment : Fragment() {
         maxMileage.setText(viewModel.mileageRange.second?.let { formatWithThousandSeparator(it) } ?: "")
 
         listOf(minPrice, maxPrice, minMileage, maxMileage).forEach { addThousandSeparator(it) }
+
+        // Añadir listeners para actualizar el ViewModel cuando cambian los valores
+        minPrice.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val min = s.toString().replace(",", "").toIntOrNull() ?: 0
+                viewModel.priceRange = min to viewModel.priceRange.second
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        maxPrice.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val max = s.toString().replace(",", "").toIntOrNull()
+                viewModel.priceRange = viewModel.priceRange.first to max
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        minMileage.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val min = s.toString().replace(",", "").toIntOrNull() ?: 0
+                viewModel.mileageRange = min to viewModel.mileageRange.second
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        maxMileage.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val max = s.toString().replace(",", "").toIntOrNull()
+                viewModel.mileageRange = viewModel.mileageRange.first to max
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
     // Formatea los valores con separadores de miles
@@ -275,7 +320,11 @@ class UserHomeFragment : Fragment() {
             view.findViewById<TextView>(R.id.nav_option_price) to view.findViewById(R.id.section_price),
             view.findViewById<TextView>(R.id.nav_option_mileage) to view.findViewById(R.id.section_mileage),
             view.findViewById<TextView>(R.id.nav_option_color) to view.findViewById(R.id.section_color),
-            view.findViewById<TextView>(R.id.nav_option_year) to view.findViewById<View>(R.id.section_year)
+            view.findViewById<TextView>(R.id.nav_option_year) to view.findViewById<View>(R.id.section_year),
+            view.findViewById<TextView>(R.id.nav_option_transmission) to view.findViewById<View>(R.id.section_transmision),
+            view.findViewById<TextView>(R.id.nav_option_fuelType) to view.findViewById<View>(R.id.section_fuelType),
+            view.findViewById<TextView>(R.id.nav_option_engineCapacity) to view.findViewById<View>(R.id.section_engineCapacity),
+            view.findViewById<TextView>(R.id.nav_option_condition) to view.findViewById<View>(R.id.section_condition)
         )
 
         sectionsMap.forEach { (navOption, targetSection) ->
@@ -297,10 +346,12 @@ class UserHomeFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedCondition = parent.getItemAtPosition(position).toString()
                 viewModel.selectedCondition = if (selectedCondition == "All") null else selectedCondition
+                viewModel.applyFilters()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 viewModel.selectedCondition = null
+                viewModel.applyFilters()
             }
         }
     }
@@ -309,14 +360,14 @@ class UserHomeFragment : Fragment() {
     private fun setupModelSearch() {
         val autoCompleteModelSearch: AutoCompleteTextView = binding.autoCompleteModelSearch
 
-        // Set unique car models in the adapter for the AutoCompleteTextView
+        // Establecer modelos únicos en el adaptador para el AutoCompleteTextView
         viewModel.uniqueCarModels.observe(viewLifecycleOwner) { models ->
             autoCompleteModelSearch.setAdapter(
                 ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, models)
             )
         }
 
-        // Apply filters with delay on text change
+        // Aplicar filtros con retraso al cambiar el texto
         var searchJob: Job? = null
         autoCompleteModelSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -352,7 +403,12 @@ class UserHomeFragment : Fragment() {
         setupSectionNavigation(dialogView)
         setupConditionFilter(dialogView)
 
-        // Apply or reset filters based on dialog actions
+        // Configurar los nuevos filtros
+        setupTransmissionFilter(dialogView)
+        setupFuelTypeFilter(dialogView)
+        setupEngineCapacityFilter(dialogView)
+
+        // Aplicar o restaurar filtros según las acciones del diálogo
         dialogView.findViewById<Button>(R.id.btn_apply_filters).setOnClickListener {
             applyFilters(dialogView)
             dialog.dismiss()
@@ -362,38 +418,12 @@ class UserHomeFragment : Fragment() {
             showResetConfirmationDialog(dialog)
         }
 
-        // Cancel and close the dialog
+        // Cancelar y cerrar el diálogo
         dialogView.findViewById<Button>(R.id.cancel_action).setOnClickListener {
             dialog.dismiss()
         }
 
         dialog.show()
-    }
-
-    // Método para aplicar los filtros
-    private fun applyFilters(view: View) {
-        val startYearInput = view.findViewById<AutoCompleteTextView>(R.id.start_year).text.toString()
-        val endYearInput = view.findViewById<AutoCompleteTextView>(R.id.end_year).text.toString()
-
-        val startYear = startYearInput.toIntOrNull()
-        val endYear = endYearInput.toIntOrNull()
-
-        viewModel.yearRange = if (startYear != null || endYear != null) {
-            (startYear ?: viewModel.yearRange?.first ?: 1970) to
-                    (endYear ?: viewModel.yearRange?.second ?: Calendar.getInstance().get(Calendar.YEAR))
-        } else {
-            null
-        }
-
-        val minPrice = view.findViewById<EditText>(R.id.editText_min_price).text.toString().replace(",", "").toIntOrNull() ?: 0
-        val maxPrice = view.findViewById<EditText>(R.id.editText_max_price).text.toString().replace(",", "").toIntOrNull()
-        viewModel.priceRange = minPrice to maxPrice
-
-        val minMileage = view.findViewById<EditText>(R.id.editText_min_mileage).text.toString().replace(",", "").toIntOrNull() ?: 0
-        val maxMileage = view.findViewById<EditText>(R.id.editText_max_mileage).text.toString().replace(",", "").toIntOrNull()
-        viewModel.mileageRange = minMileage to maxMileage
-
-        viewModel.applyFilters()
     }
 
     // Método para mostrar el cuadro de confirmación para restaurar los filtros
@@ -430,6 +460,7 @@ class UserHomeFragment : Fragment() {
             endYearView.setText(end.toString(), false)
         }
     }
+
     private fun setupBrandAutoCompleteFilter(view: View) {
         val autoCompleteBrand: AutoCompleteTextView = view.findViewById(R.id.autoComplete_brand)
         val recyclerViewBrands: RecyclerView = view.findViewById(R.id.recyclerView_brands)
@@ -437,6 +468,7 @@ class UserHomeFragment : Fragment() {
         // Inicializa el BrandAdapter con la lista vacía y el callback para los cambios
         brandAdapter = BrandAdapter(mutableListOf(), viewModel.selectedBrands) { selectedBrands ->
             viewModel.selectedBrands = selectedBrands.toMutableSet()
+            viewModel.applyFilters()
         }
 
         // Configura el RecyclerView para mostrar las marcas de autos
@@ -471,6 +503,8 @@ class UserHomeFragment : Fragment() {
             val selectedBrand = parent.getItemAtPosition(position) as String
             val filteredBrands = viewModel.brandList.value?.filter { it == selectedBrand }
             filteredBrands?.let { brandAdapter.updateBrands(it) }
+            viewModel.selectedBrands.add(selectedBrand)
+            viewModel.applyFilters()
         }
     }
 
@@ -501,7 +535,8 @@ class UserHomeFragment : Fragment() {
                 }
 
                 reorganizeBrandButtons(brandButtons)
-                applyBrandFilters()
+                viewModel.selectedBrands = selectedBrandFilters
+                viewModel.applyFilters()
             }
         }
     }
@@ -543,6 +578,145 @@ class UserHomeFragment : Fragment() {
                 carAdapter.updateCars(filteredCars)
             }
         }
+    }
+
+    // Métodos para configurar los nuevos filtros
+    private fun setupTransmissionFilter(view: View) {
+        val spinnerTransmission: Spinner = view.findViewById(R.id.spinner_transmision)
+
+        val transmissionOptions = resources.getStringArray(R.array.transmision_options)
+        val transmissionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, transmissionOptions)
+        spinnerTransmission.adapter = transmissionAdapter
+
+        val selectedTransmission = viewModel.selectedTransmission ?: "All"
+        val selectedIndex = transmissionOptions.indexOf(selectedTransmission)
+        spinnerTransmission.setSelection(if (selectedIndex >= 0) selectedIndex else 0)
+
+        spinnerTransmission.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selected = transmissionOptions[position]
+                viewModel.selectedTransmission = if (selected == "All") null else selected
+                viewModel.applyFilters()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                viewModel.selectedTransmission = null
+                viewModel.applyFilters()
+            }
+        }
+    }
+
+    private fun setupFuelTypeFilter(view: View) {
+        val spinnerFuelType: Spinner = view.findViewById(R.id.spinner_fuelType)
+
+        val fuelTypeOptions = resources.getStringArray(R.array.fuel_type_options_filter)
+        val fuelTypeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, fuelTypeOptions)
+        spinnerFuelType.adapter = fuelTypeAdapter
+
+        val selectedFuelType = viewModel.selectedFuelType ?: "All"
+        val selectedIndex = fuelTypeOptions.indexOf(selectedFuelType)
+        spinnerFuelType.setSelection(if (selectedIndex >= 0) selectedIndex else 0)
+
+        spinnerFuelType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selected = fuelTypeOptions[position]
+                viewModel.selectedFuelType = if (selected == "All") null else selected
+                viewModel.applyFilters()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                viewModel.selectedFuelType = null
+                viewModel.applyFilters()
+            }
+        }
+    }
+
+    private fun setupEngineCapacityFilter(view: View) {
+        val minEngineCapacity: EditText = view.findViewById(R.id.editText_min_engineCapacity)
+        val maxEngineCapacity: EditText = view.findViewById(R.id.editText_max_engineCapacity)
+
+        minEngineCapacity.setText(viewModel.engineCapacityRange.first?.toString() ?: "")
+        maxEngineCapacity.setText(viewModel.engineCapacityRange.second?.toString() ?: "")
+
+        // Agregar TextWatchers para actualizar el ViewModel cuando cambian los valores
+        minEngineCapacity.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val min = s.toString().toDoubleOrNull()
+                viewModel.engineCapacityRange = min to viewModel.engineCapacityRange.second
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        maxEngineCapacity.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val max = s.toString().toDoubleOrNull()
+                viewModel.engineCapacityRange = viewModel.engineCapacityRange.first to max
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        // Añadir formateo si es necesario (similar a otros EditTexts)
+        listOf(minEngineCapacity, maxEngineCapacity).forEach { addDecimalSeparator(it) }
+    }
+
+    // Agrega separadores decimales a los campos de texto de capacidad del motor
+    private fun addDecimalSeparator(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            private var current = ""
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString() != current) {
+                    editText.removeTextChangedListener(this)
+                    val cleanString = s.toString().replace(".", "")
+                    val formatted = cleanString.toDoubleOrNull()?.let {
+                        String.format(Locale.US, "%.1f", it / 10)
+                    } ?: ""
+                    current = formatted
+                    editText.setText(formatted)
+                    if (formatted.isNotEmpty()) {
+                        editText.setSelection(formatted.length)
+                    }
+                    editText.addTextChangedListener(this)
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+
+    // Método para aplicar filtros y actualizar el ViewModel
+    private fun applyFilters(view: View) {
+        val startYearInput = view.findViewById<AutoCompleteTextView>(R.id.start_year).text.toString()
+        val endYearInput = view.findViewById<AutoCompleteTextView>(R.id.end_year).text.toString()
+
+        val startYear = startYearInput.toIntOrNull()
+        val endYear = endYearInput.toIntOrNull()
+
+        viewModel.yearRange = if (startYear != null || endYear != null) {
+            (startYear ?: viewModel.yearRange?.first ?: 1970) to
+                    (endYear ?: viewModel.yearRange?.second ?: Calendar.getInstance().get(Calendar.YEAR))
+        } else {
+            null
+        }
+
+        val minPrice = view.findViewById<EditText>(R.id.editText_min_price).text.toString().replace(",", "").toIntOrNull() ?: 0
+        val maxPrice = view.findViewById<EditText>(R.id.editText_max_price).text.toString().replace(",", "").toIntOrNull()
+        viewModel.priceRange = minPrice to maxPrice
+
+        val minMileage = view.findViewById<EditText>(R.id.editText_min_mileage).text.toString().replace(",", "").toIntOrNull() ?: 0
+        val maxMileage = view.findViewById<EditText>(R.id.editText_max_mileage).text.toString().replace(",", "").toIntOrNull()
+        viewModel.mileageRange = minMileage to maxMileage
+
+        // Obtener los valores mínimos y máximos de la capacidad del motor
+        val minEngineCapacity = view.findViewById<EditText>(R.id.editText_min_engineCapacity).text.toString().toDoubleOrNull()
+        val maxEngineCapacity = view.findViewById<EditText>(R.id.editText_max_engineCapacity).text.toString().toDoubleOrNull()
+
+        viewModel.engineCapacityRange = minEngineCapacity to maxEngineCapacity
+
+        viewModel.applyFilters()
     }
 
     override fun onDestroyView() {

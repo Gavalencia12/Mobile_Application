@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.AutoCompleteTextView
 import android.widget.Spinner
 import android.widget.Toast
@@ -36,6 +37,8 @@ class CrudDialogFragment : DialogFragment() {
     private val selectedImages = mutableListOf<Uri>()
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
 
+    private var selectedColor: String? = null
+
     private val maxImages = 5
 
     override fun onCreateView(
@@ -52,6 +55,7 @@ class CrudDialogFragment : DialogFragment() {
         setupImageRecyclerView()
         setupImagePicker()
         setupSpinners()
+        setupColorFilter(binding.root)
 
         // Handles the Create button click, validating input and triggering car listing creation
         binding.buttonCreate.setOnClickListener {
@@ -150,7 +154,7 @@ class CrudDialogFragment : DialogFragment() {
     private fun isFormValid(): Boolean {
         val requiredFields = listOf(
             binding.etModelo.text.toString(),
-            binding.etColor.text.toString(),
+            binding.colorGrid.toString(),
             binding.etMileage.text.toString(),
             binding.spinnerBrand.text.toString(),
             binding.etDescription.text.toString(),
@@ -187,7 +191,7 @@ class CrudDialogFragment : DialogFragment() {
         // Directly passing individual fields to addCarToDatabase function
         viewModel.addCarToDatabase(
             modelo = binding.etModelo.text.toString(),
-            color = binding.etColor.text.toString(),
+            color = selectedColor ?: "",
             mileage = binding.etMileage.text.toString(),
             brand=  binding.spinnerBrand.text.toString(),
             description = binding.etDescription.text.toString(),
@@ -336,6 +340,48 @@ class CrudDialogFragment : DialogFragment() {
     /**
      * Configura un spinner con una lista de opciones.
      */
+    // Set up color filter buttons
+    private fun setupColorFilter(view: View) {
+        val colorButtons = listOf(
+            Pair(R.id.red_button, "Red"),
+            Pair(R.id.orange_button, "Orange"),
+            Pair(R.id.yellow_button, "Yellow"),
+            Pair(R.id.green_button, "Green"),
+            Pair(R.id.blue_button, "Blue"),
+            Pair(R.id.purple_button, "Purple"),
+            Pair(R.id.pink_button, "Pink"),
+            Pair(R.id.white_button, "White"),
+            Pair(R.id.gray_button, "Gray"),
+            Pair(R.id.black_button, "Black")
+        )
+
+        colorButtons.forEach { (buttonId, color) ->
+            val button = view.findViewById<Button>(buttonId)
+
+            button.isSelected = color == selectedColor // Marca el botón si el color ya está seleccionado
+            button.setBackgroundResource(if (button.isSelected) R.drawable.selected_circle else R.drawable.selected_circle)
+
+            button.setOnClickListener {
+                // Actualiza el color seleccionado
+                if (selectedColor == color) {
+                    selectedColor = null
+                    button.isSelected = false
+                } else {
+                    selectedColor = color
+                    colorButtons.forEach { (id, _) ->
+                        val otherButton = view.findViewById<Button>(id)
+                        otherButton.isSelected = false
+                        otherButton.setBackgroundResource(R.drawable.selected_circle)
+                    }
+                    button.isSelected = true
+                    button.setBackgroundResource(R.drawable.selected_circle)
+                }
+
+                Toast.makeText(requireContext(), "Selected color: $selectedColor", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun setupSpinner(spinner: Spinner, options: List<String>) {
         spinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

@@ -2,111 +2,193 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/tv_rgt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/edit_profile"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/dark_blue"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/ivUserImage"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/uploaded_image"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@id/instruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/please_fill_in_the_required_information"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone number"
-            android:inputType="number" />
+            android:layout_height="45dp"
+            android:hint="@string/phone_number"
+            android:inputType="phone"
+            android:layout_marginBottom="10dp"
+            style="@style/EditTextStyle"
+            android:backgroundTint="@color/gray_bg"/>
 
         <EditText
             android:id="@+id/et_year"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Year"
-            android:inputType="number" />
+            android:layout_height="45dp"
+            android:hint="@string/age"
+            android:inputType="number"
+            android:layout_marginBottom="10dp"
+            style="@style/EditTextStyle"
+            android:backgroundTint="@color/gray_bg"/>
 
         <EditText
             android:id="@+id/et_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Address"
-            android:inputType="text" />
+            android:layout_height="45dp"
+            android:hint="@string/address"
+            android:inputType="text"
+            android:layout_marginBottom="10dp"
+            style="@style/EditTextStyle"
+            android:backgroundTint="@color/gray_bg"/>
         <EditText
             android:id="@+id/et_outer_number"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Outer Number"
-            android:inputType="text" />
+            android:layout_height="45dp"
+            android:hint="@string/outer_number"
+            android:inputType="number"
+            android:layout_marginBottom="10dp"
+            style="@style/EditTextStyle"
+            android:backgroundTint="@color/gray_bg"/>
 
         <EditText
             android:id="@+id/et_interior_number"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Interior Number (optional)"
-            android:inputType="text" />
+            android:layout_height="45dp"
+            android:hint="@string/interior_number_optional"
+            android:inputType="number"
+            android:layout_marginBottom="10dp"
+            style="@style/EditTextStyle"
+            android:backgroundTint="@color/gray_bg"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Gender"
+            android:fontFamily="@font/inter_semibold"
+            android:textColor="@color/dark_gray"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:backgroundTint="@color/gray_bg"/>
 
         <RadioGroup
             android:id="@+id/rg_sex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
             <RadioButton
                 android:id="@+id/rb_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Male" />
-
+                android:text="@string/male"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/dark_gray"
+                android:buttonTint="@color/checkbox_color_selector"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
             <RadioButton
                 android:id="@+id/rb_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Female" />
-
+                android:text="@string/female"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/dark_gray"
+                android:buttonTint="@color/checkbox_color_selector"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
             <RadioButton
                 android:id="@+id/rb_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other" />
+                android:text="@string/other"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/dark_gray"
+                android:buttonTint="@color/checkbox_color_selector"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
         </RadioGroup>
 
         <EditText
             android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
+            android:hint="@string/description"
             android:inputType="textMultiLine"
             android:lines="3"
-            android:gravity="top" />
+            android:gravity="top"
+            android:layout_marginTop="18dp"
+            android:paddingTop="10dp"
+            style="@style/EditTextStyle"
+            android:backgroundTint="@color/gray_bg"/>
         <TextView
             android:id="@+id/tvImageUrl"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Imagen de perfil"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/profile_image"
             android:textSize="16sp"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"/>
+            android:paddingBottom="8dp"
+            android:visibility="gone"/>
 
         <Button
             style="@style/button_selected"
             android:id="@+id/btnSelectImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Upload Image" />
-
-        <ImageView
-            android:id="@+id/ivUserImage"
-            android:layout_width="match_parent"
-            android:layout_height="165dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Uploaded Image" />
+            android:layout_marginTop="18dp"
+            android:text="@string/upload_image" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingTop="16dp">
+            android:paddingTop="16dp"
+            android:layout_marginBottom="30dp">
 
             <Button
                 style="@style/button_dialog"
@@ -115,15 +197,15 @@
                 android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel" />
+                android:text="@string/cancel" />
 
             <Button
                 style="@style/button_dialog"
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:text="Save"
+                android:layout_marginStart="16dp"
+                android:text="@string/save"
                 android:background="@drawable/button_edit"
                 android:textColor="@drawable/btn_edit_txt_color"
                 />
