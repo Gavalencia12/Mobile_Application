@@ -123,9 +123,9 @@ class UserCommentDialog : DialogFragment() {
 
     private fun setupDialogAppearance() {
         dialog?.window?.apply {
-            setBackgroundDrawableResource(R.drawable.dialog_background) // Fondo redondeado
+            setBackgroundDrawableResource(R.drawable.dialog_background)
             setLayout(
-                (resources.displayMetrics.widthPixels * 0.90).toInt(), // Reduce el ancho al 90% del ancho de la pantalla
+                (resources.displayMetrics.widthPixels * 0.90).toInt(),
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
