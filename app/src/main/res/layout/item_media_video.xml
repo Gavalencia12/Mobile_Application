@@ -1,77 +1,55 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@color/black">
 
-    <!-- VideoView para mostrar el video -->
+    <!-- VideoView for displaying the video -->
     <VideoView
         android:id="@+id/videoViewFull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />
 
-    <!-- View para detectar el clic y alternar la visibilidad del topBar -->
+    <!-- Overlay view to detect clicks and toggle the visibility of the top bar -->
     <View
-        android:id="@+id/clickOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent" />
+        style="@style/view_video"
+        android:id="@+id/clickOverlay" />
 
-    <!-- Controles de video -->
+    <!-- Video controls including progress bar and time indicators -->
     <LinearLayout
-        android:id="@+id/videoControls"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:background="#88000000">
+        style="@style/controls_manipulation_media"
+        android:id="@+id/videoControls" >
 
+        <!-- SeekBar for video progress -->
         <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progress="0" />
+            style="@style/bar_progress"
+            android:id="@+id/seekBar" />
 
+        <!-- Time indicators (current and total time) -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="8dp">
+            style="@style/time_video_bar" >
 
+            <!-- Current playback time -->
             <TextView
-                android:id="@+id/currentTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00:00"
-                android:textColor="#FFFFFF" />
+                style="@style/time_Video"
+                android:id="@+id/currentTime" />
 
+            <!-- Divider or separator between times (optional) -->
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="#FFFFFF" />
+                style="@style/button_dialog" />
 
+            <!-- Total video duration -->
             <TextView
-                android:id="@+id/totalTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00:00"
-                android:textColor="#FFFFFF" />
+                style="@style/time_Video"
+                android:id="@+id/totalTime" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Botón de reproducción/pausa -->
+    <!-- Play/Pause button -->
     <ImageView
+        style="@style/btn_play"
         android:id="@+id/playPauseButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_play"
-        android:tint="@color/white"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/play_pause" />
+        app:tint="@color/white" />
 
 </FrameLayout>

@@ -71,7 +71,7 @@ class UsersMessagesAdapter(
                     val imageUrl = item.car.imageUrls?.firstOrNull()
                     Glide.with(itemView.context)
                         .load(imageUrl)
-                        .placeholder(R.drawable.ic_img)
+                        .placeholder(R.drawable.ic_image)
                         .error(R.drawable.ic_error)
                         .into(imageView)
                     if (item.unreadCount > 0) {
@@ -99,14 +99,14 @@ class UsersMessagesAdapter(
                 lastMessageTextView.text = fileName ?: messageText
                 when {
                     fileType?.contains("application") == true -> {
-                        fileIconImageView.setImageResource(R.drawable.ic_generic_file)
+                        fileIconImageView.setImageResource(R.drawable.ic_file)
                     }
                     fileType?.contains("image") == true -> {
-                        fileIconImageView.setImageResource(R.drawable.ic_img)
+                        fileIconImageView.setImageResource(R.drawable.ic_image)
                         lastMessageTextView.text = "Image"
                     }
                     fileType?.contains("video") == true -> {
-                        fileIconImageView.setImageResource(R.drawable.ic_video)
+                        fileIconImageView.setImageResource(R.drawable.ic_videos)
                         lastMessageTextView.text = "Video"
                     }
                     else -> {

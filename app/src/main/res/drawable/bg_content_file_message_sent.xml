@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#3D000000" /> <!-- Color de fondo similar a WhatsApp -->
+    <corners android:radius="10dp" />
+</shape>

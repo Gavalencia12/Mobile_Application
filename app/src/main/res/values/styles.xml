@@ -103,6 +103,14 @@
         <item name="android:gravity">left</item>
     </style>
 
+    <style name="content_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:gravity">left</item>
+    </style>
+
     <style name="tw_section_dialog">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -186,4 +194,377 @@
     </style>
 
 
+    <style name="button_style_dialog_small">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <style name="circle_shape_ic">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:clipToOutline" tools:ignore="NewApi">true</item>
+        <item name="android:background">@drawable/rounded_corner</item>
+    </style>
+
+    <style name="title_content_chat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ic_content_chat">
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="content_notify">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="count_notify">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="EditTextChat">
+        <item name="android:background">@drawable/rounded_edit_text_chat</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textColorHint">@color/gray_dirt</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:radius">20dp</item>
+    </style>
+
+    <style name="header_date">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/rounded_edit_text</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingHorizontal" tools:ignore="NewApi">15dp</item>
+        <item name="android:paddingVertical" tools:ignore="NewApi">8dp</item>
+    </style>
+
+    <style name="message_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">260dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <style name="message_file">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:maxWidth">260dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingVertical" tools:ignore="NewApi">15dp</item>
+        <item name="android:paddingHorizontal" tools:ignore="NewApi">20dp</item>
+    </style>
+
+    <style name="message_image">
+        <item name="android:layout_width">260dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:clipToOutline" tools:ignore="NewApi">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="message_video">
+        <item name="android:layout_width">260dp</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:clipToOutline" tools:ignore="NewApi">true</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="content_message_video_image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/bg_content_file_message_sent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="txt_small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray_disabled</item>
+    </style>
+
+    <style name="status_message">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:src">@drawable/ic_negative_message</item>
+    </style>
+
+    <style name="structure_status">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
+    <style name="btn_function_chat">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:paddingHorizontal" tools:ignore="NewApi">20dp</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="style_file_info">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_file_name">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="content_date">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="content_message_file">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="btn_back_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/ic_arrow_back</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="btn_circle">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/circle_shape</item>
+    </style>
+
+    <style name="btn_without_border">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="message_visibility">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="list_chat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:nestedScrollingEnabled">false</item>
+    </style>
+
+    <style name="data_chat">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="btn_options_style">
+        <item name="android:background">@drawable/button_create</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:layout_marginVertical" tools:ignore="NewApi">5dp</item>
+        <item name="android:elevation">15dp</item>
+        <item name="android:paddingVertical" tools:ignore="NewApi">10dp</item>
+    </style>
+
+    <style name="content_chat_opacity_light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/content_chats</item>
+        <item name="android:paddingVertical" tools:ignore="NewApi">20dp</item>
+        <item name="android:backgroundTint">#EAFFFFFF</item>
+    </style>
+
+    <style name="controls_manipulation_media">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="bar_progress">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:progress">0</item>
+    </style>
+
+    <style name="time_video_bar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+
+    <style name="time_Video">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">00:00</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="view_video">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="view_image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="image_full_zoom">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="background">@color/black</item>
+    </style>
+
+    <style name="preview_image_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:clipToOutline" tools:ignore="NewApi">true</item>
+        <item name="android:background">@drawable/bg_content_image_message_sent</item>
+    </style>
+
+    <style name="preview_video_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:clipToOutline" tools:ignore="NewApi">true</item>
+        <item name="android:background">@drawable/bg_content_image_message_sent</item>
+    </style>
+
+    <style name="btn_play">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:src">@drawable/ic_play</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:contentDescription">@string/play_pause</item>
+    </style>
+
+    <style name="bar_top_close_media">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@color/black_opacity_medium</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="btn_white_medium">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="style_checkbox_negative">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:buttonTint">@color/red</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="name_file_content_dialog_preview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="style_input_large">
+        <item name="android:background">@drawable/edit_text_large</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:gravity">start</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:overScrollMode">always</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:backgroundTint">@color/gray_light</item>
+        <item name="android:padding" tools:ignore="NewApi">15dp</item>
+        <item name="maxLines">5</item>
+        <item name="android:maxLength">200</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>
