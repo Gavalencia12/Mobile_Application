@@ -15,11 +15,13 @@
         <!-- Navegation options LinearLayout -->
         <LinearLayout
             android:id="@+id/linear_nav_options"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="2"
             android:orientation="vertical"
             android:padding="16dp"
-            android:background="@drawable/nav_options_background">
+            android:background="@drawable/nav_options_background"
+            tools:ignore="NestedWeights">
 
             <TextView
                 android:id="@+id/nav_option_brands"
@@ -81,6 +83,36 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/white" />
 
+            <TextView
+                android:id="@+id/nav_option_transmission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/transmission"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_fuelType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fuel_type"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/nav_option_engineCapacity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/engine_capacity"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -90,7 +122,7 @@
             <Button
                 android:id="@+id/btn_apply_filters"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="70dp"
                 android:text="@string/apply_filters"
                 android:textColor="@android:color/white"
                 android:background="@drawable/button_more_info_background"/>
@@ -98,7 +130,7 @@
             <Button
                 android:id="@+id/btn_restore_filters"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="70dp"
                 android:text="@string/clear_filters"
                 android:textColor="@android:color/white"
                 android:background="@drawable/button_more_info_background"
@@ -110,7 +142,7 @@
             android:id="@+id/scrollView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:padding="16dp"
             tools:ignore="NestedWeights">
 
@@ -315,9 +347,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/green_button"
                                 android:layout_width="40dp"
@@ -330,9 +360,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/blue_button"
                                 android:layout_width="40dp"
@@ -345,9 +373,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/purple_button"
                                 android:layout_width="40dp"
@@ -360,9 +386,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/pink_button"
                                 android:layout_width="40dp"
@@ -375,9 +399,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/white_button"
                                 android:layout_width="40dp"
@@ -390,9 +412,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/gray_button"
                                 android:layout_width="40dp"
@@ -405,9 +425,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp">
+                            android:layout_margin="10dp">
                             <Button
                                 android:id="@+id/black_button"
                                 android:layout_width="40dp"
@@ -452,6 +470,91 @@
                         android:inputType="number"
                         android:paddingBottom="16dp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/section_transmision"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vehicle_transmision"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <Spinner
+                        android:id="@+id/spinner_transmision"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:entries="@array/transmision_options"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/section_fuelType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vehicle_fuelType"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <Spinner
+                        android:id="@+id/spinner_fuelType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:entries="@array/fuel_type_options_filter"
+                        android:paddingBottom="16dp" />
+                </LinearLayout>
+
+                <!-- ...otros elementos de filtro... -->
+
+                <LinearLayout
+                    android:id="@+id/section_engineCapacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/engine_capacity"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/blue" />
+
+                    <EditText
+                        android:id="@+id/editText_min_engineCapacity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/min_engine_capacity"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="16dp" />
+
+                    <EditText
+                        android:id="@+id/editText_max_engineCapacity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/max_engine_capacity"
+                        android:inputType="numberDecimal"
+                        android:paddingBottom="16dp" />
+            </LinearLayout>
 
             </LinearLayout>
 

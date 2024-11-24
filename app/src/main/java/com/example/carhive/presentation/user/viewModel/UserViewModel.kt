@@ -20,7 +20,6 @@ import com.example.carhive.Domain.usecase.favorites.AddCarToFavoritesUseCase
 import com.example.carhive.Domain.usecase.favorites.RemoveCarFromFavoritesUseCase
 import com.example.carhive.Domain.usecase.notifications.AddNotificationUseCase
 import com.example.carhive.Domain.usecase.notifications.ListenForNewFavoritesUseCase
-import com.example.carhive.Presentation.user.adapter.CarHomeAdapter
 import com.example.carhive.R
 import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import com.example.carhive.Presentation.user.adapter.BrandAdapter
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
@@ -45,30 +43,27 @@ class UserViewModel @Inject constructor(
     private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase
 ) : AndroidViewModel(application) {
 
-    // Default list of car brands retrieved from string resources
+    // Lista predeterminada de marcas de autos obtenida desde los recursos de strings
     val defaultBrands = application.resources.getStringArray(R.array.brand_options).toList()
 
-    // LiveData to hold the list of cars
+    // LiveData para mantener la lista de autos
     private val _carList = MutableLiveData<List<CarEntity>>()
     val carList: LiveData<List<CarEntity>> get() = _carList
 
     private val _recommendedCarList = MutableLiveData<List<CarEntity>>()
     val recommendedCarList: LiveData<List<CarEntity>> get() = _recommendedCarList
 
-    // LiveData to hold user data
+    // LiveData para mantener los datos del usuario
     private val _userData = MutableLiveData<UserEntity?>()
     val userData: LiveData<UserEntity?> get() = _userData
 
     private var allCars: List<CarEntity> = emptyList()
-    private var favoriteCounts: Map<String, Int> = emptyMap() // Map for favorite counts
-
-    private lateinit var recommendedCarAdapter: CarHomeAdapter
+    private var favoriteCounts: Map<String, Int> = emptyMap() // Mapa para conteo de favoritos
 
     private val _brandList = MutableLiveData<List<String>>()
     val brandList: LiveData<List<String>> get() = _brandList
 
-
-    // Selected filters
+    // Filtros seleccionados
     var selectedBrands: MutableSet<String> = mutableSetOf()
     var selectedModel: String? = null
     var yearRange: Pair<Int, Int>? = null
@@ -76,24 +71,31 @@ class UserViewModel @Inject constructor(
     var mileageRange: Pair<Int, Int?> = 0 to null
     var selectedColors: MutableSet<String> = mutableSetOf()
 
-    // Standardized selected color (first letter capitalized)
+    // Color seleccionado estandarizado (primera letra en mayúscula)
     var selectedColor: String? = null
         set(value) {
             field = value?.replaceFirstChar { it.uppercase() }
         }
 
-    // Current location filter
+    // Filtro de ubicación actual
     private var selectedLocation: String? = null
 
-    // Unique car models and colors for filter options
+    // LiveData para modelos y colores únicos de autos para opciones de filtro
     private val _uniqueCarModels = MutableLiveData<List<String>>()
     val uniqueCarModels: LiveData<List<String>> get() = _uniqueCarModels
 
     private val _uniqueCarColors = MutableLiveData<List<String>>()
     val uniqueCarColors: LiveData<List<String>> get() = _uniqueCarColors
 
+    // Nuevos filtros
+    var selectedTransmission: String? = null
+    var selectedFuelType: String? = null
+    var engineCapacityRange: Pair<Double?, Double?> = null to null // Rango para capacidad del motor
+
+    var selectedCondition: String? = null
+
     /**
-     * Fetches the list of cars and updates unique model and color lists for filters.
+     * Obtiene la lista de autos y actualiza las listas únicas de modelos y colores para filtros.
      */
     fun fetchCars() {
         viewModelScope.launch {
@@ -103,7 +105,7 @@ class UserViewModel @Inject constructor(
                 _carList.value = allCars
                 loadUniqueCarModels()
                 loadUniqueCarColors()
-                fetchRecommendedCars() // Update recommended cars after fetching all cars
+                fetchRecommendedCars() // Actualizar autos recomendados después de obtener todos los autos
             } else {
                 showToast(R.string.error_fetching_cars)
             }
@@ -124,44 +126,43 @@ class UserViewModel @Inject constructor(
     }
 
     /**
-     * Fetches the recommended cars based on views, favorite counts, and model name.
+     * Obtiene los autos recomendados basados en vistas, conteo de favoritos y nombre del modelo.
      */
     fun fetchRecommendedCars() {
         viewModelScope.launch {
-            // Order by views, reactions, and alphabetical order by model name
+            // Ordenar por vistas, reacciones y orden alfabético por nombre de modelo
             val sortedCars = allCars.sortedWith(
                 compareByDescending<CarEntity> { it.views }
                     .thenByDescending { favoriteCounts[it.id] ?: 0 }
                     .thenBy { it.modelo }
             )
 
-            // Take the top 10 cars
+            // Tomar los primeros 5 autos
             _recommendedCarList.value = sortedCars.take(5)
         }
     }
 
-    // Load unique car models from the list of cars
+    // Cargar modelos únicos de la lista de autos
     private fun loadUniqueCarModels() {
         val models = allCars.map { it.modelo }.distinct()
         _uniqueCarModels.value = models
     }
 
-    // Load unique car colors from the list of cars, capitalized
+    // Cargar colores únicos de la lista de autos, capitalizados
     private fun loadUniqueCarColors() {
         val colors = allCars.map { it.color.replaceFirstChar { it.uppercase() } }.distinct()
         _uniqueCarColors.value = colors
     }
 
-    var selectedCondition: String? = null
     /**
-     * Applies filters to the list of cars based on selected criteria, including location.
+     * Aplica filtros a la lista de autos basada en criterios seleccionados, incluyendo ubicación, transmisión, tipo de combustible y rango de capacidad del motor.
      */
     fun applyFilters() {
         val filteredCars = allCars.filter { car ->
             val matchesBrand = selectedBrands.isEmpty() || selectedBrands.contains(car.brand)
             val matchesModel = selectedModel == null || car.modelo == selectedModel
             val matchesYear = yearRange?.let { (min, max) -> car.year.toIntOrNull()?.let { it in min..max } } ?: true
-            val matchesColor = selectedColors.isEmpty() || selectedColors.contains(car.color.capitalize())
+            val matchesColor = selectedColors.isEmpty() || selectedColors.contains(car.color.replaceFirstChar { it.uppercase() })
             val matchesLocation = selectedLocation == null || car.location == selectedLocation
             val matchesCondition = selectedCondition == null || car.condition == selectedCondition
 
@@ -171,7 +172,17 @@ class UserViewModel @Inject constructor(
             val carMileage = car.mileage.toIntOrNull() ?: 0
             val matchesMileage = carMileage in (mileageRange.first)..(mileageRange.second ?: Int.MAX_VALUE)
 
-            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation && matchesPrice && matchesMileage && matchesCondition
+            // Nuevos filtros
+            val matchesTransmission = selectedTransmission == null || car.transmission.equals(selectedTransmission, ignoreCase = true)
+            val matchesFuelType = selectedFuelType == null || car.fuelType.equals(selectedFuelType, ignoreCase = true)
+            val matchesEngineCapacity = engineCapacityRange.let { (min, max) ->
+                val engineCapacity = car.engineCapacity?.toDoubleOrNull() ?: 0.0
+                (min == null || engineCapacity >= min) && (max == null || engineCapacity <= max)
+            }
+
+            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation &&
+                    matchesCondition && matchesPrice && matchesMileage &&
+                    matchesTransmission && matchesFuelType && matchesEngineCapacity
         }
         _carList.value = filteredCars
     }
@@ -186,7 +197,7 @@ class UserViewModel @Inject constructor(
     }
 
     /**
-     * Resets all filters and shows the complete list of cars.
+     * Reinicia todos los filtros y muestra la lista completa de autos.
      */
     fun clearFilters() {
         selectedBrands.clear()
@@ -197,27 +208,30 @@ class UserViewModel @Inject constructor(
         mileageRange = 0 to null
         selectedLocation = null
         selectedCondition = null // Reinicia la condición seleccionada
+        selectedTransmission = null
+        selectedFuelType = null
+        engineCapacityRange = null to null
         _carList.value = allCars
     }
 
     /**
-     * Filters cars by location.
+     * Filtra autos por ubicación.
      */
     fun filterByLocation(location: String) {
         selectedLocation = location
-        applyFilters() // Reapply filters with updated location
+        applyFilters() // Reaplicar filtros con ubicación actualizada
     }
 
     /**
-     * Clears the location filter.
+     * Limpia el filtro de ubicación.
      */
     fun clearLocationFilter() {
         selectedLocation = null
-        applyFilters() // Reapply filters without location restriction
+        applyFilters() // Reaplicar filtros sin restricción de ubicación
     }
 
     /**
-     * Checks if a car is marked as a favorite for the current user.
+     * Verifica si un auto está marcado como favorito para el usuario actual.
      */
     fun isCarFavorite(carId: String, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
@@ -237,7 +251,7 @@ class UserViewModel @Inject constructor(
     }
 
     /**
-     * Toggles a car's favorite status for the current user.
+     * Alterna el estado de favorito de un auto para el usuario actual.
      */
     fun toggleFavorite(car: CarEntity, isFavorite: Boolean) {
         viewModelScope.launch {
@@ -259,6 +273,8 @@ class UserViewModel @Inject constructor(
                             "Add to Favorite",
                             "Car ${car.modelo} (${car.id}) added to favorites by $fullName."
                         )
+                        // Actualizar el conteo de favoritos
+                        updateFavoriteCount(car.id, increment = true)
                     }
                 } else {
                     val result = removeCarFromFavoritesUseCase(userId, car.id)
@@ -266,9 +282,11 @@ class UserViewModel @Inject constructor(
                         showToast(R.string.car_removed_from_favorites)
                         addHistoryEvent(
                             userId,
-                            "Remove to Favorite",
+                            "Remove from Favorite",
                             "Car ${car.modelo} (${car.id}) removed from favorites by $fullName."
                         )
+                        // Actualizar el conteo de favoritos
+                        updateFavoriteCount(car.id, increment = false)
                     }
                 }
             } else {
@@ -278,21 +296,52 @@ class UserViewModel @Inject constructor(
     }
 
     /**
-     * Adds an event to the user's history in the database.
+     * Actualiza el conteo de favoritos para un auto específico.
+     */
+    private fun updateFavoriteCount(carId: String, increment: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val favoriteCountRef = firebaseDatabase.getReference("Favorites/Counts/$carId")
+            favoriteCountRef.runTransaction(object : com.google.firebase.database.Transaction.Handler {
+                override fun doTransaction(currentData: com.google.firebase.database.MutableData): com.google.firebase.database.Transaction.Result {
+                    val currentCount = currentData.getValue(Int::class.java) ?: 0
+                    currentData.value = if (increment) currentCount + 1 else if (currentCount > 0) currentCount - 1 else 0
+                    return com.google.firebase.database.Transaction.success(currentData)
+                }
+
+                override fun onComplete(error: com.google.firebase.database.DatabaseError?, committed: Boolean, currentData: com.google.firebase.database.DataSnapshot?) {
+                    if (error != null) {
+                        Log.e("UserViewModel", "Failed to update favorite count: ${error.message}")
+                    } else if (committed) {
+                        // Actualizar el mapa de favoriteCounts
+                        viewModelScope.launch(Dispatchers.Main) {
+                            favoriteCounts = favoriteCounts.toMutableMap().apply {
+                                this[carId] = (this[carId] ?: 0) + if (increment) 1 else -1
+                                if (this[carId]!! < 0) this[carId] = 0
+                            }
+                            fetchRecommendedCars() // Recalcular autos recomendados
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    /**
+     * Agrega un evento al historial del usuario en la base de datos.
      */
     private fun addHistoryEvent(userId: String, eventType: String, message: String) {
         val timestamp = System.currentTimeMillis()
         val historyEntity = HistoryEntity(userId, timestamp, eventType, message)
 
-        // Push the history event directly under the 'History/userHistory' node
+        // Agregar el evento de historial directamente bajo el nodo 'History/userHistory'
         firebaseDatabase.getReference("History/userHistory")
             .push()
             .setValue(historyEntity)
             .addOnSuccessListener {
-                // Optional: Handle successful addition if needed
+                // Opcional: Manejar la adición exitosa si es necesario
             }
             .addOnFailureListener { exception ->
-                // Log or handle failure here
+                // Registrar o manejar el fallo aquí
                 exception.printStackTrace()
             }
     }
@@ -326,7 +375,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    // Show toast message with the specified string resource ID
+    // Mostrar mensaje de toast con el ID de recurso de string especificado
     private fun showToast(messageResId: Int) {
         Toast.makeText(getApplication(), getApplication<Application>().getString(messageResId), Toast.LENGTH_SHORT).show()
     }
@@ -360,22 +409,22 @@ class UserViewModel @Inject constructor(
     }
 
     /**
-     * Handles unique views count for a car by checking if the current user has viewed it.
+     * Maneja el conteo de vistas únicas para un auto verificando si el usuario actual lo ha visto.
      */
     fun handleCarView(car: CarEntity) {
         viewModelScope.launch {
             val currentUser = getCurrentUserIdUseCase()
             val userId = currentUser.getOrNull() ?: return@launch
 
-            // Check if the user has already viewed the car in Firebase
+            // Verificar si el usuario ya ha visto el auto en Firebase
             val viewsRef = firebaseDatabase.getReference("views/${car.id}/$userId")
 
             viewsRef.get().addOnSuccessListener { snapshot ->
                 if (!snapshot.exists()) {
-                    // Increment the view count only if it is a unique view
+                    // Incrementar el conteo de vistas solo si es una vista única
                     car.views += 1
 
-                    // Add the unique view to Firebase and update the view count in the car's database entry
+                    // Agregar la vista única a Firebase y actualizar el conteo de vistas en la entrada de la base de datos del auto
                     viewsRef.setValue(true).addOnSuccessListener {
                         updateCarViewCountInDatabase(car)
                     }.addOnFailureListener {
@@ -392,10 +441,10 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val ownerId = car.ownerId
 
-            // Create an updated Car object with the view count only
+            // Crear un objeto Car actualizado solo con el conteo de vistas
             val updatedCar = mapCarEntityToCar(car).copy(views = car.views)
 
-            // Update the view count in the car's database entry
+            // Actualizar el conteo de vistas en la entrada de la base de datos del auto
             val result = updateCarToDatabaseUseCase(ownerId, car.id, updatedCar)
             result.fold(
                 onSuccess = { fetchCars() },

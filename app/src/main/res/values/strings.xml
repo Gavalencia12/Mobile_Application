@@ -424,7 +424,24 @@
 
     <string name="type_of_event">Type of Event</string>
     <string name="date_and_time">Date and Time</string>
+    <string name="address">Address</string>
+    <string name="outer_number">Outer Number</string>
+    <string name="interior_number_optional">Interior Number (optional)</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="uploaded_image">Uploaded Image</string>
+    <string name="save">Save</string>
+    <string name="age">Age</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="please_fill_in_the_required_information">Please fill in the required information</string>
     <string name="select_brand">Select brand</string>
+    <string name="vehicle_transmision">Vehicle Transmission</string>
+    <string name="vehicle_fuelType">Fuel Type</string>
+    <string name="min_engine_capacity">Min Engine Capacity</string>
+    <string name="max_engine_capacity">Max Engine Capacity</string>
 
 
     <!-- Spinner Options -->
@@ -444,6 +461,20 @@
         <item>New</item>
         <item>Used</item>
         <item>Pre-owned</item>
+    </string-array>
+
+    <string-array name="transmision_options">
+        <item>All</item>
+        <item>Manual</item>
+        <item>Automatic</item>
+    </string-array>
+
+    <string-array name="fuel_type_options_filter">
+        <item>All</item>
+        <item>Gasoline</item>
+        <item>Diesel</item>
+        <item>Electric</item>
+        <item>Hybrid</item>
     </string-array>
 
     <string-array name="location_options">

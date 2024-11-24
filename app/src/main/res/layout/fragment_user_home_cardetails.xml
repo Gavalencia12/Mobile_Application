@@ -51,13 +51,16 @@
     </RelativeLayout>
 
     <!-- Car model and price -->
+    <!-- Car model and price -->
     <LinearLayout
         android:id="@+id/carModelPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
         android:padding="16dp"
+        android:orientation="horizontal"
         android:layout_below="@id/rlCarousel">
+
         <TextView
             android:id="@+id/carModel"
             android:layout_width="0dp"
@@ -66,16 +69,32 @@
             android:text=""
             android:fontFamily="@font/inter_extrabold"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:gravity="start" />
+
+        <TextView
+            android:id="@+id/carBrand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_extrabold"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:gravity="center" />
+
         <TextView
             android:id="@+id/carPrice"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text=""
             android:fontFamily="@font/inter_extrabold"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:gravity="end" />
     </LinearLayout>
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
