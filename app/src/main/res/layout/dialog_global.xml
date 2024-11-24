@@ -3,54 +3,55 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="18dp" >
 
+    <!-- Title of the dialog -->
     <TextView
+        style="@style/title_dialog"
         android:id="@+id/dialogTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceHeadline6" />
+        android:fontFamily="@font/inter_semibold" />
 
+    <!-- Message or description displayed in the dialog -->
     <TextView
+        style="@style/txt_footer"
         android:id="@+id/dialogMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textAppearance="?attr/textAppearanceBody1" />
+        android:layout_marginTop="8dp" />
 
+    <!-- Input field for adding a comment (optional) -->
     <EditText
+        style="@style/style_input_large"
         android:id="@+id/editTextReportComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Añadir un comentario (opcional)"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:hint="Add a comment (optional)" />
 
+    <!-- Checkbox for blocking chat with a specific message -->
     <CheckBox
+        style="@style/style_checkbox_negative"
         android:id="@+id/checkboxBlockChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Bloquear usuario y vaciar chat" />
+        android:text="@string/message_block" />
 
+    <!-- Container for action buttons (Cancel and Block) -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/controls_manipulation_media"
         android:orientation="horizontal"
         android:layout_marginTop="16dp"
         android:gravity="end">
 
+        <!-- Button for canceling the action -->
         <Button
+            style="@style/button_style_dialog_small"
             android:id="@+id/buttonNegative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Cancelar" />
+            android:text="@string/cancel"
+            android:textColor="@drawable/btn_formality_text_color"
+            android:background="@drawable/btn_formality_forms"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="8dp"/>
 
+        <!-- Button for confirming the blocking action -->
         <Button
+            style="@style/button_style_dialog_small"
             android:id="@+id/buttonPositive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Aceptar" />
+            android:text="@string/block"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_formality_forms_negative" />
     </LinearLayout>
 </LinearLayout>

@@ -61,14 +61,14 @@ class SimpleUsersMessagesAdapter(
                 lastMessageTextView.text = fileName ?: messageText
                 when {
                     fileType?.contains("application") == true -> {
-                        fileIconImageView.setImageResource(R.drawable.ic_generic_file)
+                        fileIconImageView.setImageResource(R.drawable.ic_file)
                     }
                     fileType?.contains("image") == true -> {
-                        fileIconImageView.setImageResource(R.drawable.ic_img)
+                        fileIconImageView.setImageResource(R.drawable.ic_image)
                         lastMessageTextView.text = "Image"
                     }
                     fileType?.contains("video") == true -> {
-                        fileIconImageView.setImageResource(R.drawable.ic_video)
+                        fileIconImageView.setImageResource(R.drawable.ic_videos)
                         lastMessageTextView.text = "Video"
                     }
                     else -> {

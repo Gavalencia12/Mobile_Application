@@ -2,11 +2,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@drawable/gradient_background">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewInterestedUsers"
+    <!-- Header layout containing the title and an image -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <!-- Title of the section -->
+        <TextView
+            style="@style/title_dialog"
+            android:layout_width="wrap_content"
+            android:text="@string/messages"
+            android:paddingHorizontal="25dp"
+            android:paddingTop="60dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter_semibold"/>
+
+        <!-- Decorative image for the header -->
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="120dp"
+            android:src="@drawable/social_message"
+            android:layout_marginTop="40dp"/>
+    </LinearLayout>
+
+    <!-- Content area with a light opacity background -->
+    <LinearLayout
+        style="@style/content_chat_opacity_light"
+        android:layout_marginTop="5dp" >
+
+        <!-- RecyclerView to display a list of interested users -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewInterestedUsers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </LinearLayout>

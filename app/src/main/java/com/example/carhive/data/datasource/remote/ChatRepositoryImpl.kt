@@ -127,7 +127,7 @@ class ChatRepositoryImpl @Inject constructor(
                 .child("messages")
                 .child(buyerId)
                 .push()
-
+            Log.d("angel", "$messageRef, $carId, $buyerId")
             val messageEntity = messageMapper.mapToEntity(message.copy(
                 messageId = messageRef.key ?: "",
             ))
