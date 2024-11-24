@@ -179,6 +179,21 @@
         <item name="android:justificationMode" tools:ignore="NewApi">inter_word</item>
     </style>
 
+    <style name="content_price">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:paddingHorizontal">12dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:background">@drawable/rounded_content_price</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+
     <style name="button_style_dialog_small">
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">wrap_content</item>

@@ -411,11 +411,27 @@
     <string name="wear_and_tear">Wear and Tear</string>
     <string name="mechanical_specifications">Mechanical Specifications</string>
     <string name="publication_information">Publication Information</string>
+    <string name="user_seller">Cars</string>
+    <string name="user_comments">Comments</string>
+    <string name="comment_history">Comment History</string>
 
     <!-- Labels -->
     <string name="views">Views:</string>
     <string name="listing_date">Listing Date:</string>
     <string name="last_update">Last Update:</string>
+    <string name="Cars">Cars</string>
+    <string name="Car"><u>Cars</u></string>
+    <string name="Comments">Comments</string>
+    <string name="Comment"><u>Comments</u></string>
+    <string name="Qualification">Qualification</string>
+    <string name="commentext">Comment</string>
+    <string name="timetext">Time</string>
+    <string name="User_Comment">Comment</string>
+    <string name="title_comment">COMMENT</string>
+    <string name="Rating">Rating</string>
+    <string name="no_Rating">Not Rating</string>
+
+
 
     <!-- Button Texts -->
     <string name="open_repuve">Open REPUVE</string>

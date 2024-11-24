@@ -110,7 +110,7 @@
     <fragment
         android:id="@+id/termsUserFragment"
         android:name="com.example.carhive.presentation.user.items.TermsUserFragment"
-        tools:layout="@layout/fragment_seller_profile">
+        tools:layout="@layout/fragment_user_profile_terms">
         <action
             android:id="@+id/action_userProfileFragment_to_sellerProfileFragment"
             app:destination="@id/userProfileFragment"/>
@@ -153,6 +153,43 @@
         <action
             android:id="@+id/action_carDetailFragment_to_chat"
             app:destination="@id/userChat" />
+        <action
+            android:id="@+id/action_carDetailFragment_to_SellerProfileFragmentCars"
+            app:destination="@id/sellerProfileFragmentCars" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sellerProfileFragmentCars"
+        android:name="com.example.carhive.presentation.user.view.SellerProfileFragmentCars"
+        tools:layout="@layout/fragment_seller_profile_cars">
+        <argument
+            android:name="sellerId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_SellerProfileFragmentCars_to_userHomeFragment"
+            app:destination="@id/userHomeFragment" />
+        <action
+            android:id="@+id/action_SellerProfileFragmentCars_to_carDetailFragment"
+            app:destination="@id/userHomeCarDetailFragment" />
+        <action
+            android:id="@+id/action_SellerProfileFragmentCars_to_UserSellerProfileCommentsFragment"
+            app:destination="@id/UserSellerProfileCommentsFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/UserSellerProfileCommentsFragment"
+        android:name="com.example.carhive.presentation.user.view.UserSellerProfileCommentsFragment"
+        tools:layout="@layout/fragment_seller_profile_comments">
+        <argument
+            android:name="sellerId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_UserSellerProfileCommentsFragment_to_SellerProfileFragmentCars"
+            app:destination="@id/sellerProfileFragmentCars" />
+        <action
+            android:id="@+id/action_UserSellerProfileFragmentCars_to_userHomeFragment"
+            app:destination="@id/userHomeFragment" />
     </fragment>
 
     <fragment
@@ -199,6 +236,20 @@
         <action
             android:id="@+id/action_userProfileFragment_to_PersonalDataFragment"
             app:destination="@id/PersonalDataFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_CommentHistoryFragment"
+            app:destination="@id/UserCommentHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/UserCommentHistoryFragment"
+        android:name="com.example.carhive.presentation.user.view.UserCommentHistoryFragment"
+        tools:layout="@layout/fragment_user_comment_history">
+
+        <action
+            android:id="@+id/action_UserCommentHistoryFragment_to_sellerProfileFragmentCars"
+            app:destination="@id/sellerProfileFragmentCars" />
+
     </fragment>
 
     <fragment
@@ -294,6 +345,15 @@
         <action
             android:id="@+id/action_sellerProfileFragment_to_PersonalDataFragment"
             app:destination="@id/PersonalDataFragment" />
+        <action
+            android:id="@+id/action_sellerProfileFragment_to_CommentHistoryFragment"
+            app:destination="@id/SellerCommentHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SellerCommentHistoryFragment"
+        android:name="com.example.carhive.presentation.seller.view.SellerCommentHistoryFragment"
+        tools:layout="@layout/fragment_seller_comment_history">
     </fragment>
 
     <fragment
@@ -315,6 +375,9 @@
         <action
             android:id="@+id/action_termsSellerFragment_to_sellerPrivacyPolicyFragment"
             app:destination="@id/sellerPrivacyPolicyFragment" />
+        <action
+            android:id="@+id/action_termsSellerFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
 
     </fragment>
     <fragment

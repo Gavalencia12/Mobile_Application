@@ -9,10 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carhive.data.model.UserEntity
+import com.example.carhive.data.model.RatingSellerEntity
+import com.example.carhive.presentation.seller.adapter.CommentsAdapter
 import com.example.carhive.presentation.seller.viewModel.SellerHomeViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentSellerHomeBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +29,9 @@ class SellerHomeFragment : Fragment() {
 
     // ViewModel to manage seller-related data using Hilt for dependency injection
     private val viewModel: SellerHomeViewModel by viewModels()
+
+    private val sellerId: String? by lazy { FirebaseAuth.getInstance().currentUser?.uid }
+    private val commentsList = mutableListOf<RatingSellerEntity>()
 
     // Inflate the fragment's view and bind it to the FragmentSellerHomeBinding object
     override fun onCreateView(
@@ -37,6 +45,7 @@ class SellerHomeFragment : Fragment() {
     // This method is called after the view has been created. It handles UI setup and observers.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView() // Configura el RecyclerView
 
         // Set up the BottomNavigationView with the NavController for navigation
         val navController = findNavController()
@@ -124,6 +133,41 @@ class SellerHomeFragment : Fragment() {
         }
 
     }
+    private fun setupRecyclerView() {
+        val adapter = CommentsAdapter(
+            sellerId ?: "",
+            commentsList
+        ) { averageRatingPercentage ->
+            binding.score.text = "$averageRatingPercentage%"
+        }
+
+        binding.recyclerViewComments.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = adapter
+        }
+
+        loadComments(adapter)
+    }
+
+
+    private fun loadComments(adapter: CommentsAdapter) {
+        val sellerId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val databaseReference = FirebaseDatabase.getInstance().getReference("RatingSeller")
+
+        databaseReference.child(sellerId).get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val comments = mutableListOf<RatingSellerEntity>()
+                for (commentSnapshot in snapshot.children) {
+                    val comment = commentSnapshot.getValue(RatingSellerEntity::class.java)
+                    comment?.let { comments.add(it) }
+                }
+                comments.sortByDescending { it.date } // Ordenar por fecha
+                adapter.updateComments(comments) // Actualizar el adaptador
+            }
+        }
+    }
+
+
 
     // Function to set the user's full name in the username TextView in the UI
     private fun GetUsername(user: UserEntity) {
