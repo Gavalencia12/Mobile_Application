@@ -324,6 +324,7 @@ class UserHomeFragment : Fragment() {
             view.findViewById<TextView>(R.id.nav_option_transmission) to view.findViewById<View>(R.id.section_transmision),
             view.findViewById<TextView>(R.id.nav_option_fuelType) to view.findViewById<View>(R.id.section_fuelType),
             view.findViewById<TextView>(R.id.nav_option_engineCapacity) to view.findViewById<View>(R.id.section_engineCapacity),
+            view.findViewById<TextView>(R.id.nav_option_condition) to view.findViewById<View>(R.id.section_condition)
         )
 
         sectionsMap.forEach { (navOption, targetSection) ->
