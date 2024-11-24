@@ -208,7 +208,7 @@ class CrudViewModel @Inject constructor(
 
             val car = Car(
                 modelo = modelo,
-                color = formattedColor,
+                color = color,
                 mileage = mileage,
                 brand = brand,
                 description = description,

@@ -93,8 +93,10 @@ class UpdateDataDialogFragment : DialogFragment() {
             openImageChooser()
         }
 
+
         Glide.with(requireContext())
             .load("url_de_imagen_actual")
+            .circleCrop()
             .into(binding.ivUserImage)
 
         binding.btnSave.setOnClickListener {
@@ -122,7 +124,9 @@ class UpdateDataDialogFragment : DialogFragment() {
             imageUri = data.data
             Glide.with(requireContext())
                 .load(imageUri)
+                .circleCrop()
                 .into(binding.ivUserImage)
+            binding.ivUserImage.visibility = View.VISIBLE
         }
     }
 
@@ -158,6 +162,10 @@ class UpdateDataDialogFragment : DialogFragment() {
             withContext(Dispatchers.Main) {
                 hideLoadingDialog()
                 // Mostrar error al usuario
+                showInstructionError(
+                    "Please fill in all required fields.",
+                    ContextCompat.getColor(requireContext(), R.color.red)
+                )
             }
             return
         }
@@ -202,7 +210,26 @@ class UpdateDataDialogFragment : DialogFragment() {
             withContext(Dispatchers.Main) {
                 hideLoadingDialog()
                 // Manejar errores (mostrar mensaje al usuario)
+                showInstructionError(
+                    "Error saving data. Please try again.",
+                    ContextCompat.getColor(requireContext(), R.color.red)
+                )
             }
+        }
+    }
+
+    private fun showInstructionError(message: String, color: Int) {
+        binding.instruction.apply {
+            text = message
+            setTextColor(color)
+            visibility = View.VISIBLE
+            setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_error, // Left drawable for error icon
+                0,
+                0,
+                0
+            )
+            compoundDrawablePadding = 3 // Space between icon and text
         }
     }
 

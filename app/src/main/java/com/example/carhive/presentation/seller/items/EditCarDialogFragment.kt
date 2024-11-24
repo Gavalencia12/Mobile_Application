@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,6 +36,7 @@ class EditCarDialogFragment : DialogFragment() {
     private val selectedImages = mutableListOf<Uri>()
     private val existingImageUrls = mutableListOf<String>()
     private lateinit var selectedImagesAdapter: SelectedImagesAdapter
+    private var selectedColor: String? = null
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == android.app.Activity.RESULT_OK) {
@@ -85,7 +87,8 @@ class EditCarDialogFragment : DialogFragment() {
 
             if (::car.isInitialized) {
                 etModelo.setText(car.modelo)
-                etColor.setText(car.color)
+                selectedColor = car.color
+                highlightSelectedColor()
                 etDescription.setText(car.description)
                 etPrice.setText(car.price)
                 etMileage.setText(car.mileage)
@@ -110,6 +113,32 @@ class EditCarDialogFragment : DialogFragment() {
             setupSpinners()
             updateImageCounter()
             setupAutoCompleteTextView()
+        }
+    }
+
+    private fun highlightSelectedColor() {
+        val colorButtons = listOf(
+            Pair(R.id.red_button, "Red"),
+            Pair(R.id.orange_button, "Orange"),
+            Pair(R.id.yellow_button, "Yellow"),
+            Pair(R.id.green_button, "Green"),
+            Pair(R.id.blue_button, "Blue"),
+            Pair(R.id.purple_button, "Purple"),
+            Pair(R.id.pink_button, "Pink"),
+            Pair(R.id.white_button, "White"),
+            Pair(R.id.gray_button, "Gray"),
+            Pair(R.id.black_button, "Black")
+        )
+
+        colorButtons.forEach { (buttonId, color) ->
+            val button = binding.root.findViewById<Button>(buttonId)
+            if (color == selectedColor) {
+                button.isSelected = true
+                button.setBackgroundResource(R.drawable.selected_circle)
+            } else {
+                button.isSelected = false
+                button.setBackgroundResource(R.drawable.selected_circle)
+            }
         }
     }
 
@@ -172,6 +201,11 @@ class EditCarDialogFragment : DialogFragment() {
 
 
     private fun setupListeners() {
+        setupColorFilter()
+
+        binding.buttonSelectImages.setOnClickListener { openImagePicker() }
+        binding.buttonCreate.setOnClickListener { validateForm() }
+        binding.buttonCancel.setOnClickListener { dismiss() }
         binding.buttonSelectImages.setOnClickListener { openImagePicker() }
 
         binding.buttonCreate.setOnClickListener {
@@ -179,6 +213,30 @@ class EditCarDialogFragment : DialogFragment() {
         }
 
         binding.buttonCancel.setOnClickListener { dismiss() }
+    }
+
+    private fun setupColorFilter() {
+        val colorButtons = listOf(
+            Pair(R.id.red_button, "Red"),
+            Pair(R.id.orange_button, "Orange"),
+            Pair(R.id.yellow_button, "Yellow"),
+            Pair(R.id.green_button, "Green"),
+            Pair(R.id.blue_button, "Blue"),
+            Pair(R.id.purple_button, "Purple"),
+            Pair(R.id.pink_button, "Pink"),
+            Pair(R.id.white_button, "White"),
+            Pair(R.id.gray_button, "Gray"),
+            Pair(R.id.black_button, "Black")
+        )
+
+        colorButtons.forEach { (buttonId, color) ->
+            val button = binding.root.findViewById<Button>(buttonId)
+
+            button.setOnClickListener {
+                selectedColor = if (selectedColor == color) null else color
+                highlightSelectedColor()
+            }
+        }
     }
 
     private fun openImagePicker() {
@@ -213,7 +271,6 @@ class EditCarDialogFragment : DialogFragment() {
     private fun validateForm() {
         with(binding) {
             val modelo = etModelo.text.toString()
-            val color = etColor.text.toString()
             val mileage = etMileage.text.toString()
             val brand = spinnerBrand.text.toString()
             val description = etDescription.text.toString()
@@ -230,7 +287,10 @@ class EditCarDialogFragment : DialogFragment() {
             val previousOwners = etPreviousOwners.text.toString().toIntOrNull() ?: 0
 
             // Check that all fields are filled
-            if (validateFields(modelo, color, mileage, brand, description, price, year, engineCapacity, location, vin)) {
+            if (validateFields(modelo, mileage, brand, description, price, year, engineCapacity, location, vin)) {
+                if (selectedColor.isNullOrEmpty()) {
+                    return
+                }
                 // Check if the selected brand exists
                 if (isBrandValid(brand)) {
                     if (selectedImages.size != 5) {
@@ -240,7 +300,7 @@ class EditCarDialogFragment : DialogFragment() {
 
                     viewModel.viewModelScope.launch {
                         uploadImagesAndSaveCar(
-                            modelo, color, mileage, brand, description, price, year, transmission, fuelType,
+                            modelo, selectedColor!!, mileage, brand, description, price, year, transmission, fuelType,
                             doors, engineCapacity, location, condition, features, vin, previousOwners
                         )
                     }

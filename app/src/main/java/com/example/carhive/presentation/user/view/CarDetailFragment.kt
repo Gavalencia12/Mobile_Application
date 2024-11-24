@@ -35,6 +35,7 @@ class CarDetailFragment : Fragment() {
 
         // Retrieve car data from arguments
         val carId = arguments?.getString("carId")
+        val carBrand = arguments?.getString("carBrand")
         val carModel = arguments?.getString("carModel")
         val carPrice = arguments?.getString("carPrice")
         val carColor = arguments?.getString("carColor")
@@ -54,6 +55,7 @@ class CarDetailFragment : Fragment() {
 
         // Display car data
         binding.carModel.text = carModel
+        binding.carBrand.text = carBrand
         binding.carPrice.text = "$ $carPrice"
         binding.carColor.text = carColor
         binding.carDescription.text = carDescription
