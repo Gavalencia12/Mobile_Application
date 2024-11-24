@@ -140,17 +140,14 @@ class UserSellerProfileCommentsFragment : Fragment() {
                 ratingsAdapter.notifyDataSetChanged()
 
                 if (ratingsList.isNotEmpty()) {
-                    // Actualizar cantidad de comentarios y promedio
                     binding.numComments.text = ratingsList.size.toString()
                     val averageRating = totalRating / ratingsList.size
                     updateStars(averageRating)
 
-                    // Mostrar comentarios y ocultar mensaje de "No hay comentarios"
                     binding.recyclerViewRatings.visibility = View.VISIBLE
                     binding.Qualification.visibility = View.VISIBLE
                     binding.NotQualification.visibility = View.GONE
                 } else {
-                    // No hay comentarios
                     binding.numComments.text = "0"
                     updateStars(0)
                     binding.recyclerViewRatings.visibility = View.GONE
@@ -158,7 +155,6 @@ class UserSellerProfileCommentsFragment : Fragment() {
                     binding.NotQualification.visibility = View.VISIBLE
                 }
 
-                // Configurar el adaptador de los comentarios
                 ratingsAdapter = RatingAdapter(ratingsList)
                 binding.recyclerViewRatings.adapter = ratingsAdapter
             } else {
@@ -174,7 +170,6 @@ class UserSellerProfileCommentsFragment : Fragment() {
 
 
     private fun updateStars(averageRating: Int) {
-        // Determinar cuántas estrellas mostrar
         val stars = when (averageRating) {
             in 0..19 -> 0
             in 20..39 -> 1
@@ -184,7 +179,6 @@ class UserSellerProfileCommentsFragment : Fragment() {
             else -> 5
         }
 
-        // Actualizar las estrellas en el layout
         val starImages = listOf(
             binding.star1,
             binding.star2,
@@ -195,9 +189,9 @@ class UserSellerProfileCommentsFragment : Fragment() {
 
         for (i in starImages.indices) {
             if (i < stars) {
-                starImages[i].setImageResource(R.drawable.star) // Estrella llena
+                starImages[i].setImageResource(R.drawable.star)
             } else {
-                starImages[i].setImageResource(R.drawable.nostar) // Estrella vacía
+                starImages[i].setImageResource(R.drawable.nostar)
             }
         }
     }
