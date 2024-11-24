@@ -1,13 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000000"> <!-- Fondo negro detrás de la imagen -->
+    style="@style/view_image" > <!-- Black background behind the image -->
 
+    <!-- Fullscreen image with zoom functionality -->
     <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/imageViewFull"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:background="#000000" /> <!-- Fondo negro dentro del ImageView -->
+        style="@style/image_full_zoom"
+        android:id="@+id/imageViewFull" />
 </FrameLayout>
+

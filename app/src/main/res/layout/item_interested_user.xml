@@ -5,33 +5,38 @@
     android:paddingVertical="16dp"
     android:paddingHorizontal="20dp">
 
+    <!-- Container for the profile image -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
         <!-- Profile Image -->
         <ImageView
+            android:layout_height="60dp"
+            android:layout_width="60dp"
             style="@style/circle_shape_ic"
             android:id="@+id/profileImageView"
             android:layout_marginEnd="8dp"
             android:src="@drawable/ic_person" />
     </LinearLayout>
 
-    <!-- Username and last message Content -->
+    <!-- Container for username and last message -->
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_marginEnd="5dp">
+        style="@style/data_chat"
+        android:layout_marginEnd="5dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="start">
 
-        <!-- User Name -->
+        <!-- Username -->
         <TextView
             style="@style/title_content_chat"
             android:id="@+id/userNameTextView"
-            android:text="@string/user_car" />
+            android:text="@string/user_car"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter_semibold"/>
 
-        <!-- Last Message and Indicators -->
+        <!-- Container for the last message and additional indicators -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,11 +58,12 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Container for the unread message count -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent" >
 
-        <!-- Unread Count -->
+        <!-- Unread message count -->
         <TextView
             style="@style/count_notify"
             android:id="@+id/unreadCountTextView"
@@ -66,7 +72,5 @@
             android:text="@string/num"
             android:paddingVertical="2dp"
             android:paddingHorizontal="6dp" />
-
     </LinearLayout>
-
 </LinearLayout>

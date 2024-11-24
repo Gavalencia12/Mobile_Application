@@ -479,7 +479,24 @@
     <string name="user_car">User or Car Name</string>
     <string name="last_message">Last Message</string>
     <string name="num">9</string>
-
+    <string name="person_name">Person name</string>
+    <string name="finished"> Finished</string>
+    <string name="description_download_err">Download error, please try again</string>
+    <string name="carhive_team">CarHive Team</string>
+    <string name="welcome_technical_support">Welcome to Technical Support! Send us your question or issue, and we\'ll get back to you. You can also choose one of the suggested options below.</string>
+    <string name="btn_option_chats1">What can I save about my car?</string>
+    <string name="btn_option_chats2">Register a vehicle</string>
+    <string name="btn_option_chats3">CarHive services</string>
+    <string name="btn_option_chats4">Is CarHive near me?</string>
+    <string name="btn_option_chats5">Reset password</string>
+    <string name="message_block_user">You have blocked this user. Unblock them to resume the conversation.</string>
+    <string name="edit_txt_hint_chat">Write a message...</string>
+    <string name="example_file_data">exampleFile.txt</string>
+    <string name="data_file">165 KB • TXT</string>
+    <string name="try_again"> Try again</string>
+    <string name="message_block">Block user and clear chat</string>
+    <string name="file_name">File Name</string>
+    <string name="add_comment">Add a comment (optional)</string>
 
 </resources>
 

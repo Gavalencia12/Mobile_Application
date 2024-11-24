@@ -44,4 +44,5 @@
     <color name="red_lighting">#E2A9A9</color>
     <color name="gray_disabled">#8B8B8B</color>
     <color name="black_opacity_light">#7EFFFFFF</color>
+    <color name="black_opacity_medium">#5C000000</color>
 </resources>

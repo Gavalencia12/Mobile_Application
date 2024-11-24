@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:paddingTop="40dp" >
 
-    <!-- Header con botón de retroceso, imagen de perfil, detalles y menú -->
+    <!-- Header with back button, profile image, details, and menu button -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,34 +13,27 @@
         android:padding="10dp"
         android:gravity="center_vertical">
 
+        <!-- Back button to return to the previous screen -->
         <ImageButton
             android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_arrow_back"/>
+            style="@style/btn_back_style"/>
 
-        <!-- Foto de perfil -->
+        <!-- Profile picture -->
         <ImageView
             style="@style/circle_shape_ic"
             android:id="@+id/profileImage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/ic_profile"/>
 
-        <!-- Nombre y modelo del coche -->
+        <!-- User's name and car model -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:gravity="center">
+            style="@style/data_chat" >
 
             <TextView
                 style="@style/title_content_chat"
                 android:id="@+id/tv_name"
-                android:text="Nombre de la persona" />
+                android:text="@string/person_name" />
 
             <TextView
                 style="@style/content_notify"
@@ -48,125 +41,121 @@
                 android:layout_width="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@color/gray"
-                android:text="Modelo del coche"/>
+                android:text="@string/email_address"/>
         </LinearLayout>
 
-        <!-- Botón de menú desplegable -->
+        <!-- Menu button for additional options -->
         <ImageButton
+            style="@style/btn_without_border"
             android:id="@+id/menuButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_more_vert"
-            android:padding="8dp"/>
+            android:src="@drawable/ic_more_vert" />
     </LinearLayout>
 
+    <!-- Button container for chat actions -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:gravity="center_horizontal">
 
+        <!-- "Finished" button for chat actions -->
         <Button
+            style="@style/btn_function_chat"
             android:id="@+id/btnFinished"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Finished"
-            android:visibility="gone"/>
-
+            android:text="@string/finished"
+            android:contentDescription="@string/description_download_err"
+            android:drawableStart="@drawable/ic_check"
+            android:backgroundTint="@color/blue_disabled"
+            android:textColor="@color/other_blue_dark"/>
     </LinearLayout>
 
+    <!-- Initial options container, initially hidden -->
     <LinearLayout
         android:id="@+id/initialOptionsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp"
+        android:layout_margin="30dp"
         android:visibility="gone">
 
-        <TextView
+        <!-- Message content with team details -->
+        <LinearLayout
+            style="@style/content_message_video_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Welcome to the technical support section, where you can solve all the doubts and questions you have. Write your message telling us your doubt or problem about the app, we will answer you soon. Or choose one of the suggested options."/>
+            android:orientation="vertical"
+            android:backgroundTint="@color/blue_disabled"
+            android:layout_marginBottom="8dp"
+            android:padding="15dp">
 
+            <!-- Team name -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/carhive_team"
+                android:textColor="@color/blue"
+                android:textSize="16sp"
+                android:fontFamily="@font/inter_extrabold"/>
+
+            <!-- Welcome message -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blue"
+                android:textSize="16sp"
+                android:text="@string/welcome_technical_support"/>
+        </LinearLayout>
+
+        <!-- Option buttons for chat actions -->
         <Button
+            style="@style/btn_options_style"
             android:id="@+id/option1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_200"
-            android:text="What information can I save about my car on the platform?"
-            android:textColor="@color/white"
-            android:layout_marginBottom="8dp"/>
+            android:text="@string/btn_option_chats1" />
 
         <Button
+            style="@style/btn_options_style"
             android:id="@+id/option2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_200"
-            android:text="How do I register a new vehicle?"
-            android:textColor="@color/white"
-            android:layout_marginBottom="8dp"/>
+            android:text="@string/btn_option_chats2" />
 
         <Button
+            style="@style/btn_options_style"
             android:id="@+id/option3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_200"
-            android:text="What services does carhive offer?"
-            android:textColor="@color/white"
-            android:layout_marginBottom="8dp"/>
+            android:text="@string/btn_option_chats3" />
 
         <Button
+            style="@style/btn_options_style"
             android:id="@+id/option4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_200"
-            android:text="Is carhive available in my region?"
-            android:textColor="@color/white"
-            android:layout_marginBottom="8dp"/>
+            android:text="@string/btn_option_chats4" />
 
         <Button
+            style="@style/btn_options_style"
             android:id="@+id/option5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_200"
-            android:text="How do I reset my password?"
-            android:textColor="@color/white"
-            android:layout_marginBottom="8dp"/>
-
+            android:text="@string/btn_option_chats5" />
     </LinearLayout>
 
-    <!-- Lista de mensajes -->
+    <!-- RecyclerView for displaying the message list -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMessages"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:nestedScrollingEnabled="false"/>
+        style="@style/list_chat"
+        android:id="@+id/recyclerViewMessages" />
 
-    <!-- Texto para indicar que el usuario está bloqueado -->
+    <!-- TextView to display a blocked user message -->
     <TextView
+        style="@style/message_visibility"
         android:id="@+id/blockedMessageTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Has bloqueado a este usuario. Desbloquéalo para reanudar la conversación."
-        android:gravity="center"
-        android:textColor="@color/red"
-        android:textSize="14sp"
-        android:visibility="gone"/>
+        android:text="@string/message_block_user"
+        android:textColor="@color/red" />
 
-
-    <!-- Input para enviar mensaje con attachButton -->
+    <!-- Input layout for sending messages -->
     <LinearLayout
         android:id="@+id/messageInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp" >
 
+        <!-- EditText for typing messages -->
         <LinearLayout
             style="@style/EditTextChat"
             android:layout_width="match_parent"
@@ -177,29 +166,28 @@
             <EditText
                 style="@style/EditTextChat"
                 android:id="@+id/editTextMessage"
-                android:hint="Escribe un mensaje..."
+                android:hint="@string/edit_txt_hint_chat"
                 android:paddingHorizontal="15dp"
-                android:paddingVertical="10dp" />
+                android:paddingVertical="10dp"
+                android:maxLines="6"
+                android:maxLength="65536"/>
 
-            <!-- Botón de adjuntar archivo -->
+            <!-- Attach button for adding files -->
             <ImageButton
+                style="@style/btn_without_border"
                 android:id="@+id/attachButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_attach_file"
-                android:layout_marginStart="15dp"/>
+                android:layout_marginStart="15dp"
+                android:layout_gravity="bottom" />
         </LinearLayout>
 
+        <!-- Send button for sending messages -->
         <ImageButton
+            style="@style/btn_circle"
             android:id="@+id/buttonSend"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/ic_send"
-            android:layout_gravity="center"
-            android:background="@drawable/circle_shape"
             android:backgroundTint="@color/blue" />
     </LinearLayout>
-
 </LinearLayout>

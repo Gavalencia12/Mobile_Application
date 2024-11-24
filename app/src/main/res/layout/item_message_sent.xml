@@ -4,97 +4,92 @@
     android:paddingVertical="16dp"
     android:paddingHorizontal="5dp">
 
+    <!-- Header for the message date -->
     <LinearLayout
-        android:id="@+id/llHead"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="3dp">
+        style="@style/content_date"
+        android:id="@+id/llHead">
 
-        <!-- Encabezado de fecha -->
+        <!-- Date header text -->
         <TextView
             style="@style/header_date"
-            android:id="@+id/dateHeader"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="8dp" />
+            android:id="@+id/dateHeader" />
     </LinearLayout>
 
-    <!-- Contenedor de mensajes y archivos -->
+    <!-- Container for messages and files -->
     <LinearLayout
+        style="@style/content_message_file"
         android:layout_below="@id/llHead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="8dp">
+        android:layout_marginEnd="8dp" >
 
-        <!-- Mensaje de texto -->
+        <!-- Text message content -->
         <TextView
-            style="@style/message_text_sent"
-            android:id="@+id/messageText" />
+            style="@style/message_text"
+            android:id="@+id/messageText"
+            android:background="@drawable/content_text_message_sent"
+            android:textColor="@color/white"/>
 
-        <!-- Contenedor para archivos con diseño similar a WhatsApp -->
+        <!-- File container with a design similar to WhatsApp -->
         <LinearLayout
-            style="@style/message_file_sent"
-            android:id="@+id/fileContainer" >
+            style="@style/message_file"
+            android:id="@+id/fileContainer"
+            android:background="@drawable/content_text_message_sent" >
 
             <LinearLayout
                 style="@style/content_message_video_image">
 
-                <!-- Nombre del archivo -->
+                <!-- File name -->
                 <TextView
                     style="@style/style_file_name"
                     android:id="@+id/fileName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ArchivoEjemplo.txt"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white"
-                    android:layout_marginBottom="4dp"
-                    android:textAlignment="textStart"
-                    android:textSize="14sp"/>
+                    android:text="@string/example_file_data"
+                    android:textColor="@color/white" />
 
-                <!-- Información adicional del archivo (tamaño y tipo) -->
+                <!-- Additional file information (size and type) -->
                 <TextView
                     style="@style/style_file_info"
                     android:id="@+id/fileInfo"
-                    android:text="165 KB • TXT" />
+                    android:text="@string/data_file"
+                    android:textColor="@color/black_opacity_light"/>
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Vista de imagen para fotos -->
+        <!-- Image view for displaying photos -->
         <ImageView
-            style="@style/message_image_sent"
-            android:id="@+id/fileImageView" />
+            style="@style/message_image"
+            android:id="@+id/fileImageView"
+            android:background="@drawable/bg_content_image_message_sent"/>
 
-        <!-- Vista de video para videos -->
+        <!-- Video view for displaying videos -->
         <VideoView
-            style="@style/message_video_sent"
-            android:id="@+id/videoView" />
+            style="@style/message_video"
+            android:id="@+id/videoView"
+            android:background="@drawable/bg_content_image_message_sent"/>
 
-            <!-- Botón de reintento de descarga -->
-         <Button
-             style="@style/btn_function_chat"
-             android:id="@+id/retryButton"
-             android:text=" Try again"
-             android:backgroundTint="@color/red_lighting"
-             android:drawableStart="@drawable/ic_error_connection"
-             android:contentDescription="Download error, please try again" />
+        <!-- Retry button for failed downloads -->
+        <Button
+            style="@style/btn_function_chat"
+            android:id="@+id/retryButton"
+            android:text="@string/try_again"
+            android:contentDescription="@string/description_download_err"
+            android:drawableStart="@drawable/ic_error_connection"
+            android:backgroundTint="@color/red_lighting"
+            android:textColor="@color/red_dark" />
 
-        <!-- Contenedor de hora y estado del mensaje -->
+        <!-- Container for message time and status -->
         <LinearLayout
-            style="@style/structure_status">
+            style="@style/structure_status" >
 
-            <!-- Hora del mensaje -->
+            <!-- Message time -->
             <TextView
                 style="@style/txt_small"
                 android:id="@+id/messageTime" />
 
-            <!-- Icono de estado del mensaje -->
+            <!-- Message status icon -->
             <ImageView
                 style="@style/status_message"
                 android:id="@+id/statusIcon"
-                android:src="@drawable/face_send_negative4" />
+                android:layout_marginStart="4dp" />
 
         </LinearLayout>
     </LinearLayout>

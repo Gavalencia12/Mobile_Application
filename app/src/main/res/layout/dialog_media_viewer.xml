@@ -1,32 +1,23 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#000000">
+    style="@style/view_image" >
 
-    <!-- ViewPager para las imágenes/videos -->
+    <!-- ViewPager to display images or videos, allowing swipe navigation -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Barra superior con botón de cierre -->
+    <!-- Top bar containing a close button -->
     <LinearLayout
-        android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#5C000000"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:visibility="gone">
+        style="@style/bar_top_close_media"
+        android:id="@+id/topBar">
 
+        <!-- Close button for exiting the view -->
         <ImageView
+            style="@style/btn_white_medium"
             android:id="@+id/closeButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
             android:contentDescription="@string/close"
-            android:padding="8dp"
             android:src="@drawable/ic_exit"
             app:tint="@color/white"/>
     </LinearLayout>
