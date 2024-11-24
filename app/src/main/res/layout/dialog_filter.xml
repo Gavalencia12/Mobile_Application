@@ -433,6 +433,15 @@
                                 android:background="@drawable/selected_circle"
                                 android:backgroundTint="@color/black"
                                 android:tag="Black"/>
+
+                            <Button
+                                android:id="@+id/brown_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/selected_circle"
+                                android:backgroundTint="@color/brown"
+                                android:tag="Brown"/>
+
                         </FrameLayout>
                     </GridLayout>
                 </LinearLayout>

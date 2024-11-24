@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -35,7 +36,7 @@ class UserHomeFragment : Fragment() {
 
     private var _binding: FragmentUserHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: UserViewModel by viewModels()
+    private val viewModel: UserViewModel by activityViewModels()
     private lateinit var carAdapter: CarHomeAdapter
     private lateinit var recommendedCarAdapter: CarHomeAdapter
     private lateinit var brandAdapter: BrandAdapter
@@ -71,6 +72,7 @@ class UserHomeFragment : Fragment() {
 
         brandAdapter = BrandAdapter(mutableListOf(), viewModel.selectedBrands) { selectedBrands ->
             viewModel.selectedBrands = selectedBrands.toMutableSet()
+            viewModel.applyFilters()
         }
 
         // Configurar RecyclerViews con layouts horizontales para listas de autos
@@ -94,7 +96,8 @@ class UserHomeFragment : Fragment() {
 
         // Obtener autos y marcas
         viewModel.fetchCars()
-        viewModel.fetchBrandsFromCars() // Llama a fetchBrandsFromCars para obtener las marcas
+        viewModel.fetchBrandsFromCars()
+        viewModel.fetchUniqueCarModels()
 
         // Configurar el botón "Todos los Autos" para alternar entre vistas
         binding.allCars.setOnClickListener {
@@ -135,6 +138,7 @@ class UserHomeFragment : Fragment() {
 
         // Observar cambios en la lista de autos
         viewModel.carList.observe(viewLifecycleOwner) { cars ->
+            Log.d("UserHomeFragment", "Recibiendo lista de autos filtrados: ${cars.size} autos")
             carAdapter.updateCars(cars)
         }
 
@@ -146,8 +150,8 @@ class UserHomeFragment : Fragment() {
         setupLocationFilter()
         setupModelSearch() // Llamada al método que configura la búsqueda de modelos de carros
 
-        // Mostrar el diálogo de filtros cuando se hace clic en el botón de filtros
-        binding.filtrers.setOnClickListener { showFilterDialog() } // Llamada al método que muestra el diálogo de filtros
+        // Mostrar el cuadro de diálogo de filtros cuando se hace clic en el botón de filtros
+        binding.filtrers.setOnClickListener { showFilterDialog() }
     }
 
     private fun navigateToCarDetail(car: CarEntity) {
@@ -155,19 +159,19 @@ class UserHomeFragment : Fragment() {
             putString("carId", car.id)
             putString("carModel", car.modelo)
             putString("carBrand", car.brand)
-            putString("carPrice", car.price)
+            putString("carPrice", car.price.toString())
             putString("carColor", car.color)
             putString("carDescription", car.description)
             putString("carTransmission", car.transmission)
             putString("carFuelType", car.fuelType)
             putInt("carDoors", car.doors)
-            putString("carEngineCapacity", car.engineCapacity)
+            putString("carEngineCapacity", car.engineCapacity.toString())
             putString("carLocation", car.location)
             putString("carCondition", car.condition)
             putInt("carPreviousOwners", car.previousOwners)
             putInt("carViews", car.views)
-            putString("carMileage", car.mileage)
-            putString("carYear", car.year)
+            putString("carMileage", car.mileage.toString())
+            putString("carYear", car.year.toString())
             putString("carOwnerId", car.ownerId)
             putStringArrayList("carImageUrls", car.imageUrls?.let { ArrayList(it) })
         }
@@ -184,12 +188,13 @@ class UserHomeFragment : Fragment() {
         binding.ubication.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedLocation = locationOptions[position]
-                if (selectedLocation == "All") {
+                if (selectedLocation.equals("All", ignoreCase = true)) {
                     viewModel.clearLocationFilter()
                 } else {
                     viewModel.filterByLocation(selectedLocation)
                 }
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
@@ -206,24 +211,30 @@ class UserHomeFragment : Fragment() {
             Pair(R.id.pink_button, "Pink"),
             Pair(R.id.white_button, "White"),
             Pair(R.id.gray_button, "Gray"),
-            Pair(R.id.black_button, "Black")
+            Pair(R.id.black_button, "Black"),
+            Pair(R.id.brown_button, "Brown"),
         )
 
         colorButtons.forEach { (buttonId, color) ->
             val button = view.findViewById<Button>(buttonId)
 
-            button.setBackgroundResource(R.drawable.selected_circle)
+            // Establecer el estado inicial del botón
             button.isSelected = viewModel.selectedColors.contains(color)
+            button.setBackgroundResource(
+                if (button.isSelected) R.drawable.selected_circle else R.drawable.selected_circle
+            )
 
             button.setOnClickListener {
                 if (viewModel.selectedColors.contains(color)) {
                     viewModel.selectedColors.remove(color)
                     button.isSelected = false
-                    Toast.makeText(requireContext(), "Color deselected: $color", Toast.LENGTH_SHORT).show()
+                    button.setBackgroundResource(R.drawable.selected_circle)
+                    Toast.makeText(requireContext(), "Color deseleccionado: $color", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.selectedColors.add(color)
                     button.isSelected = true
-                    Toast.makeText(requireContext(), "Color selected: $color", Toast.LENGTH_SHORT).show()
+                    button.setBackgroundResource(R.drawable.selected_circle)
+                    Toast.makeText(requireContext(), "Color seleccionado: $color", Toast.LENGTH_SHORT).show()
                 }
                 viewModel.applyFilters()
             }
@@ -345,7 +356,7 @@ class UserHomeFragment : Fragment() {
         spinnerCondition.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedCondition = parent.getItemAtPosition(position).toString()
-                viewModel.selectedCondition = if (selectedCondition == "All") null else selectedCondition
+                viewModel.selectedCondition = if (selectedCondition.equals("All", ignoreCase = true)) null else selectedCondition
                 viewModel.applyFilters()
             }
 
@@ -375,7 +386,7 @@ class UserHomeFragment : Fragment() {
                 val query = s.toString()
                 if (query.isEmpty()) {
                     viewModel.selectedModel = null
-                    viewModel.fetchCars()
+                    viewModel.applyFilters()
                 } else {
                     searchJob = viewLifecycleOwner.lifecycleScope.launch {
                         delay(300)
@@ -396,6 +407,7 @@ class UserHomeFragment : Fragment() {
             .setView(dialogView)
             .create()
 
+        // Configurar los filtros dentro del diálogo con el estado actual del ViewModel
         setupYearFilter(dialogView)
         setupBrandAutoCompleteFilter(dialogView)
         setupColorFilter(dialogView)
@@ -459,6 +471,37 @@ class UserHomeFragment : Fragment() {
             startYearView.setText(start.toString(), false)
             endYearView.setText(end.toString(), false)
         }
+
+        // Añadir listeners para actualizar el ViewModel cuando cambian los valores
+        startYearView.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val startYear = s.toString().toIntOrNull()
+                val endYear = endYearView.text.toString().toIntOrNull()
+                viewModel.yearRange = if (startYear != null || endYear != null) {
+                    (startYear ?: 1970) to (endYear ?: Calendar.getInstance().get(Calendar.YEAR))
+                } else {
+                    null
+                }
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        endYearView.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val startYear = startYearView.text.toString().toIntOrNull()
+                val endYear = s.toString().toIntOrNull()
+                viewModel.yearRange = if (startYear != null || endYear != null) {
+                    (startYear ?: 1970) to (endYear ?: Calendar.getInstance().get(Calendar.YEAR))
+                } else {
+                    null
+                }
+                viewModel.applyFilters()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
     private fun setupBrandAutoCompleteFilter(view: View) {
@@ -501,7 +544,7 @@ class UserHomeFragment : Fragment() {
         // Maneja la selección de una marca desde la lista de sugerencias
         autoCompleteBrand.setOnItemClickListener { parent, _, position, _ ->
             val selectedBrand = parent.getItemAtPosition(position) as String
-            val filteredBrands = viewModel.brandList.value?.filter { it == selectedBrand }
+            val filteredBrands = viewModel.brandList.value?.filter { it.equals(selectedBrand, ignoreCase = true) }
             filteredBrands?.let { brandAdapter.updateBrands(it) }
             viewModel.selectedBrands.add(selectedBrand)
             viewModel.applyFilters()
@@ -523,19 +566,27 @@ class UserHomeFragment : Fragment() {
         )
 
         brandButtons.forEach { (button, brand) ->
+            // Establecer el estado inicial de cada botón basado en el ViewModel
+            button.isSelected = viewModel.selectedBrands.contains(brand)
+            button.setBackgroundResource(
+                if (button.isSelected) R.drawable.selected_button_background else R.drawable.default_button_background
+            )
+
             button.setOnClickListener {
                 button.isSelected = !button.isSelected
 
-                if (selectedBrandFilters.contains(brand)) {
-                    selectedBrandFilters.remove(brand)
+                if (viewModel.selectedBrands.contains(brand)) {
+                    viewModel.selectedBrands.remove(brand)
                     button.setBackgroundResource(R.drawable.default_button_background)
                 } else {
-                    selectedBrandFilters.add(brand)
+                    viewModel.selectedBrands.add(brand)
                     button.setBackgroundResource(R.drawable.selected_button_background)
                 }
 
+                // Reorganizar los botones si es necesario
                 reorganizeBrandButtons(brandButtons)
-                viewModel.selectedBrands = selectedBrandFilters
+
+                // Aplicar los filtros después de la selección
                 viewModel.applyFilters()
             }
         }
@@ -547,7 +598,7 @@ class UserHomeFragment : Fragment() {
         linearLayout.removeAllViews()
 
         val sortedButtons = brandButtons.entries
-            .sortedBy { if (selectedBrandFilters.contains(it.value)) 0 else 1 }
+            .sortedBy { if (viewModel.selectedBrands.contains(it.value)) 0 else 1 }
             .map { it.key }
 
         sortedButtons.forEach { button ->
@@ -558,133 +609,6 @@ class UserHomeFragment : Fragment() {
             }
             linearLayout.addView(space)
         }
-    }
-
-    private fun applyBrandFilters() {
-
-        if (selectedBrandFilters.isEmpty()) {
-            binding.recyclerViewRecomendations.visibility = View.VISIBLE
-            binding.recommendedTitle.visibility = View.VISIBLE
-            binding.userText.visibility = View.VISIBLE
-            binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            viewModel.fetchCars()
-        } else {
-            binding.recyclerViewRecomendations.visibility = View.GONE
-            binding.recommendedTitle.visibility = View.GONE
-            binding.userText.visibility = View.GONE
-            binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
-
-            viewModel.filterCarsBySelectedBrands(selectedBrandFilters) { filteredCars ->
-                carAdapter.updateCars(filteredCars)
-            }
-        }
-    }
-
-    // Métodos para configurar los nuevos filtros
-    private fun setupTransmissionFilter(view: View) {
-        val spinnerTransmission: Spinner = view.findViewById(R.id.spinner_transmision)
-
-        val transmissionOptions = resources.getStringArray(R.array.transmision_options)
-        val transmissionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, transmissionOptions)
-        spinnerTransmission.adapter = transmissionAdapter
-
-        val selectedTransmission = viewModel.selectedTransmission ?: "All"
-        val selectedIndex = transmissionOptions.indexOf(selectedTransmission)
-        spinnerTransmission.setSelection(if (selectedIndex >= 0) selectedIndex else 0)
-
-        spinnerTransmission.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selected = transmissionOptions[position]
-                viewModel.selectedTransmission = if (selected == "All") null else selected
-                viewModel.applyFilters()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                viewModel.selectedTransmission = null
-                viewModel.applyFilters()
-            }
-        }
-    }
-
-    private fun setupFuelTypeFilter(view: View) {
-        val spinnerFuelType: Spinner = view.findViewById(R.id.spinner_fuelType)
-
-        val fuelTypeOptions = resources.getStringArray(R.array.fuel_type_options_filter)
-        val fuelTypeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, fuelTypeOptions)
-        spinnerFuelType.adapter = fuelTypeAdapter
-
-        val selectedFuelType = viewModel.selectedFuelType ?: "All"
-        val selectedIndex = fuelTypeOptions.indexOf(selectedFuelType)
-        spinnerFuelType.setSelection(if (selectedIndex >= 0) selectedIndex else 0)
-
-        spinnerFuelType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selected = fuelTypeOptions[position]
-                viewModel.selectedFuelType = if (selected == "All") null else selected
-                viewModel.applyFilters()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                viewModel.selectedFuelType = null
-                viewModel.applyFilters()
-            }
-        }
-    }
-
-    private fun setupEngineCapacityFilter(view: View) {
-        val minEngineCapacity: EditText = view.findViewById(R.id.editText_min_engineCapacity)
-        val maxEngineCapacity: EditText = view.findViewById(R.id.editText_max_engineCapacity)
-
-        minEngineCapacity.setText(viewModel.engineCapacityRange.first?.toString() ?: "")
-        maxEngineCapacity.setText(viewModel.engineCapacityRange.second?.toString() ?: "")
-
-        // Agregar TextWatchers para actualizar el ViewModel cuando cambian los valores
-        minEngineCapacity.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val min = s.toString().toDoubleOrNull()
-                viewModel.engineCapacityRange = min to viewModel.engineCapacityRange.second
-                viewModel.applyFilters()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        maxEngineCapacity.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val max = s.toString().toDoubleOrNull()
-                viewModel.engineCapacityRange = viewModel.engineCapacityRange.first to max
-                viewModel.applyFilters()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        // Añadir formateo si es necesario (similar a otros EditTexts)
-        listOf(minEngineCapacity, maxEngineCapacity).forEach { addDecimalSeparator(it) }
-    }
-
-    // Agrega separadores decimales a los campos de texto de capacidad del motor
-    private fun addDecimalSeparator(editText: EditText) {
-        editText.addTextChangedListener(object : TextWatcher {
-            private var current = ""
-            override fun afterTextChanged(s: Editable?) {
-                if (s.toString() != current) {
-                    editText.removeTextChangedListener(this)
-                    val cleanString = s.toString().replace(".", "")
-                    val formatted = cleanString.toDoubleOrNull()?.let {
-                        String.format(Locale.US, "%.1f", it / 10)
-                    } ?: ""
-                    current = formatted
-                    editText.setText(formatted)
-                    if (formatted.isNotEmpty()) {
-                        editText.setSelection(formatted.length)
-                    }
-                    editText.addTextChangedListener(this)
-                }
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
     }
 
     // Método para aplicar filtros y actualizar el ViewModel
@@ -722,5 +646,123 @@ class UserHomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // Implementación de los tres nuevos métodos de filtro
+    private fun setupTransmissionFilter(view: View) {
+        val spinnerTransmission: Spinner = view.findViewById(R.id.spinner_transmision)
+
+        // Obtener las opciones de transmisión desde los recursos
+        val transmissionOptions = resources.getStringArray(R.array.transmision_options)
+        val transmissionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, transmissionOptions)
+        transmissionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerTransmission.adapter = transmissionAdapter
+
+        // Determinar la posición seleccionada basada en el ViewModel
+        val selectedTransmission = viewModel.selectedTransmission ?: "All"
+        val selectedIndex = transmissionOptions.indexOf(selectedTransmission)
+        spinnerTransmission.setSelection(if (selectedIndex >= 0) selectedIndex else 0)
+
+        // Establecer el listener para manejar cambios de selección
+        spinnerTransmission.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selected = transmissionOptions[position]
+                viewModel.selectedTransmission = if (selected.equals("All", ignoreCase = true)) null else selected
+                viewModel.applyFilters()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                viewModel.selectedTransmission = null
+                viewModel.applyFilters()
+            }
+        }
+    }
+
+    private fun setupFuelTypeFilter(view: View) {
+        val spinnerFuelType: Spinner = view.findViewById(R.id.spinner_fuelType)
+
+        // Obtener las opciones de tipo de combustible desde los recursos
+        val fuelTypeOptions = resources.getStringArray(R.array.fuel_type_options_filter)
+        val fuelTypeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, fuelTypeOptions)
+        fuelTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerFuelType.adapter = fuelTypeAdapter
+
+        // Determinar la posición seleccionada basada en el ViewModel
+        val selectedFuelType = viewModel.selectedFuelType ?: "All"
+        val selectedIndex = fuelTypeOptions.indexOf(selectedFuelType)
+        spinnerFuelType.setSelection(if (selectedIndex >= 0) selectedIndex else 0)
+
+        // Establecer el listener para manejar cambios de selección
+        spinnerFuelType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selected = fuelTypeOptions[position]
+                viewModel.selectedFuelType = if (selected.equals("All", ignoreCase = true)) null else selected
+                viewModel.applyFilters()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                viewModel.selectedFuelType = null
+                viewModel.applyFilters()
+            }
+        }
+    }
+
+    private fun setupEngineCapacityFilter(view: View) {
+        val minEngineCapacity: EditText = view.findViewById(R.id.editText_min_engineCapacity)
+        val maxEngineCapacity: EditText = view.findViewById(R.id.editText_max_engineCapacity)
+
+        // Prellenar los campos con los valores actuales del ViewModel
+        minEngineCapacity.setText(viewModel.engineCapacityRange.first?.toString() ?: "")
+        maxEngineCapacity.setText(viewModel.engineCapacityRange.second?.toString() ?: "")
+
+        // Añadir TextWatchers para actualizar el ViewModel cuando cambian los valores
+        minEngineCapacity.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val min = s.toString().toDoubleOrNull()
+                viewModel.engineCapacityRange = min to viewModel.engineCapacityRange.second
+                viewModel.applyFilters()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        maxEngineCapacity.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val max = s.toString().toDoubleOrNull()
+                viewModel.engineCapacityRange = viewModel.engineCapacityRange.first to max
+                viewModel.applyFilters()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        // Opcional: Formatear los campos para permitir solo un decimal
+        listOf(minEngineCapacity, maxEngineCapacity).forEach { addDecimalSeparator(it) }
+    }
+
+    // Método para agregar un separador decimal (opcional)
+    private fun addDecimalSeparator(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            private var current = ""
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString() != current) {
+                    editText.removeTextChangedListener(this)
+                    val cleanString = s.toString().replace(".", "")
+                    val formatted = cleanString.toDoubleOrNull()?.let {
+                        String.format(Locale.US, "%.1f", it / 10)
+                    } ?: ""
+                    current = formatted
+                    editText.setText(formatted)
+                    if (formatted.isNotEmpty()) {
+                        editText.setSelection(formatted.length)
+                    }
+                    editText.addTextChangedListener(this)
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 }

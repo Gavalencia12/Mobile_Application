@@ -399,6 +399,21 @@
                     android:background="@drawable/selected_circle"
                     android:backgroundTint="@color/black"
                     android:tag="Black"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp">
+                <Button
+                    android:id="@+id/brown_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selected_circle"
+                    android:backgroundTint="@color/brown"
+                    android:tag="Brown"/>
             </FrameLayout>
         </GridLayout>
 
