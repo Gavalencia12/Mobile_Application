@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.carhive.data.model.RatingSellerEntity
@@ -41,6 +42,7 @@ class UserCommentDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupDialogAppearance()
         setupStarRating()
 
         binding.btnComment.setOnClickListener {
@@ -104,12 +106,29 @@ class UserCommentDialog : DialogFragment() {
             user?.let {
                 binding.sellername.text = "${it.firstName} ${it.lastName}"
                 binding.selleremail.text = it.email
+                binding.sellerrol.text = when (it.role) {
+                    1 -> "Buyer"
+                    2 -> "User"
+                    0 -> "Administrator"
+                    else -> "Unknown"
+                }
                 Glide.with(requireContext())
                     .load(it.imageUrl)
                     .placeholder(R.drawable.ic_profile)
                     .circleCrop()
                     .into(binding.ivUserImage)
             }
+        }
+    }
+
+    private fun setupDialogAppearance() {
+        dialog?.window?.apply {
+            setBackgroundDrawableResource(R.drawable.dialog_background) // Fondo redondeado
+            setLayout(
+                (resources.displayMetrics.widthPixels * 0.90).toInt(), // Reduce el ancho al 90% del ancho de la pantalla
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
