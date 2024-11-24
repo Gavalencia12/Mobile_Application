@@ -58,7 +58,7 @@ class UserViewModel @Inject constructor(
     val userData: LiveData<UserEntity?> get() = _userData
 
     private var allCars: List<CarEntity> = emptyList()
-    private var favoriteCounts: Map<String, Int> = emptyMap() // Mapa para conteo de favoritos
+    private var favoriteCounts: MutableMap<String, Int> = mutableMapOf() // Mapa para conteo de favoritos
 
     private val _brandList = MutableLiveData<List<String>>()
     val brandList: LiveData<List<String>> get() = _brandList
@@ -70,12 +70,6 @@ class UserViewModel @Inject constructor(
     var priceRange: Pair<Int, Int?> = 0 to null
     var mileageRange: Pair<Int, Int?> = 0 to null
     var selectedColors: MutableSet<String> = mutableSetOf()
-
-    // Color seleccionado estandarizado (primera letra en mayúscula)
-    var selectedColor: String? = null
-        set(value) {
-            field = value?.replaceFirstChar { it.uppercase() }
-        }
 
     // Filtro de ubicación actual
     private var selectedLocation: String? = null
@@ -102,16 +96,21 @@ class UserViewModel @Inject constructor(
             val result = getAllCarsFromDatabaseUseCase()
             if (result.isSuccess) {
                 allCars = result.getOrNull()?.filter { !it.sold && it.approved } ?: emptyList()
-                _carList.value = allCars
                 loadUniqueCarModels()
                 loadUniqueCarColors()
-                fetchRecommendedCars() // Actualizar autos recomendados después de obtener todos los autos
+                fetchRecommendedCars()
+                applyFilters() // Aplicar filtros después de cargar los autos
+                Log.d("UserViewModel", "Autos cargados y filtros aplicados")
             } else {
                 showToast(R.string.error_fetching_cars)
+                Log.e("UserViewModel", "Error al obtener los autos: ${result.exceptionOrNull()?.message}")
             }
         }
     }
 
+    /**
+     * Obtiene las marcas únicas de los autos cargados.
+     */
     fun fetchBrandsFromCars() {
         viewModelScope.launch {
             val result = getAllCarsFromDatabaseUseCase()
@@ -119,8 +118,9 @@ class UserViewModel @Inject constructor(
                 val cars = result.getOrNull()
                 val uniqueBrands = cars?.map { it.brand }?.distinct() ?: emptyList()
                 _brandList.value = uniqueBrands // Actualiza el LiveData de marcas
+                Log.d("UserViewModel", "Marcas únicas cargadas: $uniqueBrands")
             } else {
-                Log.e("UserViewModel", "Error al obtener los autos")
+                Log.e("UserViewModel", "Error al obtener los autos: ${result.exceptionOrNull()?.message}")
             }
         }
     }
@@ -139,61 +139,130 @@ class UserViewModel @Inject constructor(
 
             // Tomar los primeros 5 autos
             _recommendedCarList.value = sortedCars.take(5)
+            Log.d("UserViewModel", "Autos recomendados actualizados: ${_recommendedCarList.value?.size} autos")
         }
     }
 
-    // Cargar modelos únicos de la lista de autos
+    /**
+     * Carga y actualiza los modelos únicos de la lista de autos.
+     */
     private fun loadUniqueCarModels() {
         val models = allCars.map { it.modelo }.distinct()
         _uniqueCarModels.value = models
+        Log.d("UserViewModel", "Modelos únicos cargados: $models")
     }
 
-    // Cargar colores únicos de la lista de autos, capitalizados
+    /**
+     * Carga y actualiza los colores únicos de la lista de autos.
+     */
     private fun loadUniqueCarColors() {
         val colors = allCars.map { it.color.replaceFirstChar { it.uppercase() } }.distinct()
         _uniqueCarColors.value = colors
+        Log.d("UserViewModel", "Colores únicos cargados: $colors")
     }
 
     /**
      * Aplica filtros a la lista de autos basada en criterios seleccionados, incluyendo ubicación, transmisión, tipo de combustible y rango de capacidad del motor.
      */
     fun applyFilters() {
-        val filteredCars = allCars.filter { car ->
-            val matchesBrand = selectedBrands.isEmpty() || selectedBrands.contains(car.brand)
-            val matchesModel = selectedModel == null || car.modelo == selectedModel
-            val matchesYear = yearRange?.let { (min, max) -> car.year.toIntOrNull()?.let { it in min..max } } ?: true
-            val matchesColor = selectedColors.isEmpty() || selectedColors.contains(car.color.replaceFirstChar { it.uppercase() })
-            val matchesLocation = selectedLocation == null || car.location == selectedLocation
-            val matchesCondition = selectedCondition == null || car.condition == selectedCondition
+        var filteredList = allCars
 
-            val carPrice = car.price.toIntOrNull() ?: 0
-            val matchesPrice = carPrice in (priceRange.first)..(priceRange.second ?: Int.MAX_VALUE)
-
-            val carMileage = car.mileage.toIntOrNull() ?: 0
-            val matchesMileage = carMileage in (mileageRange.first)..(mileageRange.second ?: Int.MAX_VALUE)
-
-            // Nuevos filtros
-            val matchesTransmission = selectedTransmission == null || car.transmission.equals(selectedTransmission, ignoreCase = true)
-            val matchesFuelType = selectedFuelType == null || car.fuelType.equals(selectedFuelType, ignoreCase = true)
-            val matchesEngineCapacity = engineCapacityRange.let { (min, max) ->
-                val engineCapacity = car.engineCapacity?.toDoubleOrNull() ?: 0.0
-                (min == null || engineCapacity >= min) && (max == null || engineCapacity <= max)
+        // Filtro por marcas
+        if (selectedBrands.isNotEmpty()) {
+            filteredList = filteredList.filter { car ->
+                selectedBrands.contains(car.brand)
             }
-
-            matchesBrand && matchesModel && matchesYear && matchesColor && matchesLocation &&
-                    matchesCondition && matchesPrice && matchesMileage &&
-                    matchesTransmission && matchesFuelType && matchesEngineCapacity
         }
-        _carList.value = filteredCars
+
+        // Filtro por modelo
+        selectedModel?.let {
+            filteredList = filteredList.filter { car ->
+                car.modelo.equals(it, ignoreCase = true)
+            }
+        }
+
+        // Filtro por rango de años
+        yearRange?.let { (minYear, maxYear) ->
+            filteredList = filteredList.filter { car ->
+                val year = car.year.toIntOrNull() ?: 0
+                (minYear <= year) && (year <= maxYear)
+            }
+        }
+
+        // Filtro por colores
+        if (selectedColors.isNotEmpty()) {
+            filteredList = filteredList.filter { car ->
+                selectedColors.contains(car.color.replaceFirstChar { it.uppercase() })
+            }
+        }
+
+        // Filtro por ubicación
+        selectedLocation?.let {
+            filteredList = filteredList.filter { car ->
+                car.location.equals(it, ignoreCase = true)
+            }
+        }
+
+        // Filtro por condición
+        selectedCondition?.let {
+            filteredList = filteredList.filter { car ->
+                car.condition.equals(it, ignoreCase = true)
+            }
+        }
+
+        // Filtro por precio
+        priceRange.let { (minPrice, maxPrice) ->
+            filteredList = filteredList.filter { car ->
+                val price = car.price.toIntOrNull() ?: 0
+                price >= minPrice && (maxPrice == null || price <= maxPrice)
+            }
+        }
+
+        // Filtro por kilometraje
+        mileageRange.let { (minMileage, maxMileage) ->
+            filteredList = filteredList.filter { car ->
+                val mileage = car.mileage.toIntOrNull() ?: 0
+                mileage >= minMileage && (maxMileage == null || mileage <= maxMileage)
+            }
+        }
+
+        // Filtro por transmisión
+        selectedTransmission?.let {
+            filteredList = filteredList.filter { car ->
+                car.transmission.equals(it, ignoreCase = true)
+            }
+        }
+
+        // Filtro por tipo de combustible
+        selectedFuelType?.let {
+            filteredList = filteredList.filter { car ->
+                car.fuelType.equals(it, ignoreCase = true)
+            }
+        }
+
+        // Filtro por capacidad del motor
+        engineCapacityRange.let { (minCapacity, maxCapacity) ->
+            filteredList = filteredList.filter { car ->
+                val capacity = car.engineCapacity?.toDoubleOrNull() ?: 0.0
+                (minCapacity == null || capacity >= minCapacity) && (maxCapacity == null || capacity <= maxCapacity)
+            }
+        }
+
+        // Actualizar el LiveData con la lista filtrada
+        _carList.value = filteredList
     }
 
+    /**
+     * Filtra autos por marcas seleccionadas y ejecuta un callback con la lista filtrada.
+     */
     fun filterCarsBySelectedBrands(selectedBrands: Set<String>, onFilterApplied: (List<CarEntity>) -> Unit) {
         val filteredCars = if (selectedBrands.isEmpty()) {
             allCars
         } else {
-            allCars.filter { selectedBrands.contains(it.brand) }
+            allCars.filter { it.brand in selectedBrands }
         }
         onFilterApplied(filteredCars)
+        Log.d("UserViewModel", "Autos filtrados por marcas seleccionadas: ${selectedBrands.joinToString()}")
     }
 
     /**
@@ -203,15 +272,16 @@ class UserViewModel @Inject constructor(
         selectedBrands.clear()
         selectedModel = null
         yearRange = null
-        selectedColor = null
-        priceRange = 0 to null
-        mileageRange = 0 to null
+        selectedColors.clear() // Asegurar que se limpien los colores seleccionados
         selectedLocation = null
         selectedCondition = null // Reinicia la condición seleccionada
         selectedTransmission = null
         selectedFuelType = null
         engineCapacityRange = null to null
-        _carList.value = allCars
+        priceRange = 0 to null
+        mileageRange = 0 to null
+        applyFilters() // Aplicar filtros después de limpiar
+        Log.d("UserViewModel", "Filtros limpiados")
     }
 
     /**
@@ -220,6 +290,7 @@ class UserViewModel @Inject constructor(
     fun filterByLocation(location: String) {
         selectedLocation = location
         applyFilters() // Reaplicar filtros con ubicación actualizada
+        Log.d("UserViewModel", "Filtrado por nueva ubicación: $location")
     }
 
     /**
@@ -228,6 +299,7 @@ class UserViewModel @Inject constructor(
     fun clearLocationFilter() {
         selectedLocation = null
         applyFilters() // Reaplicar filtros sin restricción de ubicación
+        Log.d("UserViewModel", "Filtro de ubicación limpiado")
     }
 
     /**
@@ -242,9 +314,14 @@ class UserViewModel @Inject constructor(
                 .child(userId)
                 .child(carId)
                 .get()
-                .addOnSuccessListener { snapshot -> callback(snapshot.exists()) }
+                .addOnSuccessListener { snapshot ->
+                    val exists = snapshot.exists()
+                    Log.d("UserViewModel", "Auto $carId favorito: $exists")
+                    callback(exists)
+                }
                 .addOnFailureListener {
                     showToast(R.string.error_fetching_favorite_status)
+                    Log.e("UserViewModel", "Error al verificar favorito: ${it.message}")
                     callback(false)
                 }
         }
@@ -275,6 +352,10 @@ class UserViewModel @Inject constructor(
                         )
                         // Actualizar el conteo de favoritos
                         updateFavoriteCount(car.id, increment = true)
+                        Log.d("UserViewModel", "Auto ${car.id} agregado a favoritos por $fullName")
+                    } else {
+                        showToast(R.string.error_adding_favorite)
+                        Log.e("UserViewModel", "Error al agregar favorito: ${result.exceptionOrNull()?.message}")
                     }
                 } else {
                     val result = removeCarFromFavoritesUseCase(userId, car.id)
@@ -287,10 +368,15 @@ class UserViewModel @Inject constructor(
                         )
                         // Actualizar el conteo de favoritos
                         updateFavoriteCount(car.id, increment = false)
+                        Log.d("UserViewModel", "Auto ${car.id} removido de favoritos por $fullName")
+                    } else {
+                        showToast(R.string.error_removing_favorite)
+                        Log.e("UserViewModel", "Error al remover favorito: ${result.exceptionOrNull()?.message}")
                     }
                 }
             } else {
                 showToast(R.string.error_fetching_user_data)
+                Log.e("UserViewModel", "Error al obtener datos del usuario: ${resultUser.exceptionOrNull()?.message}")
             }
         }
     }
@@ -314,11 +400,10 @@ class UserViewModel @Inject constructor(
                     } else if (committed) {
                         // Actualizar el mapa de favoriteCounts
                         viewModelScope.launch(Dispatchers.Main) {
-                            favoriteCounts = favoriteCounts.toMutableMap().apply {
-                                this[carId] = (this[carId] ?: 0) + if (increment) 1 else -1
-                                if (this[carId]!! < 0) this[carId] = 0
-                            }
+                            val currentCount = favoriteCounts[carId] ?: 0
+                            favoriteCounts[carId] = if (increment) currentCount + 1 else if (currentCount > 0) currentCount - 1 else 0
                             fetchRecommendedCars() // Recalcular autos recomendados
+                            Log.d("UserViewModel", "Favorite count actualizado para $carId: ${favoriteCounts[carId]}")
                         }
                     }
                 }
@@ -338,23 +423,30 @@ class UserViewModel @Inject constructor(
             .push()
             .setValue(historyEntity)
             .addOnSuccessListener {
-                // Opcional: Manejar la adición exitosa si es necesario
+                Log.d("UserViewModel", "Evento de historial agregado exitosamente")
             }
             .addOnFailureListener { exception ->
                 // Registrar o manejar el fallo aquí
-                exception.printStackTrace()
+                Log.e("UserViewModel", "Error al agregar evento de historial: ${exception.message}")
             }
     }
 
+    /**
+     * Escucha nuevas adiciones a favoritos para notificaciones.
+     */
     fun listenForNewFavorites(carId: String, sellerId: String, name: String) {
         viewModelScope.launch {
             listenForNewFavoritesUseCase(carId) { buyerId, buyerName, carId ->
                 createBuyerNotification(buyerId, name)
                 createSellerNotification(sellerId, buyerName, carId, name)
             }
+            Log.d("UserViewModel", "Escuchando nuevas adiciones a favoritos para el auto $carId")
         }
     }
 
+    /**
+     * Crea una notificación para el comprador.
+     */
     private fun createBuyerNotification(buyerId: String, name: String) {
         viewModelScope.launch {
             addNotificationUseCase(
@@ -362,9 +454,13 @@ class UserViewModel @Inject constructor(
                 title = "Car added to favorites",
                 message = "You have added the car $name to your favorites."
             )
+            Log.d("UserViewModel", "Notificación enviada al comprador $buyerId")
         }
     }
 
+    /**
+     * Crea una notificación para el vendedor.
+     */
     private fun createSellerNotification(sellerId: String, buyerName: String, carId: String, name: String) {
         viewModelScope.launch {
             addNotificationUseCase(
@@ -372,14 +468,20 @@ class UserViewModel @Inject constructor(
                 title = "New favorite for your car",
                 message = "Your car $name has been added to favorites by $buyerName."
             )
+            Log.d("UserViewModel", "Notificación enviada al vendedor $sellerId")
         }
     }
 
-    // Mostrar mensaje de toast con el ID de recurso de string especificado
+    /**
+     * Muestra un mensaje de toast con el ID de recurso de string especificado.
+     */
     private fun showToast(messageResId: Int) {
         Toast.makeText(getApplication(), getApplication<Application>().getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Mapea un `CarEntity` a un objeto `Car`.
+     */
     private fun mapCarEntityToCar(carEntity: CarEntity): Car {
         return Car(
             id = carEntity.id,
@@ -427,16 +529,24 @@ class UserViewModel @Inject constructor(
                     // Agregar la vista única a Firebase y actualizar el conteo de vistas en la entrada de la base de datos del auto
                     viewsRef.setValue(true).addOnSuccessListener {
                         updateCarViewCountInDatabase(car)
+                        Log.d("UserViewModel", "Vista única registrada para el auto ${car.id} por el usuario $userId")
                     }.addOnFailureListener {
                         showToast(R.string.error_updating_view_count)
+                        Log.e("UserViewModel", "Error al registrar vista única: ${it.message}")
                     }
+                } else {
+                    Log.d("UserViewModel", "El usuario $userId ya ha visto el auto ${car.id}")
                 }
             }.addOnFailureListener {
                 showToast(R.string.error_fetching_view_status)
+                Log.e("UserViewModel", "Error al verificar vista: ${it.message}")
             }
         }
     }
 
+    /**
+     * Actualiza el conteo de vistas en la base de datos.
+     */
     private fun updateCarViewCountInDatabase(car: CarEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val ownerId = car.ownerId
@@ -447,13 +557,27 @@ class UserViewModel @Inject constructor(
             // Actualizar el conteo de vistas en la entrada de la base de datos del auto
             val result = updateCarToDatabaseUseCase(ownerId, car.id, updatedCar)
             result.fold(
-                onSuccess = { fetchCars() },
+                onSuccess = {
+                    Log.d("UserViewModel", "Conteo de vistas actualizado para el auto ${car.id}")
+                    withContext(Dispatchers.Main) {
+                        fetchCars() // Re-cargar los autos para reflejar el cambio
+                    }
+                },
                 onFailure = {
                     withContext(Dispatchers.Main) {
                         showToast(R.string.error_updating_car)
+                        Log.e("UserViewModel", "Error al actualizar el auto: ${it.message}")
                     }
                 }
             )
         }
+    }
+
+    /**
+     * Método faltante: fetchUniqueCarModels
+     * Este método simplemente llama a loadUniqueCarModels y puede ser usado si se necesita acceder públicamente.
+     */
+    fun fetchUniqueCarModels() {
+        loadUniqueCarModels()
     }
 }
