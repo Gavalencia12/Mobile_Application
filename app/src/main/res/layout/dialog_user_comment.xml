@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_exit"
+                />
+
+            <TextView
+                android:id="@+id/tv_rgt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/title_comment"
+                android:textColor="@color/dark_blue"
+                android:textSize="24sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:id="@+id/ivUserImage"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@string/image" />
+
+            <LinearLayout
+                android:id="@+id/nameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ivUserImage"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sellername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/first_name"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/gray_bg" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/selleremail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameLayout"
+                android:layout_toRightOf="@id/ivUserImage"
+                android:paddingTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/email"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/dark_gray"
+                android:textSize="12sp"
+                android:backgroundTint="@color/gray_bg" />
+            <TextView
+                android:id="@+id/sellerrol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameLayout"
+                android:layout_toRightOf="@id/ivUserImage"
+                android:paddingTop="28dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/role"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/dark_gray"
+                android:textSize="12sp"
+                android:backgroundTint="@color/gray_bg" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/User_Comment"
+            android:fontFamily="@font/inter_semibold"
+            android:textColor="@color/dark_gray"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:backgroundTint="@color/gray_bg"/>
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/User_Comment"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:gravity="top"
+            android:layout_marginTop="18dp"
+            android:paddingTop="10dp"
+            style="@style/EditTextStyle"
+            android:backgroundTint="@color/gray_bg"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/Rating"
+            android:fontFamily="@font/inter_semibold"
+            android:textColor="@color/dark_gray"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:backgroundTint="@color/gray_bg"/>
+
+        <LinearLayout
+            android:id="@+id/starLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="0dp">
+            <View
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/star1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/nostar"
+                android:contentDescription="Star 1"
+                android:layout_margin="4dp" />
+            <View
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/star2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/nostar"
+                android:contentDescription="Star 2"
+                android:layout_margin="4dp" />
+            <View
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/star3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/nostar"
+                android:contentDescription="Star 3"
+                android:layout_margin="4dp" />
+            <View
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/star4"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/nostar"
+                android:contentDescription="Star 4"
+                android:layout_margin="4dp" />
+            <View
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/star5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/nostar"
+                android:contentDescription="Star 5"
+                android:layout_margin="4dp" />
+            <View
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+
+        <Button
+            style="@style/button_selected"
+            android:id="@+id/btnComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/User_Comment" />
+
+
+    </LinearLayout>
+</ScrollView>

@@ -67,6 +67,13 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/BanText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/Ban"
+                    android:textColor="@color/gray" />
 
                 <!-- User's email address -->
                 <TextView
