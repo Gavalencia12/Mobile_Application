@@ -352,7 +352,8 @@ class CrudDialogFragment : DialogFragment() {
             Pair(R.id.pink_button, "Pink"),
             Pair(R.id.white_button, "White"),
             Pair(R.id.gray_button, "Gray"),
-            Pair(R.id.black_button, "Black")
+            Pair(R.id.black_button, "Black"),
+            Pair(R.id.brown_button, "Brown")
         )
 
         colorButtons.forEach { (buttonId, color) ->
