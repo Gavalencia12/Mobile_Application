@@ -544,6 +544,7 @@
     <string name="message_block">Block user and clear chat</string>
     <string name="file_name">File Name</string>
     <string name="add_comment">Add a comment (optional)</string>
+    <string name="uploading">Uploading…</string>
 
 </resources>
 

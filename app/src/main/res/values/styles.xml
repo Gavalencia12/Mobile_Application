@@ -325,7 +325,7 @@
         <item name="android:layout_height">15dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:visibility">visible</item>
-        <item name="android:src">@drawable/face_send_negative4</item>
+        <item name="android:src">@drawable/ic_negative_message</item>
     </style>
 
     <style name="structure_status">

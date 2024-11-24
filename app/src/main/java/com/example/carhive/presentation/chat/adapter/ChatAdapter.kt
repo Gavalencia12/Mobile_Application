@@ -175,7 +175,7 @@ class ChatAdapter(
                 fileUri?.let {
                     Glide.with(context)
                         .load(it)
-                        .placeholder(R.drawable.ic_img)
+                        .placeholder(R.drawable.ic_image)
                         .error(R.drawable.ic_error)
                         .into(fileImageView)
                     fileImageView.setOnClickListener {
@@ -195,7 +195,7 @@ class ChatAdapter(
                 fileUri?.let {
                     Glide.with(context)
                         .load(it)
-                        .placeholder(R.drawable.ic_video)
+                        .placeholder(R.drawable.ic_videos)
                         .error(R.drawable.ic_error)
                         .into(fileImageView)
                     fileImageView.setOnClickListener {
@@ -336,9 +336,9 @@ class ChatAdapter(
          */
         fun updateStatusIcon(status: String) {
             when (status) {
-                "sent" -> statusIcon.setImageResource(R.drawable.face_send_negative2)
-                "read" -> statusIcon.setImageResource(R.drawable.face_send_positive3)
-                "failed" -> statusIcon.setImageResource(R.drawable.ic_failed)
+                "sent" -> statusIcon.setImageResource(R.drawable.ic_check_chat)
+                "read" -> statusIcon.setImageResource(R.drawable.ic_negative_message)
+                "failed" -> statusIcon.setImageResource(R.drawable.ic_error_internet)
             }
         }
 
