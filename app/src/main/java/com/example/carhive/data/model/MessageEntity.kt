@@ -1,5 +1,8 @@
 package com.example.carhive.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  * Represents a message entity in the chat system.
  *
@@ -17,6 +20,7 @@ package com.example.carhive.data.model
  * @property status Status of the message ("sent", "delivered", "read", "failed").
  * @property deletedFor List of user IDs for whom the message has been deleted.
  */
+@Parcelize
 data class MessageEntity(
     val messageId: String = "",
     val senderId: String = "",
@@ -31,7 +35,7 @@ data class MessageEntity(
     val hash: String? = null,
     val status: String = "sent",
     val deletedFor: MutableList<String> = mutableListOf()
-)
+): Parcelable
 
 /**
  * Represents a user with their last message in the chat system.

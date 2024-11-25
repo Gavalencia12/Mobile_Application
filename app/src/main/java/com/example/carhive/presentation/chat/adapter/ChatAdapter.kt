@@ -336,8 +336,8 @@ class ChatAdapter(
          */
         fun updateStatusIcon(status: String) {
             when (status) {
-                "sent" -> statusIcon.setImageResource(R.drawable.ic_check_chat)
-                "read" -> statusIcon.setImageResource(R.drawable.ic_negative_message)
+                "sent" -> statusIcon.setImageResource(R.drawable.ic_negative_message)
+                "read" -> statusIcon.setImageResource(R.drawable.ic_check_chat)
                 "failed" -> statusIcon.setImageResource(R.drawable.ic_error_internet)
             }
         }

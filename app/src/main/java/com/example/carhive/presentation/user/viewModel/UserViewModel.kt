@@ -39,21 +39,19 @@ class UserViewModel @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase,
     private val updateCarToDatabaseUseCase: UpdateCarToDatabaseUseCase,
     private val addNotificationUseCase: AddNotificationUseCase,
-    private val listenForNewFavoritesUseCase: ListenForNewFavoritesUseCase,
-    private val getCarUserInDatabaseUseCase: GetCarUserInDatabaseUseCase
 ) : AndroidViewModel(application) {
 
-    // Lista predeterminada de marcas de autos obtenida desde los recursos de strings
+    // Default list of car brands retrieved from string resources
     val defaultBrands = application.resources.getStringArray(R.array.brand_options).toList()
 
-    // LiveData para mantener la lista de autos
+    // LiveData to hold the list of cars
     private val _carList = MutableLiveData<List<CarEntity>>()
     val carList: LiveData<List<CarEntity>> get() = _carList
 
     private val _recommendedCarList = MutableLiveData<List<CarEntity>>()
     val recommendedCarList: LiveData<List<CarEntity>> get() = _recommendedCarList
 
-    // LiveData para mantener los datos del usuario
+    // LiveData to hold user data
     private val _userData = MutableLiveData<UserEntity?>()
     val userData: LiveData<UserEntity?> get() = _userData
 
@@ -344,7 +342,7 @@ class UserViewModel @Inject constructor(
                     val result = addCarToFavoritesUseCase(userId, fullName, car.id, car.id, car.ownerId)
                     if (result.isSuccess) {
                         showToast(R.string.car_added_to_favorites)
-                        listenForNewFavorites(car.id, car.ownerId, car.modelo) // Inicia la lógica de notificaciones
+                        sendFavoriteNotifications(car, userId, fullName)
                         addHistoryEvent(
                             userId,
                             "Add to Favorite",
@@ -431,44 +429,21 @@ class UserViewModel @Inject constructor(
             }
     }
 
-    /**
-     * Escucha nuevas adiciones a favoritos para notificaciones.
-     */
-    fun listenForNewFavorites(carId: String, sellerId: String, name: String) {
+    private fun sendFavoriteNotifications(car: CarEntity, userId: String, buyerName: String) {
         viewModelScope.launch {
-            listenForNewFavoritesUseCase(carId) { buyerId, buyerName, carId ->
-                createBuyerNotification(buyerId, name)
-                createSellerNotification(sellerId, buyerName, carId, name)
-            }
-            Log.d("UserViewModel", "Escuchando nuevas adiciones a favoritos para el auto $carId")
-        }
-    }
-
-    /**
-     * Crea una notificación para el comprador.
-     */
-    private fun createBuyerNotification(buyerId: String, name: String) {
-        viewModelScope.launch {
+            // Notificación para el comprador
             addNotificationUseCase(
-                userId = buyerId,
+                userId = userId,
                 title = "Car added to favorites",
-                message = "You have added the car $name to your favorites."
+                message = "You have added the car ${car.modelo} to your favorites."
             )
-            Log.d("UserViewModel", "Notificación enviada al comprador $buyerId")
-        }
-    }
 
-    /**
-     * Crea una notificación para el vendedor.
-     */
-    private fun createSellerNotification(sellerId: String, buyerName: String, carId: String, name: String) {
-        viewModelScope.launch {
+            // Notificación para el vendedor
             addNotificationUseCase(
-                userId = sellerId,
+                userId = car.ownerId,
                 title = "New favorite for your car",
-                message = "Your car $name has been added to favorites by $buyerName."
+                message = "Your car ${car.modelo} has been added to favorites by $buyerName."
             )
-            Log.d("UserViewModel", "Notificación enviada al vendedor $sellerId")
         }
     }
 

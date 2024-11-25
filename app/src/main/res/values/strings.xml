@@ -349,6 +349,9 @@
     <string name="information">Information</string>
     <string name="cars">Cars</string>
     <string name="user_history">User History</string>
+    <string name="user_reports">Users Reports</string>
+    <string name="reports">Reports</string>
+    <string name="technical_support">Technical Support</string>
     <string name="bans">Bans</string>
     <string name="security_filter">Security Filter</string>
     <string name="new_profile_entries">New Profile Entries</string>
@@ -545,6 +548,8 @@
     <string name="file_name">File Name</string>
     <string name="add_comment">Add a comment (optional)</string>
     <string name="uploading">Uploading…</string>
+    <string name="example_message">Example message</string>
+    <string name="messages_sent">Messages sent</string>
 
 </resources>
 

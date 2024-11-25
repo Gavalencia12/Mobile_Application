@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentRegisterFourthBinding
+import com.example.carhive.presentation.initial.Register.view.FortRegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
@@ -56,6 +58,18 @@ class FortRegisterFragment : Fragment() {
                 navigateToNext()
             }
         }
+
+        binding.loginLink.setOnClickListener {
+            viewModel.resendVerificationEmail(
+                onSuccess = {
+                    Toast.makeText(requireContext(), "Verification email resent successfully", Toast.LENGTH_SHORT).show()
+                },
+                onFailure = { errorMessage ->
+                    Toast.makeText(requireContext(), "Failed to resend email: $errorMessage", Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
+
     }
 
     private fun updateUI(isVerified: Boolean) {
