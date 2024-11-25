@@ -550,6 +550,7 @@
     <string name="uploading">Uploading…</string>
     <string name="example_message">Example message</string>
     <string name="messages_sent">Last 5 messages sent</string>
+    <string name="notify">Notifications</string>
 
 </resources>
 

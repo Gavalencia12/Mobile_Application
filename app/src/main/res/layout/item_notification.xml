@@ -1,3 +1,4 @@
+<!-- Root LinearLayout with horizontal orientation and padding -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,26 +8,31 @@
     android:paddingVertical="16dp"
     android:paddingHorizontal="10dp">
 
+    <!-- Container for the notification icon -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical">
 
+        <!-- Notification icon -->
         <ImageView
             style="@style/circle_shape_ic"
             android:id="@+id/notificationIcon"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_notification" />
+            android:src="@drawable/ic_notification"
+            android:contentDescription="@null"/>
     </LinearLayout>
 
+    <!-- Container for notification details -->
     <LinearLayout
         style="@style/data_chat"
         android:layout_marginEnd="5dp"
         android:layout_gravity="center_vertical"
         android:gravity="start">
 
+        <!-- Notification title -->
         <TextView
             style="@style/title_content_chat"
             android:id="@+id/notificationTitle"
@@ -34,6 +40,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/inter_bold" />
 
+        <!-- Notification message -->
         <TextView
             style="@style/content_notify"
             android:id="@+id/notificationMessage"
@@ -42,8 +49,7 @@
             android:textColor="@color/gray"
             android:fontFamily="@font/inter_semibold" />
 
-        <!-- android:textSize="14sp" -->
-
+        <!-- Notification timestamp -->
         <TextView
             style="@style/content_notify"
             android:id="@+id/notificationTimestamp"
@@ -54,6 +60,7 @@
             android:textColor="@color/gray_disabled" />
     </LinearLayout>
 
+    <!-- Delete notification button -->
     <ImageView
         android:id="@+id/deleteNotificationButton"
         android:layout_width="40dp"
