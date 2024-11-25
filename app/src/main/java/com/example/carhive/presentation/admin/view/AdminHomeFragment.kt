@@ -60,6 +60,9 @@ class AdminHomeFragment : Fragment() {
         }
 
         binding.btnReport.setOnClickListener {
+            findNavController().navigate(R.id.action_adminHomeFragment_to_adminReportsFragment)
+        }
+        binding.btnTechnicalSupport.setOnClickListener {
             findNavController().navigate(R.id.action_adminHomeFragment_to_adminSupportFragment)
         }
     }

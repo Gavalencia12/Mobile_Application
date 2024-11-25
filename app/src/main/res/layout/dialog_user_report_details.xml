@@ -1,0 +1,127 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp"
+    android:padding="16dp">
+
+    <!-- ScrollView para permitir desplazamiento -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <!-- Botón de cerrar -->
+            <Button
+                android:id="@+id/closeButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_exit"
+                android:backgroundTint="@color/red"
+                android:layout_gravity="end" />
+
+            <!-- Comentario del usuario -->
+            <TextView
+                android:id="@+id/commentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/User_Comment"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:padding="8dp" />
+
+            <LinearLayout
+                android:id="@+id/messagesContainerComm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Un ejemplo de mensaje -->
+                <TextView
+                    android:id="@+id/messageComment"
+                    style="@style/style_input_large"
+                    android:text="@string/example_message"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <!-- Encabezado de mensajes -->
+            <TextView
+                android:id="@+id/messagesHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/messages_sent"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+
+            <!-- Contenedor de mensajes -->
+            <LinearLayout
+                android:id="@+id/messagesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Un ejemplo de mensaje -->
+                <TextView
+                    android:id="@+id/messageItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/example_message"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:paddingStart="14dp" />
+            </LinearLayout>
+
+            <!-- Información adicional -->
+            <TextView
+                android:id="@+id/reportDateHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date of report"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/textViewTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha del reporte"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+
+            <!-- Contenedor de botones -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <Button
+                    android:id="@+id/btnClose"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Close"
+                    android:background="@drawable/rounder_baneos"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>

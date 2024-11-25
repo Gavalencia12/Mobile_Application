@@ -1,0 +1,70 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        tools:context=".presentation.admin.view.AdminReportsFragment">
+
+        <!-- Botón de regreso -->
+        <Button
+            android:id="@+id/bureturn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="25dp"
+            android:background="@drawable/ic_arrow_back" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/textcar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_reports"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:fontFamily="@font/inter_bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="35dp" />
+
+        <!-- Barra de búsqueda -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search"
+            android:layout_below="@id/textcar"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_search">
+
+            <EditText
+                android:id="@+id/search_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_hint"
+                android:padding="10dp"
+                android:layout_marginStart="23dp"
+                android:background="@null"
+                android:textColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search"
+                android:padding="10dp" />
+        </RelativeLayout>
+
+        <!-- RecyclerView para los reportes -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewReports"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/search"
+            android:layout_marginTop="10dp" />
+
+    </RelativeLayout>
+</layout>
