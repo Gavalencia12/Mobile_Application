@@ -549,7 +549,7 @@
     <string name="add_comment">Add a comment (optional)</string>
     <string name="uploading">Uploading…</string>
     <string name="example_message">Example message</string>
-    <string name="messages_sent">Messages sent</string>
+    <string name="messages_sent">Last 5 messages sent</string>
 
 </resources>
 

@@ -190,7 +190,7 @@
                             android:layout_width="130dp"
                             android:layout_height="130dp"
                             android:background="@drawable/rounder_baneos"
-                            android:drawableTop="@drawable/warning"
+                            android:drawableTop="@drawable/ic_reports_users"
                             android:text="@string/reports"
                             android:textColor="@color/white" />
 
@@ -201,7 +201,7 @@
                             android:layout_marginStart="8dp"
                             android:text="@string/technical_support"
                             android:background="@drawable/rounded_option"
-                            android:drawableTop="@drawable/user_history"/>
+                            android:drawableTop="@drawable/ic_support"/>
 
                     </GridLayout>
 

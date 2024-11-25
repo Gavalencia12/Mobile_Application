@@ -55,15 +55,14 @@ class UserReportDetailsDialogFragment : DialogFragment() {
             // Inflar el diseño del contenido del mensaje
             val contentView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.message_item, messagesContainer, false) as TextView
-            contentView.text = "Message: ${message.content}"
+            contentView.text = "${message.content}"
 
-            // Inflar el diseño para la hora del mensaje
             val timeView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.message_item, messagesContainer, false) as TextView
+                .inflate(R.layout.message_time, messagesContainer, false) as TextView
             val formattedTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                 .format(Date(message.timestamp))
             timeView.text = formattedTime
-            timeView.gravity = Gravity.END
+
 
             // Agregar los TextViews inflados al contenedor
             messagesContainer.addView(contentView)
