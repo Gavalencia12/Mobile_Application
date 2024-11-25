@@ -116,11 +116,11 @@ class NotificationsSellerAdapter(
 
     private fun getIconResource(title: String): Int {
         return when {
-            title.contains("Account Verified", ignoreCase = true) || title.contains("Account Deactivated", ignoreCase = false) -> R.drawable.ic_notifications_account
-            title.contains("Car approved!", ignoreCase = true) || title.contains("Car disapproved!", ignoreCase = true) -> R.drawable.ic_notification_car
-            title.contains("Car added to favorites", ignoreCase = true) || title.contains("New favorite for your car", ignoreCase = true) -> R.drawable.ic_notification_favorites
-            title.contains("New Message", ignoreCase = true) || title.contains("Unread Messages", ignoreCase = true) -> R.drawable.ic_notification_chats
-            else -> R.drawable.ic_notification
+            title.contains("Account Verified", ignoreCase = true) || title.contains("Account Deactivated", ignoreCase = false) -> R.drawable.ic_verify_account
+            title.contains("Car approved!", ignoreCase = true) || title.contains("Car disapproved!", ignoreCase = true) -> R.drawable.ic_check_car
+            title.contains("Car added to favorites", ignoreCase = true) || title.contains("New favorite for your car", ignoreCase = true) -> R.drawable.ic_favorite_cars
+            title.contains("New Message", ignoreCase = true) || title.contains("Unread Messages", ignoreCase = true) -> R.drawable.ic_message_unread
+            else -> R.drawable.ic_new_notification
         }
     }
 
