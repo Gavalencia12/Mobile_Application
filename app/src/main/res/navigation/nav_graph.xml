@@ -430,6 +430,18 @@
         <action
             android:id="@+id/action_adminHomeFragment_to_adminHistoryFragment"
             app:destination="@id/adminHistoryFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminReportsFragment"
+            app:destination="@id/adminReportsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminReportsFragment"
+        android:name="com.example.carhive.presentation.admin.view.AdminReportsFragment"
+        tools:layout="@layout/fragment_admin_reports">
+        <action
+            android:id="@+id/action_adminReportsFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
     </fragment>
 
     <fragment

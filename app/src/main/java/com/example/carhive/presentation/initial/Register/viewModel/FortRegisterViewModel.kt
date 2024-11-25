@@ -41,6 +41,23 @@ class FortRegisterViewModel @Inject constructor(
         }
     }
 
+    fun resendVerificationEmail(onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val user = auth.currentUser
+        if (user != null) {
+            viewModelScope.launch {
+                try {
+                    user.sendEmailVerification().await()
+                    onSuccess()
+                } catch (e: Exception) {
+                    onFailure(e.localizedMessage ?: "An error occurred")
+                }
+            }
+        } else {
+            onFailure("User is not logged in")
+        }
+    }
+
+
     private fun logUserRegistrationHistory(userId: String, email: String) {
         viewModelScope.launch {
             try {

@@ -7,5 +7,5 @@
         android:title="Bloquear" />
     <item
         android:id="@+id/option_exit"
-        android:title="Vaciar Chat" />
+        android:title="Clear Chat" />
 </menu>

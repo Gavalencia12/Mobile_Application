@@ -179,14 +179,32 @@
                             android:drawableTop="@drawable/new_car"/>
                     </GridLayout>
 
-                    <Button
-                        android:id="@+id/btn_report"
+                    <GridLayout
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:text="@string/general_report"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/rounded_option"
-                        android:drawableLeft="@drawable/report"/>
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:layout_marginTop="16dp">
+
+                        <Button
+                            android:id="@+id/btn_report"
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:background="@drawable/rounder_baneos"
+                            android:drawableTop="@drawable/ic_reports_users"
+                            android:text="@string/reports"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/btn_technical_support"
+                            android:layout_height="130dp"
+                            android:layout_columnWeight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/technical_support"
+                            android:background="@drawable/rounded_option"
+                            android:drawableTop="@drawable/ic_support"/>
+
+                    </GridLayout>
+
                 </GridLayout>
             </RelativeLayout>
 
