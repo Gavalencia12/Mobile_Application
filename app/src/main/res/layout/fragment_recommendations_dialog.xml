@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialogRecommendations"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <!-- Título del diálogo -->
-    <TextView
-        android:id="@+id/tvRecommendationsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recommendations for Sellers"
-        android:textSize="26dp"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        android:gravity="center"/>
-
-    <!-- RecyclerView para listar las recomendaciones -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewRecommendations"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    android:background="@android:color/transparent">
+    <LinearLayout
+        android:id="@+id/dialogRecommendations"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="horizontal" />
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
 
-    <!-- Botón para cerrar el diálogo -->
-    <Button
-        android:id="@+id/btnClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cerrar"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        <!-- Title for recommendations -->
+        <TextView
+            android:id="@+id/tvRecommendationsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seller Recommendations"
+            android:textSize="20dp"
+            android:fontFamily="@font/inter_bold"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:gravity="center"/>
+
+        <!-- RecyclerView for recommendations -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewRecommendations"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:layout_margin="16dp"/>
+
+        <!-- Close button -->
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cerrar"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
