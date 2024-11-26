@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.example.carhive.data.model.UserEntity
 import com.example.carhive.presentation.user.adapter.ProfileOptionsAdapter
+import com.example.carhive.presentation.user.view.RecommendationsDialogFragment
 import com.example.carhive.presentation.user.viewModel.ProfileViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentSellerProfileBinding
@@ -27,7 +28,7 @@ class SellerProfileFragment : Fragment() {
 
     private val viewModel: ProfileViewModel by viewModels()
 
-    val buyerId = FirebaseAuth.getInstance().currentUser?.uid
+    private val buyerId = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +40,7 @@ class SellerProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         // Escuchar el resultado del diálogo
         parentFragmentManager.setFragmentResultListener("update_request_key", this) { _, _ ->
             // Recargar los datos del usuario después de actualizar
@@ -50,7 +51,7 @@ class SellerProfileFragment : Fragment() {
         val navController = findNavController()
         NavigationUI.setupWithNavController(binding.bottomNavigationSeller, navController)
 
-    // Observar los datos del usuario
+        // Observar los datos del usuario
         viewModel.userData.observe(viewLifecycleOwner, Observer { result ->
             result.onSuccess { userList ->
                 if (userList.isNotEmpty()) {
@@ -94,7 +95,7 @@ class SellerProfileFragment : Fragment() {
                 "Privacy policy" -> {
                     findNavController().navigate(R.id.action_sellerProfileFragment_to_sellerPrivacyPolicyFragment)
                 }
-                "Report a problem" -> {
+                "Technical Support" -> {
                     val bundle = Bundle().apply {
                         putString("carId", "seller")
                         putString("ownerId", "TechnicalSupport")
@@ -107,6 +108,10 @@ class SellerProfileFragment : Fragment() {
                 }
                 "Comment History" -> {
                     findNavController().navigate(R.id.action_sellerProfileFragment_to_CommentHistoryFragment)
+                }
+                "Recommendations" -> { // Manejar la opción "Recommendations"
+                    val dialog = RecommendationsDialogFragment()
+                    dialog.show(parentFragmentManager, "RecommendationsDialog")
                 }
                 // Otros casos...
             }
@@ -121,7 +126,12 @@ class SellerProfileFragment : Fragment() {
         } else {
             binding.ivIsVerified.visibility = View.GONE
         }
-        Glide.with(this).load(user.imageUrl).placeholder(R.drawable.ic_profile).error(R.drawable.ic_profile).circleCrop().into(binding.profileImage)
+        Glide.with(this)
+            .load(user.imageUrl)
+            .placeholder(R.drawable.ic_profile)
+            .error(R.drawable.ic_profile)
+            .circleCrop()
+            .into(binding.profileImage)
     }
 
     override fun onDestroyView() {
