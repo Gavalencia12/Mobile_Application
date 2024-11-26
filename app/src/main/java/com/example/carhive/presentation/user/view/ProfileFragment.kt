@@ -106,6 +106,10 @@ class ProfileFragment : Fragment() {
                 "Comment History" -> {
                     findNavController().navigate(R.id.action_userProfileFragment_to_CommentHistoryFragment)
                 }
+                "Recommendations" -> { // Manejar la opción "Recommendations"
+                val dialog = RecommendationsDialogFragmentUser()
+                dialog.show(parentFragmentManager, "RecommendationsDialog")
+            }
                 // Otros casos...
             }
         }

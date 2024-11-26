@@ -10,7 +10,7 @@
         android:id="@+id/tvRecommendationsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recomendaciones para Vendedores"
+        android:text="Recommendations for Sellers"
         android:textSize="26dp"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:gravity="center"/>

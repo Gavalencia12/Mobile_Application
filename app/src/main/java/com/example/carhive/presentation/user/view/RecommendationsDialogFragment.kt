@@ -10,18 +10,18 @@ import com.example.carhive.R
 import com.example.carhive.databinding.FragmentRecommendationsDialogBinding
 import com.example.carhive.presentation.user.adapter.RecommendationsAdapter
 
-class RecommendationsDialogFragment : DialogFragment() {
+class RecommendationsDialogFragmentUser : DialogFragment() {
 
     private var _binding: FragmentRecommendationsDialogBinding? = null
     private val binding get() = _binding!!
 
     // Lista de recomendaciones
     private val recommendations = listOf(
-        "Do not meet in private or dangerous places.",
-        "Verify the buyer's identity before any meeting.",
-        "Avoid sharing sensitive personal information.",
-        "Conduct the transaction in public and safe places.",
-        "Request secure payment before delivering the vehicle."
+        "Meet in public and safe places.",
+        "Verify the legal documents of the vehicle before purchasing.",
+        "Avoid making full payments before seeing the vehicle in person.",
+        "Request a vehicle inspection report before purchasing.",
+        "Confirm the seller's identity and ownership of the vehicle."
     )
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -29,6 +29,9 @@ class RecommendationsDialogFragment : DialogFragment() {
 
         val dialog = Dialog(requireContext())
         dialog.setContentView(binding.root)
+
+        // Cambiar el título a "Recommendations for Buyers"
+        binding.tvRecommendationsTitle.text = "Recommendations for Buyers"
 
         // Configurar RecyclerView con LayoutManager Horizontal
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
