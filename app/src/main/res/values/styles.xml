@@ -567,4 +567,10 @@
         <item name="android:maxLength">200</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="DialogTheme.Transparent" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

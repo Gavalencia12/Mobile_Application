@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carhive.databinding.ItemRecommendationBinding
 
-class RecommendationsAdapter(private val recommendations: List<String>) :
+class RecommendationsAdapter(private var recommendations: List<String>) :
     RecyclerView.Adapter<RecommendationsAdapter.RecommendationViewHolder>() {
 
     inner class RecommendationViewHolder(private val binding: ItemRecommendationBinding) :
@@ -29,4 +29,10 @@ class RecommendationsAdapter(private val recommendations: List<String>) :
     }
 
     override fun getItemCount(): Int = recommendations.size
+
+    // Función para actualizar las recomendaciones
+    fun updateRecommendations(newRecommendations: List<String>) {
+        recommendations = newRecommendations
+        notifyDataSetChanged()
+    }
 }
