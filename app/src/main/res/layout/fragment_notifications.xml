@@ -35,12 +35,14 @@
         style="@style/content_chat_opacity_light"
         android:layout_marginTop="5dp" >
 
-        <!-- RecyclerView for displaying notifications -->
         <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="5dp"
             android:id="@+id/notificationsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="35dp"
-            android:layout_marginTop="20dp"/>
+            android:background="@drawable/border_recyclerview"
+            android:clipToOutline="true"
+            android:layout_marginBottom="50dp"/>
+
     </LinearLayout>
 </LinearLayout>

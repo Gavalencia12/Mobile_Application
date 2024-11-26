@@ -35,9 +35,10 @@
 
         <!-- RecyclerView to display a list of interested users -->
         <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="5dp"
             android:id="@+id/recyclerViewInterestedUsers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="35dp"/>
+            android:layout_marginBottom="50dp"/>
     </LinearLayout>
 </LinearLayout>

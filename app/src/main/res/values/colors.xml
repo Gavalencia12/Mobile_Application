@@ -46,4 +46,8 @@
     <color name="gray_disabled">#8B8B8B</color>
     <color name="black_opacity_light">#7EFFFFFF</color>
     <color name="black_opacity_medium">#5C000000</color>
+    <color name="green_woods">#26a269</color>
+    <color name="yellow_sun">#f5c211</color>
+    <color name="red_bright">#e01b24</color>
+    <color name="green_tree">#26a269</color>
 </resources>

@@ -130,6 +130,7 @@ class SellerHomeFragment : Fragment() {
         }
         binding.cardApprovedCars.setOnClickListener {
             findNavController().navigate(R.id.approvedCarsFragment)
+
         }
 
     }

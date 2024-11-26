@@ -107,8 +107,8 @@ class UserCommentDialog : DialogFragment() {
                 binding.sellername.text = "${it.firstName} ${it.lastName}"
                 binding.selleremail.text = it.email
                 binding.sellerrol.text = when (it.role) {
-                    1 -> "Buyer"
-                    2 -> "User"
+                    1 -> "Seller"
+                    2 -> "Buyer"
                     0 -> "Administrator"
                     else -> "Unknown"
                 }

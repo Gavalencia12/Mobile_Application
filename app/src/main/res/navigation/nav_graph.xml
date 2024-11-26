@@ -293,6 +293,10 @@
         android:name="com.example.carhive.presentation.seller.view.SellerHomeFragment"
         tools:layout="@layout/fragment_seller_home">
 
+        <action
+            android:id="@+id/action_sellerHomeFragment_to_CommentHistoryFragment"
+            app:destination="@id/SellerCommentHistoryFragment" />
+
     </fragment>
 
     <fragment

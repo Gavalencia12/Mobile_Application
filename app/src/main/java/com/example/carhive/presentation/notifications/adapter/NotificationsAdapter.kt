@@ -29,6 +29,7 @@ class NotificationsAdapter(
         val messageTextView: TextView = itemView.findViewById(R.id.notificationMessage)
         val timestampTextView: TextView = itemView.findViewById(R.id.notificationTimestamp)
         val deleteButton: ImageView = itemView.findViewById(R.id.deleteNotificationButton)
+        val lineIndicator: View = itemView.findViewById(R.id.notificationIndicator)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
@@ -48,10 +49,13 @@ class NotificationsAdapter(
         holder.timestampTextView.text = formatter.format(Date(notification.timestamp))
 
         // Establecer ícono según el título
-        holder.iconImageView.setImageResource(getIconResource(notification.title))
+        val iconRes = getIconResource(notification.title)
+        holder.iconImageView.setImageResource(iconRes)
+        holder.iconImageView.tag = iconRes
 
-        // Actualizar el fondo según el estado `isRead`
+        // Actualizar la apariencia según el estado `isRead`
         updateNotificationBackground(holder, notification.isRead)
+        Log.d("NotificationStatus", "isRead: ${notification.isRead}, title: ${notification.title}")
 
         // Escuchar clics en el botón de eliminar
         holder.deleteButton.setOnClickListener {
@@ -71,8 +75,22 @@ class NotificationsAdapter(
         val context = holder.itemView.context
         holder.itemView.setBackgroundColor(
             if (isRead) ContextCompat.getColor(context, android.R.color.transparent)
-            else ContextCompat.getColor(context, R.color.notification_unread_background)
+            else ContextCompat.getColor(context, R.color.white) //cuadro de notificacion activa
         )
+        if (!isRead) {
+            val iconColor = when (holder.iconImageView.tag) { // Usa el tag para identificar el ícono
+                R.drawable.ic_verify_account -> ContextCompat.getColor(context, R.color.green_tree)
+                R.drawable.ic_check_car -> ContextCompat.getColor(context, R.color.green_woods)
+                R.drawable.ic_favorite_cars -> ContextCompat.getColor(context, R.color.red_bright)
+                R.drawable.ic_message_unread -> ContextCompat.getColor(context, R.color.yellow_sun)
+                R.drawable.ic_desactive_user -> ContextCompat.getColor(context, R.color.red_bright)
+                else -> ContextCompat.getColor(context, R.color.blue)
+            }
+            holder.lineIndicator.setBackgroundColor(iconColor)
+        } else {
+            // Para notificaciones leídas, línea transparente
+            holder.lineIndicator.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+        }
     }
 
     fun updateNotifications(newNotifications: List<NotificationModel>) {
@@ -114,7 +132,7 @@ class NotificationsAdapter(
     private fun getIconResource(title: String): Int {
         return when {
             title.contains("Account Verified", ignoreCase = true) -> R.drawable.ic_verify_account
-            title.contains("Account Deactivated", ignoreCase = false) -> R.drawable.ic_verify_account
+            title.contains("Account Deactivated", ignoreCase = false) -> R.drawable.ic_desactive_user
             title.contains("Car added to favorites", ignoreCase = true) || title.contains("New favorite for your car", ignoreCase = true) -> R.drawable.ic_favorite_cars
             title.contains("New Message", ignoreCase = true) || title.contains("Unread Messages", ignoreCase = true) -> R.drawable.ic_message_unread
             else -> R.drawable.ic_new_notification
