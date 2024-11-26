@@ -62,8 +62,7 @@ class CommentsAdapter(
             databaseReference.get().addOnSuccessListener { snapshot ->
                 val user = snapshot.getValue(UserEntity::class.java)
                 if (user != null) {
-                    binding.firstNameText.text = user.firstName
-                    binding.lastNameText.text = user.lastName
+                    binding.firstNameText.text = "${user.firstName} ${user.lastName}"
                     Glide.with(binding.root.context)
                         .load(user.imageUrl)
                         .placeholder(R.drawable.ic_profile)

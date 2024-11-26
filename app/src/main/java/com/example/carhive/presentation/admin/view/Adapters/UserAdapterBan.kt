@@ -26,7 +26,7 @@ class UserAdapterBan(
             binding.firstNameText.text = user.firstName
             binding.lastNameText.text = user.lastName
             binding.curpText.text = user.curp
-            binding.Userdesbaner.text = if (user.isBanned) {
+            binding.BanText.text = if (user.isBanned) {
                 "Banned"
             } else {
                 "Not Banned"

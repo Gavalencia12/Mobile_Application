@@ -352,7 +352,6 @@ class UserViewModel @Inject constructor(
                         updateFavoriteCount(car.id, increment = true)
                         Log.d("UserViewModel", "Auto ${car.id} agregado a favoritos por $fullName")
                     } else {
-                        showToast(R.string.error_adding_favorite)
                         Log.e("UserViewModel", "Error al agregar favorito: ${result.exceptionOrNull()?.message}")
                     }
                 } else {
