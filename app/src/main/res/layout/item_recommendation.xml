@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemRecommendation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- Icono de recomendación -->
+        <ImageView
+            android:id="@+id/ivRecommendationIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_cars"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/recommendation_icon"
+            app:tint="@color/blue" />
+
+        <!-- Texto de la recomendación -->
+        <TextView
+            android:id="@+id/tvRecommendationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:fontFamily="@font/inter_semibold"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textSize="18dp"/>
+    </LinearLayout>
+</FrameLayout>

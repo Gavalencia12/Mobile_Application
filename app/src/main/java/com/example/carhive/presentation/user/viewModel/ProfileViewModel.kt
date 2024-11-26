@@ -45,13 +45,14 @@ class ProfileViewModel @Inject constructor(
 
     // Listas de opciones y sus íconos
     val profileOptions = listOf(
-//      "Notifications",
-//      "Theme",
-//      "Languaje",
+        // "Notifications",
+        // "Theme",
+        // "Languaje",
         "Personal Data",
         "Comment History",
         "Technical Support",
-//      "Help",
+        // "Help",
+        "Recommendations",
         "Terms & Conditions",
         "Privacy policy",
         "Do you want to become a seller?",
@@ -59,26 +60,27 @@ class ProfileViewModel @Inject constructor(
     )
 
     val profileOptionsSeller = listOf(
-//      "Notifications",
-//      "Theme",
-//      "Languaje",
+        // "Notifications",
+        // "Theme",
+        // "Languaje",
         "Personal Data",
         "Comment History",
         "Technical Support",
-//      "Help",
+        "Recommendations", // Asegúrate de que está aquí
         "Terms & Conditions",
         "Privacy policy",
         "Log out"
     )
 
     val profileIcons = listOf(
-//      R.drawable.ic_notifications,
-//      R.drawable.ic_mode_screen,
-//      R.drawable.ic_language,
+        // R.drawable.ic_notifications,
+        // R.drawable.ic_mode_screen,
+        // R.drawable.ic_language,
         R.drawable.ic_profile,
         R.drawable.ic_chat,
         R.drawable.ic_report_problem,
-//      R.drawable.ic_help,
+        // R.drawable.ic_help,
+        R.drawable.ic_settings, // Añade este drawable
         R.drawable.ic_terms,
         R.drawable.ic_security_policy,
         R.drawable.ic_change_account,
@@ -86,13 +88,13 @@ class ProfileViewModel @Inject constructor(
     )
 
     val profileIconsSeller = listOf(
-//      R.drawable.ic_notifications,
-//      R.drawable.ic_mode_screen,
-//      R.drawable.ic_language,
+        // R.drawable.ic_notifications,
+        // R.drawable.ic_mode_screen,
+        // R.drawable.ic_language,
         R.drawable.ic_profile,
         R.drawable.ic_chat,
         R.drawable.ic_report_problem,
-//      R.drawable.ic_help,
+        R.drawable.ic_settings, // Añade este drawable
         R.drawable.ic_terms,
         R.drawable.ic_security_policy,
         R.drawable.ic_logout
@@ -105,4 +107,12 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    // Lista de recomendaciones (opcional si deseas manejar dinámicamente)
+    // val sellerRecommendations = listOf(
+    //     "No reunirse en lugares privados o peligrosos.",
+    //     "Verificar la identidad del comprador antes de cualquier encuentro.",
+    //     "Evitar compartir información personal sensible.",
+    //     "Realizar la transacción en lugares públicos y seguros.",
+    //     "Solicitar pago seguro antes de entregar el vehículo."
+    // )
 }
