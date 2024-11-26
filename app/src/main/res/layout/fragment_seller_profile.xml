@@ -74,7 +74,8 @@
                     android:layout_height="24dp"
                     android:layout_alignEnd="@id/profile_image"
                     android:layout_alignBottom="@id/profile_image"
-                    android:src="@drawable/ic_verified" />
+                    android:src="@drawable/ic_verified"
+                    android:visibility="invisible"/>
 
                 <TextView
                     android:id="@+id/profile_name"
