@@ -138,6 +138,10 @@
         android:id="@+id/favoritesFragment"
         android:name="com.example.carhive.presentation.user.view.FavoritesFragment"
         tools:layout="@layout/fragment_user_favorites">
+
+        <action
+            android:id="@+id/action_carDetailFavoritest_to_chat"
+            app:destination="@id/userChat" />
         <action
             android:id="@+id/action_userHomeFragment_to_carDetailFragment"
             app:destination="@id/userHomeCarDetailFragment" />

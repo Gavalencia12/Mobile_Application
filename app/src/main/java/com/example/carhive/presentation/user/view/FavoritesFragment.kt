@@ -12,6 +12,7 @@ import com.example.carhive.presentation.user.adapter.CarFavoritesAdapter
 import com.example.carhive.presentation.user.viewModel.FavoritesViewModel
 import com.example.carhive.R
 import com.example.carhive.databinding.FragmentUserFavoritesBinding
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 // Fragment for displaying and managing the user's list of favorite cars
@@ -42,7 +43,7 @@ class FavoritesFragment : Fragment() {
         carAdapter = CarFavoritesAdapter(
             emptyList(),
             onDeleteFavoriteClick = { car ->
-                viewModel.removeFavoriteCar(car) // Calls ViewModel to remove car from favorites
+                viewModel.removeFavoriteCar(car)
             },
             onCarClick = { car ->
                 val bundle = Bundle().apply {
@@ -62,18 +63,30 @@ class FavoritesFragment : Fragment() {
                     putString("carYear", car.year)
                     putString("carMileage", car.mileage)
                     putString("carOwnerId", car.ownerId)
-                    putStringArrayList("carImageUrls", ArrayList(car.imageUrls)) // Adds image URLs if available
+                    putStringArrayList("carImageUrls", ArrayList(car.imageUrls))
                 }
-                // Navigate manually to CarDetailFragment, passing the bundle
                 findNavController().navigate(R.id.action_userHomeFragment_to_carDetailFragment, bundle)
-            }
+            },
+            onMoreInfoClick = { car ->
+                val bundle = Bundle().apply {
+                    putString("carId", car.id)
+                    putString("ownerId", car.ownerId)
+                    putString("buyerId", FirebaseAuth.getInstance().currentUser?.uid)
+                }
+                findNavController().navigate(R.id.action_carDetailFavoritest_to_chat, bundle)
+            },
+            fragment = this // Pasa el fragmento
         )
+
+
 
         // Configures the RecyclerView
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = carAdapter
         }
+
+
 
         // Observes favorite cars in the ViewModel and updates the UI accordingly
         viewModel.favoriteCars.observe(viewLifecycleOwner) { favoriteCars ->

@@ -1,21 +1,29 @@
 package com.example.carhive.presentation.user.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.carhive.data.model.CarEntity
 import com.example.carhive.R
+import com.google.firebase.auth.FirebaseAuth
 
 // Adapter for displaying and managing a list of favorite cars in a RecyclerView
 class CarFavoritesAdapter(
     private var carList: List<CarEntity>, // List of favorite cars to display
     private val onDeleteFavoriteClick: (CarEntity) -> Unit, // Callback for delete action
-    private val onCarClick: (CarEntity) -> Unit // Callback for click on car item
+    private val onCarClick: (CarEntity) -> Unit, // Callback for click on car it
+    private var onMoreInfoClick: (CarEntity) -> Unit,
+    private val fragment: Fragment
 ) : RecyclerView.Adapter<CarFavoritesAdapter.CarViewHolder>() {
 
     // ViewHolder class to represent the UI elements for each car item
@@ -25,6 +33,7 @@ class CarFavoritesAdapter(
         val carPrice: TextView = view.findViewById(R.id.carPrice) // TextView for car price
         val carImage: ImageView = view.findViewById(R.id.carImage) // ImageView for car image
         val deleteFavoriteButton: ImageButton = view.findViewById(R.id.deleteFavoriteButton) // Button to remove from favorites
+        val btnMoreInfo: Button = view.findViewById(R.id.btnMoreInfo)
     }
 
     // Inflates the layout for each item and creates a ViewHolder
@@ -41,6 +50,15 @@ class CarFavoritesAdapter(
         holder.carBrand.text = car.brand // Use the brand field
         holder.carPrice.text = holder.itemView.context.getString(R.string.car_price, car.price)
 
+        holder.btnMoreInfo.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("carId", car.id)
+                putString("ownerId", car.ownerId)
+                putString("buyerId", FirebaseAuth.getInstance().currentUser?.uid)
+            }
+            fragment.findNavController().navigate(R.id.action_carDetailFragment_to_chat, bundle)
+        }
+
         // Load car image using Glide, or set a placeholder if no image URL is available
         val imageUrl = car.imageUrls?.firstOrNull()
         if (imageUrl != null) {
@@ -54,6 +72,10 @@ class CarFavoritesAdapter(
         // Set up listener for the delete button
         holder.deleteFavoriteButton.setOnClickListener {
             onDeleteFavoriteClick(car) // Trigger delete action
+        }
+
+        holder.btnMoreInfo.setOnClickListener {
+            onMoreInfoClick(car) // Llama al callback con la entidad del auto
         }
 
         // Set up listener for clicking on the car item
